@@ -60,6 +60,17 @@ class Handler(BaseHTTPRequestHandler):
     all_units=upstream('organisationUnits.json?fields=id,name,path&paging=false',self.headers).get('organisationUnits',[])
     user['units']=[u for u in all_units if any(u['path']==p or u['path'].startswith(p+'/')for p in user['paths'])]
     c=ENGINE.configuration();c['forms']=[f for f in c['forms'] if any(ENGINE.can(user,dict(form=f['code'],path=p,author=user['id'])) for p in [u['path'] for u in user['units']])];c['identity']=user;c['roles']=user['roles'];return self.send(200,c)
+   if path==PREFIX+'/v1/bootstrap' and method=='GET':
+    all_units=upstream('organisationUnits.json?fields=id,name,path&paging=false',self.headers).get('organisationUnits',[])
+    user['units']=[u for u in all_units if any(u['path']==p or u['path'].startswith(p+'/')for p in user['paths'])]
+    return self.send(200,ENGINE.v1_bootstrap(user,get('parish'),get('period'),get('axis')))
+   if path==PREFIX+'/v1/tasks' and method=='POST':return self.send(201,ENGINE.v1_create_task(user,body))
+   if path==PREFIX+'/v1/logs' and method=='POST':return self.send(201,ENGINE.v1_submit_log(user,body))
+   if path==PREFIX+'/v1/review' and method=='POST':return self.send(200,ENGINE.v1_review_log(user,body))
+   if path==PREFIX+'/v1/export' and method=='GET':
+    data,mime,fname=ENGINE.v1_export(user,get('type','impact_summary'),get('format','csv'),get('preset','natural'),get('language','en'),get('parish'))
+    return self.send(200,data,mime,fname)
+   if path==PREFIX+'/v1/import' and method=='POST':return self.send(200,ENGINE.v1_import_csv(user,body))
    if path==PREFIX+'/working-drafts'and method=='GET':return self.send(200,{'drafts':ENGINE.draft_listing(user,get('status','ACTIVE'))})
    if path==PREFIX+'/working-drafts'and method=='POST':
     unit=upstream('organisationUnits/'+urllib.parse.quote(body.get('unit',''),safe='')+'?fields=id,path',self.headers)

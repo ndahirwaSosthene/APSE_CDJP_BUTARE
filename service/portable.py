@@ -59,19 +59,18 @@ def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data',default=str(ROOT/'portable_data'));parser.add_argument('--port',type=int,default=8766);parser.add_argument('--add-user');parser.add_argument('--manage',action='store_true');parser.add_argument('--roles',default='APSE_CPJP');parser.add_argument('--path',default='/LocalRoot01');parser.add_argument('--stdin-secrets',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--no-browser',action='store_true');parser.add_argument('--no-auth',action='store_true',help='Skip the local login and master passphrase; stores the local encryption key in the data folder');a=parser.parse_args()
  if not 1024<=a.port<=65535:parser.error('Invalid local port')
  def ask(prompt):return sys.stdin.readline().rstrip('\n')if a.stdin_secrets else getpass.getpass(prompt)
- if (Path(a.data)/'apse.sqlite').exists() and not (Path(a.data)/'accounts.enc').exists():parser.error('Incomplete portable copy: accounts.enc is missing')
+ if not a.no_auth and (Path(a.data)/'apse.sqlite').exists() and not (Path(a.data)/'accounts.enc').exists():parser.error('Incomplete portable copy: accounts.enc is missing')
  key_file=Path(a.data)/'no_auth.key'
  new=not(Path(a.data)/'vault.json').exists()
  if a.no_auth:
   if key_file.exists():
    try:keys=json.loads(key_file.read_text(encoding='utf-8'))
    except (OSError,json.JSONDecodeError):parser.error('Invalid no-auth key file: '+str(key_file))
-  elif not new:
-   parser.error('No-auth mode cannot unlock an existing encrypted vault. Start once without --no-auth, then restart this launcher.')
   else:
    keys={'encryption':Fernet.generate_key().decode(),'audit':secrets.token_hex(32)}
    key_file.parent.mkdir(parents=True,exist_ok=True);atomic(key_file,json.dumps(keys).encode())
   accounts=Accounts(a.data,keys['encryption'])
+  if not accounts.path.exists():atomic(accounts.path,accounts.crypto.encrypt(b'{}'))
  else:
   master=ask('Nouveau mot de passe principal (14+ caractères): 'if new else 'Mot de passe principal: ')
   if new and not a.stdin_secrets and master!=ask('Confirmer: '):parser.error('Passwords do not match')
