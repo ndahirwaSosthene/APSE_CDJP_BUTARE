@@ -1,0 +1,1581 @@
+{
+  "source": "NISR 2022 Census cell boundaries (Open Data)",
+  "sourceUrl": "https://gis-server.statistics.gov.rw/server/rest/services/Hosted/Cell_Boundary_2022__Open_Data_/FeatureServer/2",
+  "retrieved": "2026-10-20",
+  "districts": [
+    {
+      "code": "21",
+      "name": "Nyanza",
+      "parent": null
+    },
+    {
+      "code": "22",
+      "name": "Gisagara",
+      "parent": null
+    },
+    {
+      "code": "23",
+      "name": "Nyaruguru",
+      "parent": null
+    },
+    {
+      "code": "24",
+      "name": "Huye",
+      "parent": null
+    }
+  ],
+  "sectors": [
+    {
+      "code": "2101",
+      "name": "Busasamana",
+      "parent": "21"
+    },
+    {
+      "code": "2102",
+      "name": "Busoro",
+      "parent": "21"
+    },
+    {
+      "code": "2103",
+      "name": "Cyabakamyi",
+      "parent": "21"
+    },
+    {
+      "code": "2104",
+      "name": "Kibilizi",
+      "parent": "21"
+    },
+    {
+      "code": "2105",
+      "name": "Kigoma",
+      "parent": "21"
+    },
+    {
+      "code": "2106",
+      "name": "Mukingo",
+      "parent": "21"
+    },
+    {
+      "code": "2107",
+      "name": "Muyira",
+      "parent": "21"
+    },
+    {
+      "code": "2108",
+      "name": "Ntyazo",
+      "parent": "21"
+    },
+    {
+      "code": "2109",
+      "name": "Nyagisozi",
+      "parent": "21"
+    },
+    {
+      "code": "2110",
+      "name": "Rwabicuma",
+      "parent": "21"
+    },
+    {
+      "code": "2201",
+      "name": "Gikonko",
+      "parent": "22"
+    },
+    {
+      "code": "2202",
+      "name": "Gishubi",
+      "parent": "22"
+    },
+    {
+      "code": "2203",
+      "name": "Kansi",
+      "parent": "22"
+    },
+    {
+      "code": "2204",
+      "name": "Kibirizi",
+      "parent": "22"
+    },
+    {
+      "code": "2205",
+      "name": "Kigembe",
+      "parent": "22"
+    },
+    {
+      "code": "2206",
+      "name": "Mamba",
+      "parent": "22"
+    },
+    {
+      "code": "2207",
+      "name": "Muganza",
+      "parent": "22"
+    },
+    {
+      "code": "2208",
+      "name": "Mugombwa",
+      "parent": "22"
+    },
+    {
+      "code": "2209",
+      "name": "Mukindo",
+      "parent": "22"
+    },
+    {
+      "code": "2210",
+      "name": "Musha",
+      "parent": "22"
+    },
+    {
+      "code": "2211",
+      "name": "Ndora",
+      "parent": "22"
+    },
+    {
+      "code": "2212",
+      "name": "Nyanza",
+      "parent": "22"
+    },
+    {
+      "code": "2213",
+      "name": "Save",
+      "parent": "22"
+    },
+    {
+      "code": "2301",
+      "name": "Busanze",
+      "parent": "23"
+    },
+    {
+      "code": "2302",
+      "name": "Cyahinda",
+      "parent": "23"
+    },
+    {
+      "code": "2303",
+      "name": "Kibeho",
+      "parent": "23"
+    },
+    {
+      "code": "2304",
+      "name": "Kivu",
+      "parent": "23"
+    },
+    {
+      "code": "2305",
+      "name": "Mata",
+      "parent": "23"
+    },
+    {
+      "code": "2306",
+      "name": "Muganza",
+      "parent": "23"
+    },
+    {
+      "code": "2307",
+      "name": "Munini",
+      "parent": "23"
+    },
+    {
+      "code": "2308",
+      "name": "Ngera",
+      "parent": "23"
+    },
+    {
+      "code": "2309",
+      "name": "Ngoma",
+      "parent": "23"
+    },
+    {
+      "code": "2310",
+      "name": "Nyabimata",
+      "parent": "23"
+    },
+    {
+      "code": "2311",
+      "name": "Nyagisozi",
+      "parent": "23"
+    },
+    {
+      "code": "2312",
+      "name": "Ruheru",
+      "parent": "23"
+    },
+    {
+      "code": "2313",
+      "name": "Ruramba",
+      "parent": "23"
+    },
+    {
+      "code": "2314",
+      "name": "Rusenge",
+      "parent": "23"
+    },
+    {
+      "code": "2401",
+      "name": "Gishamvu",
+      "parent": "24"
+    },
+    {
+      "code": "2402",
+      "name": "Huye",
+      "parent": "24"
+    },
+    {
+      "code": "2403",
+      "name": "Karama",
+      "parent": "24"
+    },
+    {
+      "code": "2404",
+      "name": "Kigoma",
+      "parent": "24"
+    },
+    {
+      "code": "2405",
+      "name": "Kinazi",
+      "parent": "24"
+    },
+    {
+      "code": "2406",
+      "name": "Maraba",
+      "parent": "24"
+    },
+    {
+      "code": "2407",
+      "name": "Mbazi",
+      "parent": "24"
+    },
+    {
+      "code": "2408",
+      "name": "Mukura",
+      "parent": "24"
+    },
+    {
+      "code": "2409",
+      "name": "Ngoma",
+      "parent": "24"
+    },
+    {
+      "code": "2410",
+      "name": "Ruhashya",
+      "parent": "24"
+    },
+    {
+      "code": "2411",
+      "name": "Rusatira",
+      "parent": "24"
+    },
+    {
+      "code": "2412",
+      "name": "Rwaniro",
+      "parent": "24"
+    },
+    {
+      "code": "2413",
+      "name": "Simbi",
+      "parent": "24"
+    },
+    {
+      "code": "2414",
+      "name": "Tumba",
+      "parent": "24"
+    }
+  ],
+  "cells": [
+    {
+      "code": "210101",
+      "name": "Gahondo",
+      "parent": "2101"
+    },
+    {
+      "code": "210102",
+      "name": "Kavumu",
+      "parent": "2101"
+    },
+    {
+      "code": "210103",
+      "name": "Kibinja",
+      "parent": "2101"
+    },
+    {
+      "code": "210104",
+      "name": "Nyanza",
+      "parent": "2101"
+    },
+    {
+      "code": "210105",
+      "name": "Rwesero",
+      "parent": "2101"
+    },
+    {
+      "code": "210201",
+      "name": "Gitovu",
+      "parent": "2102"
+    },
+    {
+      "code": "210202",
+      "name": "Kimirama",
+      "parent": "2102"
+    },
+    {
+      "code": "210203",
+      "name": "Masangano",
+      "parent": "2102"
+    },
+    {
+      "code": "210204",
+      "name": "Munyinya",
+      "parent": "2102"
+    },
+    {
+      "code": "210205",
+      "name": "Rukingiro",
+      "parent": "2102"
+    },
+    {
+      "code": "210206",
+      "name": "Shyira",
+      "parent": "2102"
+    },
+    {
+      "code": "210301",
+      "name": "Kadaho",
+      "parent": "2103"
+    },
+    {
+      "code": "210302",
+      "name": "Karama",
+      "parent": "2103"
+    },
+    {
+      "code": "210303",
+      "name": "Nyabinyenga",
+      "parent": "2103"
+    },
+    {
+      "code": "210304",
+      "name": "Nyarurama",
+      "parent": "2103"
+    },
+    {
+      "code": "210305",
+      "name": "Rubona",
+      "parent": "2103"
+    },
+    {
+      "code": "210401",
+      "name": "Cyeru",
+      "parent": "2104"
+    },
+    {
+      "code": "210402",
+      "name": "Mbuye",
+      "parent": "2104"
+    },
+    {
+      "code": "210403",
+      "name": "Mututu",
+      "parent": "2104"
+    },
+    {
+      "code": "210404",
+      "name": "Rwotso",
+      "parent": "2104"
+    },
+    {
+      "code": "210501",
+      "name": "Butansinda",
+      "parent": "2105"
+    },
+    {
+      "code": "210502",
+      "name": "Butara",
+      "parent": "2105"
+    },
+    {
+      "code": "210503",
+      "name": "Gahombo",
+      "parent": "2105"
+    },
+    {
+      "code": "210504",
+      "name": "Gasoro",
+      "parent": "2105"
+    },
+    {
+      "code": "210505",
+      "name": "Mulinja",
+      "parent": "2105"
+    },
+    {
+      "code": "210601",
+      "name": "Cyerezo",
+      "parent": "2106"
+    },
+    {
+      "code": "210602",
+      "name": "Gatagara",
+      "parent": "2106"
+    },
+    {
+      "code": "210603",
+      "name": "Kiruli",
+      "parent": "2106"
+    },
+    {
+      "code": "210604",
+      "name": "Mpanga",
+      "parent": "2106"
+    },
+    {
+      "code": "210605",
+      "name": "Ngwa",
+      "parent": "2106"
+    },
+    {
+      "code": "210606",
+      "name": "Nkomero",
+      "parent": "2106"
+    },
+    {
+      "code": "210701",
+      "name": "Gati",
+      "parent": "2107"
+    },
+    {
+      "code": "210702",
+      "name": "Migina",
+      "parent": "2107"
+    },
+    {
+      "code": "210703",
+      "name": "Nyamiyaga",
+      "parent": "2107"
+    },
+    {
+      "code": "210704",
+      "name": "Nyamure",
+      "parent": "2107"
+    },
+    {
+      "code": "210705",
+      "name": "Nyundo",
+      "parent": "2107"
+    },
+    {
+      "code": "210801",
+      "name": "Bugali",
+      "parent": "2108"
+    },
+    {
+      "code": "210802",
+      "name": "Cyotamakara",
+      "parent": "2108"
+    },
+    {
+      "code": "210803",
+      "name": "Kagunga",
+      "parent": "2108"
+    },
+    {
+      "code": "210804",
+      "name": "Katarara",
+      "parent": "2108"
+    },
+    {
+      "code": "210901",
+      "name": "Gahunga",
+      "parent": "2109"
+    },
+    {
+      "code": "210902",
+      "name": "Kabirizi",
+      "parent": "2109"
+    },
+    {
+      "code": "210903",
+      "name": "Kabuga",
+      "parent": "2109"
+    },
+    {
+      "code": "210904",
+      "name": "Kirambi",
+      "parent": "2109"
+    },
+    {
+      "code": "210905",
+      "name": "Rurangazi",
+      "parent": "2109"
+    },
+    {
+      "code": "211001",
+      "name": "Gacu",
+      "parent": "2110"
+    },
+    {
+      "code": "211002",
+      "name": "Gishike",
+      "parent": "2110"
+    },
+    {
+      "code": "211003",
+      "name": "Mubuga",
+      "parent": "2110"
+    },
+    {
+      "code": "211004",
+      "name": "Mushirarungu",
+      "parent": "2110"
+    },
+    {
+      "code": "211005",
+      "name": "Nyarusange",
+      "parent": "2110"
+    },
+    {
+      "code": "211006",
+      "name": "Runga",
+      "parent": "2110"
+    },
+    {
+      "code": "220101",
+      "name": "Cyiri",
+      "parent": "2201"
+    },
+    {
+      "code": "220102",
+      "name": "Gasagara",
+      "parent": "2201"
+    },
+    {
+      "code": "220103",
+      "name": "Gikonko",
+      "parent": "2201"
+    },
+    {
+      "code": "220104",
+      "name": "Mbogo",
+      "parent": "2201"
+    },
+    {
+      "code": "220201",
+      "name": "Gabiro",
+      "parent": "2202"
+    },
+    {
+      "code": "220202",
+      "name": "Nyabitare",
+      "parent": "2202"
+    },
+    {
+      "code": "220203",
+      "name": "Nyakibungo",
+      "parent": "2202"
+    },
+    {
+      "code": "220204",
+      "name": "Nyeranzi",
+      "parent": "2202"
+    },
+    {
+      "code": "220301",
+      "name": "Akaboti",
+      "parent": "2203"
+    },
+    {
+      "code": "220302",
+      "name": "Bwiza",
+      "parent": "2203"
+    },
+    {
+      "code": "220303",
+      "name": "Sabusaro",
+      "parent": "2203"
+    },
+    {
+      "code": "220304",
+      "name": "Umunini",
+      "parent": "2203"
+    },
+    {
+      "code": "220401",
+      "name": "Duwani",
+      "parent": "2204"
+    },
+    {
+      "code": "220402",
+      "name": "Kibirizi",
+      "parent": "2204"
+    },
+    {
+      "code": "220403",
+      "name": "Muyira",
+      "parent": "2204"
+    },
+    {
+      "code": "220404",
+      "name": "Ruturo",
+      "parent": "2204"
+    },
+    {
+      "code": "220501",
+      "name": "Agahabwa",
+      "parent": "2205"
+    },
+    {
+      "code": "220502",
+      "name": "Gatovu",
+      "parent": "2205"
+    },
+    {
+      "code": "220503",
+      "name": "Impinga",
+      "parent": "2205"
+    },
+    {
+      "code": "220504",
+      "name": "Nyabikenke",
+      "parent": "2205"
+    },
+    {
+      "code": "220505",
+      "name": "Rubona",
+      "parent": "2205"
+    },
+    {
+      "code": "220506",
+      "name": "Rusagara",
+      "parent": "2205"
+    },
+    {
+      "code": "220601",
+      "name": "Gakoma",
+      "parent": "2206"
+    },
+    {
+      "code": "220602",
+      "name": "Kabumbwe",
+      "parent": "2206"
+    },
+    {
+      "code": "220603",
+      "name": "Mamba",
+      "parent": "2206"
+    },
+    {
+      "code": "220604",
+      "name": "Muyaga",
+      "parent": "2206"
+    },
+    {
+      "code": "220605",
+      "name": "Ramba",
+      "parent": "2206"
+    },
+    {
+      "code": "220701",
+      "name": "Cyumba",
+      "parent": "2207"
+    },
+    {
+      "code": "220702",
+      "name": "Muganza",
+      "parent": "2207"
+    },
+    {
+      "code": "220703",
+      "name": "Remera",
+      "parent": "2207"
+    },
+    {
+      "code": "220704",
+      "name": "Rwamiko",
+      "parent": "2207"
+    },
+    {
+      "code": "220705",
+      "name": "Saga",
+      "parent": "2207"
+    },
+    {
+      "code": "220801",
+      "name": "Baziro",
+      "parent": "2208"
+    },
+    {
+      "code": "220802",
+      "name": "Kibayi",
+      "parent": "2208"
+    },
+    {
+      "code": "220803",
+      "name": "Kibu",
+      "parent": "2208"
+    },
+    {
+      "code": "220804",
+      "name": "Mugombwa",
+      "parent": "2208"
+    },
+    {
+      "code": "220805",
+      "name": "Mukomacara",
+      "parent": "2208"
+    },
+    {
+      "code": "220901",
+      "name": "Gitega",
+      "parent": "2209"
+    },
+    {
+      "code": "220902",
+      "name": "Mukiza",
+      "parent": "2209"
+    },
+    {
+      "code": "220903",
+      "name": "Nyabisagara",
+      "parent": "2209"
+    },
+    {
+      "code": "220904",
+      "name": "Runyinya",
+      "parent": "2209"
+    },
+    {
+      "code": "221001",
+      "name": "Bukinanyana",
+      "parent": "2210"
+    },
+    {
+      "code": "221002",
+      "name": "Gatovu",
+      "parent": "2210"
+    },
+    {
+      "code": "221003",
+      "name": "Kigarama",
+      "parent": "2210"
+    },
+    {
+      "code": "221004",
+      "name": "Kimana",
+      "parent": "2210"
+    },
+    {
+      "code": "221101",
+      "name": "Bweya",
+      "parent": "2211"
+    },
+    {
+      "code": "221102",
+      "name": "Cyamukuza",
+      "parent": "2211"
+    },
+    {
+      "code": "221103",
+      "name": "Dahwe",
+      "parent": "2211"
+    },
+    {
+      "code": "221104",
+      "name": "Gisagara",
+      "parent": "2211"
+    },
+    {
+      "code": "221105",
+      "name": "Mukande",
+      "parent": "2211"
+    },
+    {
+      "code": "221201",
+      "name": "Higiro",
+      "parent": "2212"
+    },
+    {
+      "code": "221202",
+      "name": "Nyamugari",
+      "parent": "2212"
+    },
+    {
+      "code": "221203",
+      "name": "Nyaruteja",
+      "parent": "2212"
+    },
+    {
+      "code": "221204",
+      "name": "Umubanga",
+      "parent": "2212"
+    },
+    {
+      "code": "221301",
+      "name": "Gatoki",
+      "parent": "2213"
+    },
+    {
+      "code": "221302",
+      "name": "Munazi",
+      "parent": "2213"
+    },
+    {
+      "code": "221303",
+      "name": "Rwanza",
+      "parent": "2213"
+    },
+    {
+      "code": "221304",
+      "name": "Shyanda",
+      "parent": "2213"
+    },
+    {
+      "code": "221305",
+      "name": "Zivu",
+      "parent": "2213"
+    },
+    {
+      "code": "230101",
+      "name": "Kirarangombe",
+      "parent": "2301"
+    },
+    {
+      "code": "230102",
+      "name": "Nkanda",
+      "parent": "2301"
+    },
+    {
+      "code": "230103",
+      "name": "Nteko",
+      "parent": "2301"
+    },
+    {
+      "code": "230104",
+      "name": "Runyombyi",
+      "parent": "2301"
+    },
+    {
+      "code": "230105",
+      "name": "Shororo",
+      "parent": "2301"
+    },
+    {
+      "code": "230201",
+      "name": "Coko",
+      "parent": "2302"
+    },
+    {
+      "code": "230202",
+      "name": "Cyahinda",
+      "parent": "2302"
+    },
+    {
+      "code": "230203",
+      "name": "Gasasa",
+      "parent": "2302"
+    },
+    {
+      "code": "230204",
+      "name": "Muhambara",
+      "parent": "2302"
+    },
+    {
+      "code": "230205",
+      "name": "Rutobwe",
+      "parent": "2302"
+    },
+    {
+      "code": "230301",
+      "name": "Gakoma",
+      "parent": "2303"
+    },
+    {
+      "code": "230302",
+      "name": "Kibeho",
+      "parent": "2303"
+    },
+    {
+      "code": "230303",
+      "name": "Mbasa",
+      "parent": "2303"
+    },
+    {
+      "code": "230304",
+      "name": "Mpanda",
+      "parent": "2303"
+    },
+    {
+      "code": "230305",
+      "name": "Mubuga",
+      "parent": "2303"
+    },
+    {
+      "code": "230306",
+      "name": "Nyange",
+      "parent": "2303"
+    },
+    {
+      "code": "230401",
+      "name": "Cyanyirankora",
+      "parent": "2304"
+    },
+    {
+      "code": "230402",
+      "name": "Gahurizo",
+      "parent": "2304"
+    },
+    {
+      "code": "230403",
+      "name": "Kimina",
+      "parent": "2304"
+    },
+    {
+      "code": "230404",
+      "name": "Kivu",
+      "parent": "2304"
+    },
+    {
+      "code": "230405",
+      "name": "Rugerero",
+      "parent": "2304"
+    },
+    {
+      "code": "230501",
+      "name": "Gorwe",
+      "parent": "2305"
+    },
+    {
+      "code": "230502",
+      "name": "Murambi",
+      "parent": "2305"
+    },
+    {
+      "code": "230503",
+      "name": "Nyamabuye",
+      "parent": "2305"
+    },
+    {
+      "code": "230504",
+      "name": "Ramba",
+      "parent": "2305"
+    },
+    {
+      "code": "230505",
+      "name": "Rwamiko",
+      "parent": "2305"
+    },
+    {
+      "code": "230601",
+      "name": "Muganza",
+      "parent": "2306"
+    },
+    {
+      "code": "230602",
+      "name": "Rukore",
+      "parent": "2306"
+    },
+    {
+      "code": "230603",
+      "name": "Samiyonga",
+      "parent": "2306"
+    },
+    {
+      "code": "230604",
+      "name": "Uwacyiza",
+      "parent": "2306"
+    },
+    {
+      "code": "230701",
+      "name": "Giheta",
+      "parent": "2307"
+    },
+    {
+      "code": "230702",
+      "name": "Ngarurira",
+      "parent": "2307"
+    },
+    {
+      "code": "230703",
+      "name": "Ngeri",
+      "parent": "2307"
+    },
+    {
+      "code": "230704",
+      "name": "Ntwali",
+      "parent": "2307"
+    },
+    {
+      "code": "230705",
+      "name": "Nyarure",
+      "parent": "2307"
+    },
+    {
+      "code": "230801",
+      "name": "Bitare",
+      "parent": "2308"
+    },
+    {
+      "code": "230802",
+      "name": "Mukuge",
+      "parent": "2308"
+    },
+    {
+      "code": "230803",
+      "name": "Murama",
+      "parent": "2308"
+    },
+    {
+      "code": "230804",
+      "name": "Nyamirama",
+      "parent": "2308"
+    },
+    {
+      "code": "230805",
+      "name": "Nyanza",
+      "parent": "2308"
+    },
+    {
+      "code": "230806",
+      "name": "Yaramba",
+      "parent": "2308"
+    },
+    {
+      "code": "230901",
+      "name": "Fugi",
+      "parent": "2309"
+    },
+    {
+      "code": "230902",
+      "name": "Kibangu",
+      "parent": "2309"
+    },
+    {
+      "code": "230903",
+      "name": "Kiyonza",
+      "parent": "2309"
+    },
+    {
+      "code": "230904",
+      "name": "Mbuye",
+      "parent": "2309"
+    },
+    {
+      "code": "230905",
+      "name": "Nyamirama",
+      "parent": "2309"
+    },
+    {
+      "code": "230906",
+      "name": "Rubona",
+      "parent": "2309"
+    },
+    {
+      "code": "231001",
+      "name": "Gihemvu",
+      "parent": "2310"
+    },
+    {
+      "code": "231002",
+      "name": "Kabere",
+      "parent": "2310"
+    },
+    {
+      "code": "231003",
+      "name": "Mishungero",
+      "parent": "2310"
+    },
+    {
+      "code": "231004",
+      "name": "Nyabimata",
+      "parent": "2310"
+    },
+    {
+      "code": "231005",
+      "name": "Ruhinga",
+      "parent": "2310"
+    },
+    {
+      "code": "231101",
+      "name": "Maraba",
+      "parent": "2311"
+    },
+    {
+      "code": "231102",
+      "name": "Mwoya",
+      "parent": "2311"
+    },
+    {
+      "code": "231103",
+      "name": "Nkakwa",
+      "parent": "2311"
+    },
+    {
+      "code": "231104",
+      "name": "Nyagisozi",
+      "parent": "2311"
+    },
+    {
+      "code": "231201",
+      "name": "Gitita",
+      "parent": "2312"
+    },
+    {
+      "code": "231202",
+      "name": "Kabere",
+      "parent": "2312"
+    },
+    {
+      "code": "231203",
+      "name": "Remera",
+      "parent": "2312"
+    },
+    {
+      "code": "231204",
+      "name": "Ruyenzi",
+      "parent": "2312"
+    },
+    {
+      "code": "231205",
+      "name": "Uwumusebeya",
+      "parent": "2312"
+    },
+    {
+      "code": "231301",
+      "name": "Gabiro",
+      "parent": "2313"
+    },
+    {
+      "code": "231302",
+      "name": "Giseke",
+      "parent": "2313"
+    },
+    {
+      "code": "231303",
+      "name": "Nyarugano",
+      "parent": "2313"
+    },
+    {
+      "code": "231304",
+      "name": "Rugogwe",
+      "parent": "2313"
+    },
+    {
+      "code": "231305",
+      "name": "Ruramba",
+      "parent": "2313"
+    },
+    {
+      "code": "231401",
+      "name": "Bunge",
+      "parent": "2314"
+    },
+    {
+      "code": "231402",
+      "name": "Cyuna",
+      "parent": "2314"
+    },
+    {
+      "code": "231403",
+      "name": "Gikunzi",
+      "parent": "2314"
+    },
+    {
+      "code": "231404",
+      "name": "Mariba",
+      "parent": "2314"
+    },
+    {
+      "code": "231405",
+      "name": "Raranzige",
+      "parent": "2314"
+    },
+    {
+      "code": "231406",
+      "name": "Rusenge",
+      "parent": "2314"
+    },
+    {
+      "code": "240101",
+      "name": "Nyakibanda",
+      "parent": "2401"
+    },
+    {
+      "code": "240102",
+      "name": "Nyumba",
+      "parent": "2401"
+    },
+    {
+      "code": "240103",
+      "name": "Ryakibogo",
+      "parent": "2401"
+    },
+    {
+      "code": "240104",
+      "name": "Shori",
+      "parent": "2401"
+    },
+    {
+      "code": "240201",
+      "name": "Muyogoro",
+      "parent": "2402"
+    },
+    {
+      "code": "240202",
+      "name": "Nyakagezi",
+      "parent": "2402"
+    },
+    {
+      "code": "240203",
+      "name": "Rukira",
+      "parent": "2402"
+    },
+    {
+      "code": "240204",
+      "name": "Sovu",
+      "parent": "2402"
+    },
+    {
+      "code": "240301",
+      "name": "Buhoro",
+      "parent": "2403"
+    },
+    {
+      "code": "240302",
+      "name": "Bunazi",
+      "parent": "2403"
+    },
+    {
+      "code": "240303",
+      "name": "Gahororo",
+      "parent": "2403"
+    },
+    {
+      "code": "240304",
+      "name": "Kibingo",
+      "parent": "2403"
+    },
+    {
+      "code": "240305",
+      "name": "Muhembe",
+      "parent": "2403"
+    },
+    {
+      "code": "240401",
+      "name": "Gishihe",
+      "parent": "2404"
+    },
+    {
+      "code": "240402",
+      "name": "Kabatwa",
+      "parent": "2404"
+    },
+    {
+      "code": "240403",
+      "name": "Kabuga",
+      "parent": "2404"
+    },
+    {
+      "code": "240404",
+      "name": "Karambi",
+      "parent": "2404"
+    },
+    {
+      "code": "240405",
+      "name": "Musebeya",
+      "parent": "2404"
+    },
+    {
+      "code": "240406",
+      "name": "Nyabisindu",
+      "parent": "2404"
+    },
+    {
+      "code": "240407",
+      "name": "Rugarama",
+      "parent": "2404"
+    },
+    {
+      "code": "240408",
+      "name": "Shanga",
+      "parent": "2404"
+    },
+    {
+      "code": "240501",
+      "name": "Byinza",
+      "parent": "2405"
+    },
+    {
+      "code": "240502",
+      "name": "Gahana",
+      "parent": "2405"
+    },
+    {
+      "code": "240503",
+      "name": "Gitovu",
+      "parent": "2405"
+    },
+    {
+      "code": "240504",
+      "name": "Kabona",
+      "parent": "2405"
+    },
+    {
+      "code": "240505",
+      "name": "Sazange",
+      "parent": "2405"
+    },
+    {
+      "code": "240601",
+      "name": "Buremera",
+      "parent": "2406"
+    },
+    {
+      "code": "240602",
+      "name": "Gasumba",
+      "parent": "2406"
+    },
+    {
+      "code": "240603",
+      "name": "Kabuye",
+      "parent": "2406"
+    },
+    {
+      "code": "240604",
+      "name": "Kanyinya",
+      "parent": "2406"
+    },
+    {
+      "code": "240605",
+      "name": "Shanga",
+      "parent": "2406"
+    },
+    {
+      "code": "240606",
+      "name": "Shyembe",
+      "parent": "2406"
+    },
+    {
+      "code": "240701",
+      "name": "Gatobotobo",
+      "parent": "2407"
+    },
+    {
+      "code": "240702",
+      "name": "Kabuga",
+      "parent": "2407"
+    },
+    {
+      "code": "240703",
+      "name": "Mutunda",
+      "parent": "2407"
+    },
+    {
+      "code": "240704",
+      "name": "Mwulire",
+      "parent": "2407"
+    },
+    {
+      "code": "240705",
+      "name": "Rugango",
+      "parent": "2407"
+    },
+    {
+      "code": "240706",
+      "name": "Rusagara",
+      "parent": "2407"
+    },
+    {
+      "code": "240707",
+      "name": "Tare",
+      "parent": "2407"
+    },
+    {
+      "code": "240801",
+      "name": "Bukomeye",
+      "parent": "2408"
+    },
+    {
+      "code": "240802",
+      "name": "Buvumu",
+      "parent": "2408"
+    },
+    {
+      "code": "240803",
+      "name": "Icyeru",
+      "parent": "2408"
+    },
+    {
+      "code": "240804",
+      "name": "Rango A",
+      "parent": "2408"
+    },
+    {
+      "code": "240901",
+      "name": "Butare",
+      "parent": "2409"
+    },
+    {
+      "code": "240902",
+      "name": "Kaburemera",
+      "parent": "2409"
+    },
+    {
+      "code": "240903",
+      "name": "Matyazo",
+      "parent": "2409"
+    },
+    {
+      "code": "240904",
+      "name": "Ngoma",
+      "parent": "2409"
+    },
+    {
+      "code": "241001",
+      "name": "Busheshi",
+      "parent": "2410"
+    },
+    {
+      "code": "241002",
+      "name": "Gatovu",
+      "parent": "2410"
+    },
+    {
+      "code": "241003",
+      "name": "Karama",
+      "parent": "2410"
+    },
+    {
+      "code": "241004",
+      "name": "Mara",
+      "parent": "2410"
+    },
+    {
+      "code": "241005",
+      "name": "Muhororo",
+      "parent": "2410"
+    },
+    {
+      "code": "241006",
+      "name": "Rugogwe",
+      "parent": "2410"
+    },
+    {
+      "code": "241007",
+      "name": "Ruhashya",
+      "parent": "2410"
+    },
+    {
+      "code": "241101",
+      "name": "Buhimba",
+      "parent": "2411"
+    },
+    {
+      "code": "241102",
+      "name": "Gafumba",
+      "parent": "2411"
+    },
+    {
+      "code": "241103",
+      "name": "Kimirehe",
+      "parent": "2411"
+    },
+    {
+      "code": "241104",
+      "name": "Kimuna",
+      "parent": "2411"
+    },
+    {
+      "code": "241105",
+      "name": "Kiruhura",
+      "parent": "2411"
+    },
+    {
+      "code": "241106",
+      "name": "Mugogwe",
+      "parent": "2411"
+    },
+    {
+      "code": "241201",
+      "name": "Gatwaro",
+      "parent": "2412"
+    },
+    {
+      "code": "241202",
+      "name": "Kamwambi",
+      "parent": "2412"
+    },
+    {
+      "code": "241203",
+      "name": "Kibiraro",
+      "parent": "2412"
+    },
+    {
+      "code": "241204",
+      "name": "Mwendo",
+      "parent": "2412"
+    },
+    {
+      "code": "241205",
+      "name": "Nyamabuye",
+      "parent": "2412"
+    },
+    {
+      "code": "241206",
+      "name": "Nyaruhombo",
+      "parent": "2412"
+    },
+    {
+      "code": "241207",
+      "name": "Shyunga",
+      "parent": "2412"
+    },
+    {
+      "code": "241301",
+      "name": "Cyendajuru",
+      "parent": "2413"
+    },
+    {
+      "code": "241302",
+      "name": "Gisakura",
+      "parent": "2413"
+    },
+    {
+      "code": "241303",
+      "name": "Kabusanza",
+      "parent": "2413"
+    },
+    {
+      "code": "241304",
+      "name": "Mugobore",
+      "parent": "2413"
+    },
+    {
+      "code": "241305",
+      "name": "Nyangazi",
+      "parent": "2413"
+    },
+    {
+      "code": "241401",
+      "name": "Cyarwa",
+      "parent": "2414"
+    },
+    {
+      "code": "241402",
+      "name": "Cyimana",
+      "parent": "2414"
+    },
+    {
+      "code": "241403",
+      "name": "Gitwa",
+      "parent": "2414"
+    },
+    {
+      "code": "241404",
+      "name": "Mpare",
+      "parent": "2414"
+    },
+    {
+      "code": "241405",
+      "name": "Rango B",
+      "parent": "2414"
+    }
+  ]
+}

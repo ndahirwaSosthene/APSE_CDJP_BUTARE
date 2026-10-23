@@ -1,0 +1,3697 @@
+{
+  "Nshyashya - Iteganyabikorwa CPJP 2026-2031 PS.xlsx": {
+    "Inyobora CPJP": {
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": "IFASHAYOBORA Y’ITEGANYABIKORWA RYA CPJP - 2026-2031"
+          }
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": "I. INTANGIRIRO",
+            "C": "Iyi nyobora ihuza format ya CPJP n’Inkingi 5 za Plan Stratégique ya CDJP Butare 2026–2031. Umwaka wa pastorale utangira ku wa 1 Nzeri ugasoza ku wa 31 Kanama. AP1 ni 2026/27; AP2 ni 2027/28; AP3 ni 2028/29; AP4 ni 2029/30; AP5 ni 2030/31. Iteganyabikorwa ryuzuzwa ku rwego rwa paruwasi, ryemezwa na CPJP, rigashyikirizwa CDJP Butare."
+          }
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": "II. MBERE YO KUZUZA",
+            "C": "Hitamo paruwasi mu rutonde (ubu ni 27, harimo Sheke); andika umwaka n’itariki yo kohereza. Banza muganire na za Santarali na CEB ku bibazo, ubushobozi n’ibikorwa bishoboka. Ntugomba kuzuza inkingi zose ku ngufu: shyiramo ibikorwa bifite ishingiro kandi bishoboka. Umurongo umwe ni igikorwa kimwe; ibindi bikorwa byo kugera ku mpinduka imwe biba mu mirongo itandukanye. Aho imirongo ibuze, saba CDJP ubufasha mbere yo guhindura imiterere y’ifishi."
+          }
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": "III. KUZUZA INKINGI 10",
+            "C": "Kuzuza uhereye ku nkingi 1 kugeza ku ya 10. Iyo ukoresha mudasobwa, kanda mu kazu k’igikorwa kugira ngo ubone ubusobanuro bwa data validation; ku rupapuro koresha uru rutonde. Mu ngengo y’imari utandukanye amafaranga azasohoka n’agaciro k’ubwitange."
+          }
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": "1",
+            "B": "Ikibazo/Ingorane bihari",
+            "C": "Andika ikibazo gifatika mu baturage cyangwa mu mikorere ya CPJP. Urugero: amakimbirane yo mu ngo atamenyekana hakiri kare. Niba ari ikibazo gikomeye gisaba kurinda umuntu, kurikiza inzira y’ibanga no kumwohereza ku babifitiye ububasha."
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": "2",
+            "B": "Impinduka twifuza",
+            "C": "Vuga uko ubuzima cyangwa imikorere bizahinduka; shyira hamwe n’igisubizo cya PS (urugero A2.R1). Urugero: amakimbirane aramenyekana kandi agahabwa igisubizo gikwiye hakiri kare."
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": "3",
+            "B": "Igikorwa",
+            "C": "Andika igikorwa kimwe gifatika kuri buri murongo, gihuze n’ingeri n’igisubizo bya PS. Urugero: guhugura abahuza amakimbirane 20 no gukurikirana amasezerano. Amahugurwa yonyine si impinduka; tekereza n’uko uzapima ishyirwa mu bikorwa ry’ibyizwe."
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": "4",
+            "B": "Uko bihagaze ubu",
+            "C": "Andika uko ikibazo gihagaze mbere y’igikorwa n’isoko y’amakuru. Urugero: amakimbirane 12 yanditswe mu mezi atatu; 4 yoherejwe ku rwego rubifitiye ububasha. Iyo imibare itaraboneka andika “amakuru fatizo azakusanywa” aho guhimba imibare."
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": "5",
+            "B": "Intego y’uyu mwaka",
+            "C": "Andika umubare/igipimo n’igihe bizagererwaho, hamwe n’ikimenyetso cyo kugenzura. Urugero: kugeza ku wa 31/08/2027, amakimbirane 20 azakurikiranwa, nibura 15 ahabwe igisubizo gikwiye. Ntukitiranye ibikorwa n’impinduka zabyo."
+          }
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": "6",
+            "B": "Amafaranga afatika (RWF)",
+            "C": "Shyiramo amafaranga azishyurwa koko kandi azajya mu ngengo y’imari ya paruwasi: ingano × igiciro cy’igice × inshuro. Urugero: itike 20 × 5,000 RWF × 2 = 200,000 RWF. Vuga aho azava mu nyandiko z’ingengo y’imari; ntukabare inkunga itaremezwa nk’iyabonetse."
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": "7",
+            "B": "Agaciro k’ubwitange (RWF)",
+            "C": "Bara agaciro k’ibikoresho, umwanya cyangwa serivisi bitangwa ku buntu, hatabayeho amafaranga asohoka. Urugero: abakorerabushake 10 × iminsi 2 × 8,000 RWF = 160,000 RWF. Iri gaciro ntirongerwa mu mafaranga azishyurwa mu nkingi 6."
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": "8",
+            "B": "Aho kizakorerwa",
+            "C": "Andika ahazabera igikorwa: paruwasi, santarali, CEB cyangwa umudugudu, usobanutse. Urugero: Santarali ya Kizenga, muri Paruwasi ya Gakoma."
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": "9",
+            "B": "Ugishinzwe",
+            "C": "Andika umuntu cyangwa itsinda ryahawe inshingano, n’uruhare rwe. Urugero: Perezida wa CPJP n’ushinzwe Santarali ya Kizenga. Bagenere igihe cyo gutanga amakuru no gukurikirana."
+          }
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": "10",
+            "B": "Igihe kizakorerwa",
+            "C": "Andika ukwezi cyangwa itariki ziri hagati ya 1 Nzeri n’iya 31 Kanama by’uwo mwaka wa pastorale. Urugero: Ukwakira–Ugushyingo 2026. Niba igikorwa gisubirwamo, vuga inshuro n’amezi."
+          }
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": "IV. INKINGI ZA PS NSHYA",
+            "C": "Hitamo aho igikorwa gihuye n’igisubizo cya PS. Kode R ni igisubizo gitegerejwe; kode I ni uburyo bw’ingenzi bwo kukigeraho. Ibisobanuro birebire n’ibipimo birebwa muri PS 2026–2031."
+          }
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": "A1",
+            "B": "Ubumwe n’ubwiyunge",
+            "C": "A1.R1 ubuzima bwo mu mutwe n’ubushobozi bwo guhangana n’ibibazo; A1.R2 icyizere, ubufatanye n’imibanire; A1.R3 serivisi n’ubuherekeza bwizewe ku bantu bafite intege nke. I1 uburyo bumwe bwa Isanamitima/GURR; I2 gutega amatwi, kohereza no gukurikirana; I3 ibiganiro no kwigira ku byagezweho."
+          }
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": "A2",
+            "B": "Amakimbirane",
+            "C": "A2.R1 kumenya no gusubiza amakimbirane hakiri kare; A2.R2 gukemura mu mahoro no gukurikirana amasezerano. I1 isesengura n’uburyo bwo kuburira; I2 ibiganiro n’ubuhuza bihuriza bose; I3 gukumira ko amakimbirane yongera kuba."
+          }
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": "A3",
+            "B": "Ibidukikije",
+            "C": "A3.R1 ibikorwa byo kurinda ibidukikije bifite ibimenyetso; A3.R2 kugabanya ibyago no guhindura gahunda/ibyemezo. I1 kwinjiza ibidukikije muri CPJP no mu makipe y’urubyiruko; I2 gahunda zo kugabanya ibyago; I3 gukoresha ibimenyetso mu byemezo."
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": "A4",
+            "B": "Uburenganzira n’ubuvugizi",
+            "C": "A4.R1 kumenya no gukoresha uburyo bwo kwitabaza inzego; A4.R2 ibibazo by’ubuvugizi bitorwa n’abaturage bifite ibimenyetso; A4.R3 ibisubizo n’impinduka zemejwe. I1 ijwi ry’abaturage–ibimenyetso–ubuvugizi–igisubizo–ikurikirana; I2 kwagura amakuru no kurindwa; I3 ubufatanye."
+          }
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": "A5",
+            "B": "Imiyoborere n’ubushobozi",
+            "C": "A5.R1 imirimo, inshingano n’ubuziranenge bya CPJP/CCJP/CEB; A5.R2 APSE, ingengo y’imari, ibyago n’imyanzuro bishingira ku makuru; A5.R3 amikoro n’ubushobozi birambye. I1 gusobanura inshingano; I2 guhuza APSE n’imari; I3 gushaka no kurinda amikoro."
+          }
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": "V. IKIGERERANYO CYUZUYE",
+            "C": "A2.R1: ikibazo = amakimbirane y’ingo atamenyekana kare; impinduka = uburyo bwo kumenya no kohereza hakiri kare; igikorwa = guhugura abahagarariye Santarali 20; uko ubu = 0 bahuguwe, raporo ya CPJP 2026; intego = 20 bahuguwe kugeza 31/12/2026 na 15 bakoresha uburyo mu mezi atatu; amafaranga = 200,000 RWF; ubwitange = 160,000 RWF; aho = Santarali ya Kizenga; ushinzwe = Perezida CPJP; igihe = Ukwakira–Ukuboza 2026. Iyi ni urugero gusa: ntukarikoreshe nk’ukuri kwa paruwasi yawe."
+          }
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": "VI. GUKURIKIRANA NO KWEMEZA",
+            "C": "Ku gikorwa cyose, teganya uko uzabika raporo, urutonde rw’abitabiriye, inyandikomvugo, ibimenyetso by’imari n’icyemezo cy’impinduka. Banza ukosore amakuru kuri Santarali; CPJP iyemeze; CDJP iyahuza. Tanga raporo ku gihe cyemeranyijweho; suzuma buri gihembwe uko ibikorwa, ibyagezweho, amafaranga n’ibyago bihagaze. Ntukandike amazina y’abagize ibibazo byihariye cyangwa ubuzima bwo mu mutwe mu nyandiko isaranganywa. Saba uburenganzira bwihariye mbere yo gukoresha ifoto cyangwa inkuru."
+          }
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": "VII. GUKORESHA SOFT/HARD",
+            "C": "Kuri mudasobwa: koresha urutonde rwa paruwasi n’ubusobanuro buboneka mu kazu; ntusibe formulas, headings, validations cyangwa amabara. Reba Print Preview, landscape, fit to width, kandi usome page zose mbere yo gusohora. Ku mpapuro: andika mu dukazu dusa, ukoreshe iyi nyobora nk’urufunguzo rw’inkingi 1–10; ongeraho impapuro zerekana inkingi, kode n’umwaka iyo imirongo idahagije. Ku telefone: zenguruka iburyo kugira ngo ubone inkingi zose. Aho udasobanukiwe cyangwa ifishi idafite umwanya uhagije, baza CDJP Butare: 0791206230."
+          }
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": "UMUSOZO",
+            "C": "Reka Njyewe Nawe Tube Intumwa z’Amahoro. Murakoze, mugire amahoro!"
+          }
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": "VIII. ISOKO",
+            "C": "Plan Stratégique CDJP Butare 2026–2031, version finale 03/09/2026 (ingingo 3.5, 4.4, annexe 2 na 3); Guide de planification CPJP mu Kinyarwanda yatanzwe; format y’iteganyabikorwa rya paruwasi yatanzwe."
+          }
+        }
+      ],
+      "dimension": "A1:C26",
+      "validations": []
+    },
+    "Action plan": {
+      "rows": [
+        {
+          "row": 2,
+          "cells": {
+            "I": "Update",
+            "J": "=TODAY()"
+          }
+        },
+        {
+          "row": 4,
+          "cells": {
+            "B": "Iteganyabikorwa ry’umwaka rya CPJP - PS CDJP Butare 2026-2031"
+          }
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": "Paruwasi ya "
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": "Umwaka",
+            "B": "2026-2027"
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": "Igihe ritangiriye",
+            "B": "=DATE(2026,9,1)"
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": "Igihe rizarangirira",
+            "B": "=DATE(2027,8,31)"
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": "Igihe ritangiwe/ryohererejwe",
+            "B": "……/……/2026"
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": "Ikibazo/Ingorane bihari",
+            "B": "Impinduka twifuza kugeraho",
+            "C": "Igikorwa",
+            "D": "Uko bihagaze ubu",
+            "E": "Intego y'uyu mwaka",
+            "F": "RWF adatika kizatwara",
+            "G": "Agaciro-Ibikorwa RWF",
+            "H": "Aho kizakorerwa",
+            "I": "Ugishinzwe",
+            "J": "Igihe kizakorerwa"
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": "Inkingi ya 1 (A1): Ubumwe, ubwiyunge no gukomera ku bibazo"
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": "A1.R1–R3: Ubuzima bwo mu mutwe; icyizere n’imibanire; gufasha abugarijwe no kubageza kuri serivisi."
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": "A1.I1–I3: Isanamitima/GURR, ubwiyunge, ubuherekeza no kohereza ababikeneye."
+          }
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": "Inkingi ya 2 (A2): Gukumira no gukemura amakimbirane m'uburyo budahutaza (mu mahoro)"
+          }
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": "A2.R1–R2: Kumenya amakimbirane hakiri kare (Gukumira); ibiganiro, ubuhuza n’amasezerano aramba mumibanire."
+          }
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": "A2.I1–I3: Isesengura, kuburira hakiri kare, ubuhuza, gukurikirana no kwiga ku byavuye mu bikorwa."
+          }
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": "Inkingi ya 3 (A3): Ubutabera ku bidukikije"
+          }
+        },
+        {
+          "row": 41,
+          "cells": {
+            "A": "A3.R1–R2 / I1–I3: Imikorere ibungabunga ibidukikije; kugabanya ibyago no guhindura icyemezo."
+          }
+        },
+        {
+          "row": 46,
+          "cells": {
+            "A": "Inkingi ya 4 (A4): Uburenganzira bwa muntu n’ubuvugizi"
+          }
+        },
+        {
+          "row": 47,
+          "cells": {
+            "A": "A4.R1–R3 / I1–I3: Kumenya uburenganzira, uburyo bwo kwitabaza inzego, ibimenyetso n’ubuvugizi."
+          }
+        },
+        {
+          "row": 55,
+          "cells": {
+            "A": "Inkingi ya 5 (A5): Imiyoborere, kubaka ubushobozi bwa CDJP, CPJP, CPJP, CCJP na CEB kubaka amikora  arambye (R1–R3)"
+          }
+        }
+      ],
+      "dimension": "A1:N1000",
+      "validations": [
+        {
+          "range": "A15:A19 A21:A28 A31:A34 A36:A39 A42:A45 A56:A60",
+          "formula": null
+        },
+        {
+          "range": "B15:B19 B21:B28 B31:B34 B36:B39 B42:B45 B56:B60 B58",
+          "formula": null
+        },
+        {
+          "range": "C15:C19 C21:C28 C31:C34 C36:C39 C42:C45 C56:C60",
+          "formula": null
+        },
+        {
+          "range": "D15:D19 D21:D28 D31:D34 D36:D39 D42:D45 D56:D60",
+          "formula": null
+        },
+        {
+          "range": "E15:E19 E21:E28 E31:E34 E36:E39 E42:E45 E56:E60",
+          "formula": null
+        },
+        {
+          "range": "F15:F19 F21:F28 F31:F34 F36:F39 F42:F45 F56:F60",
+          "formula": null
+        },
+        {
+          "range": "G15:G19 G21:G28 G31:G34 G36:G39 G42:G45 G56:G60",
+          "formula": null
+        },
+        {
+          "range": "H15:H19 H21:H28 H31:H34 H36:H39 H42:H45 H56:H60",
+          "formula": null
+        },
+        {
+          "range": "I15:I19 I21:I28 I31:I34 I36:I39 I42:I45 I56:I60",
+          "formula": null
+        },
+        {
+          "range": "J15:J19 J21:J28 J31:J34 J36:J39 J42:J45 J56:J60",
+          "formula": null
+        },
+        {
+          "range": "B6",
+          "formula": "ListeParoisses"
+        }
+      ]
+    },
+    "Paroisses": {
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": "Gakoma"
+          }
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": "Magi"
+          }
+        },
+        {
+          "row": 3,
+          "cells": {
+            "A": "Mugombwa"
+          }
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": "Save"
+          }
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": "Kibirizi"
+          }
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": "Simbi"
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": "Rugango"
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "A": "Rango"
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": "Kiruhura"
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": "Butare"
+          }
+        },
+        {
+          "row": 11,
+          "cells": {
+            "A": "St. Dominique"
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "A": "Ruyenzi"
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "A": "Cyahinda"
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": "Nyumba"
+          }
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": "Nyamiyaga"
+          }
+        },
+        {
+          "row": 16,
+          "cells": {
+            "A": "Ngoma"
+          }
+        },
+        {
+          "row": 17,
+          "cells": {
+            "A": "Mbazi"
+          }
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": "Karama"
+          }
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": "Kansi"
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": "Higiro"
+          }
+        },
+        {
+          "row": 21,
+          "cells": {
+            "A": "Gisagara"
+          }
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": "Byiza"
+          }
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": "Gikore"
+          }
+        },
+        {
+          "row": 24,
+          "cells": {
+            "A": "Kirarammogo"
+          }
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": "Nyanza"
+          }
+        },
+        {
+          "row": 26,
+          "cells": {
+            "A": "Busoro"
+          }
+        },
+        {
+          "row": 27,
+          "cells": {
+            "A": "Sheke"
+          }
+        }
+      ],
+      "dimension": "A1:A27",
+      "validations": []
+    }
+  },
+  "202609_Planification Annuel 2026-2027_Economa Butare(1).xlsx": {
+    "2026-2027": {
+      "rows": [
+        {
+          "row": 1,
+          "cells": {
+            "A": "DIOCESE CATHOLIQUE DE BUTARE "
+          }
+        },
+        {
+          "row": 2,
+          "cells": {
+            "A": "COMMISSION JUSTICE ET PAIX"
+          }
+        },
+        {
+          "row": 4,
+          "cells": {
+            "A": "PLANIFICATION ANNUEL 2026 - 2027"
+          }
+        },
+        {
+          "row": 5,
+          "cells": {
+            "A": "Axe stratégique: Axe 1 - Unité, réconciliation et résilience"
+          }
+        },
+        {
+          "row": 6,
+          "cells": {
+            "A": "Objectif stratégique: Renforcer l’unité, la réconciliation et la résilience des personnes, des familles et des communautés face aux blessures, aux divisions et aux chocs sociaux."
+          }
+        },
+        {
+          "row": 7,
+          "cells": {
+            "A": "Objectif spécifique 1: "
+          }
+        },
+        {
+          "row": 8,
+          "cells": {
+            "B": "Stratégies du PS",
+            "C": "Activités annuelles",
+            "E": "Résultats attendus     (Umusaruro utegenyijwe)",
+            "F": "Indicateurs (Ikibyerekana)",
+            "G": "Budget prévu ( amafaranga ateganyijwe)",
+            "H": "Zones d’interventions (Paroisse)   ( Aho bizakorerwa)",
+            "I": "Contribution budgétaire par bailleur   ( aho amafrw azaturuka)",
+            "L": "Agent responsable     ( Ubishinzwe)",
+            "M": "Nbre de Bénéficiaires (Abagenerwabikorwa)"
+          }
+        },
+        {
+          "row": 9,
+          "cells": {
+            "A": " Code ",
+            "C": "N°",
+            "D": "Activités prévues (Ibikorwa biteganyijwe) ",
+            "I": "F .P",
+            "J": "AGIAMONDO",
+            "K": "Missio"
+          }
+        },
+        {
+          "row": 10,
+          "cells": {
+            "A": "A1.I1 ",
+            "B": "Institutionnaliser un modèle diocésain intégré de guérison, réconciliation, réintégration et résilience.",
+            "C": 1.0,
+            "D": "Participation et contribution à la préparation des commémorations au niveau de l'Economat, des 4 districts, des prêtres et 1 paroisse",
+            "E": "La CDJP Butare a activement participé et contribué aux activités de commémoration",
+            "F": "Niveau de contribution et taux de participation aux commémorations",
+            "G": 800000.0,
+            "H": "4 districts",
+            "I": "x",
+            "J": "x",
+            "L": "AT, coordinateur, directeur"
+          }
+        },
+        {
+          "row": 11,
+          "cells": {
+            "C": 2.0,
+            "D": "Partciper dans les  5jours des cérémonies de célébrer la réconciliation d'une facon officialisée entre les rescapés et ex - prisonniers du génocide",
+            "E": "La communion entre les rescapés et les ex- prisonniers repentis est renforcée",
+            "F": "# des jours de convivialités participées",
+            "G": 3132000.0,
+            "H": "Simbi,Nyanza,Gikore,Kirarambogo,et Save",
+            "I": "x",
+            "L": "Coordinateur,Directeur",
+            "M": 5.0
+          }
+        },
+        {
+          "row": 12,
+          "cells": {
+            "C": 3.0,
+            "D": "Organiser une session de formation à l’intention des ex-prisonniers du génocide et des survivants du génocide, regroupés au sein de 5 AVEC, sur la planification et la gestion des activités génératrices de revenu",
+            "E": "La résilience socio-économique des bénéficiaires est renforcée",
+            "F": "Nombre de bénéficiaires formés sur la planification et la gestion des AGR",
+            "G": 860000.0,
+            "H": "Mugombwa",
+            "J": "x",
+            "L": "Coordinateur,Directeur",
+            "M": 50.0
+          }
+        },
+        {
+          "row": 13,
+          "cells": {
+            "C": 4.0,
+            "D": "Soutenir financièrement 21 associations dans la mise en œuvre d’initiatives d’autonomisation économique des mères célibataires.",
+            "E": "Les initiatives d’autonomisation économique des mères célibataires sont renforcées.",
+            "F": "Nombre d’associations ayant bénéficié d’un soutien financier pour les initiatives d’autonomisation économique des mères célibataires",
+            "G": 6264902.0,
+            "H": "Mugombwa,Higiro,Gikore",
+            "J": "x",
+            "L": "Coordinateur,Directeur",
+            "M": "21 associations  avec 90 membre"
+          }
+        },
+        {
+          "row": 14,
+          "cells": {
+            "A": "A1.I2",
+            "B": "Organiser un continuum sûr d’écoute, d’accompagnement, de référencement et de suivi.",
+            "C": 6.0,
+            "D": "Supervision clinique des CEA dans les doyennés",
+            "E": "Les réalisation et défis des CEA sont identifiés et le niveau de leurs compétences et de la compréhension de leurs rôles sont augmentés",
+            "F": "Nombre de CEA rapportant une augmentation dans leurs compétences et dans la compréhension de leur rôle",
+            "G": 1200000.0,
+            "H": "5 doyennés",
+            "J": "x",
+            "L": "AT",
+            "M": 54.0
+          }
+        },
+        {
+          "row": 15,
+          "cells": {
+            "A": "A1.I3",
+            "B": "Capitaliser et adapter les approches pastorales éprouvées, notamment les GURR et les dialogues familiaux, communautaires et intergénérationnels.",
+            "C": 7.0,
+            "D": "Rencontre annuelle des président.es et Abbés Aumôniers chargé de Justice et Paix au niveau des paroisses",
+            "E": "Les approches, défis et réalisations majeurs, ainsi que les besoins sont identifiés et harmoniser",
+            "F": "Nombre de besoins identifiés et résolutions prises",
+            "G": 6000000.0,
+            "H": "Gihindamuyaga",
+            "J": "x",
+            "L": "AT, coordinateur",
+            "M": "27 paroisses"
+          }
+        },
+        {
+          "row": 16,
+          "cells": {
+            "C": 7.0,
+            "D": "Organiser une réunion  du Conseil pastoral Justice et Paix.",
+            "E": "La coordination et les orientations pastorales en matière de Justice et Paix sont renfor",
+            "F": "Nombre de réunions du Conseil pastoral Justice et Paix organisées",
+            "G": 880000.0,
+            "H": "salle Economat",
+            "I": "x",
+            "L": "Directeur",
+            "M": 8.0
+          }
+        },
+        {
+          "row": 18,
+          "cells": {
+            "A": "Axe stratégique: Axe 2 — Prévention et transformation non violente des conflits"
+          }
+        },
+        {
+          "row": 19,
+          "cells": {
+            "A": "Objectif stratégique: Réduire l’escalade, les effets destructeurs et la répétition des conflits par une prévention et une transformation non violentes, participatives et inclusives."
+          }
+        },
+        {
+          "row": 20,
+          "cells": {
+            "A": "Objectif spécifique 1: "
+          }
+        },
+        {
+          "row": 21,
+          "cells": {
+            "B": "Stratégies du PS",
+            "C": "Activités annuelles",
+            "E": "Résultats attendus     (Umusaruro utegenyijwe)",
+            "F": "Indicateurs (Ikibyerekana)",
+            "G": "Budget prévu ( amafaranga ateganyijwe)",
+            "H": "Zones d’interventions (Paroisse)   ( Aho bizakorerwa)",
+            "I": "Contribution budgétaire par bailleur   ( aho amafrw azaturuka)",
+            "L": "Agent responsable     ( Ubishinzwe)",
+            "M": "Nbre de Bénéficiaires (Abagenerwabikorwa)"
+          }
+        },
+        {
+          "row": 22,
+          "cells": {
+            "A": " Code ",
+            "C": "N°",
+            "D": "Activités prévues (Ibikorwa biteganyijwe) ",
+            "I": "F .P",
+            "J": "B1",
+            "K": "B2"
+          }
+        },
+        {
+          "row": 23,
+          "cells": {
+            "A": "A2.I1",
+            "B": "Institutionnaliser un système diocésain d’analyse des conflits, d’alerte précoce, de médiation, de référencement et de suivi."
+          }
+        },
+        {
+          "row": 25,
+          "cells": {
+            "A": "A2.I2",
+            "B": "Consolider des espaces inclusifs de dialogue et de prévention.",
+            "C": 8.0,
+            "D": "Organiser des visites de médiation auprès des mères célibataires",
+            "E": "Les relations familiales et le dialogue autour des mères célibataires sont renforcés.",
+            "F": "Nombre de visites de médiation réalisées",
+            "G": 3143840.0,
+            "H": "Mugombwa,Higiro et Gikore",
+            "J": "x",
+            "L": "Coordinateur,Diecteur",
+            "M": 46.0
+          }
+        },
+        {
+          "row": 26,
+          "cells": {
+            "C": 9.0,
+            "D": "Former 60 mères celibataire et les clubs au niveau des CEB et des écoles sur la santé reproductive et la planification familiale",
+            "E": "Les connaissances des mères célibataires et des membres des clubs sur la santé reproductive et la planification familiale sont renforcées.",
+            "F": "Nombre de personnes formées sur la santé reproductive et la planification familiale",
+            "G": 1497878.0,
+            "H": "Mugombwa,Higiro et Gikore",
+            "J": "x",
+            "L": "Coordinateur,Diecteur",
+            "M": 60.0
+          }
+        },
+        {
+          "row": 27,
+          "cells": {
+            "C": 10.0,
+            "D": "Mettre en place et renforcer les activités des clubs dans les écoles",
+            "E": "Les clubs scolaires Justice et Paix  sont renforcés comme espaces de dialogue et de prévention.",
+            "F": "Nombre de clubs scolaires fonctionnels et actifs",
+            "G": 1025163.0,
+            "H": "Mugombwa,Higiro et Gikore",
+            "K": "x",
+            "L": "Coordinatue,Diercteur",
+            "M": 225.0
+          }
+        },
+        {
+          "row": 28,
+          "cells": {
+            "A": "A2.I3 ",
+            "B": "Utiliser les apprentissages pour prévenir la récurrence et influencer les normes locales.",
+            "C": 11.0,
+            "D": "Formation sur la communication non-violente en faveur du staff CDJP",
+            "E": "La mise en application de la CNV au sein de l'équipe est plus claire",
+            "F": "Amélioration de la communication au sein de l'équipe CDJP",
+            "G": "voir budget de la rencontre des 3 CDJP",
+            "H": "Karongi",
+            "J": "x",
+            "L": "AT"
+          }
+        },
+        {
+          "row": 29,
+          "cells": {
+            "A": "Axe stratégique: Axe 3 — Justice écologique"
+          }
+        },
+        {
+          "row": 30,
+          "cells": {
+            "A": "Objectif stratégique: Promouvoir l’écologie intégrale, la justice écologique et la résilience des communautés face aux risques climatiques et à la dégradation des ressources naturelles."
+          }
+        },
+        {
+          "row": 31,
+          "cells": {
+            "A": "Objectif spécifique 1: "
+          }
+        },
+        {
+          "row": 32,
+          "cells": {
+            "B": "Stratégies du PS",
+            "C": "Activités annuelles",
+            "E": "Résultats attendus     (Umusaruro utegenyijwe)",
+            "F": "Indicateurs (Ikibyerekana)",
+            "G": "Budget prévu ( amafaranga ateganyijwe)",
+            "H": "Zones d’interventions (Paroisse)   ( Aho bizakorerwa)",
+            "I": "Contribution budgétaire par bailleur   ( aho amafrw azaturuka)",
+            "L": "Agent responsable     ( Ubishinzwe)",
+            "M": "Nbre de Bénéficiaires (Abagenerwabikorwa)"
+          }
+        },
+        {
+          "row": 33,
+          "cells": {
+            "A": " Code ",
+            "C": "N°",
+            "D": "Activités prévues (Ibikorwa biteganyijwe) ",
+            "I": "F .P",
+            "J": "B1",
+            "K": "B2"
+          }
+        },
+        {
+          "row": 34,
+          "cells": {
+            "A": "A3.I1",
+            "B": "Ancrer l’écologie intégrale dans la gouvernance pastorale et les Clubs Justice et Paix."
+          }
+        },
+        {
+          "row": 35,
+          "cells": {
+            "A": "A3.I2",
+            "B": "Développer des portefeuilles territoriaux de réduction des risques et de résilience."
+          }
+        },
+        {
+          "row": 36,
+          "cells": {
+            "A": "A3.I3",
+            "B": "Transformer les preuves communautaires en décisions paroissiales, locales et partenariales."
+          }
+        },
+        {
+          "row": 38,
+          "cells": {
+            "A": "Axe stratégique: Axe 4 — Droits humains et plaidoyer"
+          }
+        },
+        {
+          "row": 39,
+          "cells": {
+            "A": "Objectif stratégique: Renforcer l’exercice et la protection des droits humains ainsi que l’influence des communautés sur les décisions, les pratiques et les politiques respectueuses de la dignité humaine."
+          }
+        },
+        {
+          "row": 40,
+          "cells": {
+            "A": "Objectif spécifique 1: "
+          }
+        },
+        {
+          "row": 41,
+          "cells": {
+            "B": "Stratégies du PS",
+            "C": "Activités annuelles",
+            "E": "Résultats attendus     (Umusaruro utegenyijwe)",
+            "F": "Indicateurs (Ikibyerekana)",
+            "G": "Budget prévu ( amafaranga ateganyijwe)",
+            "H": "Zones d’interventions (Paroisse)   ( Aho bizakorerwa)",
+            "I": "Contribution budgétaire par bailleur   ( aho amafrw azaturuka)",
+            "L": "Agent responsable     ( Ubishinzwe)",
+            "M": "Nbre de Bénéficiaires (Abagenerwabikorwa)"
+          }
+        },
+        {
+          "row": 42,
+          "cells": {
+            "A": " Code ",
+            "C": "N°",
+            "D": "Activités prévues (Ibikorwa biteganyijwe) ",
+            "I": "F .P",
+            "J": "B1",
+            "K": "B2"
+          }
+        },
+        {
+          "row": 43,
+          "cells": {
+            "A": "A4.I1",
+            "B": "Institutionnaliser le cycle voix communautaire–preuve–plaidoyer–réponse–suivi."
+          }
+        },
+        {
+          "row": 44,
+          "cells": {
+            "A": "A4.I2",
+            "B": "Améliorer l’accès effectif à l’information, aux recours et à la protection.",
+            "C": 12.0,
+            "D": "Soutenir l’accès aux services de santé 60 mères célibataires et leurs bébés (assurance maladie et appui alimentaire)",
+            "E": "L’accès des mères celiba et de leurs bébés aux services essentiels de santé et de protection est amélioré.",
+            "F": "Nombre de mères célibataires et de bébés ayant bénéficié d’un appui en santé et/ou en nutrition",
+            "G": 2460390.0,
+            "H": "Mugombwa,Higiro,Gikore",
+            "J": "x",
+            "L": "Coordinateur,Directeur",
+            "M": 60.0
+          }
+        },
+        {
+          "row": 45,
+          "cells": {
+            "C": 13.0,
+            "D": "Appuyer 60 mères celibataire a retourner à l’école à travers la prise en charge des frais de scolarité, des fournitures scolaires et de la restauration scolaire.",
+            "E": "L’accès des mères adolescentes à l’éducation est amélioré.",
+            "F": "Nombre de mères adolescentes soutenues pour leur retour à l’école.",
+            "G": 5467553.0,
+            "H": "Mugombwa,Higiro,Gikore",
+            "J": "x",
+            "L": "Coordinateur,Directeur",
+            "M": 60.0
+          }
+        },
+        {
+          "row": 46,
+          "cells": {
+            "A": "A4.I3",
+            "B": "Construire des alliances et renforcer les Clubs Justice et Paix pour obtenir des changements vérifiables."
+          }
+        },
+        {
+          "row": 48,
+          "cells": {
+            "A": "Axe stratégique: Axe 5 — Développement organisationnel et structures décentralisées"
+          }
+        },
+        {
+          "row": 49,
+          "cells": {
+            "A": "Objectif stratégique: Renforcer les capacités institutionnelles et consolider la gouvernance, l’efficacité, la redevabilité et la durabilité financière de la CDJP et de ses structures décentralisées."
+          }
+        },
+        {
+          "row": 50,
+          "cells": {
+            "A": "Objectif spécifique 1: "
+          }
+        },
+        {
+          "row": 51,
+          "cells": {
+            "B": "Stratégies du PS",
+            "C": "Activités annuelles",
+            "E": "Résultats attendus     (Umusaruro utegenyijwe)",
+            "F": "Indicateurs (Ikibyerekana)",
+            "G": "Budget prévu ( amafaranga ateganyijwe)",
+            "H": "Zones d’interventions (Paroisse)   ( Aho bizakorerwa)",
+            "I": "Contribution budgétaire par bailleur   ( aho amafrw azaturuka)",
+            "L": "Agent responsable     ( Ubishinzwe)",
+            "M": "Nbre de Bénéficiaires (Abagenerwabikorwa)"
+          }
+        },
+        {
+          "row": 52,
+          "cells": {
+            "A": " Code ",
+            "C": "N°",
+            "D": "Activités prévues (Ibikorwa biteganyijwe) ",
+            "I": "F .P",
+            "J": "AGIAMONDO",
+            "K": "B2"
+          }
+        },
+        {
+          "row": 53,
+          "cells": {
+            "A": "A5.I1",
+            "B": "Clarifier la gouvernance, la subsidiarité et les standards de la chaîne Diocèse–CEB.",
+            "C": 14.0,
+            "D": "Finalisation et impression du manuel des Procédures",
+            "E": "Un Manuel de Procédures de qualité et contextualisé propre à la CDJP Butare est disponible en version soft et imprimé",
+            "F": "Manuel approuvé par l'évêque et imprimé",
+            "G": 490000.0,
+            "J": "x",
+            "L": "Directeur, AT",
+            "M": 6.0
+          }
+        },
+        {
+          "row": 54,
+          "cells": {
+            "C": 15.0,
+            "D": "Formation sur le manuel des Procédures",
+            "E": "Le staff de la CDJP Butare et les personnes impliquées au niveau de l'Economa maîtrisent le Manuel des procédures et sont suffisamment informées pour sa mise en application",
+            "F": "Formation de qualité (taux de satisfaction)",
+            "G": 1371000.0,
+            "J": "x",
+            "L": "AT",
+            "M": 12.0
+          }
+        },
+        {
+          "row": 55,
+          "cells": {
+            "C": 16.0,
+            "D": "Visites de suivi au sein des 5 doyennés",
+            "E": "Le contenu le plus important du nouveau PS est connu par toutes les paroisses, la collaboration est renforcée, les planifications annuelles sont bien finalisées",
+            "F": "Nombre de visites réalisées; Nombre de planifications annuelles bien finalisées",
+            "G": 4093500.0,
+            "H": "27 paroisses",
+            "J": "x",
+            "L": "AT, chargé de suivi",
+            "M": 216.0
+          }
+        },
+        {
+          "row": 56,
+          "cells": {
+            "C": 17.0,
+            "D": "Organisation de la deuxième Assemblée Générale",
+            "E": "Les réalisations, défis et les interventions majeurs anticipées sont présentés et les résolutions pour une meilleure réalisation de la pastorale Justice et Paix dans le Diocèse de Butare sont fixés",
+            "F": "Nombre de participant.es, qualité des résolutions fixées",
+            "G": 3000000.0,
+            "H": "27 paroisses",
+            "J": "x",
+            "L": "AT, Coordinateur",
+            "M": 152.0
+          }
+        },
+        {
+          "row": 57,
+          "cells": {
+            "C": 18.0,
+            "D": "Organiser une réunion consultative avec les représentants des CEB (Umuryango Remezo) et le clergé.",
+            "E": "La coordination et la collaboration entre le Diocèse, les CEB et le clergé sont renforcées.",
+            "F": "Nombre de réunions consultatives organisées.",
+            "G": 1881748.0,
+            "H": "Mugombwa,Higiro et Gikore",
+            "J": "x",
+            "L": "coordinateur,Directeur",
+            "M": 459.0
+          }
+        },
+        {
+          "row": 58,
+          "cells": {
+            "C": 19.0,
+            "D": "Assurer le suivi et l’évaluation trimestriels des animateurs psychosociaux et juridiques",
+            "E": "La performance et la qualité des interventions des animateurs sont améliorées.",
+            "F": "Nombre de suivis-évaluations trimestriels réalisés.",
+            "G": 628771.0,
+            "H": "Mugombwa,Higiro et Gikore",
+            "J": "x",
+            "L": "Coordinateur,Chargé de suivi ",
+            "M": 46.0
+          }
+        },
+        {
+          "row": 59,
+          "cells": {
+            "A": "A5.I2",
+            "B": "Déployer un système APSE intégré aux finances, aux risques, aux apprentissages et aux décisions.",
+            "C": 20.0,
+            "D": "Finalisation, Traduction, impression et distribution du nouveau Plan Stratégique",
+            "E": "Le nouveau Plan stratégique de la CDJP Butare est disponible en français et en Kinyarwanda en version soft et imprimé pour toutes les paroisses et les partenaires clés de la CDJP",
+            "F": "Nombre de copie imprimé et distribué en français et en Kinyarwanda",
+            "G": 1107500.0,
+            "H": "27 paroisses, staff CDJP et partenaires clés",
+            "J": "x",
+            "L": "AT, chargé de suivi"
+          }
+        },
+        {
+          "row": 60,
+          "cells": {
+            "C": 21.0,
+            "D": "Développement du système APSE",
+            "E": "La CDJP Butare dispose un système APSE pratique, contextualisé et appliquable",
+            "F": "Système APSE bien construit",
+            "G": 1090000.0,
+            "H": "staff CDJP",
+            "J": "x",
+            "L": "AT, chargé de suivi",
+            "M": 5.0
+          }
+        },
+        {
+          "row": 61,
+          "cells": {
+            "C": 22.0,
+            "D": "Formation sur l'utilisation du système APSE",
+            "E": "Le staff de la CDJP Butare et les bénévoles et prêtres impliqués au niveau des 27 paroisses maîtrisent le le système APSE est sont suffisamment informés sur son importance et application",
+            "F": "Taux de satisfaction des formations données",
+            "G": 9536000.0,
+            "H": "27 paroisses, staff CDJP",
+            "J": "x",
+            "L": "AT, chargé de suivi",
+            "M": 167.0
+          }
+        },
+        {
+          "row": 62,
+          "cells": {
+            "C": 23.0,
+            "D": "Formation sur APSE organisé par la coopération en personnel",
+            "E": "Les procédures et la façon de réaliser l'APSE dans le cadre de la coopération en personnel se sont améliorer au sein de la CDJP Butare",
+            "F": "Qualité du rapport annuel et remplissage sur WebMo à temps",
+            "G": 260000.0,
+            "H": "chargé de suivi et AT",
+            "J": "x",
+            "L": "AT, chargé de suivi",
+            "M": 2.0
+          }
+        },
+        {
+          "row": 63,
+          "cells": {
+            "C": 24.0,
+            "D": "Atelier d'évaluation de la coopération en personnel",
+            "E": "Les changements majeurs et recommandations de la phase actuelle de la coopération en personnel sont identifiés",
+            "F": "Rapport d'évaluation de qualité",
+            "G": 1000000.0,
+            "H": "staff CDJP et doyenné",
+            "J": "x",
+            "L": "AT, chargé de suivi",
+            "M": 14.0
+          }
+        },
+        {
+          "row": 64,
+          "cells": {
+            "A": "A5.I3",
+            "B": "Sécuriser les ressources humaines, financières, numériques et partenariales nécessaires à la continuité.",
+            "C": 25.0,
+            "D": "Rencontre entre les 3 CDJP de Butare, Gikongoro et Cyangugu",
+            "E": "Les synérgies et le travail en bonne collaboration sont renforcés",
+            "F": "Activités communes planifiées",
+            "G": 1431000.0,
+            "H": "Karongi",
+            "J": "x",
+            "L": "AT",
+            "M": 5.0
+          }
+        },
+        {
+          "row": 65,
+          "cells": {
+            "C": 26.0,
+            "D": "Rencontre annuelle de la coopération en personnel",
+            "E": "Le partenariat et le travail en bonne collaboration sont renforcés",
+            "F": "Continuité du partenariat",
+            "G": 190000.0,
+            "H": "Bujumbura",
+            "J": "x",
+            "L": "AT",
+            "M": 2.0
+          }
+        },
+        {
+          "row": 66,
+          "cells": {
+            "C": 27.0,
+            "D": "Formations sur les finances dans le cadre de la coopération",
+            "E": "Les procédures et la compréhension des règlements financiers dans le cadre de la coopération en personnel se sont améliorer au sein de la CDJP Butare",
+            "F": "Respect des procédures et qualité des documents financiers",
+            "G": 280000.0,
+            "H": "Kigali",
+            "J": "x",
+            "L": "AT"
+          }
+        },
+        {
+          "row": 67,
+          "cells": {
+            "C": 28.0,
+            "D": "Visite des éventuelles organisations partenaires à Kigali",
+            "E": "Des contacts et liens entre la CDJP Butare et les éventuel nouveaux partenaires financiers sont crées",
+            "F": "Nombre d'organisations visitées qui signalent un inérêt d'une collaboration",
+            "G": 435000.0,
+            "H": "Kigali",
+            "J": "x",
+            "L": "AT, Coordinateur"
+          }
+        },
+        {
+          "row": 68,
+          "cells": {
+            "C": 29.0,
+            "D": "Finalisation et lancement de la mise en oeuvre de la Stratégie de Mobilisation de Fonds",
+            "E": "La stratégie de mobilisation de fonds de bonne qualité est finalisée",
+            "F": "La stratégie finalisée et approuvée",
+            "I": "x",
+            "L": "Directeur"
+          }
+        },
+        {
+          "row": 69,
+          "cells": {
+            "C": 30.0,
+            "D": "Paiement Mise à jour du site-web selon le nouveau Plan Stratégique",
+            "E": "Le site-web est cohérent avec le nouveau PS",
+            "F": "Site-web actualisé et foncionnel",
+            "G": 300000.0,
+            "J": "x",
+            "L": "AT, chargé de communication"
+          }
+        },
+        {
+          "row": 70,
+          "cells": {
+            "C": 31.0,
+            "D": "Rencontre avec Hoffnungsträgerstiftung à Kigali",
+            "E": "Des liens entre la CDJP Butare et Hoffnungsträgerstiftung sont renforcés et la suite de l'éventuelle collaboration est fixée",
+            "F": "Suite favorable de la collaboration ",
+            "G": 140000.0,
+            "H": "Kigali",
+            "J": "x",
+            "L": "Coordinateur"
+          }
+        },
+        {
+          "row": 71,
+          "cells": {
+            "C": 32.0,
+            "D": "Atelier d'élaboration de projet",
+            "E": "Les grandes lignes d'un nouveau projet à soumettre à un éventuel bailleur sont fixées",
+            "F": "Grandes lignes d'un nouveau projet fixés",
+            "G": 250000.0,
+            "H": "Bureau",
+            "J": "x",
+            "L": "AT"
+          }
+        },
+        {
+          "row": 72,
+          "cells": {
+            "C": 33.0,
+            "D": "Organiser une visite d’échange d’expériences entre les CDJP de Byumba et de Butare sur la gestion institutionnelle et financière.",
+            "E": "Les pratiques de gestion institutionnelle et financière des deux CDJP sont renfor",
+            "F": "Nombre de visites d’échange organisée",
+            "G": 794890.0,
+            "H": "Diocèse Butare",
+            "J": "x",
+            "L": "Coordinateur"
+          }
+        },
+        {
+          "row": 73,
+          "cells": {
+            "G": "=G72+G71+G70+G69+G67+G66+G65+G64+G64+G63+G62+G61+G60+G59+G58+G58+G57+G56+G55+G54+G53+G74"
+          }
+        },
+        {
+          "row": 92,
+          "cells": {
+            "A": "NB: FP: Fonds propres,  B1, B2, B3,... Bailleur1, Bailleur2....,"
+          }
+        },
+        {
+          "row": 94,
+          "cells": {
+            "A": "Préparé par:",
+            "E": "Vérifié par:",
+            "I": "Approuvé par:"
+          }
+        },
+        {
+          "row": 95,
+          "cells": {
+            "A": "..............................",
+            "E": "...............................",
+            "I": ".................................."
+          }
+        }
+      ],
+      "dimension": "A1:M1070",
+      "validations": []
+    }
+  },
+  "Plan strategique CDJP Butare 2026 2031 Version Finale 03.09.2026 (1).docx": {
+    "paragraphs": [
+      "Plan Stratégique ",
+      "2026 - 2031",
+      "Septembre 2026",
+      "Butare",
+      "Table des matières",
+      "Sigles, abréviations et termes clés",
+      "Tableau 1: Sigles et abréviations",
+      "Avant-propos",
+      "Dans le contexte des acquis de la reconstruction post-génocide, de la persistance des traumatismes et des défis de réconciliation, des mutations économiques, des aspirations de la jeunesse et des enjeux écologiques, l’Église est appelée à servir la dignité humaine, la paix et le soin de la création. Ce Plan définit les orientations qui guideront l’action de la CDJP Butare pendant cinq ans afin de renforcer son impact pastoral et social.",
+      "La CDJP exprime sa reconnaissance aux autorités diocésaines, au personnel, aux prêtres accompagnateurs, aux bénévoles des structures décentralisées, aux communautés, aux partenaires et à toutes les personnes ayant contribué à l’évaluation et à l’élaboration participatives du présent Plan.",
+      "Le présent Plan stratégique traduit cette responsabilité pour la période 2026-2031. Il invite les paroisses, les communautés ecclésiales de base, les structures Justice et Paix, les groupes communautaires, les autorités publiques, les organisations partenaires et les personnes accompagnées à agir dans un esprit de subsidiarité, de dialogue et de redevabilité. Sa réussite dépendra moins de la seule multiplication des activités que de la qualité de l’écoute, de la sécurité des personnes, de la mesure des changements et de l’apprentissage partagé.",
+      "Résumé exécutif",
+      "Le Plan stratégique couvre cinq années pastorales complètes, du 1er septembre 2026 au 31 août 2031. Il constitue le cadre de référence de la CDJP Butare et distingue strictement l’impact, les effets, les interventions stratégiques et les KPI des activités détaillées, qui relèvent des plans opérationnels annuels.",
+      "L’élaboration du présent Plan s’est appuyée sur une démarche participative combinant la revue des documents institutionnels et des résultats de l’évaluation du cycle précédent, des questionnaires, des entretiens avec les acteurs clés, des discussions de groupe ainsi que des consultations et ateliers de validation. La triangulation de ces différentes sources a permis de dégager plusieurs enseignements majeurs : la pertinence des approches de proximité, la valeur des méthodes innovantes et adaptées au contexte local, ainsi que la nécessité de renforcer les systèmes institutionnels, le plaidoyer fondé sur les données, le suivi-évaluation, la documentation des changements, l’apprentissage organisationnel et la mobilisation des ressources. Ces enseignements ont directement guidé la définition des cinq axes stratégiques et des priorités du Plan 2026-2031.",
+      "Tableau 2: Synthèse des cinq axes et objectifs stratégiques",
+      "La mise en œuvre sera progressive selon cinq années pastorales : AP1 (1er septembre 2026-31 août 2027), AP2 (2027/28), AP3 (2028/29), AP4 (2029/30) et AP5 (2030/31). AP1 sera consacré à la baseline, à l’installation d’APSE, au costing et au lancement contrôlé ; AP2 à la consolidation ; AP3 à l’évaluation à mi-parcours et à l’adaptation ; AP4 à la mise à l’échelle fondée sur les preuves ; AP5 à la pérennisation, à l’évaluation finale et à la transition.",
+      "Chapitre 1 - introduction générale",
+      "Le présent chapitre situe le processus d’élaboration du Plan stratégique 2026-2031, précise ses objectifs et sa portée, puis expose les méthodes utilisées pour établir le diagnostic et formuler les orientations. Il permet au lecteur d’apprécier la traçabilité des choix stratégiques et les limites des informations disponibles.",
+      "1.1. Contexte, justification et historique",
+      "Le réseau Justice et Paix de l’Église catholique au Rwanda s’inscrit dans une mission pastorale de promotion de la paix, de la justice sociale, des droits humains, de l’unité et de la réconciliation. Le Plan CEJP 2022-2026 rappelle que les commissions diocésaines sont des entités du réseau coordonnées au niveau épiscopal et appelées à traduire les orientations communes selon les réalités de leurs territoires. Le précédent Plan de la CDJP Butare a fourni un cadre à cette traduction locale, en organisant les interventions autour de la réconciliation, de la transformation non violente des conflits, des droits humains et du renforcement des structures.",
+      "Le nouveau cycle intervient à un moment où la CDJP doit simultanément préserver les méthodes qui ont démontré leur pertinence et répondre à de nouveaux défis. L’attention à la guérison intérieure, aux GURR - également appelés groupes Isanamitima -, aux CEA, aux CPJP et aux dialogues de proximité reste centrale. Toutefois, la montée des risques écologiques, la nécessité d’un plaidoyer plus influent, la qualité inégale des données, la durabilité des structures et la participation des jeunes justifient une architecture élargie à cinq axes.",
+      "1.2. Objectifs de l’élaboration du Plan stratégique",
+      "Objectif général ",
+      "L’objet du Plan est de doter la CDJP Butare d’un cadre quinquennal partagé qui relie son mandat pastoral à des résultats mesurables, à des responsabilités précises et à des choix réalistes d’allocation des ressources. Le Plan ne remplace pas les plans opérationnels annuels ; il en constitue la référence et fixe les changements auxquels chaque activité doit contribuer.",
+      "Objectifs spécifiques ",
+      "Définir une vision, une mission, des valeurs et des principes directeurs communs pour 2026-2031 ;",
+      "Préciser les cinq axes, leurs objectifs, leurs résultats et leurs interventions stratégiques ;",
+      "Organiser la coordination entre niveau diocésain, paroisses, ceb, structures spécialisées et partenaires ;",
+      "Mettre en place un cadre de résultats et un système APSE permettant de mesurer les produits, les effets, la qualité, l’inclusion et la durabilité ;",
+      "Orienter la programmation annuelle, la budgétisation, la mobilisation des ressources et la gestion des risques ;",
+      "Renforcer la redevabilité envers l’autorité diocésaine, les communautés, les partenaires et les personnes accompagnées ;",
+      "Créer une base commune pour les revues annuelles, l’évaluation à mi-parcours et l’évaluation finale.",
+      "1.3. Portée du Plan stratégique",
+      "La portée du présent Plan stratégique est définie selon cinq dimensions complémentaires, qui en précisent l’horizon temporel, la couverture géographique, le champ institutionnel, les domaines programmatiques ainsi que les populations et acteurs concernés. Le tableau ci-dessous présente la délimitation retenue pour chacune de ces dimensions.",
+      "La portée retenue est présentée dans le tableau suivant. Les données institutionnelles de couverture seront vérifiées dans l’annuaire diocésain avant publication.",
+      "Tableau 3 : Portée du Plan stratégique",
+      "1.4. Processus d’élaboration du Plan Stratégique/Méthodologie",
+      "Le Plan stratégique a été élaboré selon une démarche participative et orientée vers les résultats. Elle a combiné l’évaluation du cycle précédent, la revue documentaire, des questionnaires, des entretiens avec les acteurs clés, des discussions de groupe et des ateliers de validation. Les informations ont été triangulées afin de comparer les sources, d’expliquer les divergences et de retenir des orientations suffisamment étayées et partagées.",
+      "Les détails sur l’échantillonnage, les personnes consultées et les instruments de collecte sont conservés dans le rapport d’évaluation et les documents méthodologiques. Le présent Plan en retient les principaux constats, les implications stratégiques et les exigences éthiques : consentement, confidentialité, sauvegarde, sensibilité aux traumatismes et principe « Ne pas nuire ».",
+      "Tableau 4: Synthèse des approches méthodologiques utilisées",
+      "Chapitre 2 - Présentation de la situation de base",
+      "2.1. Présentation institutionnelle de la CDJP Butare",
+      "2.1.1. Mandat et identité pastorale",
+      "La CDJP Butare est une commission pastorale du Diocèse catholique de Butare, et non une ONG autonome. Elle contribue à l’évangélisation intégrale et au développement humain intégral par la promotion de la justice, de la paix, de la réconciliation, des droits humains, de la non-violence et de la sauvegarde de la création. Son avantage comparatif réside dans l’articulation entre proximité pastorale, confiance communautaire, accompagnement des personnes, structures de la CEB au Diocèse et capacité de dialogue avec les institutions.",
+      "2.1.2. La CDJP en tant que commission diocésaine",
+      "La CDJP agit dans un environnement où plusieurs commissions et services diocésains contribuent, chacun selon son mandat, à la pastorale sociale et au développement humain. Les questions de famille, jeunesse, éducation, santé, Caritas, communication, environnement et protection peuvent recouper ses axes. Le Plan privilégie donc des modalités formalisées de concertation : planification conjointe sur les sujets transversaux, référencement réciproque, partage prudent d’informations, définition d’un chef de file et revue commune des résultats.",
+      "2.1.3. La CDJP au sein du réseau coordonné par la CEJP",
+      "La CDJP Butare appartient au réseau national Justice et Paix coordonné par la CEJP, qui en assure l’orientation générale, la représentation et la mise en cohérence. Dans ce cadre, la CDJP conserve une autonomie opérationnelle pour adapter ses interventions au contexte diocésain, expérimenter des approches pertinentes et partager ses apprentissages, dans le respect des orientations de la CEJP, de la CEPR et de la doctrine sociale de l’Église.",
+      "2.1.4. Structures, organes et gouvernance",
+      "La mise en œuvre du Plan stratégique repose sur un dispositif institutionnel articulant les structures de gouvernance, l’équipe technique et administrative ainsi que les mécanismes communautaires et pastoraux décentralisés. Chaque niveau exerce des fonctions complémentaires d’orientation, de décision, de coordination, d’exécution, de suivi et de redevabilité. Le tableau ci-dessous présente les principales structures et précise le rôle stratégique attendu de chacune dans la réalisation des objectifs de la CDJP.",
+      "Tableau 5: Organes, niveaux et rôles stratégiques",
+      "Figure 1: L’environnement structurel de la CDJP Butare ",
+      "Organigramme fonctionnel de la Commission de Justice & Paix (CDJP Butare) ",
+      "2.2. Groupes cibles et parties prenantes",
+      "2.2.1. Groupes cibles",
+      "Les groupes cibles sont distingués selon la relation qu’ils entretiennent avec les interventions : bénéficiaires directs, bénéficiaires indirects et communauté au sens large. Cette distinction facilite la définition de la couverture, des critères de sélection, des résultats attendus et des mesures d’inclusion.",
+      "Tableau 6: Groupes cibles et modalités d’attention",
+      "2.2.2. Parties prenantes ",
+      "Tableau 7: Parties prenantes et modalités de mobilisation",
+      "2.3. Analyse PESTEL adaptée au contexte pastoral",
+      "Le diagnostic externe est structuré selon une grille PESTEL adaptée à la mission pastorale. Cette lecture distingue les facteurs politiques et institutionnels, économiques, sociaux, technologiques, environnementaux et légaux qui influencent la CDJP Butare. L’analyse interne des forces et faiblesses demeure présentée séparément dans la SWOT.",
+      "Tableau 8: Analyse PESTEL adaptée au contexte pastoral",
+      "2.3.1. Contexte sociocommunautaire",
+      "La consolidation de l’unité et de la réconciliation demeure une priorité durable. Les blessures liées au génocide perpétré contre les Tutsi, les traumatismes individuels et collectifs, les tensions intrafamiliales, l’isolement et les difficultés de réintégration peuvent se réactiver au contact de nouveaux chocs. Les réponses efficaces doivent combiner écoute, accompagnement psychosocial, dialogue, mémoire, référencement et renforcement des liens de solidarité, sans réduire des processus complexes à une activité ponctuelle.",
+      "L’accompagnement des personnes libérées et de leurs familles nécessite une préparation anticipée des communautés et une coordination prudente avec les services compétents. La CDJP ne se substitue ni aux services spécialisés ni aux autorités ; elle facilite des espaces sûrs, soutient les capacités relationnelles et oriente les personnes lorsque leurs besoins dépassent son mandat.",
+      "2.3.2. Inclusion sociale et participation",
+      "L’inclusion concerne la possibilité réelle de participer, d’être entendu et d’accéder aux services. Les jeunes non scolarisés, les personnes en situation de handicap, les femmes assumant des charges de soins, les personnes âgées et les populations éloignées peuvent rencontrer des obstacles distincts. La programmation devra analyser les horaires, les lieux, les langues, les coûts indirects, la mobilité, les normes sociales et les risques de stigmatisation.",
+      "Les tensions conjugales et familiales sont abordées lorsqu’elles influencent la paix, la sécurité, la transmission intergénérationnelle ou l’accès aux droits. Elles requièrent une articulation avec la pastorale familiale et les services spécialisés. Le Plan évite de faire de « la famille » une catégorie indistincte : il identifie les relations, besoins et responsabilités concernés.",
+      "2.3.3. Contexte socio-économique et géopolitique",
+      "Les séquelles économiques de la pandémie de COVID-19, les perturbations des chaînes d’approvisionnement, les variations des prix de l’énergie et des denrées, la guerre en Ukraine et les tensions géopolitiques au Moyen-Orient - y compris entre l’Iran et les États-Unis - peuvent se répercuter sur le coût de la vie, les intrants, l’emploi et les budgets des organisations. Le Plan ne présume pas une relation mécanique entre un événement international et un conflit local ; il retient que la pression économique peut accroître le stress des ménages, fragiliser la cohésion et réduire la capacité de participation ou de contribution.",
+      "Pour la CDJP, ces évolutions ont trois implications : suivre l’évolution des vulnérabilités ; adapter les modalités d’intervention pour ne pas exclure les personnes ayant moins de ressources ; et appliquer des scénarios budgétaires intégrant inflation, coûts de mobilité et incertitude des financements. Les initiatives génératrices de revenus ne seront envisagées qu’après étude de faisabilité, avec des règles transparentes et sans déplacer la mission pastorale.",
+      "2.3.4. Jeunesse et transformations sociales",
+      "Les jeunes représentent à la fois une population confrontée à des contraintes d’emploi, d’identité et de participation et une force de changement. Les écoles et clubs offrent des espaces structurés, mais ne couvrent pas les jeunes non scolarisés. Les mouvements d’action catholique, le sport, les groupements professionnels, les médias et les canaux numériques peuvent élargir la participation. Les activités devront être co-conçues avec les jeunes et reliées à des responsabilités concrètes plutôt qu’à une présence symbolique.",
+      "2.3.5. Environnement, climat et ressources naturelles",
+      "Les risques climatiques et environnementaux affectent les moyens de subsistance, la santé, l’habitat, la mobilité et les relations communautaires. L’érosion, la dégradation des sols, la gestion de l’eau et des déchets, les catastrophes et les conflits d’usage des ressources peuvent toucher davantage les ménages déjà vulnérables. La justice écologique relie donc la protection de la création, l’équité, la prévention des conflits et la responsabilité envers les générations futures.",
+      "2.3.6. Environnement institutionnel et partenarial",
+      "La CDJP bénéficie d’un ancrage pastoral, d’un réseau décentralisé et de possibilités de collaboration avec la CEJP, MINUBUMWE, les autorités locales, les écoles, les universités, les organisations spécialisées, les partenaires techniques, financiers et stratégiques, ainsi que le secteur privé.",
+      "2.4. Résumé de l’évaluation du Plan stratégique précédent",
+      "2.4.1. Performance générale",
+      "Les scores repris dans la V2 montrent une performance globalement satisfaisante, avec un avantage relatif pour la réconciliation et le renforcement des structures et une faiblesse plus marquée du plaidoyer. Ils doivent être interprétés comme des signaux de décision et non comme des mesures absolues d’impact. La qualité de la prochaine période dépendra de la capacité à relier couverture, qualité, changements et durabilité.",
+      "Tableau 9: Performance du Plan précédent",
+      "2.4.2. Acquis à préserver",
+      "Pertinence des GURR - également appelés groupes Isanamitima -, de l’écoute active, de la guérison holistique, de la CNV et des cercles restauratifs ;",
+      "Présence de structures paroissiales et de bénévoles permettant une action de proximité ;",
+      "Développement progressif d’outils harmonisés, de kobotoolbox, de Google Drive, de réunions d’équipe et d’auto-évaluation ;",
+      "Partenariats et participation à des cadres de concertation comme le JADF ;",
+      "Capacité d’adaptation des équipes et engagement pastoral en faveur de la paix.",
+      "2.4.3. Limites et défis",
+      "Insuffisance des données sur les effets à moyen terme et absence de références consolidées ;",
+      "Documentation inégale des changements, des cas, des orientations et des réponses institutionnelles ;",
+      "Plaidoyer souvent centré sur la sensibilisation plutôt que sur une stratégie d’influence suivie ;",
+      "Contraintes de transport, de supervision, de réplication des formations et de motivation des bénévoles ;",
+      "Participation inégale des jeunes, surtout ceux qui ne sont pas scolarisés ;",
+      "Chevauchements possibles entre clubs, disparités de fonctionnement entre paroisses et implication variable des curés, des aumôniers et d'autres responsables pastoraux. Leur engagement facilite la transmission du message de Justice et Paix, la mobilisation et le suivi ; lorsqu’il est insuffisant ou irrégulier, il peut limiter la continuité et l’appropriation des interventions ;",
+      "Besoin de formaliser la sauvegarde, la confidentialité, la sécurité numérique et le principe de « ne pas nuire ».",
+      "2.4.4. Principales leçons",
+      "Premièrement, la proximité est une condition d’efficacité, mais elle doit être accompagnée de standards de qualité, de supervision et de mécanismes de référencement. Deuxièmement, une formation n’est pas un résultat en soi : le suivi doit vérifier l’application des compétences. Troisièmement, la documentation doit servir la décision et la protection, et non devenir une charge administrative sans usage. Quatrièmement, le partenariat est plus durable lorsqu’il précise les rôles, les ressources, les données et les résultats attendus. Enfin, la mise à l’échelle doit être graduelle afin de protéger la qualité et les bénévoles.",
+      "2.5.1. Matrice SWOT",
+      "Tableau 10: Analyse SWOT - Forces et faiblesses",
+      "Tableau 11: Analyse SWOT - Opportunités et menaces",
+      "2.5.2. Problèmes prioritaires, enjeux et implications stratégiques",
+      "Assurer la qualité, la sécurité et l’extension maîtrisée des approches de guérison et de réconciliation ;",
+      "Développer des capacités locales d’anticipation, d’alerte et de résolution pacifique des conflits ;",
+      "Faire de la justice écologique un champ pastoral et opérationnel mesurable ;",
+      "Transformer les préoccupations communautaires en plaidoyer documenté, suivi et responsable ;",
+      "Construire une institution et des structures décentralisées performantes, apprenantes et financièrement plus durables.",
+      "Tableau 12: Implications stratégiques du contexte",
+      "2.6. Spécificité du Diocèse de Butare et implications",
+      "Le Diocèse combine un réseau pastoral étendu aux capacités inégales, des zones urbaines et universitaires autour de Huye et des zones largement rurales dans Huye, Gisagara, Nyanza et Nyaruguru. Les jeunes scolarisés, étudiants et non scolarisés, les moyens de subsistance liés à la terre, les risques climatiques, les conflits d’usage, les traumatismes historiques et contemporains et les coûts de mobilité exigent une segmentation des structures, des groupes et des territoires. Les données exactes sur les paroisses, Centrales et CEB doivent être vérifiées dans l’annuaire diocésain et datées avant publication.",
+      "L’axe 1 conserve la mémoire, la guérison et la réconciliation liées au génocide perpétré contre les Tutsi comme priorité majeure, tout en couvrant les fractures contemporaines relevant du mandat Justice et Paix : violences familiales et VBG, pauvreté, conflits fonciers, détention et réintégration, déplacement ou expérience de refuge, handicap, isolement et ruptures intergénérationnelles.",
+      "2.7. Fondement catholique, chaînes institutionnelles et alignement",
+      "Deux chaînes complémentaires sont distinguées. La chaîne doctrinale et pastorale est : Église universelle/Rome - CEPR/CEJP - Diocèse. La chaîne institutionnelle des résultats APSE est : Diocèse - CDJP - Paroisse/CPJP - Centrale - CEB. Les orientations et standards descendent ; les données, résultats, alertes, apprentissages et préoccupations remontent. Les personnes et communautés participent au diagnostic, à la co-conception et à la redevabilité sans être assimilées à un niveau de validation institutionnelle.",
+      "Chaque objectif, résultat, intervention et KPI est relié dans APSE aux principes catholiques, aux orientations diocésaines et CEPR/CEJP, aux cadres pertinents du Rwanda, à l’Agenda 2063 et aux ODD. Un registre d’alignement dynamique intègre, après adoption officielle, les cadres successeurs au Plan CEJP 2022-2026, au NST2 2024-2029 et à l’Agenda 2030, sans affaiblir l’identité pastorale ni la voix prophétique de l’Église.",
+      "Chapitre 3 - Orientations Stratégiques 2026-2031",
+      "Les orientations stratégiques découlent de la situation de base, des enseignements du cycle précédent et des priorités exprimées par les parties prenantes. Elles articulent l’identité pastorale de la CDJP, la théorie du changement et cinq axes interdépendants.",
+      "3.1. Impact recherché",
+      "À l’horizon du 31 août 2031, les personnes, familles et communautés du Diocèse de Butare vivent des relations plus justes, pacifiques et résilientes, exercent mieux leurs droits et responsabilités, protègent davantage la création et bénéficient de structures Justice et Paix crédibles, apprenantes et durables.",
+      "3.2. Théorie du changement et énoncé causal",
+      "Si la CDJP et ses structures de proximité offrent des parcours sûrs de guérison et de réconciliation ; renforcent l’analyse, la prévention et la résolution non violente des conflits ; mobilisent les communautés en faveur de l’écologie intégrale ; transforment les préoccupations et les données en plaidoyer suivi ; et améliorent leur gouvernance, leurs compétences, leurs systèmes et leurs ressources, alors la confiance, la cohésion, la participation, la protection des droits, la résilience écologique et la capacité institutionnelle progresseront. Ce changement sera possible parce que les personnes disposeront de compétences et d’espaces d’action, les relais auront un accompagnement continu, les institutions dialogueront sur des preuves et la CDJP apprendra de ses résultats.",
+      "3.2.1. Voies de changement et Chaîne de résultats",
+      "Figure 2: Chaîne de résultats schématisée - des intrants à l’impact",
+      "Tableau 13: Cinq voies de changement",
+      "Tableau 14: Chaîne de résultats",
+      "3.2.2. Hypothèses critiques",
+      "Les personnes acceptent de participer dans des conditions sûres, confidentielles et culturellement adaptées ;",
+      "Les autorités, paroisses et partenaires maintiennent des espaces de dialogue et respectent les rôles convenus ;",
+      "Soutien continuel des leaders du Diocèse pour la CDJP;",
+      "Politique restant favorable pour les thématiques de Justice et Paix;",
+      "Les partenaires institutionnels et financiers maintiennent un environnement favorable permettant la mise en œuvre progressive du Plan.",
+      "Les bénévoles reçoivent un encadrement, des moyens minimaux et une reconnaissance réalistes ;",
+      "La CDJP mobilise progressivement les ressources et protège les activités essentielles en cas de déficit ;",
+      "Les données sont suffisamment fiables et sont effectivement utilisées pour corriger les interventions ;",
+      "Les services spécialisés de référencement restent accessibles ;",
+      "Les chocs politiques, sanitaires, économiques ou climatiques n’interrompent pas durablement la mise en œuvre.",
+      "3.3. Fondements stratégiques",
+      "3.3.1. Vision",
+      "Une société unie dans sa diversité, juste, pacifique et résiliente, où la dignité humaine, les droits de chacun et l’intégrité de la création sont respectés, à l’image de l’amour de Dieu et du prochain.",
+      "3.3.2. Mission",
+      "Contribuer, à la lumière de l’Évangile et de la Doctrine sociale de l’Église, à l’unité, à la réconciliation, à la prévention et à la résolution non violente des conflits, à la justice écologique et à la promotion des droits humains, par l’accompagnement des communautés, le plaidoyer, les partenariats et le renforcement des structures Justice et Paix.",
+      "3.3.3. Valeurs professionnelles ",
+      "Tableau 15: Valeurs et comportements attendus",
+      "3.3.4. Principes directeurs",
+      "Référence à l’Évangile, à la DSE et au discernement pastoral « voir, juger et agir » ;",
+      "Sensibilité aux traumatismes, sauvegarde, confidentialité et principe de « Ne pas nuire » ;",
+      "Subsidiarité : décider et agir au niveau le plus proche capable d’assumer la responsabilité ;",
+      "Participation significative, inclusion et redevabilité envers les communautés ;",
+      "Décisions fondées sur les données, apprentissage continu et adaptation ;",
+      "Durabilité institutionnelle, financière, sociale et environnementale.",
+      "3.4. Présentation générale et justification des axes",
+      "Le tableau ci-après présente la logique cumulative des cinq axes. Les trois premiers portent principalement sur les changements au niveau des personnes et des communautés ; le quatrième organise l’influence institutionnelle ; le cinquième fournit les capacités et systèmes nécessaires à l’ensemble du Plan.",
+      "Tableau 16: Justification des axes stratégiques",
+      "3.5. Axes, objectifs, résultats et interventions stratégiques",
+      "Le tableau consolidé traduit la chaîne stratégique retenue. Le nombre de résultats et d’interventions n’est pas fixé de manière uniforme : chaque élément est retenu parce qu’il décrit un changement distinct ou une voie d’action nécessaire à l’objectif concerné. Les codes assurent la correspondance avec le cadre logique, les KPI et les plans d’action opérationnels annuels. La matrice de validation interne conservera la source des propositions, notamment les contributions de Théophile, et la décision prise à leur sujet.",
+      "Tableau 17: Axes, objectifs, résultats et interventions stratégiques",
+      "3.6. Approches et domaines transversaux",
+      "Les approches ci-dessous ne constituent pas un axe supplémentaire. Elles sont des exigences obligatoires dans les cinq axes et doivent être traduites dans les plans d’action, budgets, critères de qualité, indicateurs, analyses de risques et revues de performance. Leur application est vérifiée à tous les niveaux de la chaîne Diocèse-CDJP-paroisse/CPJP-Centrale-CEB.",
+      "3.6.1. Sensibilité aux traumatismes, sauvegarde et principe « Ne pas nuire »",
+      "Trois exigences distinctes et complémentaires s’appliquent. La sensibilité aux traumatismes consiste à reconnaître les effets possibles des traumatismes, à éviter leur réactivation et à adapter l’écoute, la participation et le référencement. La sauvegarde organise la prévention et la réponse aux risques d’abus, d’exploitation, de violence et de rupture de confidentialité, au moyen de règles de conduite, de mécanismes de signalement, de responsables identifiés et de protocoles de réponse. Le principe « Ne pas nuire » (Do No Harm) est plus large : il exige d’analyser les effets positifs et négatifs possibles de toute intervention sur les personnes, l’inclusion, la non-discrimination, les relations, les conflits et les institutions, puis d’adapter l’action. Chaque activité sensible documentera les risques, le consentement, les mesures de prévention, les voies de recours et le référencement approprié.",
+      "3.6.2. Inclusion, équité et non-discrimination",
+      "L’inclusion sera appréciée à travers l’accès, la participation, la qualité de l’expérience, l’influence sur les décisions et la répartition des bénéfices. Une attention explicite sera accordée à l’égalité entre les femmes et les hommes, à la participation significative des jeunes, aux personnes en situation de handicap et aux autres groupes exposés à l’exclusion. Les données seront désagrégées et les revues analyseront les barrières, les rapports de pouvoir, l’accessibilité et la sécurité, au-delà du simple comptage des participants.",
+      "3.6.3. Participation et redevabilité communautaire",
+      "Les communautés seront associées à l’identification des priorités, à la définition de critères de qualité, au suivi et à l’interprétation des résultats. Des canaux accessibles permettront de soumettre suggestions et plaintes, y compris de manière confidentielle. Les réponses seront suivies dans un registre protégé et les tendances seront examinées par la direction.",
+      "3.6.4. Partenariats et subsidiarité",
+      "La subsidiarité attribue la responsabilité au niveau le plus proche capable de l’assumer tout en garantissant soutien, contrôle et recours. Les accords de partenariat préciseront objectifs, rôles, ressources, propriété et protection des données, communication, suivi, résolution des différends et stratégie de sortie.",
+      "3.6.5. Apprentissage organisationnel et gestion adaptative ",
+      "L’apprentissage reposera sur des questions de décision : quelles approches produisent quels changements, pour quels groupes et dans quelles conditions ? Les revues compareront résultats et coûts, identifieront les conséquences inattendues et décideront de poursuivre, corriger, mettre à l’échelle ou arrêter une intervention.",
+      "Le suivi transversal reposera sur un petit ensemble commun d’indicateurs, appliqués de manière proportionnée aux cinq axes :",
+      "Pourcentage des activités sensibles précédées d’une analyse des risques et disposant de mesures appropriées de consentement, sauvegarde, référencement et « Ne pas nuire » ;",
+      "Pourcentage des activités échantillonnées satisfaisant les standards de sensibilité aux traumatismes ;",
+      "Écarts de participation, de qualité de l’expérience et de résultats selon le sexe, l’âge, la situation de handicap, la localisation et les autres facteurs pertinents ;",
+      "Pourcentage des participants connaissant les mécanismes de feedback et de plainte, et proportion des plaintes traitées dans le délai prévu ;",
+      "Pourcentage des mesures correctives liées à la sauvegarde, à l’inclusion, à la non-discrimination ou au principe « Ne pas nuire » suivies jusqu’à leur clôture.",
+      "Chapitre 4 - mise en œuvre du plan stratégique",
+      "4.1. Cadre consolidé d’exécution par axe",
+      "L’exécution est présentée sous une forme consolidée afin de faciliter la lecture, la programmation annuelle et la reddition de comptes. Pour chaque axe, le tableau rapproche les modalités opérationnelles, les indicateurs stratégiques, les risques prioritaires et le séquençage. Les plans d’action annuels préciseront les activités, les sites, les responsables, les partenaires, les cibles et les coûts.",
+      "Tableau 18: Cadre consolidé des actions prioritaires par axe",
+      "4.2. Modalités générales de mise en œuvre",
+      "La mise en œuvre des cinq axes reposera sur une programmation progressive, participative et décentralisée. Elle commencera par l’actualisation des données de référence, la cartographie des besoins et des acteurs, ainsi que l’harmonisation des outils, approches et normes de qualité. Les interventions seront ensuite déployées selon les priorités territoriales, les capacités des structures locales et les ressources disponibles. La CDJP assurera l’orientation technique, la coordination, la mobilisation des ressources, la supervision et la consolidation des résultats, tandis que les CPJP, CEA, CEB, groupes communautaires et autres structures partenaires participeront à la planification, à l’exécution et au suivi de proximité.",
+      "4.3. Analyse et gestion des risques",
+      "Les risques stratégiques concernent notamment l’insuffisance ou l’irrégularité des financements, la faiblesse des données de référence, la rotation du personnel et des bénévoles, les capacités inégales des structures décentralisées, la faible appropriation communautaire, les chevauchements institutionnels, les chocs contextuels, ainsi que la confidentialité, la cybersécurité, la sauvegarde et la sensibilité du plaidoyer.",
+      "La CDJP tiendra un registre unique des risques, actualisé trimestriellement, avant toute activité sensible et lors de tout changement majeur de contexte. Chaque risque aura un propriétaire, une cote de probabilité et d’impact, un indicateur d’alerte, des mesures préventives et une réponse de contingence. Les risques seront examinés lors des réunions de coordination et des revues périodiques ; les incidents de sauvegarde seront traités immédiatement selon les protocoles approuvés.",
+      "Tableau 19: Analyse des risques",
+      "4.4. Système d’analyse, planification, suivi et évaluation",
+      "4.4.1. Finalité du système APSE",
+      "L’APSE est le système par lequel la CDJP analyse les besoins, planifie ses interventions, suit leur réalisation, mesure les changements obtenus et utilise les résultats pour prendre des décisions. Il suit six étapes : (1) définir les résultats, indicateurs et responsabilités ; (2) établir les valeurs de référence ; (3) collecter les données au niveau approprié ; (4) vérifier, consolider et protéger les données ; (5) analyser les progrès et les écarts ; et (6) prendre, documenter et suivre les décisions correctives.",
+      "Le dispositif minimum à installer en AP1 comprend le référentiel des indicateurs, la baseline, les formulaires prioritaires, la répartition des responsabilités, le calendrier de rapportage, les contrôles de qualité, un tableau de bord synthétique et un registre de suivi des décisions. Son efficacité sera appréciée par l’utilisation des informations, et non par le nombre d’outils produits.",
+      "4.4.2. Architecture des données",
+      "Tableau 20: Architecture des données",
+      "4.4.3. Qualité des données",
+      "La qualité des données est indispensable pour apprécier les progrès du Plan, orienter les décisions, rendre compte aux communautés et aux partenaires et favoriser l’apprentissage organisationnel. La CDJP mettra en place des contrôles proportionnés aux risques et à l’utilisation prévue des informations. Ces contrôles porteront sur l’ensemble du cycle de l’information, depuis la collecte et la transmission jusqu’à l’analyse, la conservation et l’utilisation des données.",
+      "La qualité des données sera appréciée selon les dimensions suivantes :",
+      "Validité : les données et les indicateurs doivent mesurer effectivement le résultat, le changement ou la situation qu’ils sont censés apprécier. Chaque indicateur sera associé à une définition claire, une méthode de calcul, une unité de mesure et des sources de vérification appropriées.",
+      "Fiabilité : les méthodes, outils et critères de collecte devront être appliqués de manière harmonisée par les différents acteurs. Les personnes chargées de la collecte recevront les orientations et l’accompagnement nécessaires afin que des situations comparables produisent des informations comparables.",
+      "Complétude : les outils devront renseigner les champs essentiels, les unités de mesure, les sources de vérification et, lorsque cela est pertinent, les désagrégations prévues, notamment selon le sexe, l’âge, le handicap, la localisation et le groupe concerné. Une donnée incomplète ne sera pas automatiquement considérée comme un résultat vérifié.",
+      "Ponctualité : les données devront être collectées, vérifiées et transmises selon le calendrier prévu afin d’éclairer les réunions de coordination, les revues périodiques, la planification annuelle et les décisions correctives. La ponctualité sera appréciée par rapport à l’usage attendu de l’information et non uniquement par rapport au respect formel d’une date de soumission.",
+      "Cohérence : les données quantitatives, les informations qualitatives, les rapports narratifs, les données financières et les pièces justificatives devront être compatibles. Les écarts importants entre différentes sources seront analysés et expliqués avant la consolidation des résultats.",
+      "Intégrité et traçabilité : toute modification apportée aux données devra être autorisée, justifiée et traçable. Les responsabilités de collecte, de vérification, de validation et de consolidation seront clairement séparées afin de réduire les erreurs, les manipulations et les conflits d’intérêts.",
+      "Confidentialité et sécurité : l’accès aux données sera accordé en fonction des responsabilités et du niveau de sensibilité des informations. Les données relatives aux traumatismes, aux conflits, aux violations des droits, aux plaintes ou aux cas individuels feront l’objet de mesures renforcées de consentement, de minimisation, d’anonymisation, de stockage sécurisé et de limitation de la diffusion, conformément au principe « Ne pas nuire ».",
+      "4.4.4. Rythme de suivi et de revue",
+      "Tableau 21: Fréquences de suivi, de revue et de décision",
+      "4.4.5. Études de cas et récits de changement",
+      "Les récits de changement compléteront les indicateurs sans s’y substituer. Ils seront sélectionnés selon des critères explicites, vérifiés par triangulation, anonymisés lorsque nécessaire et analysés aussi pour les résultats inattendus ou négatifs. Le consentement à recevoir un service ne vaut pas consentement à publier un témoignage.",
+      "4.4.6. Articulation entre APSE, KoboToolbox et Google Drive",
+      "Le système APSE désigne l’ensemble du processus de gestion axée sur les résultats ; ses outils comprennent les fiches d’indicateurs, formulaires, registres et tableaux de bord. KoboToolbox peut servir à la collecte numérique, tandis que Google Drive peut soutenir la gestion documentaire. Avant leur utilisation, la CDJP précisera quel outil collecte ou conserve chaque donnée, qui en est responsable, qui peut y accéder et comment l’information alimente le tableau de bord. Les dossiers sensibles seront soumis à des droits restreints, une nomenclature, des sauvegardes et une politique de conservation.",
+      "4.5. Gouvernance et dispositif de mise en œuvre",
+      "4.5.1. Principes d’organisation",
+      "La gouvernance combine orientation pastorale, leadership stratégique, responsabilité technique, gestion financière et mise en œuvre décentralisée. Les décisions doivent être prises au niveau approprié, documentées et suivies. Les organes de gouvernance approuvent les orientations et exercent la supervision ; la direction gère la performance globale ; les responsables d’axes assurent la qualité technique ; APSE consolide les preuves ; les structures locales adoptent et mettent en œuvre.",
+      "4.5.2. Matrice de responsabilités",
+      "Tableau 22: Matrice des responsabilités",
+      "4.5.3. Modalités d’exécution ",
+      "a)  Plans opérationnels locaux",
+      "Chaque CPJP ou unité ciblée disposera d’un plan proportionné à sa capacité. Il indiquera les résultats auxquels elle contribue, les activités, les participants, le calendrier, les responsables, les moyens, les risques, les données et le mécanisme de feedback. Les plans locaux seront consolidés sans effacer les spécificités territoriales.",
+      "b) Partenariats, communication et mobilisation des ressources",
+      "Stratégie de partenariat",
+      "La CDJP recherchera des partenariats qui apportent une complémentarité démontrable : expertise, accès à un service, financement, connaissance, technologie ou influence. La sélection tiendra compte de la compatibilité avec les valeurs de l’Église, de la réputation, des risques de protection, de la transparence financière et de la capacité à respecter les engagements.",
+      "Communication responsable",
+      "Définir les publics, objectifs, messages et canaux pour chaque axe ;",
+      "Publier des résultats vérifiés en distinguant activités, produits et effets ;",
+      "Obtenir un consentement spécifique pour témoignages, images et données ;",
+      "Protéger l’identité des personnes accompagnées et éviter les récits stigmatisants ;",
+      "Préparer une validation des messages sensibles et un protocole de communication de crise ;",
+      "Utiliser la communication pour la redevabilité et l’apprentissage, pas seulement pour la visibilité.",
+      "Mobilisation et diversification des ressources",
+      "La mobilisation des ressources comprendra une cartographie annuelle des bailleurs, un portefeuille de notes conceptuelles, des accords pluriannuels, des cofinancements, des contributions locales proportionnées et transparentes, ainsi que des activités génératrices de revenus uniquement lorsqu’elles sont faisables et gouvernées. Le coût complet des interventions inclura personnel, supervision, données, sauvegarde, logistique, communication, administration et maintenance.",
+      "4.5.4 Plan de renforcement institutionnel et organisationnel",
+      "Tableau 23: Plan de renforcement institutionnel et organisationnel",
+      "Renforcement des capacités fondé sur les besoins",
+      "Le plan de capacités distinguera connaissances, compétences pratiques, comportements et conditions d’application. Toute formation sera précédée d’une analyse des besoins et suivie par coaching, observation ou revue de produits. La réplication locale sera autorisée lorsque les facilitateurs disposent d’un contenu validé, d’un accompagnement et de critères de qualité.",
+      "4.7. Cadre budgétaire et mécanismes de financement",
+      "Le budget indicatif est construit à partir des interventions stratégiques et exprimé en parts d’une enveloppe totale T, aucun montant institutionnel validé n’étant disponible. Cette méthode évite d’inventer des montants tout en fournissant une base immédiatement exploitable pour le chiffrage annuel. Pour chaque intervention retenue, le plan opérationnel précisera les unités, quantités, coûts unitaires, contributions en nature, coûts de personnel, supervision, données, sauvegarde, logistique, administration, financement acquis et déficit. Les pourcentages ci-dessous orientent le scénario initial et ne constituent pas une autorisation de dépense.",
+      "Tableau 24: Répartition indicative du budget par composante",
+      "Tableau 25: Répartition indicative du budget par année (Millions) ",
+      "4.8. Plan opérationnel/  Calendrier d’exécution 2026-2031",
+      "Tableau 26 : Feuille de route 2026-2031",
+      "Chapitre 5 - conclusion générale, conditions de succès et révision",
+      "Le présent chapitre précise les principales conditions nécessaires à la réussite du Plan stratégique, les modalités selon lesquelles celui-ci pourra être adapté et le changement durable que la CDJP Butare entend contribuer à produire à l’horizon du 31 août 2031. La réussite du Plan dépendra à la fois des facteurs sur lesquels la CDJP exerce une maîtrise directe et des conditions externes qu’elle devra suivre, influencer ou prendre en compte dans sa programmation.",
+      "5.1. Conditions de succès",
+      "La mise en œuvre efficace du Plan stratégique reposera sur la combinaison de conditions internes et externes. Les conditions internes relèvent principalement des décisions, des capacités et des pratiques de la CDJP et de ses structures décentralisées. Les conditions externes dépendent notamment des partenaires, des ressources mobilisables et de l’évolution du contexte.",
+      "5.1.1. Conditions internes",
+      "Les principales conditions internes de succès sont les suivantes :",
+      "Un leadership pastoral et stratégique constant : les autorités diocésaines, les organes compétents et la Direction de la CDJP devront maintenir une orientation claire, assurer la supervision du Plan et prendre en temps utile les décisions et arbitrages nécessaires.",
+      "Une appropriation du Plan à tous les niveaux : le personnel, les paroisses, les CPJP, les Centrales, les CEB, les bénévoles et les communautés devront comprendre les objectifs et les résultats du Plan ainsi que leur contribution respective à sa mise en œuvre.",
+      "Une priorisation réaliste : la CDJP devra concentrer ses ressources sur les résultats et interventions les plus stratégiques. Les plans annuels éviteront la dispersion et ajusteront les activités aux capacités humaines, financières et institutionnelles réellement disponibles.",
+      "Des responsabilités clairement assumées : les rôles d’orientation, d’approbation, de coordination, de mise en œuvre, de supervision, de collecte des données et de redevabilité devront être compris et appliqués aux différents niveaux de l’architecture Diocèse-Paroisses-Centrales-CEB.",
+      "Des capacités humaines et institutionnelles suffisantes : le personnel et les bénévoles devront bénéficier de formations, de coaching, de supervision et d’un accompagnement adaptés à leurs responsabilités. Une attention particulière sera accordée à la motivation, à la relève, à la prévention de l’épuisement et au renouvellement des compétences.",
+      "Un système APSE utile à la décision : les données devront être suffisamment fiables, disponibles et utilisées pour apprécier les progrès, identifier les écarts, ajuster les interventions et rendre compte aux communautés, aux organes diocésains et aux partenaires.",
+      "L’application des standards de qualité et de protection : les interventions devront respecter la sensibilité aux traumatismes, le principe « Ne pas nuire », la sauvegarde, la confidentialité, la protection des données, l’inclusion, l’équité et la non-discrimination.",
+      "Une culture d’apprentissage et d’amélioration continue : les réunions, les supervisions, les revues, les études de cas, les récits de changement et les retours des communautés devront servir à améliorer les approches et non uniquement à satisfaire les exigences de rapportage.",
+      "Une gestion transparente des ressources : la planification, la budgétisation, les achats, les dépenses et les réallocations devront être reliés aux résultats attendus, documentés et soumis aux mécanismes de contrôle et de redevabilité applicables.",
+      "5.1.2. Conditions externes",
+      "Les principales conditions externes à suivre sont les suivantes :",
+      "Le maintien d’un environnement pastoral, politique et institutionnel favorable aux thématiques de justice, de paix, de réconciliation, de droits humains et d’écologie intégrale ;",
+      "La disponibilité progressive des ressources financières nécessaires à la mise en œuvre des interventions prioritaires ;",
+      "L’engagement des partenaires institutionnels, techniques et financiers à soutenir les priorités du plan et à respecter le mandat pastoral de la cdjp ;",
+      "L’accessibilité et la qualité des services spécialisés nécessaires au référencement juridique, psychosocial, médical, administratif ou pastoral ;",
+      "La collaboration des autorités locales, des institutions publiques, de la cejp, des organisations de la société civile, des universités et des autres acteurs concernés ;",
+      "La participation volontaire, sûre et inclusive des communautés et des groupes accompagnés ;",
+      "Une évolution du contexte sécuritaire, économique, social, environnemental et régional permettant la continuité des interventions.",
+      "La CDJP ne maîtrise pas entièrement ces facteurs externes. Elle devra néanmoins les suivre au moyen de son analyse contextuelle, de son registre des risques, de ses mécanismes d’alerte précoce et de ses dialogues avec les partenaires. Lorsque ces conditions évolueront défavorablement, la programmation et les budgets seront ajustés afin de protéger les personnes, les résultats essentiels et la continuité institutionnelle.",
+      "5.2. Mécanisme de révision et de gestion adaptative",
+      "Le Plan stratégique 2026-2031 est un document vivant. Il constitue un cadre de référence stable, mais il doit pouvoir être adapté à partir des résultats observés, des apprentissages, des évaluations, des retours des communautés, de la disponibilité des ressources et de l’évolution du contexte.",
+      "La gestion adaptative permettra de modifier, lorsque cela est justifié :",
+      "La priorité accordée à certaines interventions ;",
+      "Le calendrier et le rythme de mise en œuvre ;",
+      "La couverture géographique ;",
+      "Les modalités d’accompagnement ;",
+      "Les cibles intermédiaires ;",
+      "Les responsabilités opérationnelles ;",
+      "Les partenariats et les sources de financement ;",
+      "Les allocations budgétaires annuelles ;",
+      "Les mesures de gestion des risques.",
+      "Ces adaptations devront préserver la vision, la mission, les valeurs, l’impact recherché et les objectifs stratégiques validés. Toute modification substantielle de l’architecture du Plan, des objectifs stratégiques ou de la répartition globale des ressources entre les axes devra faire l’objet d’une justification documentée et d’une approbation par les instances compétentes.",
+      "La révision du Plan s’effectuera à plusieurs niveaux :",
+      "Les revues périodiques examineront l’avancement, la qualité, les risques, les dépenses et les mesures correctives immédiates ;",
+      "La revue annuelle analysera les résultats de l’année, les écarts, les enseignements, les priorités et les ressources disponibles avant l’adoption du plan d’action et du budget de l’année suivante ;",
+      "L’évaluation à mi-parcours, prévue de janvier à mars 2029 pendant l’AP3, appréciera la pertinence des orientations, les progrès vers les résultats, la cohérence entre les axes, l’efficacité des mécanismes de mise en œuvre et les perspectives de durabilité ;",
+      "L’évaluation finale, prévue d’avril à juillet 2031 avant la clôture du Plan au 31 août 2031, appréciera les résultats du cycle, la contribution du Plan à l’impact recherché, les enseignements, la durabilité et les orientations du prochain cycle stratégique.",
+      "Toute proposition de révision importante suivra les étapes suivantes :",
+      "Identification du changement de contexte, du problème ou de l’apprentissage justifiant l’adaptation ;",
+      "Analyse des données, des risques et des conséquences opérationnelles et budgétaires ;",
+      "Consultation des responsables concernés, des structures décentralisées et, lorsque cela est pertinent, des communautés et partenaires ;",
+      "Formulation d’une proposition de modification ;",
+      "Examen et approbation par l’instance compétente ;",
+      "Documentation de la décision et communication aux acteurs concernés ;",
+      "Mise à jour des plans, budgets, indicateurs et responsabilités affectés.",
+      "Un registre des adaptations sera tenu afin de conserver la mémoire des modifications, de leurs justifications, des décisions prises et de leurs effets sur la mise en œuvre.",
+      "5.3. Conclusion générale",
+      "Le Plan stratégique 2026-2031 consolide l’engagement pastoral et social de la CDJP Butare en faveur de la guérison, de la réconciliation, de la transformation non violente des conflits et des droits humains. Il renforce aussi la justice écologique, le plaidoyer fondé sur les données, la responsabilité des structures décentralisées et la durabilité institutionnelle.",
+      "À l’horizon du 31 août 2031, les personnes, familles et communautés du Diocèse de Butare vivent des relations plus justes, pacifiques et résilientes, exercent mieux leurs droits et responsabilités, protègent davantage la création et bénéficient de structures Justice et Paix crédibles, apprenantes et durables. Cette contribution dépendra moins du nombre d’activités réalisées que de leur qualité, de l’inclusion, de l’utilisation des données et de la capacité d’adaptation de la CDJP.",
+      "La réussite du Plan reposera sur l’appropriation par les structures diocésaines et communautaires, une gouvernance claire, des partenariats responsables et une mobilisation progressive des ressources. Les revues périodiques, l’évaluation à mi-parcours et l’évaluation finale permettront de rendre compte, d’apprendre et de préparer le cycle stratégique suivant.",
+      "Annexes",
+      "Annexe 1 - Tableau du cadre logique intégré",
+      "Les résultats ne sont pas uniformisés par axe : leur nombre découle de la chaîne causale propre à chaque objectif. Dans les indicateurs, « pourcentage » désigne le nombre d’unités répondant au critère, divisé par le nombre total d’unités concernées et évaluées, multiplié par 100. Chaque fiche KPI précisera le numérateur, le dénominateur, l’unité observée, le critère de réussite, la source, la fréquence, le responsable et les désagrégations requises.",
+      "A1.1. Cadre de résultats - Axe 1",
+      "A1.2. Cadre de résultats - Axe 2",
+      "A1.3. Cadre de résultats - Axe 3",
+      "A1.4. Cadre de résultats - Axe 4",
+      "A1.5. Cadre de résultats - Axe 5",
+      "Annexe 2 - Canevas de Plan d’action et Budget d’exécution",
+      "Instruction",
+      "Chaque activité doit contribuer à un résultat codé, être chiffrée au coût complet et comporter un indicateur vérifiable. Les activités sensibles précisent les mesures de sauvegarde et de confidentialité. Toute contribution locale sera estimée et documentée sans constituer une barrière à la participation.",
+      "Annexe 3 - cadre de mesure de la performance AP1-AP5",
+      "Cette annexe complète l’Annexe 1 sans la remplacer. Les valeurs numériques seront arrêtées après la baseline de septembre-novembre 2026 ; elles ne doivent pas être inventées. Chaque cible sera accompagnée de son dénominateur, de sa zone, de sa méthode, de son niveau de confiance et de son approbation.",
+      "Annexe 4 - Architecture détaillée du système APSE",
+      "Protection : les données de traumatismes, conflits, violations, plaintes, médiations et référencement sont séparées des rapports ordinaires. APSE applique minimisation, consentement, identifiants codés, accès par rôle, sauvegardes, piste d’audit, conservation limitée et destruction sécurisée.",
+      "Annexe 5 - Cascade institutionnelle des résultats",
+      "Annexe 6 - Calendrier pastoral intégré",
+      "Une table de correspondance ventile chaque AP entre septembre-décembre de la première année civile et janvier-août de la seconde. Cette ventilation sert à la comptabilité et au reporting externe, mais ne remplace pas le calendrier pastoral."
+    ],
+    "tables": [
+      {
+        "index": 0,
+        "rows": [
+          [
+            "Sigle ou terme",
+            "Signification"
+          ],
+          [
+            "",
+            ""
+          ],
+          [
+            "AP",
+            "Année pastorale, allant du 1er septembre au 31 août."
+          ],
+          [
+            "AP1-AP5",
+            "Les cinq années pastorales du Plan : AP1 (2026/27) à AP5 (2030/31)."
+          ],
+          [
+            "APSE",
+            "Analyse, planification, suivi et évaluation : système reliant les besoins, les plans, les données, les résultats et les décisions."
+          ],
+          [
+            "CARSA",
+            "Christian Action for Reconciliation and Social Assistance."
+          ],
+          [
+            "CDJP",
+            "Commission Diocésaine Justice et Paix."
+          ],
+          [
+            "CEA",
+            "Chargé(e) de l’écoute active."
+          ],
+          [
+            "CEB",
+            "Communauté ecclésiale de base."
+          ],
+          [
+            "CEJP",
+            "Commission Épiscopale Justice et Paix."
+          ],
+          [
+            "CEPR",
+            "Conférence Épiscopale du Rwanda."
+          ],
+          [
+            "CNV",
+            "Communication non violente."
+          ],
+          [
+            "CPJP",
+            "Commission Paroissiale Justice et Paix."
+          ],
+          [
+            "DQA",
+            "Data Quality Assessment : évaluation de la qualité des données."
+          ],
+          [
+            "DSE",
+            "Doctrine sociale de l’Église."
+          ],
+          [
+            "FGD",
+            "Focus group discussion : discussion de groupe dirigée."
+          ],
+          [
+            "FFOM/SWOT",
+            "Forces, faiblesses, opportunités et menaces."
+          ],
+          [
+            "GURR",
+            "Groupes d’unité, réconciliation et résilience, également appelés groupes Isanamitima dans la pratique de la CDJP Butare."
+          ],
+          [
+            "Isanamitima",
+            "Appellation usuelle des GURR ; les deux termes désignent la même dynamique communautaire de guérison, de réconciliation et de résilience."
+          ],
+          [
+            "JADF",
+            "Joint Action Development Forum."
+          ],
+          [
+            "KII",
+            "Key informant interview : entretien avec un informateur clé."
+          ],
+          [
+            "KPI",
+            "Key Performance Indicator : indicateur clé de performance."
+          ],
+          [
+            "MINUBUMWE",
+            "Ministère de l’Unité nationale et de l’Engagement civique."
+          ],
+          [
+            "ODD",
+            "Objectifs de développement durable."
+          ],
+          [
+            "OSC",
+            "Organisation de la société civile."
+          ],
+          [
+            "PAO",
+            "Plan d’action opérationnel annuel."
+          ],
+          [
+            "PTF",
+            "Partenaire technique et financier."
+          ],
+          [
+            "RACI",
+            "Matrice précisant qui est responsable, redevable, consulté et informé."
+          ],
+          [
+            "SE",
+            "Suivi-évaluation."
+          ],
+          [
+            "Structures décentralisées",
+            "Structures de mise en œuvre aux niveaux paroissial, des Centrales et des CEB ; elles se distinguent des groupes bénéficiaires."
+          ],
+          [
+            "VBG",
+            "Violences basées sur le genre."
+          ]
+        ]
+      },
+      {
+        "index": 1,
+        "rows": [
+          [
+            "Axe stratégique 2026-2031",
+            "Objectif stratégique"
+          ],
+          [
+            "1. Unité, réconciliation et résilience",
+            "Renforcer l’unité, la réconciliation et la résilience des personnes, des familles et des communautés face aux blessures, aux divisions et aux chocs sociaux."
+          ],
+          [
+            "2. Prévention et transformation non violente des conflits",
+            "Réduire l’escalade, les effets destructeurs et la répétition des conflits par une prévention et une transformation non violentes, participatives et inclusives."
+          ],
+          [
+            "3. Justice écologique",
+            "Promouvoir l’écologie intégrale, la justice écologique et la résilience des communautés face aux risques climatiques et à la dégradation des ressources naturelles."
+          ],
+          [
+            "4. Droits humains et plaidoyer",
+            "Renforcer l’exercice et la protection des droits humains ainsi que l’influence des communautés sur les décisions, les pratiques et les politiques respectueuses de la dignité humaine."
+          ],
+          [
+            "5. Développement organisationnel et renforcement des structures décentralisées",
+            "Renforcer les capacités institutionnelles et consolider la gouvernance, l’efficacité, la redevabilité et la durabilité financière de la CDJP et de ses structures décentralisées."
+          ]
+        ]
+      },
+      {
+        "index": 2,
+        "rows": [
+          [
+            "Dimension",
+            "Délimitation améliorée"
+          ],
+          [
+            "Temporelle",
+            "Le Plan couvre cinq années pastorales complètes, du 1er septembre 2026 au 31 août 2031. Sa mise en œuvre est articulée au calendrier pastoral annuel, organisé de septembre à août, au moyen de plans d’action et de budgets annuels. L’évaluation à mi-parcours sera réalisée de janvier à mars 2029, pendant l’AP3, tandis que l’évaluation finale interviendra d’avril à juillet 2031 afin d’en présenter les conclusions avant la clôture du Plan au 31 août 2031 et de préparer le cycle stratégique suivant."
+          ],
+          [
+            "Géographique",
+            "Le Plan couvre l’ensemble du territoire pastoral du Diocèse catholique de Butare, comprenant 26 paroisses, 96 Centrales et 2 903 Communautés ecclésiales de base (CEB), réparties dans les différents doyennés et districts relevant du Diocèse. La programmation annuelle précisera les zones prioritaires en fonction des besoins, des vulnérabilités, des capacités locales et des ressources disponibles."
+          ],
+          [
+            "Institutionnelle",
+            "La portée institutionnelle distingue clairement : \nles organes diocésains d’orientation, d’approbation et de supervision ; \nla Direction et l’équipe technique et administrative de la CDJP, chargées du pilotage et de la coordination ; \nles structures décentralisées de mise en œuvre, suivant la chaîne Diocèse-Paroisses/CPJP-Centrales-CEB ; \nles prêtres accompagnateurs, les CEA et les autres bénévoles assurant l’animation et l’accompagnement de proximité ; \nles groupes communautaires accompagnés ou bénéficiaires, notamment les GURR - également appelés groupes Isanamitima - et les Clubs Justice et Paix ; et \nles partenaires institutionnels, techniques, financiers et stratégiques. Les GURR/Isanamitima constituent une même dynamique communautaire de guérison, de réconciliation et de résilience et ne sont pas des structures institutionnelles distinctes. Les clubs concernés sont les Clubs Justice et Paix mis en place ou accompagnés dans les écoles et les communautés."
+          ],
+          [
+            "Programmatique et thématique",
+            "Le Plan couvre cinq domaines complémentaires : \nUnité, guérison, réconciliation et résilience ; \nPrévention et transformation non violente des conflits ; \nJustice écologique et écologie intégrale ; \nPromotion des droits humains et plaidoyer ; et \nDéveloppement organisationnel et renforcement des structures décentralisées. Les principes de sensibilité aux traumatismes, « Ne pas nuire », inclusion, redevabilité, apprentissage, qualité et durabilité s’appliquent transversalement aux cinq axes."
+          ],
+          [
+            "Populationnelle",
+            "Le Plan s’adresse aux personnes, familles et communautés accompagnées, notamment celles affectées par les traumatismes, les conflits, les violations des droits, la vulnérabilité sociale ou les risques environnementaux. Il concerne également les jeunes, les femmes, les personnes âgées, les personnes en situation de handicap et les autres groupes exposés à l’exclusion. Les acteurs pastoraux, les bénévoles, les autorités, les organisations partenaires et les institutions publiques sont considérés comme acteurs de changement, détenteurs de responsabilités ou partenaires d’appui, selon leurs rôles respectifs."
+          ],
+          [
+            "Opérationnelle",
+            "Le Plan définit les orientations, objectifs, résultats et interventions stratégiques de la CDJP. Il ne constitue pas un plan d’action détaillé. Les activités, calendriers, responsabilités opérationnelles, budgets, indicateurs annuels et zones d’intervention seront précisés dans les plans d’action et budgets annuels des différents niveaux de mise en œuvre."
+          ]
+        ]
+      },
+      {
+        "index": 3,
+        "rows": [
+          [
+            "Approche méthodologique",
+            "Application",
+            "Contribution attendue"
+          ],
+          [
+            "Cadrage",
+            "Clarification de la mission, des questions, du calendrier et des responsabilités.",
+            "Protocole commun et critères de qualité."
+          ],
+          [
+            "Revue documentaire",
+            "Analyse des plans, rapports, outils, politiques et références ecclésiales/nationales.",
+            "Compréhension de l’évolution, des acquis et des lacunes."
+          ],
+          [
+            "Collecte quantitative",
+            "Questionnaires et extraction des données disponibles par structure et par axe.",
+            "Mesures comparables de couverture, fonctionnement et performance du plan precedent"
+          ],
+          [
+            "Échantillonnage",
+            "Sélection raisonnée, stratifiée et multiniveaux des sites et acteurs.",
+            "Représentation des niveaux institutionnels, territoriaux et contextes."
+          ],
+          [
+            "Collecte qualitative",
+            "Entretiens, groupes de discussion, consultations et observations.",
+            "Explication des résultats, expériences, défis et priorités."
+          ],
+          [
+            "Analyse et triangulation",
+            "Croisement des sources, analyse thématique et examen des divergences.",
+            "Constats robustes et recommandations argumentées."
+          ],
+          [
+            "Ateliers et validation",
+            "Restitution, hiérarchisation, ajustement et adoption institutionnelle.",
+            "Appropriation et validation des orientations."
+          ]
+        ]
+      },
+      {
+        "index": 4,
+        "rows": [
+          [
+            "Niveau/structure",
+            "Rôle stratégique attendu"
+          ],
+          [
+            "Autorité diocésaine",
+            "Orientation pastorale, approbation du Plan, supervision et arbitrage."
+          ],
+          [
+            "Coordination de la pastorale d’ensemble",
+            "Planification et coordination pastorale, cohérence avec les priorités diocésaines."
+          ],
+          [
+            "Économe diocésain",
+            "Approbation et soutien financier, contrôle et conformité des ressources."
+          ],
+          [
+            "Commission pastorale chargée de Justice et Paix",
+            "Approbation technique, orientation, suivi stratégique et redevabilité."
+          ],
+          [
+            "Direction et équipe CDJP",
+            "Pilotage, coordination, mobilisation des ressources, appui technique, supervision et consolidation des résultats."
+          ],
+          [
+            "Paroisses et CPJP",
+            "Planification locale, coordination des Centrales, encadrement des bénévoles et suivi de proximité."
+          ],
+          [
+            "Centrales",
+            "Relais entre paroisses et CEB; coordination de proximité, remontée d’informations et accompagnement."
+          ],
+          [
+            "CEB et bénévoles",
+            "Mise en œuvre communautaire, écoute, sensibilisation, référencement et retour d’information."
+          ],
+          [
+            "Groupes bénéficiaires",
+            "Participation aux parcours et dialogues; retour d’information et contribution à l’apprentissage, sans être assimilés aux structures de mise en œuvre."
+          ]
+        ]
+      },
+      {
+        "index": 5,
+        "rows": [
+          [
+            "Catégorie de cible",
+            "Groupes concernés",
+            "Modalités d’attention"
+          ],
+          [
+            "Bénéficiaires directs",
+            "Personnes participant directement aux parcours, groupes, formations, médiations, orientations ou initiatives écologiques.",
+            "Consentement, critères transparents, sécurité, accessibilité et suivi des changements."
+          ],
+          [
+            "Bénéficiaires indirects",
+            "Familles, pairs, institutions et membres de structures bénéficiant des compétences, services ou changements produits.",
+            "Analyse des effets indirects, prévention de l’exclusion et référencement."
+          ],
+          [
+            "Communauté en général",
+            "Habitants des zones couvertes, communautés paroissiales, écoles et groupes touchés par les actions collectives ou le plaidoyer.",
+            "Information accessible, participation, redevabilité et suivi de la portée collective."
+          ],
+          [
+            "Groupes nécessitant une attention particulière",
+            "Jeunes non scolarisés, femmes, personnes en situation de handicap, personnes âgées, survivants, personnes libérées et autres groupes exposés.",
+            "Analyse des barrières, adaptation, désagrégation et protection renforcée."
+          ]
+        ]
+      },
+      {
+        "index": 6,
+        "rows": [
+          [
+            "Partie prenante",
+            "Intérêt, rôle ou contribution",
+            "Modalités de mobilisation et d’engagement"
+          ],
+          [
+            "Autorité diocésaine",
+            "Orientation pastorale, légitimité institutionnelle, approbation, supervision et arbitrage.",
+            "Validation du Plan et des décisions majeures ; supervision régulière ; participation aux revues stratégiques et arbitrage lorsque nécessaire."
+          ],
+          [
+            "Coordination de la pastorale d’ensemble, Économe diocésain et Commission pastorale chargée de Justice et Paix",
+            "Planification et coordination pastorale, cohérence avec les priorités diocésaines, approbation technique et financière et suivi de la mise en œuvre.",
+            "Réunions de coordination selon les besoins ; examen des plans et budgets ; suivi des résultats ; appui technique et financier ; participation aux revues périodiques."
+          ],
+          [
+            "Commission Épiscopale Justice et Paix - CEJP",
+            "Orientation et coordination du réseau Justice et Paix, représentation nationale, harmonisation des approches et apprentissage entre commissions diocésaines.",
+            "Planification concertée ; échanges techniques ; partage des outils et apprentissages ; remontée et consolidation des résultats ; participation aux revues pertinentes."
+          ],
+          [
+            "Direction et équipe de la CDJP Butare",
+            "Pilotage stratégique et technique, coordination de la mise en œuvre, mobilisation des ressources, supervision, consolidation des données et redevabilité.",
+            "Coordination continue ; appui aux structures décentralisées ; supervision ; suivi des indicateurs ; organisation des revues ; dialogue avec les partenaires et production des rapports."
+          ],
+          [
+            "Paroisses et Commissions paroissiales Justice et Paix - CPJP",
+            "Planification et coordination locale, encadrement des Centrales, mobilisation des acteurs et suivi de la mise en œuvre au niveau paroissial.",
+            "Élaboration des plans locaux ; réunions de coordination ; accompagnement des Centrales et des bénévoles ; collecte et transmission des données ; revues paroissiales et retour d’information."
+          ],
+          [
+            "Centrales",
+            "Relais entre les paroisses et les CEB, coordination de proximité, identification des besoins et accompagnement des interventions communautaires.",
+            "Réunions de coordination avec les paroisses et les CEB ; remontée des besoins et informations ; suivi de proximité ; mobilisation communautaire et participation aux revues locales."
+          ],
+          [
+            "CEB, CEA et autres bénévoles",
+            "Mise en œuvre communautaire, écoute, sensibilisation, orientation ou référencement, collecte des informations et retour d’expérience. Les CEA et les autres animateurs sont considérés comme des bénévoles ou relais de mise en œuvre et non comme des structures distinctes.",
+            "Formation et accompagnement continu ; coaching ; outils simplifiés ; réunions de partage d’expériences ; supervision ; mécanismes de retour d’information et soutien à la prévention de l’épuisement."
+          ],
+          [
+            "GURR - également appelés groupes Isanamitima -, Clubs Justice et Paix et autres groupes communautaires accompagnés",
+            "Participation aux parcours de guérison, de réconciliation, de dialogue, d’éducation aux droits et d’action communautaire. Ces groupes sont distingués des structures institutionnelles de mise en œuvre.",
+            "Participation volontaire et sûre ; co-conception des initiatives ; dialogues communautaires ; suivi des changements ; mécanismes de feedback, de plainte et d’apprentissage."
+          ],
+          [
+            "Personnes, familles et communautés accompagnées",
+            "Expérience vécue, connaissance des besoins, appréciation de la pertinence, de l’accessibilité et de la qualité des interventions.",
+            "Consultations régulières ; consentement éclairé ; enquêtes et espaces de dialogue sûrs ; mécanismes accessibles de plainte et de retour d’information ; prise en compte documentée des préoccupations."
+          ],
+          [
+            "Autorités locales, services publics et JADF",
+            "Coordination territoriale, accès aux services, réponses institutionnelles, protection et traitement des préoccupations communautaires.",
+            "Dialogues réguliers ; référencement ; participation aux cadres de concertation ; présentation de notes de plaidoyer ; suivi documenté des engagements et réponses institutionnelles."
+          ],
+          [
+            "Écoles, mouvements de jeunesse et organisations de jeunes",
+            "Mobilisation et leadership des jeunes, prévention des conflits, éducation aux droits, à la paix et à l’écologie intégrale.",
+            "Programmes coordonnés ; Clubs Justice et Paix ; dialogues intergénérationnels ; initiatives conduites par les jeunes ; inclusion des jeunes non scolarisés."
+          ],
+          [
+            "Universités, organisations de la société civile et prestataires spécialisés",
+            "Expertise, recherche, formation, référencement, innovation méthodologique et évaluation.",
+            "Protocoles de collaboration ; études conjointes ; formations ; assistance technique ; référencement spécialisé ; recherche-action et évaluations."
+          ],
+          [
+            "Partenaires techniques, financiers et stratégiques, ainsi que secteur privé",
+            "Ressources financières, expertise, réseaux, influence, possibilités de cofinancement et soutien à la durabilité du Plan. Les partenaires stratégiques peuvent contribuer à l’atteinte des objectifs sans intervenir principalement comme bailleurs ou prestataires techniques.",
+            "Accords transparents définissant les objectifs, responsabilités, ressources et résultats attendus ; diligence raisonnable ; revues conjointes ; cofinancement ; partage d’apprentissage et stratégie de sortie."
+          ]
+        ]
+      },
+      {
+        "index": 7,
+        "rows": [
+          [
+            "Dimension",
+            "Éléments de contexte pour la CDJP Butare",
+            "Implications stratégiques"
+          ],
+          [
+            "Politique et institutionnelle",
+            "Politiques nationales favorables à l’unité, la réconciliation, la gouvernance et l’engagement civique; priorités de la NST2; rôle du Diocèse, de la CEJP et des autorités; instabilité régionale pouvant affecter les communautés.",
+            "Maintenir l’alignement pastoral et national; renforcer coordination, dialogue institutionnel, veille contextuelle et plaidoyer fondé sur les données."
+          ],
+          [
+            "Économique",
+            "Pauvreté locale, chômage et sous-emploi des jeunes, inflation, coûts de mobilité, vulnérabilité des ménages et évolution incertaine du financement des organisations de la société civile.",
+            "Prioriser les interventions, diversifier les ressources, budgétiser selon des scénarios et éviter que la participation communautaire crée une charge financière."
+          ],
+          [
+            "Sociale et culturelle",
+            "Traumatismes persistants, besoins de réconciliation, tensions familiales et foncières, aspirations de la jeunesse, inégalités de pouvoir et exclusion. Les normes sociales et culturelles, les pratiques de mémoire, les rapports intergénérationnels, les rôles attribués aux femmes et aux hommes, les croyances et les modes locaux de dialogue influencent la participation, la perception des conflits et l’acceptabilité des interventions. Les personnes en situation de handicap peuvent rencontrer des barrières sociales, culturelles et physiques spécifiques.",
+            "Consolider la guérison, le dialogue intergénérationnel et la transformation non violente des conflits ; adapter les méthodes aux langues, références culturelles et pratiques locales compatibles avec la dignité humaine ; renforcer l’inclusion, la redevabilité et la participation sûre."
+          ],
+          [
+            "Technologique et communicationnelle",
+            "Usage croissant des outils numériques, possibilités de collecte mobile et de communication, mais disparités d’accès, compétences inégales et risques de confidentialité.",
+            "Utiliser des outils adaptés, renforcer les compétences et la protection des données; maintenir des modalités non numériques accessibles."
+          ],
+          [
+            "Environnementale",
+            "Érosion, dégradation des sols, gestion de l’eau et des déchets, chocs climatiques et conflits liés aux ressources, avec effets plus forts sur les ménages vulnérables.",
+            "Développer progressivement l’écologie intégrale par la formation, l’analyse participative et des initiatives pilotes réalistes avant mise à l’échelle."
+          ],
+          [
+            "Légale, droits et protection",
+            "Cadres relatifs aux droits humains, à la protection de l’enfant, à la non-discrimination, aux données et aux mécanismes de recours; besoin de documentation éthique.",
+            "Renforcer l’éducation aux droits, le référencement, la confidentialité, la sauvegarde, le principe « Ne pas nuire » et le suivi des réponses institutionnelles."
+          ]
+        ]
+      },
+      {
+        "index": 8,
+        "rows": [
+          [
+            "Domaine évalué",
+            "Score cité dans la V2",
+            "Lecture pour 2026-2031"
+          ],
+          [
+            "Réconciliation et guérison intérieure",
+            "78,2 %",
+            "Consolider les approches reconnues ; harmoniser la qualité ; mesurer bien-être, confiance et résilience."
+          ],
+          [
+            "Transformation non violente des conflits",
+            "70,5 %",
+            "Passer d’une réponse principalement réactive à la prévention, l’alerte et au suivi des solutions."
+          ],
+          [
+            "Plaidoyer et droits humains",
+            "61,8 %",
+            "Structurer les priorités, les données, les alliances, les produits et le suivi des engagements."
+          ],
+          [
+            "Structures Justice et Paix",
+            "77,6 %",
+            "Pérenniser la gouvernance, les compétences, la mobilité, le numérique, l’apprentissage et le financement."
+          ]
+        ]
+      },
+      {
+        "index": 9,
+        "rows": [
+          [
+            "Forces",
+            "Faiblesses"
+          ],
+          [
+            "Ancrage pastoral et légitimité communautaire ; \nRéseau décentralisé ; \nProximité et crédibilité auprès des communautés ;\nExpérience en accompagnement psychosocial ;\nExpertise en réconciliation ; \nApproches de guérison et de dialogue reconnues ;\nBénévoles engagés ; \nExpérience partenariale ; \nPremiers outils numériques.",
+            "Ressources et mobilité limitées ;\nDonnées de résultats incomplètes ; \nDisparités entre structures ;\nPlaidoyer peu formalisé ; \nRotation/fatigue des bénévoles ;\nProcédures à harmoniser ; \nL’implication des curés, aumôniers et autres responsables pastoraux demeure variable selon les lieux ; elle peut constituer un levier majeur ou une limite pour l’appropriation et la continuité."
+          ]
+        ]
+      },
+      {
+        "index": 10,
+        "rows": [
+          [
+            "Opportunités",
+            "Menaces"
+          ],
+          [
+            "Alignement avec la CEJP ; \nintérêt croissant pour l’écologie intégrale ; \npartenariats publics, \nuniversitaires et associatifs ; \nparticipation des jeunes ; \nsolutions numériques ; \nespaces locaux de concertation.",
+            "Traumatismes persistants ; \nTensions familiales ; \nFoncières et liées aux ressources ; \nChocs climatiques et sanitaires ;\nInflation ; \nDépendance financière ; \nRisques de protection et cybersécurité ; \nPolarisation possible autour du plaidoyer."
+          ]
+        ]
+      },
+      {
+        "index": 11,
+        "rows": [
+          [
+            "Évolution du contexte",
+            "Réponse stratégique"
+          ],
+          [
+            "Traumatismes et besoins de réintégration",
+            "Approches sûres, parcours harmonisés, référencement et suivi des effets."
+          ],
+          [
+            "Conflits émergents et tensions relationnelles",
+            "Alerte précoce, médiation, dialogues et analyse régulière des conflits."
+          ],
+          [
+            "Pressions économiques",
+            "Accessibilité, priorisation, scénarios budgétaires et soutien aux capacités locales."
+          ],
+          [
+            "Participation inégale",
+            "Co-conception, désagrégation, canaux adaptés et suivi de l’inclusion."
+          ],
+          [
+            "Urgence écologique",
+            "Axe spécifique, initiatives locales mesurables et plaidoyer environnemental."
+          ],
+          [
+            "Faible influence du plaidoyer",
+            "Données fiables, notes de position, alliances et suivi des réponses."
+          ],
+          [
+            "Capacités institutionnelles inégales",
+            "Standards minimaux, coaching, APSE, numérique et mobilisation des ressources."
+          ]
+        ]
+      },
+      {
+        "index": 12,
+        "rows": [
+          [
+            "Voie",
+            "Mécanisme",
+            "Effet recherché"
+          ],
+          [
+            "Guérir et restaurer",
+            "Écoute, accompagnement, groupes sûrs, dialogue et référencement.",
+            "Bien-être, confiance, pardon, liens restaurés et réintégration."
+          ],
+          [
+            "Prévenir et transformer",
+            "Analyse des conflits, alerte, médiation, CNV et espaces inclusifs.",
+            "Tensions détectées plus tôt et différends résolus pacifiquement."
+          ],
+          [
+            "Protéger la création",
+            "Conscience écologique, plans locaux, pratiques résilientes et dialogue.",
+            "Réduction des risques et responsabilité écologique collective."
+          ],
+          [
+            "Connaître et influencer",
+            "Éducation aux droits, documentation, alliances et dialogue institutionnel.",
+            "Meilleur accès aux recours et réponses plus justes."
+          ],
+          [
+            "S’organiser et durer",
+            "Gouvernance, APSE, numérique, capacités, financement et apprentissage.",
+            "Structures performantes, redevables et pérennes."
+          ]
+        ]
+      },
+      {
+        "index": 13,
+        "rows": [
+          [
+            "Niveau",
+            "Description"
+          ],
+          [
+            "Intrants",
+            "Leadership pastoral, personnel, bénévoles, savoir-faire, partenariats, ressources financières, équipements et données."
+          ],
+          [
+            "Activités",
+            "Accompagnement, formation, dialogue, médiation, initiatives écologiques, documentation, plaidoyer, coaching et amélioration des systèmes."
+          ],
+          [
+            "Produits",
+            "Groupes accompagnés, acteurs compétents, mécanismes actifs, plans locaux, notes de plaidoyer, procédures et outils fonctionnels."
+          ],
+          [
+            "Effets",
+            "Pratiques relationnelles améliorées, conflits mieux traités, actions écologiques appliquées, droits mieux exercés, structures plus performantes."
+          ],
+          [
+            "Impact",
+            "À l’horizon du 31 août 2031, les personnes, familles et communautés du Diocèse de Butare vivent des relations plus justes, pacifiques et résilientes, exercent mieux leurs droits et responsabilités, protègent davantage la création et bénéficient de structures Justice et Paix crédibles, apprenantes et durables."
+          ]
+        ]
+      },
+      {
+        "index": 14,
+        "rows": [
+          [
+            "Valeur",
+            "Comportement attendu"
+          ],
+          [
+            "Dignité et amour du prochain",
+            "Accueillir chaque personne sans discrimination et protéger sa sécurité."
+          ],
+          [
+            "Pardon, unité et réconciliation",
+            "Créer les conditions d’un chemin libre, progressif et responsable."
+          ],
+          [
+            "Justice et solidarité",
+            "Accorder une attention particulière aux personnes exposées à l’exclusion."
+          ],
+          [
+            "Dialogue et empathie",
+            "Écouter les expériences, reconnaître les divergences et rechercher des solutions non violentes."
+          ],
+          [
+            "Intégrité et redevabilité",
+            "Utiliser les ressources avec transparence, rendre compte et corriger les erreurs."
+          ],
+          [
+            "Respect de la création",
+            "Évaluer l’empreinte des activités et promouvoir des pratiques écologiquement responsables."
+          ],
+          [
+            "Professionnalisme",
+            "Agir avec compétence, qualité, éthique, fiabilité, apprentissage et amélioration continue."
+          ]
+        ]
+      },
+      {
+        "index": 15,
+        "rows": [
+          [
+            "Axe",
+            "Motif du choix",
+            "Orientation de l’objectif"
+          ],
+          [
+            "1. Unité, réconciliation et résilience",
+            "Consolider le cœur historique de la CDJP et mieux mesurer guérison, confiance et résilience.",
+            "Renforcer l’unité, la réconciliation et la résilience des personnes, des familles et des communautés face aux blessures, aux divisions et aux chocs sociaux."
+          ],
+          [
+            "2. Prévention et transformation non violente des conflits",
+            "Passer d’une réponse surtout réactive à l’analyse, l’alerte, la médiation et la prévention.",
+            "Réduire l’escalade, les effets destructeurs et la répétition des conflits par une prévention et une transformation non violentes, participatives et inclusives."
+          ],
+          [
+            "3. Justice écologique",
+            "Répondre aux risques climatiques et traduire l’écologie intégrale dans l’action diocésaine.",
+            "Promouvoir l’écologie intégrale, la justice écologique et la résilience des communautés face aux risques climatiques et à la dégradation des ressources naturelles."
+          ],
+          [
+            "4. Droits humains et plaidoyer",
+            "Transformer la sensibilisation en plaidoyer documenté et suivi.",
+            "Renforcer l’exercice et la protection des droits humains ainsi que l’influence des communautés sur les décisions, les pratiques et les politiques respectueuses de la dignité humaine."
+          ],
+          [
+            "5. Développement organisationnel et renforcement des structures décentralisées",
+            "Assurer gouvernance, compétences, APSE, ressources, partenariats et durabilité.",
+            "Renforcer les capacités institutionnelles et consolider la gouvernance, l’efficacité, la redevabilité et la durabilité financière de la CDJP et de ses structures décentralisées."
+          ]
+        ]
+      },
+      {
+        "index": 16,
+        "rows": [
+          [
+            "Axe et objectif stratégique",
+            "Résultats attendus",
+            "Interventions stratégiques"
+          ],
+          [
+            "Axe 1 - Unité, réconciliation et résilience\nRenforcer l’unité, la réconciliation et la résilience des personnes, des familles et des communautés face aux blessures, aux divisions et aux chocs sociaux.",
+            "A1.R1 Le bien-être psychosocial, le sentiment de sécurité et de confiance - dans ses dimensions émotionnelle, relationnelle et physique - ainsi que la capacité d’adaptation des personnes accompagnées s’améliorent.\nA1.R2 La confiance, la solidarité et la qualité des relations au sein des familles et communautés ciblées s’améliorent.\nA1.R3 Les personnes vulnérables, y compris celles en réintégration, accèdent à un accompagnement et à des services coordonnés, sûrs et non stigmatisants.",
+            "A1.I1 Institutionnaliser un modèle diocésain intégré de guérison, réconciliation, réintégration et résilience.\nA1.I2 Organiser un continuum sûr d’écoute, d’accompagnement, de référencement et de suivi.\nA1.I3 Capitaliser et adapter les approches pastorales éprouvées, notamment les GURR et les dialogues familiaux, communautaires et intergénérationnels."
+          ],
+          [
+            "Axe 2 - Prévention et transformation non violente des conflits\nRéduire l’escalade, les effets destructeurs et la répétition des conflits par une prévention et une transformation non violentes, participatives et inclusives.",
+            "A2.R1 Les tensions et conflits à risque sont détectés plus tôt et reçoivent une réponse appropriée.\n\nA2.R2 Une proportion croissante de conflits accompagnés est transformée sans violence et les accords restent appliqués dans le temps, avec une participation effective des groupes exposés à l’exclusion.",
+            "A2.I1 Institutionnaliser un système diocésain d’analyse des conflits, d’alerte précoce, de médiation, de référencement et de suivi.\n\nA2.I2 Consolider des espaces inclusifs de dialogue et de prévention.\n\nA2.I3 Utiliser les apprentissages pour prévenir la récurrence et influencer les normes locales."
+          ],
+          [
+            "Axe 3 - Justice écologique\nPromouvoir l’écologie intégrale, la justice écologique et la résilience des communautés face aux risques climatiques et à la dégradation des ressources naturelles.",
+            "A3.R1 Les institutions pastorales et communautés ciblées adoptent des pratiques écologiques vérifiables.\nA3.R2 Les initiatives soutenues réduisent les risques socio-environnementaux prioritaires et leurs enseignements influencent les plans et décisions paroissiales ou locales.",
+            "A3.I1 Ancrer l’écologie intégrale dans la gouvernance pastorale et les Clubs Justice et Paix.\nA3.I2 Développer des portefeuilles territoriaux de réduction des risques et de résilience.\nA3.I3 Transformer les preuves communautaires en décisions paroissiales, locales et partenariales."
+          ],
+          [
+            "Axe 4 - Droits humains et plaidoyer\nRenforcer l’exercice et la protection des droits humains ainsi que l’influence des communautés sur les décisions, les pratiques et les politiques respectueuses de la dignité humaine.",
+            "A4.R1 Les personnes et communautés connaissent et utilisent mieux les voies de recours, de protection et de participation.\nA4.R2 Les priorités de plaidoyer sont définies avec les communautés et documentées par des preuves fiables et sûres.\nA4.R3 Les détenteurs d’obligations apportent davantage de réponses documentées et des changements vérifiables sont obtenus.",
+            "A4.I1 Institutionnaliser le cycle voix communautaire-preuve-plaidoyer-réponse-suivi.\nA4.I2 Améliorer l’accès effectif à l’information, aux recours et à la protection.\nA4.I3 Construire des alliances et renforcer les Clubs Justice et Paix pour obtenir des changements vérifiables."
+          ],
+          [
+            "Axe 5 - Développement organisationnel et structures décentralisées\nRenforcer les capacités institutionnelles et consolider la gouvernance, l’efficacité, la redevabilité et la durabilité financière de la CDJP et de ses structures décentralisées.",
+            "A5.R1 Les rôles, mandats, mécanismes de coordination et standards des structures Justice et Paix sont appliqués.\nA5.R2 Les données, budgets, risques et apprentissages sont reliés et utilisés dans les décisions à tous les niveaux.\nA5.R3 La CDJP diversifie ses ressources, maintient les compétences critiques et protège la qualité, la sauvegarde et la continuité de sa mission.",
+            "A5.I1 Clarifier la gouvernance, la subsidiarité et les standards de la chaîne Diocèse-CEB.\nA5.I2 Déployer un système APSE intégré aux finances, aux risques, aux apprentissages et aux décisions.\nA5.I3 Sécuriser les ressources humaines, financières, numériques et partenariales nécessaires à la continuité."
+          ]
+        ]
+      },
+      {
+        "index": 17,
+        "rows": [
+          [
+            "Priorité stratégique à décliner dans les PAO",
+            "Indicateur de mise en œuvre",
+            "Justification ou point de départ",
+            "Cible indicative au 31 août 2031"
+          ],
+          [
+            "Axe 1",
+            "",
+            "",
+            ""
+          ],
+          [
+            "A1.I1 Harmoniser le modèle diocésain de guérison, réconciliation, réintégration et résilience.",
+            "Pourcentage des structures ciblées appliquant le modèle harmonisé et les standards transversaux pertinents : sensibilité aux traumatismes, sauvegarde, principe « Ne pas nuire », inclusion, équité et non-discrimination.",
+            "Approches existantes, dont 150 GURR - groupes Isanamitima - signalés dans 16 paroisses ; fonctionnalité à vérifier.",
+            "Au moins 80 % des structures ciblées appliquent le modèle harmonisé."
+          ],
+          [
+            "A1.I2 Organiser l’écoute, l’accompagnement, le référencement et le suivi des personnes vulnérables.",
+            "Pourcentage des personnes référées ayant effectivement accédé au service approprié.",
+            "Mécanisme de référencement à structurer et baseline à établir.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A1.I3 Capitaliser et adapter les approches pastorales à partir des changements observés.",
+            "Pourcentage des participants présentant une amélioration significative du bien-être ou de la confiance.",
+            "Valeur à établir par la baseline.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "Axe 2",
+            "",
+            "",
+            ""
+          ],
+          [
+            "A2.I1 Déployer un système d’analyse des conflits, d’alerte, de médiation, de référencement et de suivi.",
+            "Délai médian entre une alerte validée et la première réponse appropriée.",
+            "Informations et mécanismes existants à inventorier.",
+            "Réduction vérifiable du délai par rapport à la baseline."
+          ],
+          [
+            "A2.I2 Consolider des espaces inclusifs de dialogue et de prévention.",
+            "Pourcentage des conflits accompagnés transformés sans violence, avec accord appliqué à 6 ou 12 mois.",
+            "Système harmonisé de suivi des cas à mettre en place.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A2.I3 Utiliser les apprentissages pour prévenir la récurrence des conflits.",
+            "Taux de récurrence des conflits accompagnés et nombre de décisions préventives documentées.",
+            "Référence à établir en AP1.",
+            "Baisse du taux de récurrence et progression des décisions préventives."
+          ],
+          [
+            "Axe 3",
+            "",
+            "",
+            ""
+          ],
+          [
+            "A3.I1 Ancrer l’écologie intégrale dans les structures pastorales et les Clubs Justice et Paix.",
+            "Pourcentage des structures ciblées satisfaisant le standard écologique minimum.",
+            "Standards et baseline à établir.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A3.I2 Soutenir des portefeuilles territoriaux de réduction des risques et de résilience.",
+            "Pourcentage des initiatives atteignant un résultat socio-environnemental vérifié.",
+            "Initiatives existantes à inventorier.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A3.I3 Utiliser les preuves communautaires dans les décisions paroissiales, locales et partenariales.",
+            "Nombre de plans ou décisions intégrant une priorité écologique documentée.",
+            "Mécanisme de documentation à établir.",
+            "Progression annuelle vérifiée."
+          ],
+          [
+            "Axe 4",
+            "",
+            "",
+            ""
+          ],
+          [
+            "A4.I1 Institutionnaliser le cycle voix communautaire-preuve-plaidoyer-réponse-suivi.",
+            "Pourcentage des priorités de plaidoyer définies avec les communautés et fondées sur des preuves conformes.",
+            "Pratiques et outils à harmoniser.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A4.I2 Améliorer l’accès à l’information, aux recours et à la protection.",
+            "Pourcentage des personnes accompagnées utilisant effectivement une voie appropriée.",
+            "Niveau d’accès à établir.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A4.I3 Construire des alliances pour obtenir des changements vérifiables.",
+            "Nombre de changements vérifiés de politique, pratique, service, budget ou décision auxquels les structures de Justice et Paix ont contribué.",
+            "Mécanisme de suivi de la contribution à établir.",
+            "Progression annuelle vérifiée."
+          ],
+          [
+            "Axe 5",
+            "",
+            "",
+            ""
+          ],
+          [
+            "A5.I1 Clarifier la gouvernance, la subsidiarité et les standards de la chaîne Diocèse-CEB.",
+            "Pourcentage des structures ciblées satisfaisant les standards fonctionnels minimums.",
+            "Mandats et fonctionnalités à actualiser.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A5.I2 Déployer un système APSE intégré aux budgets, risques, apprentissages et décisions.",
+            "Pourcentage des décisions stratégiques appuyées par des données APSE et suivies jusqu’à clôture.",
+            "Processus et outils partiellement harmonisés.",
+            "Cible validée après la baseline AP1."
+          ],
+          [
+            "A5.I3 Sécuriser les ressources nécessaires à la continuité de la mission.",
+            "Taux de couverture financière du Plan et part des financements provenant de sources diversifiées.",
+            "Baseline financière à consolider.",
+            "Cibles validées après le costing et la baseline AP1."
+          ]
+        ]
+      },
+      {
+        "index": 18,
+        "rows": [
+          [
+            "Catégorie",
+            "Risque",
+            "Indicateur d’alerte précoce",
+            "Mesures principales",
+            "Responsable"
+          ],
+          [
+            "Financier",
+            "Ressources insuffisantes",
+            "Part du budget non financée ; retards de décaissement.",
+            "Diversification, scénarios, priorisation et réserve.",
+            "Direction/Finances"
+          ],
+          [
+            "Sauvegarde",
+            "Préjudice psychosocial ou confidentialité",
+            "Incident, plainte sensible, accès non autorisé ou rupture de consentement.",
+            "Consentement, supervision, référencement, accès par rôle et réponse aux incidents.",
+            "Programmes/Sauvegarde"
+          ],
+          [
+            "Inclusion",
+            "Faible inclusion",
+            "Écarts de participation ou de résultats par sexe, âge, handicap ou zone.",
+            "Co-conception, accessibilité, ciblage et suivi désagrégé.",
+            "Axes/CPJP"
+          ],
+          [
+            "Ressources humaines",
+            "Fatigue ou rotation des bénévoles",
+            "Vacances, surcharge, abandon ou faible supervision.",
+            "Reconnaissance, coaching, mobilité, relève et charge réaliste.",
+            "Direction/CPJP"
+          ],
+          [
+            "Données",
+            "Données incomplètes ou non fiables",
+            "Retards, incohérences, taux de complétude ou score DQA sous le seuil.",
+            "Dictionnaire, contrôles, corrections et piste d’audit.",
+            "APSE"
+          ],
+          [
+            "Institutionnel",
+            "Chevauchement des structures",
+            "Mandats contradictoires, double saisie ou plaintes non résolues.",
+            "Cartographie, RACI, protocoles et plans conjoints.",
+            "Direction"
+          ],
+          [
+            "Contextuel",
+            "Chocs climatiques, sanitaires ou sécuritaires",
+            "Alerte officielle, accès perturbé ou activités suspendues.",
+            "Continuité, adaptation, sauvegardes et réserve.",
+            "Direction"
+          ],
+          [
+            "Numérique",
+            "Cybersécurité",
+            "Incident d’accès, perte de données ou échec de sauvegarde.",
+            "Droits d’accès, sauvegardes, formation et réponse.",
+            "APSE/Admin."
+          ],
+          [
+            "Plaidoyer",
+            "Sensibilité du plaidoyer",
+            "Restriction, menace, réponse hostile ou réduction de l’espace de dialogue.",
+            "Analyse, preuves, dialogue, alliances et validation.",
+            "Direction/Plaidoyer"
+          ]
+        ]
+      },
+      {
+        "index": 19,
+        "rows": [
+          [
+            "Niveau",
+            "Données",
+            "Usage"
+          ],
+          [
+            "Activité",
+            "Date, lieu, participants, produit, qualité, coût et incident.",
+            "Gestion immédiate et conformité."
+          ],
+          [
+            "Produit",
+            "Couverture, acteurs formés, mécanismes, outils ou services réalisés.",
+            "Suivi trimestriel de l’exécution."
+          ],
+          [
+            "Effets intermédiaires et finaux",
+            "Évolution des connaissances, attitudes et pratiques; confiance entre groupes; recours aux mécanismes de médiation; collaboration; réponse institutionnelle; fonctionnement des structures.",
+            "Apprécier les changements et adapter les stratégies."
+          ],
+          [
+            "Données de gestion",
+            "Finances, risques, ressources humaines, partenariats, qualité et conformité.",
+            "Piloter les ressources et maîtriser les risques; l’apprentissage constitue un usage transversal de toutes les données."
+          ],
+          [
+            "Finance et risque",
+            "Dépenses, prévisions, ressources, risques et mesures.",
+            "Arbitrage, contrôle et continuité."
+          ],
+          [
+            "Impact",
+            "Évolution durable de la justice, de la paix, de l’inclusion, de la résilience communautaire et de la crédibilité institutionnelle.",
+            "Apprécier la contribution du Plan à la vision de long terme."
+          ]
+        ]
+      },
+      {
+        "index": 20,
+        "rows": [
+          [
+            "Fréquence",
+            "Mécanisme",
+            "Décision attendue",
+            "Responsable/lead"
+          ],
+          [
+            "Continu",
+            "Registres, KoboToolbox et fiches de référencement.",
+            "Action immédiate, suivi des participants et alertes.",
+            "Structures décentralisées / responsables d’axes"
+          ],
+          [
+            "Mensuel",
+            "Réunion d’équipe et suivi des décisions.",
+            "Coordination, résolution des blocages et prévisions.",
+            "Responsables d’axes / APSE"
+          ],
+          [
+            "Trimestriel",
+            "Rapport intégré programme-finance-risque.",
+            "Mesures correctives, réallocation limitée et appui ciblé.",
+            "Direction / responsables d’axes"
+          ],
+          [
+            "Semestriel",
+            "Revue de qualité et apprentissage.",
+            "Adaptation des méthodes et renforcement des capacités.",
+            "Direction / APSE / Finances"
+          ],
+          [
+            "Annuel",
+            "Revue stratégique participative.",
+            "Validation des résultats et plan/budget suivants.",
+            "Direction / Autorité diocésaine"
+          ],
+          [
+            "Jan.-mars 2029",
+            "Évaluation à mi-parcours.",
+            "Ajustements substantiels du Plan.",
+            "Direction / évaluateur"
+          ],
+          [
+            "Avr.-juil. 2031",
+            "Évaluation finale.",
+            "Redevabilité, durabilité et prochain cycle.",
+            "Direction / Autorité diocésaine"
+          ]
+        ]
+      },
+      {
+        "index": 21,
+        "rows": [
+          [
+            "Processus",
+            "Responsable",
+            "Redevable",
+            "Consulté / informé"
+          ],
+          [
+            "Validation du Plan et révision majeure",
+            "Direction CDJP",
+            "Autorité diocésaine",
+            "CEJP, équipe, paroisses et partenaires."
+          ],
+          [
+            "Plan et budget annuels",
+            "Direction / Finances / Axes",
+            "Gouvernance compétente",
+            "CPJP, APSE et partenaires."
+          ],
+          [
+            "Mise en œuvre technique",
+            "Responsables d’axes / CPJP",
+            "Direction",
+            "Services spécialisés et communautés."
+          ],
+          [
+            "Qualité des données",
+            "APSE",
+            "Direction",
+            "Producteurs de données et responsables d’axes."
+          ],
+          [
+            "Sauvegarde et incidents",
+            "Point focal / responsable désigné",
+            "Direction",
+            "Services compétents selon protocole."
+          ],
+          [
+            "Partenariats et plaidoyer",
+            "Direction / responsable plaidoyer",
+            "Présidence",
+            "CEJP, autorités, communautés."
+          ],
+          [
+            "Rapportage",
+            "APSE / Finances",
+            "Direction",
+            "Axes, CPJP et partenaires."
+          ]
+        ]
+      },
+      {
+        "index": 22,
+        "rows": [
+          [
+            "Domaine",
+            "Priorités AP1-AP2 (2026/27-2027/28)",
+            "Résultat 2031"
+          ],
+          [
+            "Gouvernance",
+            "Actualiser organigramme, mandats, délégations, procédures et calendrier des organes.",
+            "Rôles clairs, décisions traçables et supervision active."
+          ],
+          [
+            "Ressources humaines",
+            "Cartographier les compétences, clarifier les fiches de poste et déployer formation/coaching.",
+            "Compétences adaptées aux cinq axes et meilleure continuité."
+          ],
+          [
+            "APSE et données",
+            "Baseline, dictionnaire, outils intégrés, contrôles qualité et tableau de bord.",
+            "Données fiables, protégées et utilisées."
+          ],
+          [
+            "Numérique",
+            "Clarifier l’architecture numérique de l’APSE, intégrer KoboToolbox et Google Drive, sécuriser les accès et former les utilisateurs.",
+            "Écosystème cohérent, accessible et sécurisé."
+          ],
+          [
+            "Finances",
+            "Budgets par résultats, coûts unitaires, prévisions, contrôle interne et audits.",
+            "Décisions prévisibles et confiance renforcée."
+          ],
+          [
+            "Bénévolat",
+            "Politique de recrutement, encadrement, motivation, mobilité, relève et reconnaissance.",
+            "Réseau actif, inclusif et durable."
+          ],
+          [
+            "Sauvegarde",
+            "Politiques, points focaux, mécanisme de plainte, référencement et suivi des incidents.",
+            "Risques mieux prévenus et réponses cohérentes."
+          ],
+          [
+            "Connaissances",
+            "Revues, capitalisation, bibliothèque, communautés de pratique et diffusion.",
+            "Apprentissages accessibles et réutilisés."
+          ]
+        ]
+      },
+      {
+        "index": 23,
+        "rows": [
+          [
+            "Composante",
+            "Part indicative de T"
+          ],
+          [
+            "Axe 1 - Unité, réconciliation et résilience",
+            "25 %"
+          ],
+          [
+            "Axe 2 - Prévention/résolution des conflits",
+            "20 %"
+          ],
+          [
+            "Axe 3 - Justice écologique",
+            "15 %"
+          ],
+          [
+            "Axe 4 - Plaidoyer et droits humains",
+            "15 %"
+          ],
+          [
+            "Axe 5 - Développement organisationnel",
+            "18 %"
+          ],
+          [
+            "Évaluations indépendantes, audits et réserve",
+            "7 %"
+          ],
+          [
+            "TOTAL",
+            "100 %"
+          ]
+        ]
+      },
+      {
+        "index": 24,
+        "rows": [
+          [
+            "Intervention / activité-type à reclasser dans le costing",
+            "AP1 2026/27",
+            "AP2 2027/28",
+            "AP3 2028/29",
+            "AP4 2029/30",
+            "AP5 2030/31",
+            "Total indicatif"
+          ],
+          [
+            "Consolider les GURR, les cercles restauratifs et les espaces sûrs",
+            "39",
+            "52",
+            "57",
+            "57",
+            "55",
+            "260"
+          ],
+          [
+            "Former et accompagner les structures décentralisées à l’écoute, à la sensibilité aux traumatismes et au référencement",
+            "48",
+            "40",
+            "32",
+            "24",
+            "16",
+            "160"
+          ],
+          [
+            "Organiser des dialogues familiaux, communautaires et intergénérationnels",
+            "27",
+            "36",
+            "40",
+            "40",
+            "37",
+            "180"
+          ],
+          [
+            "Actualiser la cartographie des personnes vulnérables et renforcer les mécanismes d’accompagnement et de référencement",
+            "42",
+            "30",
+            "18",
+            "18",
+            "12",
+            "120"
+          ],
+          [
+            "Capitaliser, partager et adapter les approches de guérison et de réconciliation",
+            "8",
+            "12",
+            "16",
+            "20",
+            "24",
+            "80"
+          ],
+          [
+            "Sous-total Axe 1 - Unité, guérison, réconciliation et résilience",
+            "164",
+            "170",
+            "163",
+            "159",
+            "144",
+            "800"
+          ],
+          [
+            "Sensibiliser les communautés à une compréhension constructive des conflits",
+            "22",
+            "24",
+            "24",
+            "22",
+            "18",
+            "110"
+          ],
+          [
+            "Former les structures décentralisées et les acteurs locaux à l’analyse, au dialogue et à la médiation",
+            "51",
+            "42",
+            "34",
+            "26",
+            "17",
+            "170"
+          ],
+          [
+            "Accompagner les mécanismes locaux de dialogue, de médiation, d’écoute et de référencement",
+            "33",
+            "44",
+            "48",
+            "48",
+            "47",
+            "220"
+          ],
+          [
+            "Développer des mécanismes d’alerte précoce, de suivi des cas et de protection des personnes",
+            "39",
+            "32",
+            "26",
+            "20",
+            "13",
+            "130"
+          ],
+          [
+            "Documenter les changements et organiser les échanges d’apprentissage entre les structures",
+            "7",
+            "10",
+            "14",
+            "18",
+            "21",
+            "70"
+          ],
+          [
+            "Sous-total Axe 2 - Prévention et transformation non violente des conflits",
+            "152",
+            "152",
+            "146",
+            "134",
+            "116",
+            "700"
+          ],
+          [
+            "Former le personnel et les bénévoles aux fondements de l’écologie intégrale et de la justice écologique",
+            "36",
+            "27",
+            "14",
+            "9",
+            "4",
+            "90"
+          ],
+          [
+            "Élaborer et diffuser un module pratique d’écologie intégrale",
+            "30",
+            "18",
+            "6",
+            "3",
+            "3",
+            "60"
+          ],
+          [
+            "Réaliser une analyse participative des besoins, pratiques, risques et possibilités d’action",
+            "32",
+            "18",
+            "10",
+            "7",
+            "3",
+            "70"
+          ],
+          [
+            "Soutenir, suivre et capitaliser des initiatives écologiques pilotes",
+            "56",
+            "84",
+            "70",
+            "42",
+            "28",
+            "280"
+          ],
+          [
+            "Sous-total Axe 3 - Justice écologique et écologie intégrale",
+            "154",
+            "147",
+            "100",
+            "61",
+            "38",
+            "500"
+          ],
+          [
+            "Développer l’éducation aux droits humains et aux responsabilités",
+            "25",
+            "29",
+            "31",
+            "29",
+            "26",
+            "140"
+          ],
+          [
+            "Renforcer la documentation sûre, la protection des données et le référencement",
+            "36",
+            "30",
+            "24",
+            "18",
+            "12",
+            "120"
+          ],
+          [
+            "Élaborer des agendas de plaidoyer et des dossiers fondés sur les données",
+            "22",
+            "22",
+            "18",
+            "14",
+            "14",
+            "90"
+          ],
+          [
+            "Conduire le dialogue et le plaidoyer et assurer le suivi des réponses et changements obtenus",
+            "26",
+            "34",
+            "37",
+            "37",
+            "36",
+            "170"
+          ],
+          [
+            "Renforcer les alliances, la communication et la capitalisation sur les droits humains",
+            "12",
+            "16",
+            "16",
+            "16",
+            "20",
+            "80"
+          ],
+          [
+            "Sous-total Axe 4 - Promotion des droits humains et plaidoyer",
+            "121",
+            "131",
+            "126",
+            "114",
+            "108",
+            "600"
+          ],
+          [
+            "Renforcer la gouvernance et la coordination Diocèse-Paroisses-Centrales-CEB",
+            "36",
+            "30",
+            "24",
+            "18",
+            "12",
+            "120"
+          ],
+          [
+            "Harmoniser la planification, la budgétisation, l’APSE, le rapportage et la gestion des risques",
+            "63",
+            "45",
+            "32",
+            "22",
+            "18",
+            "180"
+          ],
+          [
+            "Renforcer les capacités du personnel, des bénévoles et des structures décentralisées",
+            "38",
+            "38",
+            "30",
+            "22",
+            "22",
+            "150"
+          ],
+          [
+            "Développer les partenariats existants et diversifier les ressources",
+            "24",
+            "24",
+            "24",
+            "24",
+            "24",
+            "120"
+          ],
+          [
+            "Déployer une communication interne et externe cohérente, efficace et responsable",
+            "25",
+            "20",
+            "20",
+            "20",
+            "15",
+            "100"
+          ],
+          [
+            "Actualiser et appliquer les politiques institutionnelles essentielles",
+            "32",
+            "20",
+            "12",
+            "8",
+            "8",
+            "80"
+          ],
+          [
+            "Sous-total Axe 5 - Développement organisationnel",
+            "218",
+            "177",
+            "142",
+            "114",
+            "99",
+            "750"
+          ],
+          [
+            "Budget total du plan",
+            "809",
+            "777",
+            "677",
+            "582",
+            "505",
+            "3 350"
+          ]
+        ]
+      },
+      {
+        "index": 25,
+        "rows": [
+          [
+            "Année et phase",
+            "Progression des cinq axes stratégiques",
+            "Chantiers institutionnels et transversaux",
+            "Principaux jalons ou résultats attendus"
+          ],
+          [
+            "AP1 2026/27 - Baseline, installation APSE et lancement contrôlé",
+            "Axes 1, 2 et 4 : consolider les approches existantes de guérison, de réconciliation, de transformation non violente des conflits et de promotion des droits humains. \nAxe 3 : familiariser le personnel et les bénévoles avec l’écologie intégrale, analyser les besoins avec les structures décentralisées et identifier des initiatives pilotes réalistes. \nAxe 5 : mettre en place les conditions institutionnelles nécessaires à l’exécution du Plan.",
+            "Communiquer et vulgariser le Plan ; préciser les responsabilités ; établir ou actualiser les données de référence ; élaborer les plans d’action et budgets annuels ; harmoniser les outils prioritaires ; mettre en place le dispositif APSE minimum ; cartographier les partenaires et les ressources disponibles ; renforcer les compétences initiales.",
+            "Plan diffusé et compris ; \nResponsabilités attribuées ;\n Plan d’action et budget 2026 disponibles ; \nValeurs de référence prioritaires établies ou programmées ; \nOutils essentiels harmonisés ; \nMécanisme de suivi fonctionnel ; \nBesoins de renforcement des capacités identifiés ;\nPremières initiatives de l’axe 3 sélectionnées de manière participative."
+          ],
+          [
+            "AP2 2027/28 - Consolidation, qualité et extension sélective",
+            "Déployer les interventions prioritaires des cinq axes dans les zones retenues. Consolider les approches de proximité des axes 1 et 2 ; mettre en œuvre les premières initiatives écologiques de l’axe 3 ; structurer les agendas et produits de plaidoyer de l’axe 4 ; appliquer les mesures prioritaires de gouvernance, de communication et de mobilisation des ressources de l’axe 5.",
+            "Renforcer les structures décentralisées ; assurer la supervision et le coaching ; opérationnaliser les mécanismes de feedback et de plainte ; développer les partenariats existants ; lancer la stratégie de mobilisation et de diversification des ressources ; améliorer la qualité des données et des rapports.",
+            "Les cinq axes disposent d’interventions actives ; \nLes structures ciblées utilisent les outils harmonisés ; \nLes premières initiatives écologiques sont mises en œuvre et documentées ; \nLes priorités de plaidoyer sont établies ; \nLes mécanismes de redevabilité sont fonctionnels ; \nLes partenariats et financements prioritaires progressent."
+          ],
+          [
+            "AP3 2028/29 - Mi-parcours, adaptation et renforcement des effets",
+            "Consolider les interventions démontrant leur pertinence et leur qualité. Approfondir les résultats liés à la guérison, aux relations, à la transformation des conflits, aux pratiques écologiques, à la protection des droits et au fonctionnement des structures.",
+            "Réaliser l’évaluation à mi-parcours ; analyser les données quantitatives et qualitatives ; examiner la qualité, l’inclusion, les risques et l’efficience ; renforcer les capacités insuffisantes ; ajuster les partenariats, les budgets, les indicateurs et les modalités de mise en œuvre.",
+            "Revue à mi-parcours réalisée ; \nProgrès, écarts et enseignements documentés ;\nInterventions non pertinentes ajustées ou abandonnées ;\nInterventions efficaces consolidées ; \nCibles et allocations révisées lorsque nécessaire ; \nPlan de renforcement institutionnel actualisé."
+          ],
+          [
+            "AP4 2029/30 - Mise à l’échelle fondée sur les preuves et influence",
+            "Étendre progressivement les interventions ayant produit des résultats convaincants, sans compromettre leur qualité. Renforcer les liens entre les cinq axes, notamment entre guérison, transformation des conflits, droits humains, écologie intégrale et résilience institutionnelle.",
+            "Capitaliser les pratiques efficaces ; organiser des échanges entre paroisses, Centrales et CEB ; produire des études de cas et des récits de changement ; renforcer les produits de plaidoyer ; consolider les partenariats pluriannuels ; accroître la diversification des ressources.",
+            "Approches efficaces documentées et diffusées ; \nExtension fondée sur des critères de qualité et de besoin ; \nApprentissages partagés entre structures ; \nProduits de plaidoyer utilisés dans le dialogue institutionnel ;\nPartenariats stratégiques renforcés ; \nPart des ressources diversifiées en progression."
+          ],
+          [
+            "AP5 2030/31 - Pérennisation, évaluation finale et transition",
+            "Consolider les résultats des cinq axes et les mécanismes permettant leur continuité. Préparer le transfert ou la poursuite des interventions efficaces par les structures compétentes.",
+            "Réaliser l’évaluation finale ; mesurer les résultats et la contribution à l’impact ; documenter les enseignements ; apprécier la durabilité institutionnelle et financière ; organiser la restitution et la redevabilité ; préparer le prochain cycle stratégique.",
+            "Évaluation finale achevée ; \nRésultats et enseignements consolidés ;\nMécanismes durables identifiés ;\nEngagements de continuité documentés ; \nBilan du Plan partagé avec les communautés et partenaires ;\nOrientations du prochain Plan stratégique définies."
+          ]
+        ]
+      },
+      {
+        "index": 26,
+        "rows": [
+          [
+            "Code",
+            "Résultat",
+            "Indicateur principal",
+            "Référence AP1",
+            "Cible 2031",
+            "Source"
+          ],
+          [
+            "A1.R1",
+            "Le bien-être psychosocial, le sentiment de sécurité et de confiance - dans ses dimensions émotionnelle, relationnelle et physique - ainsi que la capacité d’adaptation des personnes accompagnées s’améliorent.",
+            "Pourcentage des participants présentant une amélioration significative du bien-être psychosocial.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A1.R2",
+            "La confiance, la solidarité et la qualité des relations au sein des familles et communautés ciblées s’améliorent.",
+            "Pourcentage des communautés ciblées présentant une amélioration de l’indice de confiance et de solidarité.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A1.R3",
+            "Les personnes vulnérables, y compris celles en réintégration, accèdent à un accompagnement et à des services coordonnés, sûrs et non stigmatisants.",
+            "Pourcentage des personnes référées ayant effectivement accédé au service approprié.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ]
+        ]
+      },
+      {
+        "index": 27,
+        "rows": [
+          [
+            "Code",
+            "Résultat",
+            "Indicateur principal",
+            "Référence AP1",
+            "Cible 2031",
+            "Source"
+          ],
+          [
+            "A2.R1",
+            "Les tensions et conflits à risque sont détectés plus tôt et reçoivent une réponse appropriée.",
+            "Délai médian entre une alerte validée et la première réponse appropriée.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A2.R2",
+            "Une proportion croissante de conflits accompagnés est transformée sans violence et les accords restent appliqués dans le temps, avec une participation effective des groupes exposés à l’exclusion.",
+            "Pourcentage des conflits accompagnés transformés sans violence dont l’accord reste appliqué à 6 ou 12 mois.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ]
+        ]
+      },
+      {
+        "index": 28,
+        "rows": [
+          [
+            "Code",
+            "Résultat",
+            "Indicateur principal",
+            "Référence AP1",
+            "Cible 2031",
+            "Source"
+          ],
+          [
+            "A3.R1",
+            "Les institutions pastorales et communautés ciblées adoptent des pratiques écologiques vérifiables.",
+            "Pourcentage des structures ciblées satisfaisant le standard écologique minimum.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A3.R2",
+            "Les initiatives soutenues réduisent les risques socio-environnementaux prioritaires et leurs enseignements influencent les plans et décisions paroissiales ou locales.",
+            "Pourcentage des initiatives atteignant un résultat vérifié de réduction des risques ; nombre de plans ou décisions influencés.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ]
+        ]
+      },
+      {
+        "index": 29,
+        "rows": [
+          [
+            "Code",
+            "Résultat",
+            "Indicateur principal",
+            "Référence AP1",
+            "Cible 2031",
+            "Source"
+          ],
+          [
+            "A4.R1",
+            "Les personnes et communautés connaissent et utilisent mieux les voies de recours, de protection et de participation.",
+            "Pourcentage des personnes accompagnées utilisant effectivement une voie appropriée.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A4.R2",
+            "Les priorités de plaidoyer sont définies avec les communautés et documentées par des preuves fiables et sûres.",
+            "Pourcentage des priorités de plaidoyer définies avec les communautés et étayées par des preuves conformes.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A4.R3",
+            "Les détenteurs d’obligations apportent davantage de réponses documentées et obtiennent des changements vérifiables.",
+            "Nombre de changements vérifiés auxquels les structures de Justice et Paix ont contribué.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ]
+        ]
+      },
+      {
+        "index": 30,
+        "rows": [
+          [
+            "Code",
+            "Résultat",
+            "Indicateur principal",
+            "Référence AP1",
+            "Cible 2031",
+            "Source"
+          ],
+          [
+            "A5.R1",
+            "Les rôles, mandats, mécanismes de coordination et standards des structures Justice et Paix sont appliqués.",
+            "Pourcentage des CPJP ciblées satisfaisant les standards fonctionnels minimums.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A5.R2",
+            "Les données, budgets, risques et apprentissages sont reliés et utilisés dans les décisions à tous les niveaux.",
+            "Pourcentage des décisions stratégiques appuyées par des données APSE et suivies jusqu’à clôture.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ],
+          [
+            "A5.R3",
+            "La CDJP diversifie ses ressources, maintient les compétences critiques et protège la qualité, la sauvegarde et la continuité de sa mission.",
+            "Taux de couverture financière du Plan et part des financements provenant de sources diversifiées.",
+            "À établir sept.-nov. 2026",
+            "À valider après baseline",
+            "Fiche KPI APSE"
+          ]
+        ]
+      },
+      {
+        "index": 31,
+        "rows": [
+          [
+            "Code résultat",
+            "Activité",
+            "Indicateur/cible",
+            "Lieu/période",
+            "Responsable",
+            "Budget/source",
+            "Risque/mesure"
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ]
+        ]
+      },
+      {
+        "index": 32,
+        "rows": [
+          [
+            "KPI",
+            "Intitulé",
+            "Baseline",
+            "AP1",
+            "AP2",
+            "AP3",
+            "AP4",
+            "AP5",
+            "Fréquence"
+          ],
+          [
+            "A1-K1",
+            "Pourcentage des participants présentant une amélioration significative du bien-être psychosocial.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A1-K2",
+            "Pourcentage des communautés ciblées présentant une amélioration de l’indice de confiance et de solidarité.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A1-K3",
+            "Pourcentage des personnes référées ayant effectivement accédé au service approprié.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A2-K1",
+            "Délai médian entre une alerte validée et la première réponse appropriée.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A2-K2",
+            "Pourcentage des conflits accompagnés transformés sans violence dont l’accord reste appliqué à 6 ou 12 mois.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A3-K1",
+            "Pourcentage des structures ciblées satisfaisant le standard écologique minimum.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A3-K2",
+            "Pourcentage des initiatives atteignant un résultat vérifié de réduction des risques ; nombre de plans ou décisions influencés.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A4-K1",
+            "Pourcentage des personnes accompagnées utilisant effectivement une voie appropriée.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A4-K2",
+            "Pourcentage des priorités de plaidoyer définies avec les communautés et soutenues par des preuves conformes.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A4-K3",
+            "Nombre de changements vérifiés auxquels les structures de Justice et Paix ont contribué.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A5-K1",
+            "Pourcentage des CPJP ciblées satisfaisant les standards fonctionnels minimums.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A5-K2",
+            "Pourcentage des décisions stratégiques appuyées par des données APSE et suivies jusqu’à clôture.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ],
+          [
+            "A5-K3",
+            "Taux de couverture financière du Plan et part des financements provenant de sources diversifiées.",
+            "À établir",
+            "Baseline/système",
+            "Amélioration",
+            "Mi-parcours",
+            "Maintien/extension",
+            "Cible finale",
+            "Selon fiche KPI"
+          ]
+        ]
+      },
+      {
+        "index": 33,
+        "rows": [
+          [
+            "Code",
+            "Module",
+            "Contenu minimum"
+          ],
+          [
+            "M01",
+            "Référentiel institutionnel",
+            "Diocèse, CDJP, paroisse, CPJP, Centrale, CEB, groupe, école et partenaire."
+          ],
+          [
+            "M02",
+            "Cadre de résultats",
+            "Impact, objectifs, effets, produits, interventions, activités, KPI, références et cibles."
+          ],
+          [
+            "M03",
+            "Planification et budget",
+            "AP1-AP5, activité, unité, quantité, coût unitaire, source, acquis/gap et contribution locale."
+          ],
+          [
+            "M04",
+            "Participation et couverture",
+            "Consentement, sexe, âge, handicap, catégorie, localisation et participation."
+          ],
+          [
+            "M05",
+            "Parcours et référencement",
+            "Besoin, risque, service, accès effectif, suivi, clôture et restriction."
+          ],
+          [
+            "M06",
+            "Conflits, médiation et alerte",
+            "Cause, parties codées, risque, alerte, réponse, accord, suivi et récurrence."
+          ],
+          [
+            "M07",
+            "Guérison, cohésion et résilience",
+            "Bien-être, confiance, sécurité relationnelle et suivi longitudinal."
+          ],
+          [
+            "M08",
+            "Justice écologique",
+            "Risque, baseline, initiative, pratique, résultat et durabilité."
+          ],
+          [
+            "M09",
+            "Plaidoyer et influence",
+            "Preuve, demande, détenteur d’obligation, réponse, changement et contribution."
+          ],
+          [
+            "M10",
+            "Compétences",
+            "Besoin, avant/après, coaching et preuve d’application à 3-6 mois."
+          ],
+          [
+            "M11",
+            "Risques et sauvegarde",
+            "Score, alerte, incident, mesure, propriétaire et clôture."
+          ],
+          [
+            "M12",
+            "Feedback et plaintes",
+            "Canal, sensibilité, réponse, délai, satisfaction et tendance."
+          ],
+          [
+            "M13",
+            "Partenariats et ressources",
+            "Engagement, financement, échéance, risque et stratégie de sortie."
+          ],
+          [
+            "M14",
+            "Qualité des données",
+            "Contrôles, corrections, DQA, piste d’audit, accès, conservation et destruction."
+          ],
+          [
+            "M15",
+            "Décisions et apprentissage",
+            "Preuve, décision, responsable, échéance, statut, question et usage."
+          ],
+          [
+            "M16",
+            "Évaluations",
+            "Baseline, mi-parcours, finale, capitalisation et suivi des recommandations."
+          ],
+          [
+            "M17",
+            "Alignement",
+            "Source officielle, lien, contribution, écart, décision et cadre successeur."
+          ]
+        ]
+      },
+      {
+        "index": 34,
+        "rows": [
+          [
+            "Niveau",
+            "Orientations descendantes",
+            "Résultats remontants",
+            "Validation / contrôle"
+          ],
+          [
+            "Diocèse",
+            "Vision, mandat, priorités et arbitrages",
+            "Tableau de bord, risques et apprentissages",
+            "Approbation et supervision finale"
+          ],
+          [
+            "CDJP",
+            "Standards, portefeuilles, outils et appui",
+            "Analyse, budget, qualité et adaptations",
+            "Pilotage et consolidation"
+          ],
+          [
+            "Paroisse / CPJP",
+            "Contextualisation et priorités locales",
+            "Résultats validés et décisions locales",
+            "Validation contextuelle"
+          ],
+          [
+            "Centrale",
+            "Consignes et accompagnement",
+            "Complétude, cohérence et corrections",
+            "Contrôle de premier niveau"
+          ],
+          [
+            "CEB",
+            "Collecte minimale, écoute et feedback",
+            "Alertes, observations et résultats locaux",
+            "Accès limité selon mandat"
+          ],
+          [
+            "Communautés",
+            "Information, critères et recours",
+            "Voix, consentement, feedback et co-analyse",
+            "Participation ; non validation institutionnelle"
+          ]
+        ]
+      },
+      {
+        "index": 35,
+        "rows": [
+          [
+            "Code",
+            "Période",
+            "Fonction dominante",
+            "Évaluation / décision"
+          ],
+          [
+            "AP1",
+            "01/09/2026-31/08/2027",
+            "Baseline, installation APSE, costing et lancement contrôlé",
+            "Baseline sept.-nov. 2026 ; cibles et budget validés"
+          ],
+          [
+            "AP2",
+            "01/09/2027-31/08/2028",
+            "Consolidation, qualité, apprentissage et extension sélective",
+            "Revue annuelle"
+          ],
+          [
+            "AP3",
+            "01/09/2028-31/08/2029",
+            "Mi-parcours, adaptation et renforcement des effets",
+            "Évaluation janv.-mars 2029"
+          ],
+          [
+            "AP4",
+            "01/09/2029-31/08/2030",
+            "Mise à l’échelle fondée sur les preuves et influence",
+            "Intégration cadres successeurs"
+          ],
+          [
+            "AP5",
+            "01/09/2030-31/08/2031",
+            "Pérennisation, finale, capitalisation et transition",
+            "Évaluation avr.-juil. 2031"
+          ]
+        ]
+      }
+    ]
+  }
+}

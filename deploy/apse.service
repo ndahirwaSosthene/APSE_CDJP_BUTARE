@@ -1,0 +1,20 @@
+[Unit]
+Description=CDJP Butare APSE workflow service
+After=network.target
+[Service]
+Type=simple
+User=apse
+Group=apse
+WorkingDirectory=/opt/apse/service
+EnvironmentFile=/etc/apse/apse.env
+ExecStart=/opt/apse/venv/bin/python /opt/apse/service/server.py
+Restart=on-failure
+RestartSec=5
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/apse
+[Install]
+WantedBy=multi-user.target

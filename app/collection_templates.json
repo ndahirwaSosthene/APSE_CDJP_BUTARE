@@ -1,0 +1,171 @@
+[
+  {
+    "code": "C_RELEASED_01",
+    "label": {
+      "rw": "Gukurikirana abavuye muri gereza",
+      "en": "Released prisoner follow-up",
+      "fr": "Suivi des personnes libérées de prison",
+      "sw": "Ufuatiliaji wa walioachiliwa kutoka gerezani"
+    },
+    "sensitive": true,
+    "defaultLanguage": "rw",
+    "questions": [
+      {
+        "code": "case_code",
+        "type": "TEXT",
+        "label": {
+          "rw": "Kode y’umuntu (nta mazina)",
+          "en": "Case code (no names)",
+          "fr": "Code du dossier (sans noms)",
+          "sw": "Msimbo wa jalada (bila majina)"
+        },
+        "required": true
+      },
+      {
+        "code": "release_date",
+        "type": "DATE",
+        "label": {
+          "rw": "Itariki yarekuwe",
+          "en": "Release date",
+          "fr": "Date de libération",
+          "sw": "Tarehe ya kuachiliwa"
+        },
+        "required": false
+      },
+      {
+        "code": "support",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Ubufasha bwatanzwe / bukenewe",
+          "en": "Support provided / needed",
+          "fr": "Appui fourni / nécessaire",
+          "sw": "Msaada uliotolewa / unaohitajika"
+        },
+        "required": true
+      },
+      {
+        "code": "referral",
+        "type": "TEXT",
+        "label": {
+          "rw": "Kode y’aho yoherejwe",
+          "en": "Referral reference",
+          "fr": "Référence d’orientation",
+          "sw": "Rejea ya rufaa"
+        },
+        "required": false
+      },
+      {
+        "code": "facts",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Ibyabaye byagenzuwe (nta mazina)",
+          "en": "Verified facts (no names)",
+          "fr": "Faits vérifiés (sans noms)",
+          "sw": "Ukweli uliohakikiwa (bila majina)"
+        },
+        "required": true
+      },
+      {
+        "code": "learning",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Amasomo twakuyemo",
+          "en": "Lessons learned",
+          "fr": "Leçons apprises",
+          "sw": "Mafunzo tuliyopata"
+        },
+        "required": false
+      },
+      {
+        "code": "next_action",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Igikorwa gikurikira",
+          "en": "Next action",
+          "fr": "Prochaine action",
+          "sw": "Hatua inayofuata"
+        },
+        "required": false
+      }
+    ]
+  },
+  {
+    "code": "C_FIELD_01",
+    "label": {
+      "rw": "Raporo y’ibyabereye ku gikorwa",
+      "en": "Direct field activity report",
+      "fr": "Rapport direct d’activité sur le terrain",
+      "sw": "Ripoti ya moja kwa moja ya shughuli za uwandani"
+    },
+    "sensitive": false,
+    "defaultLanguage": "rw",
+    "questions": [
+      {
+        "code": "location",
+        "type": "TEXT",
+        "label": {
+          "rw": "Aho byabereye",
+          "en": "Location",
+          "fr": "Lieu",
+          "sw": "Mahali"
+        },
+        "required": true
+      },
+      {
+        "code": "activity_date",
+        "type": "DATE",
+        "label": {
+          "rw": "Itariki y’igikorwa",
+          "en": "Activity date",
+          "fr": "Date de l’activité",
+          "sw": "Tarehe ya shughuli"
+        },
+        "required": true
+      },
+      {
+        "code": "outputs",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Ibyakozwe n’umusaruro wabonetse",
+          "en": "Activities and outputs achieved",
+          "fr": "Activités et produits réalisés",
+          "sw": "Shughuli na matokeo yaliyopatikana"
+        },
+        "required": true
+      },
+      {
+        "code": "facts",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Ibyabaye byagenzuwe (nta mazina)",
+          "en": "Verified facts (no names)",
+          "fr": "Faits vérifiés (sans noms)",
+          "sw": "Ukweli uliohakikiwa (bila majina)"
+        },
+        "required": true
+      },
+      {
+        "code": "learning",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Amasomo twakuyemo",
+          "en": "Lessons learned",
+          "fr": "Leçons apprises",
+          "sw": "Mafunzo tuliyopata"
+        },
+        "required": false
+      },
+      {
+        "code": "next_action",
+        "type": "LONG_TEXT",
+        "label": {
+          "rw": "Igikorwa gikurikira",
+          "en": "Next action",
+          "fr": "Prochaine action",
+          "sw": "Hatua inayofuata"
+        },
+        "required": false
+      }
+    ]
+  }
+]

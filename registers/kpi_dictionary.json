@@ -1,0 +1,562 @@
+[
+  {
+    "code": "A1-K1",
+    "label": {
+      "en": "Psychosocial wellbeing improvement",
+      "fr": "Amélioration du bien-être psychosocial",
+      "rw": "Iterambere ry’imibereho myiza yo mu mutima",
+      "sw": "Kuimarika kwa ustawi wa kisaikolojia"
+    },
+    "kind": "rate",
+    "numerator": "Paired participants reaching the approved post–pre threshold",
+    "denominator": "Participants with valid paired measurements",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A1-K2",
+    "label": {
+      "en": "Community trust improvement",
+      "fr": "Amélioration de la confiance communautaire",
+      "rw": "Iterambere ry’icyizere mu baturage",
+      "sw": "Kuimarika kwa uaminifu katika jamii"
+    },
+    "kind": "rate",
+    "numerator": "Communities reaching approved trust-change threshold",
+    "denominator": "Communities with valid paired measurements",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A1-K3",
+    "label": {
+      "en": "Confirmed service access",
+      "fr": "Accès confirmé aux services",
+      "rw": "Abonye serivisi byemejwe",
+      "sw": "Ufikiaji wa huduma uliothibitishwa"
+    },
+    "kind": "rate",
+    "numerator": "Eligible referrals with confirmed access",
+    "denominator": "Eligible referrals",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A2-K1",
+    "label": {
+      "en": "Median alert response time",
+      "fr": "Délai médian de réponse aux alertes",
+      "rw": "Igihe cyo hagati cyo gusubiza impuruza",
+      "sw": "Muda wa kati wa kujibu tahadhari"
+    },
+    "kind": "median",
+    "numerator": "Hours from alert validation to appropriate response",
+    "denominator": "Median of individual durations; never sum or mean of medians",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A2-K2",
+    "label": {
+      "en": "Sustained mediation agreements",
+      "fr": "Accords de médiation durables",
+      "rw": "Amasezerano y’ubuhuza akomeje kubahirizwa",
+      "sw": "Makubaliano endelevu ya usuluhishi"
+    },
+    "kind": "rate",
+    "numerator": "Agreements applied at due 6/12 month follow-up",
+    "denominator": "Agreements due for follow-up",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A3-K1",
+    "label": {
+      "en": "Structures meeting ecological standard",
+      "fr": "Structures conformes au standard écologique",
+      "rw": "Inzego zujuje igipimo cy’ibidukikije",
+      "sw": "Vitengo vinavyofikia kiwango cha kiikolojia"
+    },
+    "kind": "rate",
+    "numerator": "Structures meeting approved ecological standard",
+    "denominator": "Structures assessed",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A3-K2",
+    "label": {
+      "en": "Verified ecological risk reduction",
+      "fr": "Réduction vérifiée du risque écologique",
+      "rw": "Igabanuka ry’ibyago ku bidukikije ryemejwe",
+      "sw": "Kupungua kwa hatari ya kiikolojia kulikothibitishwa"
+    },
+    "kind": "rate",
+    "numerator": "Initiatives with verified risk reduction",
+    "denominator": "Evaluable ecological initiatives",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A3-K3",
+    "label": {
+      "en": "Decisions informed by ecological evidence",
+      "fr": "Décisions éclairées par preuves écologiques",
+      "rw": "Ibyemezo bishingiye ku bimenyetso by’ibidukikije",
+      "sw": "Maamuzi yanayotumia ushahidi wa kiikolojia"
+    },
+    "kind": "count",
+    "numerator": "Distinct decisions with documented ecological contribution",
+    "denominator": "Not applicable",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A4-K1",
+    "label": {
+      "en": "Effective use of remedies",
+      "fr": "Utilisation effective des voies de recours",
+      "rw": "Gukoresha inzira zo kurenganurwa",
+      "sw": "Matumizi halisi ya njia za kupata haki"
+    },
+    "kind": "rate",
+    "numerator": "Eligible people with confirmed remedy use",
+    "denominator": "Eligible people accompanied",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A4-K2",
+    "label": {
+      "en": "Evidence-based community advocacy priorities",
+      "fr": "Priorités communautaires de plaidoyer fondées sur preuves",
+      "rw": "Ibyifuzo by’ubuvugizi bishingiye ku bimenyetso",
+      "sw": "Vipaumbele vya utetezi wa jamii vinavyotumia ushahidi"
+    },
+    "kind": "rate",
+    "numerator": "Active priorities meeting community-origin and evidence criteria",
+    "denominator": "Active advocacy priorities",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A4-K3",
+    "label": {
+      "en": "Verified changes with CDJP contribution",
+      "fr": "Changements vérifiés avec contribution CDJP",
+      "rw": "Impinduka zemejwe CDJP yagizemo uruhare",
+      "sw": "Mabadiliko yaliyothibitishwa yenye mchango wa CDJP"
+    },
+    "kind": "count",
+    "numerator": "Distinct verified changes with documented contribution",
+    "denominator": "Not applicable",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A5-K1",
+    "label": {
+      "en": "Functional CPJP",
+      "fr": "CPJP fonctionnelles",
+      "rw": "CPJP zikora neza",
+      "sw": "CPJP zinazofanya kazi ipasavyo"
+    },
+    "kind": "rate",
+    "numerator": "CPJP meeting approved functionality standard",
+    "denominator": "CPJP assessed",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A5-K2",
+    "label": {
+      "en": "Evidence-based decisions completed",
+      "fr": "Décisions fondées sur preuves et clôturées",
+      "rw": "Ibyemezo bishingiye ku makuru byashyizwe mu bikorwa",
+      "sw": "Maamuzi yanayotumia ushahidi yaliyokamilishwa"
+    },
+    "kind": "rate",
+    "numerator": "Due decisions with APSE evidence and verified closed action",
+    "denominator": "Decisions due",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A5-K3",
+    "label": {
+      "en": "Secured financial coverage",
+      "fr": "Couverture financière acquise",
+      "rw": "Igipimo cy’inkunga yabonetse",
+      "sw": "Kiwango cha ufadhili uliopatikana"
+    },
+    "kind": "rate",
+    "numerator": "Secured financing RWF",
+    "denominator": "Approved budget RWF",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "A5-K4",
+    "label": {
+      "en": "Diversified financing share",
+      "fr": "Part de financement diversifié",
+      "rw": "Uruhare rw’inkunga zituruka henshi",
+      "sw": "Sehemu ya ufadhili kutoka vyanzo mbalimbali"
+    },
+    "kind": "rate",
+    "numerator": "Secured financing excluding largest source RWF",
+    "denominator": "Total secured financing RWF",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "OP-K1",
+    "label": {
+      "en": "Activity completion rate",
+      "fr": "Taux de réalisation des activités",
+      "rw": "Igipimo cy’ibikorwa byarangiye",
+      "sw": "Kiwango cha kukamilisha shughuli"
+    },
+    "kind": "rate",
+    "numerator": "Distinct due activities completed",
+    "denominator": "Distinct activities due",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "OP-K2",
+    "label": {
+      "en": "On-time reporting",
+      "fr": "Promptitude du rapportage",
+      "rw": "Gutanga raporo ku gihe",
+      "sw": "Uwasilishaji wa ripoti kwa wakati"
+    },
+    "kind": "rate",
+    "numerator": "Reports received by approved deadline",
+    "denominator": "Reports expected from active reporting units",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "DQ-K1",
+    "label": {
+      "en": "Valid required-field completeness",
+      "fr": "Complétude des champs obligatoires",
+      "rw": "Ubwuzure bw’amakuru asabwa",
+      "sw": "Ukamilifu wa sehemu zinazohitajika"
+    },
+    "kind": "rate",
+    "numerator": "Valid mandatory field instances",
+    "denominator": "Expected mandatory field instances",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "DQ-K2",
+    "label": {
+      "en": "Substantial post-submission corrections",
+      "fr": "Corrections substantielles après soumission",
+      "rw": "Amakosora akomeye nyuma yo kohereza",
+      "sw": "Marekebisho makubwa baada ya kuwasilisha"
+    },
+    "kind": "rate",
+    "numerator": "Submitted records needing substantial correction",
+    "denominator": "Submitted records",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "DQ-K3",
+    "label": {
+      "en": "Confirmed duplicate rate",
+      "fr": "Taux de doublons confirmés",
+      "rw": "Igipimo cy’amakuru yasubiwemo yemejwe",
+      "sw": "Kiwango cha rekodi zilizorudiwa kilichothibitishwa"
+    },
+    "kind": "rate",
+    "numerator": "Confirmed duplicate records",
+    "denominator": "Records reviewed",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "FIN-K1",
+    "label": {
+      "en": "Budget execution rate",
+      "fr": "Taux exécution budgétaire",
+      "rw": "Igipimo cy’ikoreshwa ry’ingengo y’imari",
+      "sw": "Kiwango cha utekelezaji wa bajeti"
+    },
+    "kind": "rate",
+    "numerator": "Approved eligible expenditure RWF",
+    "denominator": "Approved budget RWF",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "FIN-K2",
+    "label": {
+      "en": "Budget variance",
+      "fr": "Variance budgétaire",
+      "rw": "Itandukaniro ry’ingengo y’imari",
+      "sw": "Tofauti ya bajeti"
+    },
+    "kind": "variance",
+    "numerator": "Approved expenditure minus planned-to-date RWF",
+    "denominator": "Planned-to-date budget RWF",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "EFF-K1",
+    "label": {
+      "en": "Cost per verified output",
+      "fr": "Coût par produit vérifié",
+      "rw": "Ikiguzi kuri buri cyagezweho cyemejwe",
+      "sw": "Gharama kwa matokeo yaliyothibitishwa"
+    },
+    "kind": "unit",
+    "numerator": "Attributable eligible cost RWF",
+    "denominator": "Verified outputs",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "EFF-K2",
+    "label": {
+      "en": "Cost per unique person reached",
+      "fr": "Coût par personne unique atteinte",
+      "rw": "Ikiguzi kuri buri muntu utabazwe kabiri",
+      "sw": "Gharama kwa mtu wa kipekee aliyefikiwa"
+    },
+    "kind": "unit",
+    "numerator": "Attributable eligible cost RWF",
+    "denominator": "Deduplicated people reached",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "EFF-K3",
+    "label": {
+      "en": "Local economic contribution share",
+      "fr": "Part contribution locale économique",
+      "rw": "Uruhare rw’agaciro k’umusanzu w’abaturage",
+      "sw": "Sehemu ya mchango wa jamii kiuchumi"
+    },
+    "kind": "rate",
+    "numerator": "Approved local contribution RWF",
+    "denominator": "Cash spent plus approved local contribution RWF",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "INC-K1",
+    "label": {
+      "en": "Coverage equity gaps",
+      "fr": "Écarts équité de couverture",
+      "rw": "Itandukaniro ry’uburinganire bw’abagezweho",
+      "sw": "Tofauti za usawa wa ufikiaji"
+    },
+    "kind": "gap",
+    "numerator": "Coverage rate for group A minus coverage rate for group B",
+    "denominator": "Group-specific denominators; percentage point difference",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "VOL-K1",
+    "label": {
+      "en": "Active volunteers",
+      "fr": "Bénévoles actifs",
+      "rw": "Abakorerabushake bakoze",
+      "sw": "Wajitolea wanaoshiriki kikamilifu"
+    },
+    "kind": "rate",
+    "numerator": "Assigned volunteers with validated action",
+    "denominator": "Assigned volunteers active in period",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "VIS-K1",
+    "label": {
+      "en": "Validated published content",
+      "fr": "Contenus publiés et validés",
+      "rw": "Ibyatangajwe byemejwe",
+      "sw": "Maudhui yaliyochapishwa na kuthibitishwa"
+    },
+    "kind": "count",
+    "numerator": "Distinct validated published products",
+    "denominator": "Not applicable",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "VIS-K2",
+    "label": {
+      "en": "Verified reach",
+      "fr": "Portée vérifiée",
+      "rw": "Abagezweho bagenzuwe",
+      "sw": "Ufikiaji uliothibitishwa"
+    },
+    "kind": "count",
+    "numerator": "Reach with channel-specific method; report overlap limitations",
+    "denominator": "Not a deduplicated institutional total",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "VIS-K3",
+    "label": {
+      "en": "Digital engagement",
+      "fr": "Engagement numérique",
+      "rw": "Uruhare rw’abakurikiye ku mbuga",
+      "sw": "Mwingiliano wa kidijitali"
+    },
+    "kind": "rate",
+    "numerator": "Interactions on the same products and period",
+    "denominator": "Reach or impressions using a consistent declared denominator",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "VIS-K4",
+    "label": {
+      "en": "On-time publication",
+      "fr": "Publication dans les délais",
+      "rw": "Gutangaza ku gihe",
+      "sw": "Uchapishaji kwa wakati"
+    },
+    "kind": "rate",
+    "numerator": "Planned products published by deadline",
+    "denominator": "Planned products due",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "VIS-K5",
+    "label": {
+      "en": "Consent and brand compliance",
+      "fr": "Conformité consentement et charte",
+      "rw": "Kubahiriza ukwemera n’ibirango",
+      "sw": "Uzingatiaji wa ridhaa na utambulisho wa taasisi"
+    },
+    "kind": "rate",
+    "numerator": "Audited products meeting consent and brand requirements",
+    "denominator": "Audited products",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "SYS-K1",
+    "label": {
+      "en": "Successful synchronisation",
+      "fr": "Synchronisation réussie",
+      "rw": "Kohereza amakuru byagenze neza",
+      "sw": "Usawazishaji uliofanikiwa"
+    },
+    "kind": "rate",
+    "numerator": "Batches synchronised successfully",
+    "denominator": "Batches attempted",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "SYS-K2",
+    "label": {
+      "en": "Median support resolution time",
+      "fr": "Délai médian résolution assistance",
+      "rw": "Igihe cyo hagati cyo gukemura ubufasha",
+      "sw": "Muda wa kati wa kutatua msaada"
+    },
+    "kind": "median",
+    "numerator": "Hours from ticket open to close",
+    "denominator": "Median individual durations; do not aggregate medians",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  },
+  {
+    "code": "AI-K1",
+    "label": {
+      "en": "Verified acceptance of AI suggestions",
+      "fr": "Acceptation vérifiée des suggestions IA",
+      "rw": "Kwemera inama za AI nyuma yo kuzigenzura",
+      "sw": "Kukubaliwa kwa mapendekezo ya AI baada ya uhakiki"
+    },
+    "kind": "rate",
+    "numerator": "Suggestions accepted after human verification",
+    "denominator": "Suggestions proposed; disabled if AI not deployed",
+    "baseline": null,
+    "target": null,
+    "sourceStatus": "Source reconciliation and approval required",
+    "formulaVersion": "1.0"
+  }
+]

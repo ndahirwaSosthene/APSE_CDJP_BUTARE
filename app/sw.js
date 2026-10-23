@@ -1,0 +1,4 @@
+const VERSION='apse-shell-0.8.0',FILES=['operations.html','operations.js','governance.js','collections.js','capture.js','collection_templates.json','operations.css','style.css','core.js','vault.js','manifest.webapp','icon.svg'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(VERSION).then(cache=>cache.addAll(FILES))));
+self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('apse-shell-')&&k!==VERSION).map(k=>caches.delete(k))))));
+self.addEventListener('fetch',event=>{const url=new URL(event.request.url),scope=new URL(self.registration.scope);if(event.request.method!=='GET'||url.origin!==scope.origin||!FILES.some(file=>url.pathname===scope.pathname+file))return;event.respondWith(fetch(event.request).catch(()=>caches.match(event.request)));});

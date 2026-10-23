@@ -1,0 +1,119 @@
+{
+  "version": "0.8.0",
+  "productionCertified": false,
+  "forms": 43,
+  "strategicResults": 13,
+  "strategicInterventions": 15,
+  "kpiDefinitions": 35,
+  "languages": [
+    "rw",
+    "en",
+    "fr",
+    "sw"
+  ],
+  "requiredExternalInputs": [
+    "DHIS2 target URL/version and authorised deployment",
+    "Validated full organisation register",
+    "Named role and scope assignments",
+    "Approved baseline/targets and retention policy"
+  ],
+  "requiredExternalTests": [
+    "DHIS2 metadata schema and import",
+    "Real authentication, roles, MFA and reverse proxy",
+    "Browser and phone usability",
+    "Seven-day field offline test with attachments workflow",
+    "Backup restore, load, security and operational acceptance"
+  ],
+  "offlineAttachments": "Upload after text record synchronises",
+  "AI": "Local-only Ollama connector implemented; requires configured model and MEL aiEnabled=true; mocked response tested, live model not tested",
+  "sourceFields": 135,
+  "annualTasksAP1": 33,
+  "indicativeOperationalTypes": 25,
+  "defaultLanguage": "fr",
+  "translationLimit": "Four-language labels/titles; source narrative translations require MEL validation",
+  "sourceCalendarResolved": "Final PS 03.09.2026: midterm Jan–Mar 2029, final Apr–Jul 2031",
+  "automatedPythonTests": 115,
+  "demoHTTP": "Passed synthetic independent annual-plan approval and feedback routing",
+  "browserTest": "Real HTTP APSE service in Linux Chromium, 360px and desktop widths; accents, switching, autosave, recovery, scoped planning and submission tested",
+  "planningLevels": [
+    "CDJP",
+    "CPJP"
+  ],
+  "parishVolets": 4,
+  "committeeMembers": 6,
+  "workflow": [
+    "SUBMITTED",
+    "MEL_VALIDATED",
+    "VERIFIED",
+    "APPROVED",
+    "LOCKED"
+  ],
+  "computedPerformanceKpis": 4,
+  "projectsAndPartners": "Versioned MEL registries; no invented projects or contract dates",
+  "reportProfiles": 13,
+  "defaultReport": "R13 PS results-based report",
+  "resultsReporting": {
+    "strategicResults": 13,
+    "approvedSourcesOnly": true,
+    "separateObservationScopes": true,
+    "narrativeApprovalRequired": true,
+    "immutableSnapshot": true,
+    "csv": "matrix only"
+  },
+  "transfers": [
+    "CSV",
+    "XLSX",
+    "JSON",
+    "templates",
+    "metadata JSON export",
+    "encrypted-record portable ZIP backup"
+  ],
+  "portableMode": {
+    "target": "Windows 10/11 x64",
+    "embeddedRuntime": "Python 3.13.16 with dependencies",
+    "nativeWindowsExecutionTested": false,
+    "relocationTest": "Authenticated HTTP import, backup ZIP, extraction to another directory and record preservation passed on Linux",
+    "passwordProtected": true,
+    "dataFolder": "portable_data",
+    "localOnly": true
+  },
+  "customCollectionSchemas": "MEL builder with immutable schemas, scoped authenticated links, close/reopen and JSON drafts",
+  "editDelegation": "MEL grant, exact revision, 1–168 hours, single edit, revocable; no scope or role bypass",
+  "cpjpDefaultLanguage": "rw",
+  "windowsStartupFix": "Missing runtime extraction diagnostics; full ZIP setup with checksum, Desktop shortcut, isolated Python module paths and startup logs",
+  "nativeWindowsExecutionTested": false,
+  "nativeDataElements": 218,
+  "fieldLabels": 158,
+  "actualAndroidDeviceTested": false,
+  "liveDHIS2IntegrationTested": false,
+  "windowsEncodingTest": "Simulated cp1252 default file encoding; metadata remains UTF-8; all service/script text I/O declares UTF-8",
+  "workingDrafts": "Encrypted versioned server drafts; prepared encrypted browser fallback; MEL oversight by scope",
+  "recycle": "Recoverable drafts and non-final records; append-only history; no permanent-delete API",
+  "geography": {
+    "source": "NISR 2022 Open Data, retrieved 2026-10-20",
+    "districts": 4,
+    "sectors": 51,
+    "cells": 259,
+    "editableCategory": "geography_units"
+  },
+  "ccjpRegistry": {
+    "entries": 101,
+    "source": "User PDF, printed 2018 plus handwritten Sheke addition",
+    "currentMembershipFullyValidated": false,
+    "namedCebListProvided": false
+  },
+  "planning": {
+    "CPJP": [
+      "F03 annual"
+    ],
+    "CDJP": [
+      "F03 annual",
+      "F04 quarterly",
+      "F43 monthly",
+      "F05 weekly"
+    ]
+  },
+  "lastTestCount": 179,
+  "psBudgetStatus": "APPROVED_PS_BUDGET — MEL instruction 2026-10-20",
+  "staffPerformance": "Scoped CDJP assignment evaluation; one planning level; approved task_ref reports; missing data null; no automated HR score"
+}

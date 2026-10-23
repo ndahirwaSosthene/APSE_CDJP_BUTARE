@@ -1,0 +1,1719 @@
+[
+  {
+    "code": "CCJP-PAR-10-01",
+    "kind": "CCJP",
+    "parent": "PAR-10",
+    "labels": {
+      "fr": "Butare",
+      "en": "Butare",
+      "rw": "Butare",
+      "sw": "Butare"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-10-02",
+    "kind": "CCJP",
+    "parent": "PAR-10",
+    "labels": {
+      "fr": "Ste Thérèse",
+      "en": "Ste Thérèse",
+      "rw": "Ste Thérèse",
+      "sw": "Ste Thérèse"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-10-03",
+    "kind": "CCJP",
+    "parent": "PAR-10",
+    "labels": {
+      "fr": "Tumba",
+      "en": "Tumba",
+      "rw": "Tumba",
+      "sw": "Tumba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-10-04",
+    "kind": "CCJP",
+    "parent": "PAR-10",
+    "labels": {
+      "fr": "Kinteko",
+      "en": "Kinteko",
+      "rw": "Kinteko",
+      "sw": "Kinteko"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-10-05",
+    "kind": "CCJP",
+    "parent": "PAR-10",
+    "labels": {
+      "fr": "Vumbi",
+      "en": "Vumbi",
+      "rw": "Vumbi",
+      "sw": "Vumbi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-16-01",
+    "kind": "CCJP",
+    "parent": "PAR-16",
+    "labels": {
+      "fr": "Ngoma",
+      "en": "Ngoma",
+      "rw": "Ngoma",
+      "sw": "Ngoma"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-16-02",
+    "kind": "CCJP",
+    "parent": "PAR-16",
+    "labels": {
+      "fr": "Mpungwe",
+      "en": "Mpungwe",
+      "rw": "Mpungwe",
+      "sw": "Mpungwe"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-08-01",
+    "kind": "CCJP",
+    "parent": "PAR-08",
+    "labels": {
+      "fr": "Rango",
+      "en": "Rango",
+      "rw": "Rango",
+      "sw": "Rango"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-08-02",
+    "kind": "CCJP",
+    "parent": "PAR-08",
+    "labels": {
+      "fr": "Cyarwa",
+      "en": "Cyarwa",
+      "rw": "Cyarwa",
+      "sw": "Cyarwa"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-08-03",
+    "kind": "CCJP",
+    "parent": "PAR-08",
+    "labels": {
+      "fr": "Sahera",
+      "en": "Sahera",
+      "rw": "Sahera",
+      "sw": "Sahera"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-18-01",
+    "kind": "CCJP",
+    "parent": "PAR-18",
+    "labels": {
+      "fr": "Karama",
+      "en": "Karama",
+      "rw": "Karama",
+      "sw": "Karama"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-18-02",
+    "kind": "CCJP",
+    "parent": "PAR-18",
+    "labels": {
+      "fr": "Rasaniro",
+      "en": "Rasaniro",
+      "rw": "Rasaniro",
+      "sw": "Rasaniro"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-18-03",
+    "kind": "CCJP",
+    "parent": "PAR-18",
+    "labels": {
+      "fr": "Kibingo",
+      "en": "Kibingo",
+      "rw": "Kibingo",
+      "sw": "Kibingo"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-18-04",
+    "kind": "CCJP",
+    "parent": "PAR-18",
+    "labels": {
+      "fr": "Kabilizi",
+      "en": "Kabilizi",
+      "rw": "Kabilizi",
+      "sw": "Kabilizi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-18-05",
+    "kind": "CCJP",
+    "parent": "PAR-18",
+    "labels": {
+      "fr": "Mbasa",
+      "en": "Mbasa",
+      "rw": "Mbasa",
+      "sw": "Mbasa"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-18-06",
+    "kind": "CCJP",
+    "parent": "PAR-18",
+    "labels": {
+      "fr": "Ramba",
+      "en": "Ramba",
+      "rw": "Ramba",
+      "sw": "Ramba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-11-01",
+    "kind": "CCJP",
+    "parent": "PAR-11",
+    "labels": {
+      "fr": "Saint Dominique",
+      "en": "Saint Dominique",
+      "rw": "Saint Dominique",
+      "sw": "Saint Dominique"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-25-01",
+    "kind": "CCJP",
+    "parent": "PAR-25",
+    "labels": {
+      "fr": "Nyanza",
+      "en": "Nyanza",
+      "rw": "Nyanza",
+      "sw": "Nyanza"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-25-02",
+    "kind": "CCJP",
+    "parent": "PAR-25",
+    "labels": {
+      "fr": "Nyamure",
+      "en": "Nyamure",
+      "rw": "Nyamure",
+      "sw": "Nyamure"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-25-03",
+    "kind": "CCJP",
+    "parent": "PAR-25",
+    "labels": {
+      "fr": "Maza",
+      "en": "Maza",
+      "rw": "Maza",
+      "sw": "Maza"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-25-04",
+    "kind": "CCJP",
+    "parent": "PAR-25",
+    "labels": {
+      "fr": "Cyarwa",
+      "en": "Cyarwa",
+      "rw": "Cyarwa",
+      "sw": "Cyarwa"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-25-05",
+    "kind": "CCJP",
+    "parent": "PAR-25",
+    "labels": {
+      "fr": "Sogwe",
+      "en": "Sogwe",
+      "rw": "Sogwe",
+      "sw": "Sogwe"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-25-06",
+    "kind": "CCJP",
+    "parent": "PAR-25",
+    "labels": {
+      "fr": "Mubuga",
+      "en": "Mubuga",
+      "rw": "Mubuga",
+      "sw": "Mubuga"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-26-01",
+    "kind": "CCJP",
+    "parent": "PAR-26",
+    "labels": {
+      "fr": "Busoro",
+      "en": "Busoro",
+      "rw": "Busoro",
+      "sw": "Busoro"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-26-02",
+    "kind": "CCJP",
+    "parent": "PAR-26",
+    "labels": {
+      "fr": "Rwanamiza",
+      "en": "Rwanamiza",
+      "rw": "Rwanamiza",
+      "sw": "Rwanamiza"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-26-03",
+    "kind": "CCJP",
+    "parent": "PAR-26",
+    "labels": {
+      "fr": "Murinja",
+      "en": "Murinja",
+      "rw": "Murinja",
+      "sw": "Murinja"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-26-04",
+    "kind": "CCJP",
+    "parent": "PAR-26",
+    "labels": {
+      "fr": "Kareba",
+      "en": "Kareba",
+      "rw": "Kareba",
+      "sw": "Kareba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-26-05",
+    "kind": "CCJP",
+    "parent": "PAR-26",
+    "labels": {
+      "fr": "Mututu",
+      "en": "Mututu",
+      "rw": "Mututu",
+      "sw": "Mututu"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-15-01",
+    "kind": "CCJP",
+    "parent": "PAR-15",
+    "labels": {
+      "fr": "Nyamiyaga",
+      "en": "Nyamiyaga",
+      "rw": "Nyamiyaga",
+      "sw": "Nyamiyaga"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-15-02",
+    "kind": "CCJP",
+    "parent": "PAR-15",
+    "labels": {
+      "fr": "Mbuye",
+      "en": "Mbuye",
+      "rw": "Mbuye",
+      "sw": "Mbuye"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-15-03",
+    "kind": "CCJP",
+    "parent": "PAR-15",
+    "labels": {
+      "fr": "Kayanza",
+      "en": "Kayanza",
+      "rw": "Kayanza",
+      "sw": "Kayanza"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-15-04",
+    "kind": "CCJP",
+    "parent": "PAR-15",
+    "labels": {
+      "fr": "Matara",
+      "en": "Matara",
+      "rw": "Matara",
+      "sw": "Matara"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-12-01",
+    "kind": "CCJP",
+    "parent": "PAR-12",
+    "labels": {
+      "fr": "Ruyenzi",
+      "en": "Ruyenzi",
+      "rw": "Ruyenzi",
+      "sw": "Ruyenzi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-12-02",
+    "kind": "CCJP",
+    "parent": "PAR-12",
+    "labels": {
+      "fr": "Bugari",
+      "en": "Bugari",
+      "rw": "Bugari",
+      "sw": "Bugari"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-12-03",
+    "kind": "CCJP",
+    "parent": "PAR-12",
+    "labels": {
+      "fr": "Katarara",
+      "en": "Katarara",
+      "rw": "Katarara",
+      "sw": "Katarara"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-12-04",
+    "kind": "CCJP",
+    "parent": "PAR-12",
+    "labels": {
+      "fr": "Ruteme",
+      "en": "Ruteme",
+      "rw": "Ruteme",
+      "sw": "Ruteme"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-09-01",
+    "kind": "CCJP",
+    "parent": "PAR-09",
+    "labels": {
+      "fr": "Kiruhura",
+      "en": "Kiruhura",
+      "rw": "Kiruhura",
+      "sw": "Kiruhura"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-09-02",
+    "kind": "CCJP",
+    "parent": "PAR-09",
+    "labels": {
+      "fr": "Buhimba",
+      "en": "Buhimba",
+      "rw": "Buhimba",
+      "sw": "Buhimba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-09-03",
+    "kind": "CCJP",
+    "parent": "PAR-09",
+    "labels": {
+      "fr": "Sheke",
+      "en": "Sheke",
+      "rw": "Sheke",
+      "sw": "Sheke"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "Historical Sheke entry under Kiruhura retained separately from new Sheke parish; validate current membership.",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-09-04",
+    "kind": "CCJP",
+    "parent": "PAR-09",
+    "labels": {
+      "fr": "Gafumba",
+      "en": "Gafumba",
+      "rw": "Gafumba",
+      "sw": "Gafumba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-09-05",
+    "kind": "CCJP",
+    "parent": "PAR-09",
+    "labels": {
+      "fr": "Gashoba",
+      "en": "Gashoba",
+      "rw": "Gashoba",
+      "sw": "Gashoba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-04-01",
+    "kind": "CCJP",
+    "parent": "PAR-04",
+    "labels": {
+      "fr": "Save",
+      "en": "Save",
+      "rw": "Save",
+      "sw": "Save"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-04-02",
+    "kind": "CCJP",
+    "parent": "PAR-04",
+    "labels": {
+      "fr": "Tamba",
+      "en": "Tamba",
+      "rw": "Tamba",
+      "sw": "Tamba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-04-03",
+    "kind": "CCJP",
+    "parent": "PAR-04",
+    "labels": {
+      "fr": "Munazi",
+      "en": "Munazi",
+      "rw": "Munazi",
+      "sw": "Munazi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-04-04",
+    "kind": "CCJP",
+    "parent": "PAR-04",
+    "labels": {
+      "fr": "Mugogwe",
+      "en": "Mugogwe",
+      "rw": "Mugogwe",
+      "sw": "Mugogwe"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-04-05",
+    "kind": "CCJP",
+    "parent": "PAR-04",
+    "labels": {
+      "fr": "Zivu",
+      "en": "Zivu",
+      "rw": "Zivu",
+      "sw": "Zivu"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-01-01",
+    "kind": "CCJP",
+    "parent": "PAR-01",
+    "labels": {
+      "fr": "Mamba",
+      "en": "Mamba",
+      "rw": "Mamba",
+      "sw": "Mamba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-01-02",
+    "kind": "CCJP",
+    "parent": "PAR-01",
+    "labels": {
+      "fr": "Mbogo",
+      "en": "Mbogo",
+      "rw": "Mbogo",
+      "sw": "Mbogo"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-01-03",
+    "kind": "CCJP",
+    "parent": "PAR-01",
+    "labels": {
+      "fr": "Mutori",
+      "en": "Mutori",
+      "rw": "Mutori",
+      "sw": "Mutori"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-01-04",
+    "kind": "CCJP",
+    "parent": "PAR-01",
+    "labels": {
+      "fr": "Kizenga",
+      "en": "Kizenga",
+      "rw": "Kizenga",
+      "sw": "Kizenga"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-01-05",
+    "kind": "CCJP",
+    "parent": "PAR-01",
+    "labels": {
+      "fr": "Kabumbwe",
+      "en": "Kabumbwe",
+      "rw": "Kabumbwe",
+      "sw": "Kabumbwe"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-22-01",
+    "kind": "CCJP",
+    "parent": "PAR-22",
+    "labels": {
+      "fr": "Byiza",
+      "en": "Byiza",
+      "rw": "Byiza",
+      "sw": "Byiza"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-22-02",
+    "kind": "CCJP",
+    "parent": "PAR-22",
+    "labels": {
+      "fr": "Gasagara",
+      "en": "Gasagara",
+      "rw": "Gasagara",
+      "sw": "Gasagara"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-22-03",
+    "kind": "CCJP",
+    "parent": "PAR-22",
+    "labels": {
+      "fr": "Musha",
+      "en": "Musha",
+      "rw": "Musha",
+      "sw": "Musha"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-17-01",
+    "kind": "CCJP",
+    "parent": "PAR-17",
+    "labels": {
+      "fr": "Mbazi",
+      "en": "Mbazi",
+      "rw": "Mbazi",
+      "sw": "Mbazi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-17-02",
+    "kind": "CCJP",
+    "parent": "PAR-17",
+    "labels": {
+      "fr": "Gatovu",
+      "en": "Gatovu",
+      "rw": "Gatovu",
+      "sw": "Gatovu"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-07-01",
+    "kind": "CCJP",
+    "parent": "PAR-07",
+    "labels": {
+      "fr": "Rugango",
+      "en": "Rugango",
+      "rw": "Rugango",
+      "sw": "Rugango"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-07-02",
+    "kind": "CCJP",
+    "parent": "PAR-07",
+    "labels": {
+      "fr": "Kabusanza",
+      "en": "Kabusanza",
+      "rw": "Kabusanza",
+      "sw": "Kabusanza"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-06-01",
+    "kind": "CCJP",
+    "parent": "PAR-06",
+    "labels": {
+      "fr": "Simbi",
+      "en": "Simbi",
+      "rw": "Simbi",
+      "sw": "Simbi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-06-02",
+    "kind": "CCJP",
+    "parent": "PAR-06",
+    "labels": {
+      "fr": "Maraba",
+      "en": "Maraba",
+      "rw": "Maraba",
+      "sw": "Maraba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-06-03",
+    "kind": "CCJP",
+    "parent": "PAR-06",
+    "labels": {
+      "fr": "Gisakura",
+      "en": "Gisakura",
+      "rw": "Gisakura",
+      "sw": "Gisakura"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-19-01",
+    "kind": "CCJP",
+    "parent": "PAR-19",
+    "labels": {
+      "fr": "Kansi",
+      "en": "Kansi",
+      "rw": "Kansi",
+      "sw": "Kansi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-19-02",
+    "kind": "CCJP",
+    "parent": "PAR-19",
+    "labels": {
+      "fr": "Murama",
+      "en": "Murama",
+      "rw": "Murama",
+      "sw": "Murama"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-19-03",
+    "kind": "CCJP",
+    "parent": "PAR-19",
+    "labels": {
+      "fr": "Kibingo",
+      "en": "Kibingo",
+      "rw": "Kibingo",
+      "sw": "Kibingo"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-20-01",
+    "kind": "CCJP",
+    "parent": "PAR-20",
+    "labels": {
+      "fr": "Higiro",
+      "en": "Higiro",
+      "rw": "Higiro",
+      "sw": "Higiro"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-20-02",
+    "kind": "CCJP",
+    "parent": "PAR-20",
+    "labels": {
+      "fr": "Fugi",
+      "en": "Fugi",
+      "rw": "Fugi",
+      "sw": "Fugi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-20-03",
+    "kind": "CCJP",
+    "parent": "PAR-20",
+    "labels": {
+      "fr": "Ruhororo",
+      "en": "Ruhororo",
+      "rw": "Ruhororo",
+      "sw": "Ruhororo"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-23-01",
+    "kind": "CCJP",
+    "parent": "PAR-23",
+    "labels": {
+      "fr": "Gikore",
+      "en": "Gikore",
+      "rw": "Gikore",
+      "sw": "Gikore"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-23-02",
+    "kind": "CCJP",
+    "parent": "PAR-23",
+    "labels": {
+      "fr": "Mukomacara",
+      "en": "Mukomacara",
+      "rw": "Mukomacara",
+      "sw": "Mukomacara"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-23-03",
+    "kind": "CCJP",
+    "parent": "PAR-23",
+    "labels": {
+      "fr": "Rubona",
+      "en": "Rubona",
+      "rw": "Rubona",
+      "sw": "Rubona"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-13-01",
+    "kind": "CCJP",
+    "parent": "PAR-13",
+    "labels": {
+      "fr": "Cyahinda",
+      "en": "Cyahinda",
+      "rw": "Cyahinda",
+      "sw": "Cyahinda"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-13-02",
+    "kind": "CCJP",
+    "parent": "PAR-13",
+    "labels": {
+      "fr": "Remera",
+      "en": "Remera",
+      "rw": "Remera",
+      "sw": "Remera"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-13-03",
+    "kind": "CCJP",
+    "parent": "PAR-13",
+    "labels": {
+      "fr": "Mwoya",
+      "en": "Mwoya",
+      "rw": "Mwoya",
+      "sw": "Mwoya"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-13-04",
+    "kind": "CCJP",
+    "parent": "PAR-13",
+    "labels": {
+      "fr": "Ruko",
+      "en": "Ruko",
+      "rw": "Ruko",
+      "sw": "Ruko"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-13-05",
+    "kind": "CCJP",
+    "parent": "PAR-13",
+    "labels": {
+      "fr": "Kibangu",
+      "en": "Kibangu",
+      "rw": "Kibangu",
+      "sw": "Kibangu"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-14-01",
+    "kind": "CCJP",
+    "parent": "PAR-14",
+    "labels": {
+      "fr": "Nyumba",
+      "en": "Nyumba",
+      "rw": "Nyumba",
+      "sw": "Nyumba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-14-02",
+    "kind": "CCJP",
+    "parent": "PAR-14",
+    "labels": {
+      "fr": "Mubumbano",
+      "en": "Mubumbano",
+      "rw": "Mubumbano",
+      "sw": "Mubumbano"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-14-03",
+    "kind": "CCJP",
+    "parent": "PAR-14",
+    "labels": {
+      "fr": "Ngera",
+      "en": "Ngera",
+      "rw": "Ngera",
+      "sw": "Ngera"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-14-04",
+    "kind": "CCJP",
+    "parent": "PAR-14",
+    "labels": {
+      "fr": "Rusenge",
+      "en": "Rusenge",
+      "rw": "Rusenge",
+      "sw": "Rusenge"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-03-01",
+    "kind": "CCJP",
+    "parent": "PAR-03",
+    "labels": {
+      "fr": "Mugombwa",
+      "en": "Mugombwa",
+      "rw": "Mugombwa",
+      "sw": "Mugombwa"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-03-02",
+    "kind": "CCJP",
+    "parent": "PAR-03",
+    "labels": {
+      "fr": "Saga",
+      "en": "Saga",
+      "rw": "Saga",
+      "sw": "Saga"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-03-03",
+    "kind": "CCJP",
+    "parent": "PAR-03",
+    "labels": {
+      "fr": "Linda",
+      "en": "Linda",
+      "rw": "Linda",
+      "sw": "Linda"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-03-04",
+    "kind": "CCJP",
+    "parent": "PAR-03",
+    "labels": {
+      "fr": "Baziro",
+      "en": "Baziro",
+      "rw": "Baziro",
+      "sw": "Baziro"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-03-05",
+    "kind": "CCJP",
+    "parent": "PAR-03",
+    "labels": {
+      "fr": "Cyumba",
+      "en": "Cyumba",
+      "rw": "Cyumba",
+      "sw": "Cyumba"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-21-01",
+    "kind": "CCJP",
+    "parent": "PAR-21",
+    "labels": {
+      "fr": "Gisagara",
+      "en": "Gisagara",
+      "rw": "Gisagara",
+      "sw": "Gisagara"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-21-02",
+    "kind": "CCJP",
+    "parent": "PAR-21",
+    "labels": {
+      "fr": "Gisanze",
+      "en": "Gisanze",
+      "rw": "Gisanze",
+      "sw": "Gisanze"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-21-03",
+    "kind": "CCJP",
+    "parent": "PAR-21",
+    "labels": {
+      "fr": "Muzenga",
+      "en": "Muzenga",
+      "rw": "Muzenga",
+      "sw": "Muzenga"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-21-04",
+    "kind": "CCJP",
+    "parent": "PAR-21",
+    "labels": {
+      "fr": "Kagoma",
+      "en": "Kagoma",
+      "rw": "Kagoma",
+      "sw": "Kagoma"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-05-01",
+    "kind": "CCJP",
+    "parent": "PAR-05",
+    "labels": {
+      "fr": "Kibilizi",
+      "en": "Kibilizi",
+      "rw": "Kibilizi",
+      "sw": "Kibilizi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-05-02",
+    "kind": "CCJP",
+    "parent": "PAR-05",
+    "labels": {
+      "fr": "Nyange",
+      "en": "Nyange",
+      "rw": "Nyange",
+      "sw": "Nyange"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-05-03",
+    "kind": "CCJP",
+    "parent": "PAR-05",
+    "labels": {
+      "fr": "Muyira",
+      "en": "Muyira",
+      "rw": "Muyira",
+      "sw": "Muyira"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-24-01",
+    "kind": "CCJP",
+    "parent": "PAR-24",
+    "labels": {
+      "fr": "Kirarambogo",
+      "en": "Kirarambogo",
+      "rw": "Kirarambogo",
+      "sw": "Kirarambogo"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-24-02",
+    "kind": "CCJP",
+    "parent": "PAR-24",
+    "labels": {
+      "fr": "Kibangu",
+      "en": "Kibangu",
+      "rw": "Kibangu",
+      "sw": "Kibangu"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-24-03",
+    "kind": "CCJP",
+    "parent": "PAR-24",
+    "labels": {
+      "fr": "Nyagahuru",
+      "en": "Nyagahuru",
+      "rw": "Nyagahuru",
+      "sw": "Nyagahuru"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-24-04",
+    "kind": "CCJP",
+    "parent": "PAR-24",
+    "labels": {
+      "fr": "Nyarusange",
+      "en": "Nyarusange",
+      "rw": "Nyarusange",
+      "sw": "Nyarusange"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-02-01",
+    "kind": "CCJP",
+    "parent": "PAR-02",
+    "labels": {
+      "fr": "Magi",
+      "en": "Magi",
+      "rw": "Magi",
+      "sw": "Magi"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-02-02",
+    "kind": "CCJP",
+    "parent": "PAR-02",
+    "labels": {
+      "fr": "Runyinya",
+      "en": "Runyinya",
+      "rw": "Runyinya",
+      "sw": "Runyinya"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-02-03",
+    "kind": "CCJP",
+    "parent": "PAR-02",
+    "labels": {
+      "fr": "Mukiza",
+      "en": "Mukiza",
+      "rw": "Mukiza",
+      "sw": "Mukiza"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-27-01",
+    "kind": "CCJP",
+    "parent": "PAR-27",
+    "labels": {
+      "fr": "Sheke",
+      "en": "Sheke",
+      "rw": "Sheke",
+      "sw": "Sheke"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "Historical Sheke entry under Kiruhura retained separately from new Sheke parish; validate current membership.",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-27-02",
+    "kind": "CCJP",
+    "parent": "PAR-27",
+    "labels": {
+      "fr": "Rwaniro",
+      "en": "Rwaniro",
+      "rw": "Rwaniro",
+      "sw": "Rwaniro"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  },
+  {
+    "code": "CCJP-PAR-27-03",
+    "kind": "CCJP",
+    "parent": "PAR-27",
+    "labels": {
+      "fr": "Rugogwe",
+      "en": "Rugogwe",
+      "rw": "Rugogwe",
+      "sw": "Rugogwe"
+    },
+    "active": true,
+    "dhis2_uid": null,
+    "source": "DOC-20260902-WA0006.pdf: printed 2018 register plus handwritten Sheke addition",
+    "status": "SOURCE_LIST_TO_VALIDATE_CURRENT_MEMBERSHIP",
+    "membershipNote": "",
+    "aliases": []
+  }
+]

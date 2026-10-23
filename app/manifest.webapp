@@ -1,0 +1,19 @@
+{
+  "version": "0.8.1",
+  "name": "APSE CDJP Butare",
+  "description": "Integrated strategy, operations, independent review and organisational learning",
+  "launch_path": "operations.html",
+  "default_locale": "fr",
+  "developer": {
+    "name": "CDJP Butare"
+  },
+  "activities": {
+    "dhis": {
+      "href": "*"
+    }
+  },
+  "icons": {
+    "48": "icon.svg",
+    "128": "icon.svg"
+  }
+}

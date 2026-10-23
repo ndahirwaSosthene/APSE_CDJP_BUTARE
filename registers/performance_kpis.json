@@ -1,0 +1,58 @@
+[
+  {
+    "code": "EFF-01",
+    "labels": {
+      "fr": "Atteinte de la cible de produit",
+      "en": "Output target achievement",
+      "rw": "Kugera ku ntego y’umusaruro",
+      "sw": "Ufikivu wa lengo la pato"
+    },
+    "formula": "sum(F07.outputs linked to F03.id with identical output_unit) / F03.target * 100",
+    "scope": "APPROVED_LINKED_ANNUAL_PLAN",
+    "unit": "PERCENT",
+    "missingOrZeroDenominator": "NULL",
+    "interpretation": "Measures output achievement, not outcome or impact. Never sum heterogeneous output units."
+  },
+  {
+    "code": "EFI-01",
+    "labels": {
+      "fr": "Coût réel par unité produite",
+      "en": "Actual cost per output",
+      "rw": "Igiciro nyacyo kuri buri musaruro",
+      "sw": "Gharama halisi kwa pato"
+    },
+    "formula": "sum(F19.spent linked to F03.id) / sum(F07.outputs linked to F03.id with identical output_unit)",
+    "scope": "APPROVED_LINKED_ANNUAL_PLAN",
+    "unit": "RWF_PER_OUTPUT",
+    "missingOrZeroDenominator": "NULL",
+    "interpretation": "Cash costs only; compare the same indicator, unit, scope and quality standard. Lower cost alone does not establish better quality."
+  },
+  {
+    "code": "EFI-02",
+    "labels": {
+      "fr": "Coût prévu par unité de produit",
+      "en": "Planned cost per output",
+      "rw": "Igiciro cyateganyijwe kuri buri musaruro",
+      "sw": "Gharama iliyopangwa kwa pato"
+    },
+    "formula": "F03.budget / F03.target",
+    "scope": "APPROVED_LINKED_ANNUAL_PLAN",
+    "unit": "RWF_PER_OUTPUT",
+    "missingOrZeroDenominator": "NULL",
+    "interpretation": "Benchmark, not a universal performance threshold."
+  },
+  {
+    "code": "FIN-01",
+    "labels": {
+      "fr": "Exécution budgétaire",
+      "en": "Budget execution",
+      "rw": "Ikoreshwa ry’ingengo y’imari",
+      "sw": "Utekelezaji wa bajeti"
+    },
+    "formula": "sum(F19.spent linked to F03.id) / F03.budget * 100",
+    "scope": "APPROVED_LINKED_ANNUAL_PLAN",
+    "unit": "PERCENT",
+    "missingOrZeroDenominator": "NULL",
+    "interpretation": "Spending rate is not effectiveness or impact."
+  }
+]

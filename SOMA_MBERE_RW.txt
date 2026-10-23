@@ -1,0 +1,17 @@
+APSE 0.8.1 — WINDOWS 10/11 64-BIT
+1. Kanda iburyo kuri ZIP > Extract All. Ntuyitangirize imbere muri ZIP.
+2. Fungura folder APSE_CDJP_Butare.
+3. Gukoresha portable: kanda START_APSE_WINDOWS.cmd. Setup si ngombwa.
+4. Kuyishyira kuri computer: kanda INSTALL_APSE_WINDOWS.cmd iri muri IYI folder. Ntukoreshe installer ya kera.
+5. Console igume ifunguye. Fungura http://127.0.0.1:8766/ nyuma y’uko server yatangiye.
+
+KUYITWARA KURI COMPUTER YINDI
+- Package itarakoreshwa: shyira ZIP kuri flash, ukore Extract All kuri Windows 10/11 64-bit yindi.
+- Gutwara n’amakuru yamaze kwinjizwa: funga APSE ukoresheje Ctrl+C; muri folder iri gukoreshwa kanda PACK_APSE_FOR_FLASH.cmd. ZIP APSE_FLASH iboneka iruhande rwa folder. Yitware, uyikuremo yose ahandi, utangize START_APSE_WINDOWS.cmd. Koresha master password n’amakonti asanzwe. Original iguma aho yari iri.
+- Ntufungure kopi ebyiri ngo wandike amakuru icyarimwe: ntizihuza amakuru mu buryo bwikora.
+- Ntukuremo flash cyangwa ngo uzimye computer APSE ikiri gukora.
+- Guhindura computer bisaba kongera kuyitangiza; ntabwo server ikomeza gukora computer yazimye.
+- Iyi runtime ni iya Windows 64-bit. Android ikoresha interface kuri browser iyo server iboneka kuri network ifite configuration iboneye; iyi setup si APK ya Android.
+
+Ikosowe: installer/ZIP mismatch yakuweho; setup n’amadosiye byose biri muri package imwe, verification ya buri dosiye iracyakorwa. Ikosa rya launcher IF NOT EXIST ryakosowe.
+Native Windows execution na live DHIS2 integration ntibyageragejwe muri iyi environment.

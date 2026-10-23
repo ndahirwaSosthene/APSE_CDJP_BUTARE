@@ -1,0 +1,1 @@
+Startup stopped by input validation. See the message in the console. No passwords recorded.

@@ -1,0 +1,88 @@
+@echo off
+setlocal
+set "APSE_SETUP_SELF=%~f0"
+title CDJP BUTARE - APSE SETUP
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "$text=[IO.File]::ReadAllText($env:APSE_SETUP_SELF); $marker=('# APSE_SETUP_'+'POWERSHELL'); $start=$text.LastIndexOf($marker); & ([ScriptBlock]::Create($text.Substring($start+$marker.Length)))"
+set "APSE_SETUP_EXIT=%ERRORLEVEL%"
+if "%APSE_SETUP_EXIT%"=="0" exit /b 0
+echo.
+echo Installation failed or cancelled. The message above explains why.
+echo Installation yahagaze. Soma ikosa riri haruguru.
+pause
+exit /b %APSE_SETUP_EXIT%
+# APSE_SETUP_POWERSHELL
+$ErrorActionPreference='Stop'
+$stage=$null
+try {
+ if (-not [Environment]::Is64BitOperatingSystem) { throw 'APSE needs Windows 10/11 64-bit.' }
+ $expected='__ARCHIVE_SHA256__'
+ $selfDir=Split-Path -Parent $env:APSE_SETUP_SELF
+ $zip=Join-Path $selfDir 'APSE_CDJP_Butare_Windows_v0.8.0.zip'
+ if (-not (Test-Path -LiteralPath $zip -PathType Leaf)) {
+  Add-Type -AssemblyName System.Windows.Forms
+  $dialog=New-Object System.Windows.Forms.OpenFileDialog
+  $dialog.Title='Select APSE_CDJP_Butare_Windows_v0.8.0.zip'
+  $dialog.Filter='APSE ZIP (*.zip)|*.zip'
+  $dialog.InitialDirectory=$selfDir
+  if ($dialog.ShowDialog() -ne [System.Windows.Forms.DialogResult]::OK) { throw 'ZIP selection cancelled. Download the new complete APSE ZIP first.' }
+  $zip=$dialog.FileName
+ }
+ Write-Host 'Checking the full ZIP / Kugenzura ZIP yose...'
+ $actual=(Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash
+ if ($actual -ne $expected) { throw 'Wrong or incomplete ZIP. Use APSE_CDJP_Butare_Windows_v0.8.0.zip supplied with this installer. The old v0.7 ZIP is not accepted.' }
+ $probe=New-Object Net.Sockets.TcpClient
+ try { $connect=$probe.ConnectAsync('127.0.0.1',8766); if ($connect.Wait(500) -and $probe.Connected) { throw 'Port 8766 is in use. Stop the running APSE console with Ctrl+C before installing this update.' } } catch [System.AggregateException] {} finally { $probe.Dispose() }
+ $base=Join-Path $env:LOCALAPPDATA 'CDJPButare'
+ $target=Join-Path $base 'APSE_0.8.0'
+ New-Item -ItemType Directory -Path $base -Force | Out-Null
+ if (-not (Test-Path -LiteralPath $target)) {
+  $stage=Join-Path $base ('Setup_'+[Guid]::NewGuid().ToString('N'))
+  New-Item -ItemType Directory -Path $stage | Out-Null
+  Add-Type -AssemblyName System.IO.Compression.FileSystem
+  $archive=[IO.Compression.ZipFile]::OpenRead($zip)
+  try {
+   foreach ($entry in $archive.Entries) {
+    $normalized=$entry.FullName.Replace('\','/')
+    if (-not $normalized.StartsWith('APSE_CDJP_Butare/') -or $normalized.Split('/') -contains '..' -or $normalized.Contains(':')) { throw 'Invalid path in APSE ZIP.' }
+   }
+  } finally { $archive.Dispose() }
+  Write-Host 'Extracting all application files / Gukuramo dosiye zose...'
+  [IO.Compression.ZipFile]::ExtractToDirectory($zip,$stage)
+  $app=Join-Path $stage 'APSE_CDJP_Butare'
+  if (-not (Test-Path -LiteralPath (Join-Path $app 'runtime\windows\python.exe'))) { throw 'The portable Python runtime is missing after extraction. Ask IT to inspect antivirus quarantine; do not disable protection.' }
+  Move-Item -LiteralPath $app -Destination $target
+ }
+ $python=Join-Path $target 'runtime\windows\python.exe'
+ $verify=Join-Path $target 'scripts\verify_install.py'
+ & $python -X utf8 $verify
+ if ($LASTEXITCODE -ne 0) { throw 'Installation verification failed. Existing application data was not overwritten. Contact support.' }
+ $oldData=Join-Path $base 'APSE_0.7.1\portable_data'
+ $newData=Join-Path $target 'portable_data'
+ if ((Test-Path -LiteralPath (Join-Path $oldData 'apse.sqlite')) -and -not (Test-Path -LiteralPath $newData)) {
+  & $python -X utf8 (Join-Path $target 'scripts\migrate_local.py') --source $oldData --target $newData
+  if ($LASTEXITCODE -ne 0) { throw 'Existing data could not be copied safely. Original kept unchanged. Do not create a new vault.' }
+  Write-Host 'Previous encrypted data copied. Use the SAME master password and accounts. Original kept.'
+ }
+ $launcher=Join-Path $target 'START_APSE_WINDOWS.cmd'
+ $shell=New-Object -ComObject WScript.Shell
+ $desktop=[Environment]::GetFolderPath('Desktop')
+ $link=$shell.CreateShortcut((Join-Path $desktop 'CDJP Butare - APSE.lnk'))
+ $link.TargetPath=$env:ComSpec
+ $link.Arguments='/d /c START_APSE_WINDOWS.cmd'
+ $link.WorkingDirectory=$target
+ $link.Description='CDJP Butare APSE local - keep the console open'
+ $link.Save()
+ Write-Host ('Installed: '+$target)
+ Write-Host 'Desktop shortcut: CDJP Butare - APSE'
+ Write-Host 'Starting APSE. Password characters will not appear while typing.'
+ Start-Process -FilePath $env:ComSpec -ArgumentList '/d','/c','START_APSE_WINDOWS.cmd' -WorkingDirectory $target
+ exit 0
+} catch {
+ Write-Host ('ERROR: '+$_.Exception.Message) -ForegroundColor Red
+ exit 1
+} finally {
+ if ($stage -and (Test-Path -LiteralPath $stage)) {
+  # Remove only the temporary setup folder created in this run, never the app or its data.
+  Remove-Item -LiteralPath $stage -Recurse -Force -ErrorAction SilentlyContinue
+ }
+}

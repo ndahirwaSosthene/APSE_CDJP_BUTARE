@@ -1,0 +1,6 @@
+python313.zip
+.
+Lib/site-packages
+../../service
+../../scripts
+import site

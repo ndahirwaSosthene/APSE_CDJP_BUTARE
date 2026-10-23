@@ -1,0 +1,119 @@
+[
+  {
+    "code": "A1.R1",
+    "label": {
+      "en": "Accompanied people improve psychosocial wellbeing, perceived safety and adaptive capacity.",
+      "fr": "Le bien-être psychosocial, le sentiment de sécurité et la capacité d’adaptation des personnes accompagnées s’améliorent.",
+      "rw": "Abaherekejwe barushaho kugira imibereho myiza yo mu mutima, umutekano n’ubushobozi bwo kwiyakira.",
+      "sw": "Watu wanaoambatana na huduma wanaboresha ustawi wa kisaikolojia, hisia za usalama na uwezo wa kuzoea."
+    }
+  },
+  {
+    "code": "A1.R2",
+    "label": {
+      "en": "Trust, solidarity and relationships improve in targeted families and communities.",
+      "fr": "La confiance, la solidarité et la qualité des relations au sein des familles et communautés ciblées s’améliorent.",
+      "rw": "Icyizere, ubufatanye n’imibanire birushaho kuba byiza mu miryango no mu baturage bagenewe ibikorwa.",
+      "sw": "Uaminifu, mshikamano na ubora wa mahusiano vinaimarika katika familia na jamii lengwa."
+    }
+  },
+  {
+    "code": "A1.R3",
+    "label": {
+      "en": "Vulnerable people, including those reintegrating, access coordinated, safe and non-stigmatising support and services.",
+      "fr": "Les personnes vulnérables, y compris celles en réintégration, accèdent à un accompagnement et à des services coordonnés, sûrs et non stigmatisants.",
+      "rw": "Abantu bafite intege nke, harimo abasubira mu muryango, babona ubufasha na serivisi bihujwe, bitekanye kandi bitabaha akato.",
+      "sw": "Watu walio katika mazingira hatarishi, wakiwemo wanaojumuishwa upya, wanapata msaada na huduma zilizoratibiwa, salama na zisizowabagua."
+    }
+  },
+  {
+    "code": "A2.R1",
+    "label": {
+      "en": "At-risk tensions and conflicts are detected earlier and receive an appropriate response.",
+      "fr": "Les tensions et conflits à risque sont détectés plus tôt et reçoivent une réponse appropriée.",
+      "rw": "Ubwumvikane buke n’amakimbirane bishobora guteza ibyago bitahurwa hakiri kare bigahabwa igisubizo gikwiye.",
+      "sw": "Mivutano na migogoro yenye hatari inatambuliwa mapema na kupata mwitikio unaofaa."
+    }
+  },
+  {
+    "code": "A2.R2",
+    "label": {
+      "en": "A growing share of supported conflicts is transformed without violence and agreements endure, with meaningful participation of groups at risk of exclusion.",
+      "fr": "Une proportion croissante de conflits accompagnés est transformée sans violence et les accords restent appliqués dans le temps, avec une participation effective des groupes exposés à l’exclusion.",
+      "rw": "Amakimbirane akurikiranwa arushaho guhinduka nta hohotera, amasezerano akubahirizwa kandi abashobora guhezwa bakabigiramo uruhare.",
+      "sw": "Sehemu inayoongezeka ya migogoro inayosaidiwa inabadilishwa bila vurugu, makubaliano yanaendelea kutekelezwa na makundi yaliyo hatarini kutengwa yanashiriki kikamilifu."
+    }
+  },
+  {
+    "code": "A3.R1",
+    "label": {
+      "en": "Targeted pastoral institutions and communities adopt verifiable ecological practices.",
+      "fr": "Les institutions pastorales et communautés ciblées adoptent des pratiques écologiques vérifiables.",
+      "rw": "Inzego za Kiliziya n’abaturage bagenewe ibikorwa bakoresha uburyo bwo kubungabunga ibidukikije bushobora kugenzurwa.",
+      "sw": "Taasisi za kichungaji na jamii lengwa zinatumia mbinu za kiikolojia zinazoweza kuthibitishwa."
+    }
+  },
+  {
+    "code": "A3.R2",
+    "label": {
+      "en": "Supported initiatives reduce priority social-environmental risks and their lessons inform parish or local plans and decisions.",
+      "fr": "Les initiatives soutenues réduisent les risques socio-environnementaux prioritaires et leurs enseignements influencent les plans et décisions paroissiales ou locales.",
+      "rw": "Ibikorwa bishyigikiwe bigabanya ibyago ku mibereho n’ibidukikije, amasomo yabyo agafasha igenamigambi n’ibyemezo by’inzego z’ibanze na paruwasi.",
+      "sw": "Mipango inayosaidiwa inapunguza hatari za kijamii na kimazingira zilizopewa kipaumbele na mafunzo yake yanaathiri mipango na maamuzi ya parokia au maeneo husika."
+    }
+  },
+  {
+    "code": "A4.R1",
+    "label": {
+      "en": "People and communities better understand and use remedies, protection and participation channels.",
+      "fr": "Les personnes et communautés connaissent et utilisent mieux les voies de recours, de protection et de participation.",
+      "rw": "Abantu n’abaturage barushaho kumenya no gukoresha inzira zo kurenganurwa, kurindwa no kugira uruhare.",
+      "sw": "Watu na jamii wanaelewa na kutumia vizuri zaidi njia za kupata haki, ulinzi na ushiriki."
+    }
+  },
+  {
+    "code": "A4.R2",
+    "label": {
+      "en": "Advocacy priorities are defined with communities and documented with reliable, safe evidence.",
+      "fr": "Les priorités de plaidoyer sont définies avec les communautés et documentées par des preuves fiables et sûres.",
+      "rw": "Ibyibandwaho mu buvugizi bigenwa hamwe n’abaturage bigashingira ku bimenyetso byizewe kandi bitekanye.",
+      "sw": "Vipaumbele vya utetezi vinaainishwa pamoja na jamii na kuandikwa kwa ushahidi wa kuaminika na salama."
+    }
+  },
+  {
+    "code": "A4.R3",
+    "label": {
+      "en": "Duty bearers provide more documented responses and verifiable changes are achieved.",
+      "fr": "Les détenteurs d’obligations apportent davantage de réponses documentées et des changements vérifiables sont obtenus.",
+      "rw": "Abafite inshingano barushaho gutanga ibisubizo byanditse, hakagerwa ku mpinduka zishobora kugenzurwa.",
+      "sw": "Wenye wajibu wanatoa majibu mengi zaidi yaliyorekodiwa na mabadiliko yanayothibitishwa yanapatikana."
+    }
+  },
+  {
+    "code": "A5.R1",
+    "label": {
+      "en": "Justice and Peace structures apply their roles, mandates, coordination mechanisms and standards.",
+      "fr": "Les rôles, mandats, mécanismes de coordination et standards des structures Justice et Paix sont appliqués.",
+      "rw": "Inzego z’Ubutabera n’Amahoro zishyira mu bikorwa inshingano, ububasha, uburyo bwo guhuza ibikorwa n’ibipimo byazo.",
+      "sw": "Miundo ya Haki na Amani inatekeleza majukumu, mamlaka, mifumo ya uratibu na viwango vyake."
+    }
+  },
+  {
+    "code": "A5.R2",
+    "label": {
+      "en": "Data, budgets, risks and learning are connected and used in decisions at every level.",
+      "fr": "Les données, budgets, risques et apprentissages sont reliés et utilisés dans les décisions à tous les niveaux.",
+      "rw": "Amakuru, ingengo y’imari, ibyago n’amasomo birahuzwa bigakoreshwa mu byemezo mu nzego zose.",
+      "sw": "Data, bajeti, hatari na ujifunzaji vinaunganishwa na kutumika katika maamuzi katika ngazi zote."
+    }
+  },
+  {
+    "code": "A5.R3",
+    "label": {
+      "en": "CDJP diversifies resources, retains critical skills and protects quality, safeguarding and mission continuity.",
+      "fr": "La CDJP diversifie ses ressources, maintient les compétences critiques et protège la qualité, la sauvegarde et la continuité de sa mission.",
+      "rw": "CDJP yagura inkomoko y’umutungo, igakomeza ubumenyi bukenewe kandi ikarinda ubwiza, umutekano n’ugukomeza ubutumwa bwayo.",
+      "sw": "CDJP inapanua vyanzo vya rasilimali, inadumisha ujuzi muhimu na kulinda ubora, usalama na mwendelezo wa dhamira yake."
+    }
+  }
+]
