@@ -149,6 +149,48 @@ class V1RedesignTests(unittest.TestCase):
             p.terminate()
             p.wait(timeout=5)
 
+    def test_design_system_tokens_and_components(self):
+        css = (ROOT / 'app/v1.css').read_text(encoding='utf-8')
+        js = (ROOT / 'app/v1.js').read_text(encoding='utf-8')
+        for token in (
+            '--font-sans:',
+            '--font-mono:',
+            '--radius-xs: 3px;',
+            '--radius-sm: 4px;',
+            '--radius-md: 8px;',
+            '--radius-sheet: 16px 16px 0 0;',
+            '--bg-canvas: #F4F5F7;',
+            '--bg-surface: #FFFFFF;',
+            '--bg-input: #F4F4F4;',
+            '--color-primary: #0F62FE;',
+            '--color-danger: #DA1E28;',
+            '--tag-success-bg: #DCFFF1;',
+            '--tag-info-bg: #E9F2FF;',
+            '--tag-warn-bg: #FFF7D6;',
+            '--tag-danger-bg: #FFECEB;',
+            '--chart-1: #6929C4;',
+            '--chart-2: #1192E8;',
+            '--chart-3: #005D5D;',
+            '--chart-4: #9F1853;',
+            '[data-theme="dark"]',
+            '--bg-canvas: #1D2125;',
+            '--bg-surface: #22272B;',
+            '--color-primary: #579DFF;',
+            '.v1-polaris-resource-list',
+            '.v1-bottom-sheet',
+            '.v1-breadcrumbs',
+        ):
+            self.assertIn(token, css)
+        for symbol in (
+            'function msIcon(',
+            'function renderBreadcrumbs(',
+            'function renderLozenge(',
+            'function renderMobileBottomSheet(',
+            'v1-polaris-resource-list',
+            'v1-bottom-sheet',
+        ):
+            self.assertIn(symbol, js)
+
 
 if __name__ == '__main__':
     unittest.main()

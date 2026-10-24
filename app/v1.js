@@ -1,10 +1,15 @@
 'use strict';
-/* APSE v1.0 Redesign Frontend — Task-Driven To-Do Workflow, 4-Step Guided Capture,
-   Auto-Calculated Totals, 3-Tier Approvals, Outcome Accordions, Regional Parish Map & Transfers */
+/* ==========================================================================
+   APSE v1.0 Unified Design System Frontend
+   - IBM Carbon Desktop Grid (16-col), Breadcrumbs, Forms & Data Viz
+   - Atlassian Typography (Inter + IBM Plex Mono tabular-nums), Lozenges & Light/Dark Themes
+   - Material Symbols Outlined Iconography (16px / 20px / 24px)
+   - Shopify Polaris Resource Cards & Cisco Momentum Slide-Up Bottom Sheets (< 768px)
+   ========================================================================== */
 
 const V1 = {
   lang: localStorage.getItem('apse-v1-lang') || 'en',
-  theme: localStorage.getItem('apse-theme') || 'cdjp',
+  theme: localStorage.getItem('apse-theme') || 'light',
   workspace: 'tasks', // 'tasks' | 'approvals' | 'analytics' | 'exports'
   searchQuery: '',
   filters: {
@@ -21,6 +26,7 @@ const V1 = {
   syncingState: null, // null | { current: 1, total: 3 }
   wizard: null, // Active 4-step guided form state
   newTaskModal: false,
+  mobileSheet: null, // null | 'filters' | 'location'
   exportOptions: {
     reportType: 'impact_summary',
     format: 'xlsx',
@@ -28,6 +34,57 @@ const V1 = {
   },
   csvImportState: null,
 };
+
+/* Section 4: Material Symbols Outlined Vector Paths (weight: 400, grade: 0, 24x24 viewBox) */
+const MATERIAL_SYMBOLS = {
+  check_box: 'M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21H5Zm0-2h14V5H5v14Zm5.6-2.8 7.05-7.05-1.4-1.4-5.65 5.65-2.85-2.85-1.4 1.4 4.25 4.25Z',
+  assignment: 'M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h4.2q.325-.9 1.088-1.45T12 1q.95 0 1.713.55T14.8 3H19q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21H5Zm0-2h14V5H5v14Zm2-2h7v-2H7v2Zm0-4h10v-2H7v2Zm0-4h10V7H7v2Zm5-4.75q.325 0 .538-.213t.212-.537q0-.325-.212-.537T12 2.75q-.325 0-.537.213T11.25 3.5q0 .325.213.537T12 4.25Z',
+  fact_check: 'M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20H4Zm0-2h16V6H4v12Zm1.5-3h5v-2h-5v2Zm0-4h5V9h-5v2Zm0-4h5V5h-5v2Zm9.35 8 4.25-4.25-1.4-1.425-2.85 2.85-1.425-1.425-1.4 1.425L14.85 15Z',
+  insights: 'm3.5 18.5-1.5-1.5 6-6 4 4 8.5-9.5 1.5 1.35L12 18l-4-4-4.5 4.5ZM19 9l-.95-2.05L16 6l2.05-.95L19 3l.95 2.05L22 6l-2.05.95L19 9ZM6 11l-.65-1.35L4 9l1.35-.65L6 7l.65 1.35L8 9l-1.35.65L6 11Z',
+  monitoring: 'M3 21v-2l2-2v4H3Zm4 0v-6l2-2v8H7Zm4 0v-8l2 2.025V21h-2Zm4 0v-5.975l2-2V21h-2Zm4 0V11l2-2v12h-2ZM3 15.825V13l7-7 4 4 7-7v2.825l-7 7-4-4-7 7Z',
+  download: 'M12 16 7 11l1.4-1.45 2.6 2.6V4h2v8.15l2.6-2.6L17 11l-5 5Zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20H6Z',
+  upload_file: 'M11 18h2v-4.175l1.6 1.6L16 14l-4-4-4 4 1.425 1.4L11 13.825V18ZM6 22q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
+  cloud_done: 'm10.6 16.2 5.65-5.65-1.425-1.425-4.225 4.225-2.1-2.1L7.075 12.675 10.6 16.2ZM6.5 20q-2.275 0-3.887-1.575T1 14.575q0-1.95 1.175-3.475T5.25 9.15q.625-2.3 2.5-3.725T12 4q2.925 0 4.963 2.038T19 11q1.725.2 2.863 1.488T23 15.5q0 1.875-1.312 3.188T18.5 20H6.5Z',
+  sync: 'M4 20v-2h2.75l-.4-.35q-1.3-1.15-1.825-2.625T4 12.05q0-2.775 1.663-4.938T10 4.25v2.1Q8.2 7 7.1 8.563T6 12.05q0 1.125.425 2.188T7.75 16.2l.25.25V14h2v6H4Zm10-.25v-2.1q1.8-.65 2.9-2.212T18 11.95q0-1.125-.425-2.187T16.25 7.8L16 7.55V10h-2V4h6v2h-2.75l.4.35q1.225 1.225 1.788 2.663T20 11.95q0 2.775-1.662 4.938T14 19.75Z',
+  cloud_off: 'm19.9 22.6-3.15-3.15H6.5q-2.275 0-3.887-1.575T1 14.025q0-1.85 1.1-3.325T4.925 8.8L1.4 5.275 2.8 3.85l18.5 18.5-1.4 1.25ZM6.5 17.45h8.25L6.8 9.5q-1.6.175-2.7 1.35T3 13.75q0 1.55 1.075 2.625T6.5 17.45Zm14.95-.625-1.45-1.45q.5-.375.75-.913t.25-1.212q0-1.05-.725-1.775T18.5 10.75H17v-1.5q0-2.075-1.463-3.537T12 4.25q-.95 0-1.787.35T8.75 5.65L7.3 4.2q1.025-.9 2.263-1.375T12 2.35q2.725 0 4.688 1.813T18.95 8.75q1.725.15 2.888 1.4T23 13.25q0 1.075-.413 2.025t-1.137 1.55Z',
+  info: 'M11 17h2v-6h-2v6Zm1-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9Zm0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
+  warning: 'M1 21 12 2l11 19H1Zm3.45-2h15.1L12 6 4.45 19ZM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18Zm-1-3h2v-5h-2v5Z',
+  error: 'M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
+  search: 'M19.6 21 13.3 14.7q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5q0-2.725 1.888-4.612T9.5 3q2.725 0 4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3-1.4 1.4ZM9.5 14q1.875 0 3.188-1.312T14 9.5q0-1.875-1.312-3.187T9.5 5Q7.625 5 6.313 6.313T5 9.5q0 1.875 1.313 3.188T9.5 14Z',
+  calendar_today: 'M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V2h2v2h8V2h2v2h1q.825 0 1.413.588T21 6v14q0 .825-.587 1.413T19 22H5Zm0-2h14V10H5v10ZM5 8h14V6H5v2Z',
+  filter_list: 'M10 18v-2h4v2h-4Zm-4-5v-2h12v2H6ZM3 8V6h18v2H3Z',
+  chevron_right: 'M12.6 12 8 7.4 9.4 6l6 6-6 6L8 16.6l4.6-4.6Z',
+  chevron_left: 'm14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6L14 18Z',
+  arrow_forward: 'm12 20-1.425-1.4 5.6-5.6H4v-2h12.175l-5.6-5.6L12 4l8 8-8 8Z',
+  arrow_back: 'm7.825 13 5.6 5.6L12 20l-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825Z',
+  add: 'M11 13H5v-2h6V5h2v6h6v2h-6v6h-2v-6Z',
+  lock: 'M6 22q-.825 0-1.412-.587T4 20V10q0-.825.588-1.412T6 8h1V6q0-2.075 1.463-3.537T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.587 1.413T18 22H6Zm6-5q.825 0 1.413-.587T14 15q0-.825-.587-1.412T12 13q-.825 0-1.412.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z',
+  close: 'm6.4 19-1.4-1.4 5.6-5.6-5.6-5.6L6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19Z',
+  check: 'M9.55 18 3.85 12.3l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4 9.55 18Z',
+  undo: 'M7 19v-2h7.1q1.575 0 2.738-1T18 13.5q0-1.5-1.162-2.5T14.1 10H7.8l2.6 2.6L9 14 4 9l5-5 1.4 1.4L7.8 8h6.3q2.425 0 4.163 1.575T20 13.5q0 2.35-1.737 3.925T14.1 19H7Z',
+  light_mode: 'M12 17q-2.075 0-3.537-1.463T7 12q0-2.075 1.463-3.537T12 7q2.075 0 3.538 1.463T17 12q0 2.075-1.462 3.538T12 17ZM2 13v-2h3v2H2Zm17 0v-2h3v2h-3ZM11 5V2h2v3h-2Zm0 17v-3h2v3h-2ZM6.4 7.8 4.25 5.65l1.4-1.4L7.8 6.4 6.4 7.8Zm12.35 12.35L16.6 18l1.4-1.4 2.15 2.15-1.4 1.4ZM16.6 6.4l2.15-2.15 1.4 1.4L18 7.8l-1.4-1.4ZM4.25 18.75 6.4 16.6l1.4 1.4-2.15 2.15-1.4-1.4Z',
+  dark_mode: 'M12 21q-3.75 0-6.375-2.625T3 12q0-3.75 2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21Z',
+  location_on: 'M12 12q.825 0 1.413-.587T14 10q0-.825-.587-1.412T12 8q-.825 0-1.412.588T10 10q0 .825.588 1.413T12 12Zm0 10q-4.025-3.425-6.012-6.362T4 10.2q0-3.75 2.413-5.975T12 2q3.175 0 5.588 2.225T20 10.2q0 2.5-1.987 5.438T12 22Z',
+  attach_file: 'M11.5 22q-2.3 0-3.9-1.6T6 16.5V6q0-1.65 1.175-2.825T10 2q1.65 0 2.825 1.175T14 6v9.5q0 1.05-.725 1.775T11.5 18q-1.05 0-1.775-.725T9 15.5V6h1.5v9.5q0 .425.288.713T11.5 16.5q.425 0 .713-.287T12.5 15.5V6q0-1.05-.725-1.775T10 3.5q-1.05 0-1.775.725T7.5 6v10.5q0 1.65 1.175 2.825T11.5 20.5q1.65 0 2.825-1.175T15.5 16.5V6H17v10.5q0 2.3-1.6 3.9T11.5 22Z',
+  description: 'M8 18h8v-2H8v2Zm0-4h8v-2H8v2Zm-2 8q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
+};
+
+function msIcon(name, size = 20) {
+  const span = document.createElement('span');
+  span.className = `v1-icon v1-icon-${size} material-symbols-outlined`;
+  span.setAttribute('aria-hidden', 'true');
+  span.dataset.icon = name;
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('viewBox', '0 0 24 24');
+  svg.setAttribute('width', String(size));
+  svg.setAttribute('height', String(size));
+  const path = document.createElementNS(svgNS, 'path');
+  path.setAttribute('d', MATERIAL_SYMBOLS[name] || MATERIAL_SYMBOLS.check_box);
+  svg.appendChild(path);
+  span.appendChild(svg);
+  return span;
+}
 
 const I18N = {
   en: {
@@ -42,8 +99,8 @@ const I18N = {
     sync_updating: (c, t) => `Updating Central Database (${c} of ${t})...`,
     add_planned: '+ Add Planned Activity',
     log_completed: 'Log Completed Activity',
-    log_progress: 'Log Progress →',
-    fix_step: s => `Fix Step ${s} →`,
+    log_progress: 'Log Progress',
+    fix_step: s => `Fix Step ${s}`,
     view_summary: 'View / Update',
     period_all: 'All Dates',
     period_q1: 'This Quarter (Q1)',
@@ -72,18 +129,18 @@ const I18N = {
   },
   rw: {
     nav_tasks: 'Ibikorwa Byanjye',
-    nav_approvals: ' Kwemeza Raporo',
+    nav_approvals: 'Kwemeza Raporo',
     nav_analytics: 'Ibyagezweho n’Isesengura',
-    nav_exports: 'Raporo n’ Kohereza',
+    nav_exports: 'Raporo n’Kohereza',
     nav_confidential: "Andika Ikibazo cy'Ibanga",
     search_placeholder: 'Shakisha igikorwa, paruwasi cyangwa intego...',
     sync_synced: 'Amakuru Yose Yarabitswe',
     sync_offline: n => `Byabitswe kuri Mudasobwa (${n} bitegereje murandasi)`,
-    sync_updating: (c, t) => ` kohereza mu bubiko bukuru (${c} muri ${t})...`,
+    sync_updating: (c, t) => `Kohereza mu bubiko bukuru (${c} muri ${t})...`,
     add_planned: '+ Shyiramo Igikorwa Giteganyijwe',
     log_completed: 'Uzuza Igikorwa Cyakozwe',
-    log_progress: 'Uzuza Ibyakozwe →',
-    fix_step: s => `Kosora Intambwe ya ${s} →`,
+    log_progress: 'Uzuza Ibyakozwe',
+    fix_step: s => `Kosora Intambwe ya ${s}`,
     view_summary: 'Reba / Hindura',
     period_all: 'Ibihe Byose',
     period_q1: 'Igihembwe (Q1)',
@@ -101,7 +158,7 @@ const I18N = {
     impact_GREAT: 'Ingaruka Nziza Cyane',
     impact_GOOD: 'Ingaruka Nziza',
     impact_LOW: 'Ingaruka Nto',
-    impact_PENDING: ' Ntiruzuzwa',
+    impact_PENDING: 'Ntiruzuzwa',
     step1_title: 'Intambwe 1: Igihe n’Aho Byabereye',
     step2_title: 'Intambwe 2: Abitabiriye n’Ibyakozwe',
     step3_title: 'Intambwe 3: Impinduka n’Imbogamizi',
@@ -122,8 +179,8 @@ const I18N = {
     sync_updating: (c, t) => `Mise à jour de la base centrale (${c} sur ${t})...`,
     add_planned: '+ Ajouter une Activité Prévue',
     log_completed: 'Saisir une Activité Réalisée',
-    log_progress: 'Saisir l’avancement →',
-    fix_step: s => `Corriger l'étape ${s} →`,
+    log_progress: 'Saisir l’avancement',
+    fix_step: s => `Corriger l'étape ${s}`,
     view_summary: 'Voir / Modifier',
     period_all: 'Toutes périodes',
     period_q1: 'Ce Trimestre (T1)',
@@ -162,8 +219,8 @@ const I18N = {
     sync_updating: (c, t) => `Inasasisha Hifadhidata Kuu (${c} kati ya ${t})...`,
     add_planned: '+ Ongeza Shughuli Iliyopangwa',
     log_completed: 'Jaza Shughuli Iliyokamilika',
-    log_progress: 'Jaza Maendeleo →',
-    fix_step: s => `Rekebisha Hatua ${s} →`,
+    log_progress: 'Jaza Maendeleo',
+    fix_step: s => `Rekebisha Hatua ${s}`,
     view_summary: 'Tazama / Badili',
     period_all: 'Vipindi Vyote',
     period_q1: 'Robo Hii (Q1)',
@@ -260,6 +317,55 @@ function h(tag, attrs = {}, ...children) {
     el.append(child instanceof Node ? child : document.createTextNode(String(child)));
   }
   return el;
+}
+
+/* Section 3.1: IBM Carbon Breadcrumbs above H1 */
+function renderBreadcrumbs(workspaceLabel, extraTrail = []) {
+  const parishes = V1.data?.parishes || [];
+  const activeParish = parishes.find(p => p.code === (V1.wizard?.parish_code || V1.filters.parish));
+  const items = [
+    {
+      label: 'Diocese of Butare',
+      onClick: async () => {
+        if (V1.filters.parish || V1.wizard) {
+          V1.filters.parish = '';
+          V1.wizard = null;
+          await loadBootstrap();
+          renderApp();
+        }
+      },
+    },
+    {
+      label: activeParish ? `${activeParish.name} Parish` : (parishes[0] ? `${parishes[0].name} Parish` : 'Gakoma Parish'),
+      onClick: async () => {
+        if (V1.wizard) {
+          V1.wizard = null;
+          renderApp();
+        }
+      },
+    },
+    ...extraTrail,
+    { label: workspaceLabel, current: true },
+  ];
+
+  const nav = h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' });
+  items.forEach((it, idx) => {
+    if (idx > 0) nav.append(h('span', { className: 'v1-breadcrumb-sep', 'aria-hidden': 'true' }, '/'));
+    if (it.current) {
+      nav.append(h('span', { className: 'v1-breadcrumb-item current', 'aria-current': 'page' }, it.label));
+    } else {
+      nav.append(h('button', { type: 'button', className: 'v1-breadcrumb-item', onClick: it.onClick }, it.label));
+    }
+  });
+  return nav;
+}
+
+/* Section 2.2: Atlassian Lozenge / Status Tag Helper */
+function renderLozenge(text, variant = 'neutral', iconName = null) {
+  return h('span', { className: `v1-badge ${variant}` },
+    iconName ? msIcon(iconName, 16) : null,
+    h('span', {}, text)
+  );
 }
 
 async function loadBootstrap() {
@@ -388,14 +494,15 @@ function validateWizardStep(w, step) {
   return true;
 }
 
-/* Reusable Stepper Input Control (- / + with Direct Number Pad) */
+/* Section 5.4: Touch Stepper Input Control (- / + 44x44px hit areas with tabular-nums) */
 function renderStepperInput(labelTxt, value, onChange, min = 0) {
   return h('div', { className: 'v1-stepper-box' },
-    h('label', {}, labelTxt),
+    h('label', { className: 'v1-field-label' }, labelTxt),
     h('div', { className: 'v1-stepper-controls' },
       h('button', {
         type: 'button',
         className: 'v1-step-btn',
+        'aria-label': `Decrease ${labelTxt}`,
         onClick: () => {
           const next = Math.max(min, Number(value || 0) - 1);
           onChange(next);
@@ -403,7 +510,7 @@ function renderStepperInput(labelTxt, value, onChange, min = 0) {
       }, '−'),
       h('input', {
         type: 'number',
-        className: 'v1-step-input',
+        className: 'v1-step-input v1-tabular',
         min: String(min),
         value: String(value ?? 0),
         onChange: e => onChange(Math.max(min, Number(e.target.value || 0))),
@@ -411,6 +518,7 @@ function renderStepperInput(labelTxt, value, onChange, min = 0) {
       h('button', {
         type: 'button',
         className: 'v1-step-btn',
+        'aria-label': `Increase ${labelTxt}`,
         onClick: () => {
           const next = Math.max(min, Number(value || 0) + 1);
           onChange(next);
@@ -436,12 +544,13 @@ function renderParishCombobox(selectedCode, onSelect, allowAll = true) {
   }
   const current = parishes.find(p => p.code === selectedCode);
   const listId = 'v1-parish-dl-' + Math.random().toString(36).slice(2, 7);
-  return h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '6px' } },
+  return h('div', { style: { display: 'inline-flex', alignItems: 'center', gap: '8px', position: 'relative' } },
+    h('span', { className: 'v1-search-icon' }, msIcon('location_on', 16)),
     h('input', {
       type: 'search',
       list: listId,
       className: 'v1-search-input',
-      style: { width: '210px', paddingLeft: '12px', height: '36px' },
+      style: { width: '220px', paddingLeft: '32px', height: '36px' },
       placeholder: current ? `${current.name} (${current.district})` : L('all_parishes'),
       value: current ? current.name : '',
       onChange: e => {
@@ -455,7 +564,7 @@ function renderParishCombobox(selectedCode, onSelect, allowAll = true) {
       },
     }),
     selectedCode && allowAll
-      ? h('button', { type: 'button', className: 'v1-btn v1-btn-secondary v1-btn-sm', onClick: () => onSelect('') }, 'Clear')
+      ? h('button', { type: 'button', className: 'v1-btn v1-btn-ghost v1-btn-sm', onClick: () => onSelect('') }, 'Clear')
       : null,
     h('datalist', { id: listId },
       parishes.map(p => h('option', { value: p.name }, `${p.name} · ${p.district} District`))
@@ -463,7 +572,115 @@ function renderParishCombobox(selectedCode, onSelect, allowAll = true) {
   );
 }
 
-/* 4-Step Guided Data Collection Wizard View */
+/* Section 5.3: Cisco Momentum Slide-Up Mobile Bottom Sheet */
+function renderMobileBottomSheet() {
+  if (!V1.mobileSheet) return null;
+  const parishes = V1.data?.parishes || [];
+  const themes = [
+    { code: '', label: L('all_themes') },
+    { code: 'A1', label: 'Healing & Unity' },
+    { code: 'A2', label: 'Conflict Resolution' },
+    { code: 'A3', label: 'Environmental Care' },
+    { code: 'A4', label: 'Human Rights' },
+    { code: 'A5', label: 'Committee Support' },
+  ];
+
+  return h('div', {
+    className: 'v1-sheet-backdrop',
+    onClick: e => {
+      if (e.target.classList.contains('v1-sheet-backdrop')) {
+        V1.mobileSheet = null;
+        renderApp();
+      }
+    },
+  },
+    h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true' },
+      h('div', { className: 'v1-sheet-handle' }),
+      h('div', { className: 'v1-sheet-header' },
+        h('h2', { className: 'v1-section-title' }, V1.mobileSheet === 'location' ? 'Select Parish & Location' : 'Filter Workspace'),
+        h('button', {
+          type: 'button',
+          className: 'v1-btn v1-btn-ghost v1-btn-sm',
+          onClick: () => { V1.mobileSheet = null; renderApp(); },
+        }, msIcon('close', 20))
+      ),
+      h('div', { className: 'v1-sheet-body' },
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Reporting Period'),
+          h('div', { className: 'v1-chips' },
+            [
+              ['ALL', L('period_all')],
+              ['Q1', L('period_q1')],
+              ['AP1', L('period_ap1')],
+            ].map(([code, lbl]) =>
+              h('button', {
+                type: 'button',
+                className: 'v1-chip' + (V1.filters.period === code ? ' active' : ''),
+                onClick: () => { V1.filters.period = code; renderApp(); },
+              }, lbl)
+            )
+          )
+        ),
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Strategic Theme'),
+          h('div', { className: 'v1-chips' },
+            themes.map(th =>
+              h('button', {
+                type: 'button',
+                className: 'v1-chip' + (V1.filters.axis === th.code ? ' active' : ''),
+                onClick: () => { V1.filters.axis = th.code; renderApp(); },
+              }, th.label)
+            )
+          )
+        ),
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Parish Location'),
+          h('div', { className: 'v1-chips' },
+            h('button', {
+              type: 'button',
+              className: 'v1-chip' + (!V1.filters.parish ? ' active' : ''),
+              onClick: () => { V1.filters.parish = ''; renderApp(); },
+            }, L('all_parishes')),
+            ...parishes.slice(0, 12).map(p =>
+              h('button', {
+                type: 'button',
+                className: 'v1-chip' + (V1.filters.parish === p.code ? ' active' : ''),
+                onClick: () => { V1.filters.parish = p.code; renderApp(); },
+              }, p.name)
+            )
+          )
+        )
+      ),
+      h('div', { className: 'v1-sheet-footer' },
+        h('button', {
+          type: 'button',
+          className: 'v1-btn v1-btn-ghost',
+          onClick: async () => {
+            V1.filters.period = 'ALL';
+            V1.filters.axis = '';
+            V1.filters.parish = '';
+            V1.filters.status = 'ALL';
+            await loadBootstrap();
+            V1.mobileSheet = null;
+            renderApp();
+          },
+        }, 'Reset'),
+        h('button', {
+          type: 'button',
+          className: 'v1-btn',
+          style: { flex: 1 },
+          onClick: async () => {
+            await loadBootstrap();
+            V1.mobileSheet = null;
+            renderApp();
+          },
+        }, h('span', {}, 'Apply Filters'), msIcon('check', 20))
+      )
+    )
+  );
+}
+
+/* 4-Step Guided Data Collection Wizard View (Carbon Desktop + Momentum Mobile Focused View) */
 function renderWizardView() {
   const w = V1.wizard;
   const task = w.task;
@@ -496,22 +713,22 @@ function renderWizardView() {
       { code: 'OBSERVATION', title: 'Field Observation', desc: 'Interactive field checklist and direct site verification notes' },
     ];
     stepContent = h('div', {},
-      h('div', { style: { background: 'var(--bg-subtle)', padding: '14px 16px', borderRadius: '8px', marginBottom: '18px' } },
-        h('div', { style: { fontSize: '12px', fontWeight: '700', color: 'var(--brand-primary)', textTransform: 'uppercase' } },
-          `Assigned Goal · ${localize(task.axis_labels)} (Auto-Linked)`
+      h('div', { style: { background: 'var(--bg-input)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' } },
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' } },
+          renderLozenge(localize(task.axis_labels), 'neutral'),
+          renderLozenge(`Target: ${task.planned_target} ${task.unit_label}`, 'info')
         ),
-        h('div', { style: { fontSize: '17px', fontWeight: '800', marginTop: '4px' } }, localize(task.titles)),
-        h('div', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: '4px' } },
-          `Planned Target: ${task.planned_target} ${task.unit_label} · Minimum Impact Threshold: ${task.min_threshold}`
+        h('h2', { className: 'v1-section-title' }, localize(task.titles)),
+        h('div', { className: 'v1-field-helper' },
+          `Minimum threshold for Good Impact: ${task.min_threshold} · Great Impact target: ${task.target_threshold}`
         )
       ),
-      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '18px' } },
-        h('div', {},
-          h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Activity Date'),
+      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' } },
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Activity Date'),
           h('input', {
             type: 'date',
-            className: 'v1-step-input',
-            style: { textAlign: 'left', padding: '0 12px' },
+            className: 'v1-input' + (!period.valid ? ' has-error' : ''),
             value: w.event_date,
             onChange: e => {
               w.event_date = e.target.value;
@@ -520,15 +737,17 @@ function renderWizardView() {
             },
           }),
           period.valid
-            ? h('div', { style: { marginTop: '6px', fontSize: '13px', color: 'var(--brand-primary)', fontWeight: '700' } },
-                `✓ Auto-Tagged: ${period.yearLabel} · ${period.quarter}`
+            ? h('div', { className: 'v1-field-helper' },
+                msIcon('calendar_today', 16),
+                h('span', {}, `Auto-Tagged: ${period.yearLabel} · ${period.quarter}`)
               )
-            : h('div', { style: { marginTop: '6px', fontSize: '13px', color: '#dc2626', fontWeight: '700' } },
-                'Pick a date between 1 Sept 2026 and 31 Aug 2031.'
+            : h('div', { className: 'v1-field-error' },
+                msIcon('warning', 16),
+                h('span', {}, 'Pick a date between 1 Sept 2026 and 31 Aug 2031.')
               )
         ),
-        h('div', {},
-          h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Parish (Auto-Scoped to Your Account)'),
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Parish (Auto-Scoped to Your Account)'),
           renderParishCombobox(w.parish_code, newCode => {
             if (!newCode) return;
             w.parish_code = newCode;
@@ -536,12 +755,13 @@ function renderWizardView() {
             w.centrale = np?.centrales?.[0]?.name || 'Centre';
             saveWizardDraftLocal();
             renderApp();
-          }, false)
+          }, false),
+          h('div', { className: 'v1-field-helper' }, 'Automatically displays Centrales and CEBs in this parish.')
         )
       ),
-      h('div', { style: { marginBottom: '18px' } },
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '8px' } },
-          `Select Local Centrale or CEB in ${currentParish.name} Parish:`
+      h('div', { className: 'v1-field' },
+        h('label', { className: 'v1-field-label' },
+          `Select Local Centrale or CEB in ${currentParish.name} Parish`
         ),
         h('div', { className: 'v1-chips' },
           locations.map(loc =>
@@ -557,8 +777,8 @@ function renderWizardView() {
           )
         )
       ),
-      h('div', {},
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '8px' } }, 'Collection Mode (Choose How Data Was Gathered):'),
+      h('div', { className: 'v1-field' },
+        h('label', { className: 'v1-field-label' }, 'Collection Mode (Choose How Data Was Gathered)'),
         h('div', { className: 'v1-radio-cards' },
           modes.map(m =>
             h('button', {
@@ -579,7 +799,7 @@ function renderWizardView() {
     );
   } else if (w.step === 2) {
     stepContent = h('div', {},
-      h('h3', { style: { marginTop: 0 } }, 'Participant Counts (Auto-Calculated Total)'),
+      h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } }, 'Participant Counts (Auto-Calculated Total)'),
       h('div', { className: 'v1-number-grid' },
         renderStepperInput('Women Participants', w.women, val => {
           w.women = val;
@@ -599,15 +819,17 @@ function renderWizardView() {
       ),
       h('div', { className: 'v1-total-banner' },
         h('span', {}, 'Total Participants (Women + Men Automatically Calculated)'),
-        h('span', { style: { fontSize: '22px' } }, `${totalParticipants} Participants`)
+        h('span', { className: 'v1-mono', style: { fontSize: '1.25rem', fontWeight: '700' } }, `${totalParticipants} Participants`)
       ),
-      h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginTop: '18px' } },
-        h('h4', { style: { margin: 0 } }, 'Age Group Breakdown & Inclusion'),
+      h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginTop: '20px', marginBottom: '8px' } },
+        h('h3', { className: 'v1-task-title' }, 'Age Group Breakdown & Inclusion'),
         ageDiff === 0
-          ? h('span', { className: 'v1-badge GREAT' }, `${ageSum} of ${totalParticipants} participants assigned to age groups ✓`)
-          : h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
-              h('span', { className: 'v1-badge LOW' },
-                `Age group numbers add up to ${ageSum}, but you entered ${totalParticipants} total participants. ${ageDiff > 0 ? `Add ${ageDiff} more.` : `Remove ${Math.abs(ageDiff)}.`}`
+          ? renderLozenge(`${ageSum} of ${totalParticipants} participants assigned ✓`, 'GREAT', 'check')
+          : h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
+              renderLozenge(
+                `Age group numbers add up to ${ageSum}, but you entered ${totalParticipants} total participants. ${ageDiff > 0 ? `Add ${ageDiff} more.` : `Remove ${Math.abs(ageDiff)}.`}`,
+                'LOW',
+                'warning'
               ),
               h('button', {
                 type: 'button',
@@ -617,7 +839,7 @@ function renderWizardView() {
                   saveWizardDraftLocal();
                   renderApp();
                 },
-              }, 'Auto-Fit Age Groups')
+              }, h('span', {}, 'Auto-Fit Age Groups'))
             )
       ),
       h('div', { className: 'v1-number-grid' },
@@ -627,11 +849,11 @@ function renderWizardView() {
         renderStepperInput('65+ Years', w.age_65, v => { w.age_65 = v; saveWizardDraftLocal(); renderApp(); }),
         renderStepperInput('Persons with Disabilities', w.disability, v => { w.disability = v; saveWizardDraftLocal(); renderApp(); })
       ),
-      h('hr', { style: { border: 0, borderTop: '1px solid var(--border-color)', margin: '20px 0' } }),
+      h('hr', { style: { border: 0, borderTop: '1px solid var(--border-subtle)', margin: '24px 0' } }),
       w.collection_mode === 'ENUMERATOR'
         ? h('div', {},
-            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' } },
-              h('strong', {}, 'Individual Respondent Quick-Entry Cards'),
+            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' } },
+              h('h3', { className: 'v1-task-title' }, 'Individual Respondent Quick-Entry Cards'),
               h('button', {
                 type: 'button',
                 className: 'v1-btn v1-btn-secondary v1-btn-sm',
@@ -640,16 +862,16 @@ function renderWizardView() {
                   saveWizardDraftLocal();
                   renderApp();
                 },
-              }, '+ Add Respondent')
+              }, h('span', {}, '+ Add Respondent'), msIcon('add', 16))
             ),
             w.respondents.map((r, idx) =>
-              h('div', { style: { display: 'flex', gap: '10px', alignItems: 'center', marginBottom: '8px', background: 'var(--bg-subtle)', padding: '8px 12px', borderRadius: '6px' } },
-                h('span', { style: { fontWeight: '700', minWidth: '80px' } }, r.code),
-                h('label', { style: { fontSize: '13px' } }, 'Score (%): '),
+              h('div', { style: { display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '8px', background: 'var(--bg-input)', padding: '8px 12px', borderRadius: 'var(--radius-sm)' } },
+                h('span', { className: 'v1-mono', style: { fontWeight: '600', minWidth: '80px' } }, r.code),
+                h('label', { className: 'v1-field-label', style: { margin: 0 } }, 'Score (%):'),
                 h('input', {
                   type: 'number',
                   className: 'v1-step-input',
-                  style: { width: '90px', height: '34px' },
+                  style: { width: '90px', height: '36px', minHeight: '36px' },
                   value: String(r.score),
                   onChange: e => { r.score = Number(e.target.value); saveWizardDraftLocal(); },
                 }),
@@ -661,7 +883,7 @@ function renderWizardView() {
                 w.respondents.length > 1
                   ? h('button', {
                       type: 'button',
-                      className: 'v1-btn v1-btn-secondary v1-btn-sm',
+                      className: 'v1-btn v1-btn-ghost v1-btn-sm',
                       onClick: () => { w.respondents.splice(idx, 1); saveWizardDraftLocal(); renderApp(); },
                     }, 'Remove')
                   : null
@@ -671,14 +893,16 @@ function renderWizardView() {
         : w.collection_mode === 'FOCUS_GROUP'
         ? h('div', {},
             renderStepperInput('Focus Group Duration (Hours)', w.duration_hours, v => { w.duration_hours = v; saveWizardDraftLocal(); renderApp(); }, 1),
-            h('label', { style: { fontWeight: '700', display: 'block', margin: '12px 0 6px' } }, 'Group Consensus Findings & Key Takeaways'),
-            h('textarea', {
-              rows: '3',
-              style: { width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' },
-              placeholder: 'Summarize the main agreements reached by the group...',
-              value: w.consensus_notes,
-              onChange: e => { w.consensus_notes = e.target.value; saveWizardDraftLocal(); },
-            })
+            h('div', { className: 'v1-field', style: { marginTop: '16px' } },
+              h('label', { className: 'v1-field-label' }, 'Group Consensus Findings & Key Takeaways'),
+              h('textarea', {
+                rows: '3',
+                className: 'v1-textarea',
+                placeholder: 'Summarize the main agreements reached by the group...',
+                value: w.consensus_notes,
+                onChange: e => { w.consensus_notes = e.target.value; saveWizardDraftLocal(); },
+              })
+            )
           )
         : w.collection_mode === 'SURVEY'
         ? h('div', {},
@@ -688,47 +912,55 @@ function renderWizardView() {
             )
           )
         : h('div', {},
-            h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '8px' } }, 'Field Observation Checklist:'),
-            h('div', { className: 'v1-chips', style: { marginBottom: '12px' } },
-              ['Attendance verified', 'Safeguarding & inclusion respected', 'Action plan signed by participants', 'Follow-up date scheduled'].map(item =>
-                h('button', {
-                  type: 'button',
-                  className: 'v1-chip' + (w.checklist.includes(item) ? ' active' : ''),
-                  onClick: () => {
-                    if (w.checklist.includes(item)) w.checklist = w.checklist.filter(x => x !== item);
-                    else w.checklist.push(item);
-                    saveWizardDraftLocal();
-                    renderApp();
-                  },
-                }, (w.checklist.includes(item) ? '✓ ' : '') + item)
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Field Observation Checklist'),
+              h('div', { className: 'v1-chips' },
+                ['Attendance verified', 'Safeguarding & inclusion respected', 'Action plan signed by participants', 'Follow-up date scheduled'].map(item =>
+                  h('button', {
+                    type: 'button',
+                    className: 'v1-chip' + (w.checklist.includes(item) ? ' active' : ''),
+                    onClick: () => {
+                      if (w.checklist.includes(item)) w.checklist = w.checklist.filter(x => x !== item);
+                      else w.checklist.push(item);
+                      saveWizardDraftLocal();
+                      renderApp();
+                    },
+                  }, (w.checklist.includes(item) ? '✓ ' : '') + item)
+                )
               )
             ),
-            h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Direct Field Observation Notes'),
-            h('textarea', {
-              rows: '3',
-              style: { width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' },
-              value: w.observation_notes,
-              onChange: e => { w.observation_notes = e.target.value; saveWizardDraftLocal(); },
-            })
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Direct Field Observation Notes'),
+              h('textarea', {
+                rows: '3',
+                className: 'v1-textarea',
+                value: w.observation_notes,
+                onChange: e => { w.observation_notes = e.target.value; saveWizardDraftLocal(); },
+              })
+            )
           )
     );
   } else if (w.step === 3) {
     const severities = [
-      { code: 'NONE', label: 'No Issues' },
-      { code: 'MINOR', label: 'Minor' },
-      { code: 'MEDIUM', label: 'Medium' },
-      { code: 'MAJOR', label: 'Major' },
+      { code: 'NONE', label: 'No Issues', icon: null },
+      { code: 'MINOR', label: 'Minor', icon: 'info' },
+      { code: 'MEDIUM', label: 'Medium', icon: 'warning' },
+      { code: 'MAJOR', label: 'Major', icon: 'error' },
     ];
     stepContent = h('div', {},
-      h('div', { style: { background: 'var(--bg-subtle)', padding: '16px', borderRadius: '10px', marginBottom: '18px' } },
+      h('div', { style: { background: 'var(--bg-input)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' } },
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' } },
           h('div', {},
-            h('strong', { style: { fontSize: '15px', display: 'block' } }, localize(task.outcome_prompt)),
-            h('span', { style: { fontSize: '13px', color: 'var(--ink-secondary)' } },
+            h('h3', { className: 'v1-task-title' }, localize(task.outcome_prompt)),
+            h('div', { className: 'v1-field-helper' },
               `Minimum Threshold for Good Impact: ${task.min_threshold} · Great Impact Target: ${task.target_threshold}`
             )
           ),
-          h('span', { className: 'v1-badge ' + previewImpact }, L('impact_' + previewImpact))
+          renderLozenge(
+            L('impact_' + previewImpact),
+            previewImpact,
+            previewImpact === 'GREAT' ? 'check' : (previewImpact === 'LOW' ? 'warning' : 'info')
+          )
         ),
         h('div', { style: { maxWidth: '260px', marginTop: '12px' } },
           renderStepperInput('Measured Outcome Achieved', w.outcome_value, val => {
@@ -738,8 +970,8 @@ function renderWizardView() {
           })
         )
       ),
-      h('div', { style: { marginBottom: '18px' } },
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '8px' } }, 'Did you face any field issues or delays?'),
+      h('div', { className: 'v1-field' },
+        h('label', { className: 'v1-field-label' }, 'Did you face any field issues or delays?'),
         h('div', { className: 'v1-segmented' },
           severities.map(s =>
             h('button', {
@@ -755,46 +987,52 @@ function renderWizardView() {
         )
       ),
       (w.issue_severity !== 'NONE' || Number(w.outcome_value || 0) < Number(task.min_threshold || 0))
-        ? h('div', { style: { background: 'var(--warn-bg)', color: 'var(--warn-ink)', padding: '16px', borderRadius: '10px', marginBottom: '18px' } },
-            h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '8px' } }, 'Select Issue Categories (5–6 Filter Chips):'),
-            h('div', { className: 'v1-chips', style: { marginBottom: '12px' } },
-              (V1.data?.issue_categories || ['Transport', 'Turnout', 'Budget', 'Weather', 'Security', 'Other']).map(cat =>
-                h('button', {
-                  type: 'button',
-                  className: 'v1-chip' + (w.issue_categories.includes(cat) ? ' active' : ''),
-                  onClick: () => {
-                    if (w.issue_categories.includes(cat)) w.issue_categories = w.issue_categories.filter(c => c !== cat);
-                    else w.issue_categories.push(cat);
-                    saveWizardDraftLocal();
-                    renderApp();
-                  },
-                }, cat)
+        ? h('div', { style: { background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '18px' } },
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Select Issue Categories (Filter Chips)'),
+              h('div', { className: 'v1-chips' },
+                (V1.data?.issue_categories || ['Transport', 'Turnout', 'Budget', 'Weather', 'Security', 'Other']).map(cat =>
+                  h('button', {
+                    type: 'button',
+                    className: 'v1-chip' + (w.issue_categories.includes(cat) ? ' active' : ''),
+                    onClick: () => {
+                      if (w.issue_categories.includes(cat)) w.issue_categories = w.issue_categories.filter(c => c !== cat);
+                      else w.issue_categories.push(cat);
+                      saveWizardDraftLocal();
+                      renderApp();
+                    },
+                  }, cat)
+                )
               )
             ),
-            h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Short Explanation (What happened and what support is needed?):'),
-            h('textarea', {
-              rows: '3',
-              style: { width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #d97706' },
-              placeholder: 'Example: Heavy rain delayed transport from distant CEBs...',
-              value: w.issue_note,
-              onChange: e => { w.issue_note = e.target.value; saveWizardDraftLocal(); },
-            })
+            h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Short Explanation (What happened and what support is needed?)'),
+              h('textarea', {
+                rows: '3',
+                className: 'v1-textarea',
+                placeholder: 'Example: Heavy rain delayed transport from distant CEBs...',
+                value: w.issue_note,
+                onChange: e => { w.issue_note = e.target.value; saveWizardDraftLocal(); },
+              })
+            )
           )
         : null,
-      h('div', { style: { marginBottom: '16px' } },
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Qualitative Story of Change or Key Observation (Optional)'),
+      h('div', { className: 'v1-field' },
+        h('label', { className: 'v1-field-label' }, 'Qualitative Story of Change or Key Observation (Optional)'),
         h('textarea', {
           rows: '2',
-          style: { width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color)' },
+          className: 'v1-textarea',
           placeholder: 'Brief real-world example of impact...',
           value: w.story_of_change,
           onChange: e => { w.story_of_change = e.target.value; saveWizardDraftLocal(); },
-        })
+        }),
+        h('div', { className: 'v1-field-helper' }, 'Entered narrative remains in its original source language.')
       ),
-      h('div', { style: { marginBottom: '16px' } },
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Attach Attendance Sheet or Photo Receipt'),
+      h('div', { className: 'v1-field' },
+        h('label', { className: 'v1-field-label' }, 'Attach Attendance Sheet or Photo Receipt'),
         h('input', {
           type: 'file',
+          className: 'v1-input',
           accept: '.pdf,.png,.jpg,.jpeg',
           onChange: e => {
             const f = e.target.files?.[0];
@@ -807,16 +1045,16 @@ function renderWizardView() {
         }),
         w.attachments.length
           ? h('div', { className: 'v1-chips', style: { marginTop: '8px' } },
-              w.attachments.map(a => h('span', { className: 'v1-badge GOOD' }, `📎 ${a}`))
+              w.attachments.map(a => renderLozenge(a, 'GOOD', 'attach_file'))
             )
           : null
       ),
       task.is_sensitive
-        ? h('label', { style: { display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', background: 'var(--bg-subtle)', borderRadius: '8px', fontWeight: '700', cursor: 'pointer' } },
+        ? h('label', { style: { display: 'flex', alignItems: 'center', gap: '10px', padding: '12px', background: 'var(--bg-input)', borderRadius: 'var(--radius-md)', fontWeight: '600', cursor: 'pointer', fontSize: '0.875rem', color: 'var(--text-primary)' } },
             h('input', {
               type: 'checkbox',
               checked: w.privacy_confirmed,
-              style: { width: '20px', height: '20px' },
+              style: { width: '18px', height: '18px', borderRadius: 'var(--radius-xs)' },
               onChange: e => { w.privacy_confirmed = e.target.checked; saveWizardDraftLocal(); renderApp(); },
             }),
             'I confirm no victim names or private medical details are written in the general notes.'
@@ -826,165 +1064,184 @@ function renderWizardView() {
   } else if (w.step === 4) {
     const actionPct = Math.min(100, Math.round((Number(w.sessions_done || 0) / Number(task.planned_target || 1)) * 100));
     stepContent = h('div', {},
-      h('h3', { style: { marginTop: 0 } }, 'Quick Summary Before Submitting'),
-      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', marginBottom: '18px' } },
-        h('div', { className: 'v1-kpi-card' },
+      h('h2', { className: 'v1-section-title', style: { marginBottom: '14px' } }, 'Quick Summary Before Submitting'),
+      h('div', { className: 'v1-kpi-grid', style: { marginBottom: '18px' } },
+        h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
           h('span', {}, 'Location & Pastoral Period'),
-          h('strong', { style: { fontSize: '18px' } }, `${currentParish.name} · ${w.centrale}`),
-          h('div', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: '4px' } },
+          h('strong', { style: { fontSize: '1.125rem', fontFamily: 'var(--font-sans)' } }, `${currentParish.name} · ${w.centrale}`),
+          h('div', { className: 'v1-field-helper' },
             `${w.event_date} (${period.yearLabel} · ${period.quarter})`
           )
         ),
-        h('div', { className: 'v1-kpi-card' },
+        h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
           h('span', {}, 'Total Participants'),
           h('strong', {}, String(totalParticipants)),
-          h('div', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: '4px' } },
+          h('div', { className: 'v1-field-helper' },
             `${w.women} Women · ${w.men} Men · ${w.disability} with Disabilities`
           )
         ),
-        h('div', { className: 'v1-kpi-card' },
+        h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 6' } },
           h('span', {}, 'Action Completion & Impact Badge'),
           h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' } },
-            h('strong', { style: { margin: 0, fontSize: '22px' } }, `${actionPct}%`),
-            h('span', { className: 'v1-badge ' + previewImpact }, L('impact_' + previewImpact))
+            h('strong', { style: { margin: 0, fontSize: '1.5rem' } }, `${actionPct}%`),
+            renderLozenge(L('impact_' + previewImpact), previewImpact)
           ),
-          h('div', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: '4px' } },
+          h('div', { className: 'v1-field-helper' },
             `Outcome Achieved: ${w.outcome_value} (Target: ${task.target_threshold})`
           )
         )
       ),
       w.issue_severity !== 'NONE'
-        ? h('div', { style: { padding: '12px 16px', background: 'var(--warn-bg)', color: 'var(--warn-ink)', borderRadius: '8px', marginBottom: '16px' } },
-            h('strong', {}, `Logged Field Issue (${w.issue_severity}): `),
-            `${w.issue_categories.join(', ') || 'General'} — ${w.issue_note}`
+        ? h('div', { style: { padding: '12px 16px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-md)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' } },
+            msIcon(w.issue_severity === 'MAJOR' ? 'error' : (w.issue_severity === 'MEDIUM' ? 'warning' : 'info'), 20),
+            h('div', {},
+              h('strong', {}, `Logged Field Issue (${w.issue_severity}): `),
+              `${w.issue_categories.join(', ') || 'General'} — ${w.issue_note}`
+            )
           )
         : null
     );
   }
 
-  return h('div', { className: 'v1-wizard-card' },
-    h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
-      h('button', {
-        type: 'button',
-        className: 'v1-btn v1-btn-secondary v1-btn-sm',
-        onClick: () => {
-          saveWizardDraftLocal();
-          V1.wizard = null;
-          renderApp();
-        },
-      }, '← Back to My Tasks'),
-      h('span', { style: { fontSize: '13px', color: 'var(--ink-secondary)', fontWeight: '600' } },
-        `Step ${w.step} of 4 · Draft Saved Automatically`
-      )
-    ),
-    w.correction_note
-      ? h('div', { className: 'v1-error-alert' },
-          `Reviewer Requested Correction (Step ${w.correction_step || 1}): "${w.correction_note}"`
-        )
-      : null,
-    h('div', { className: 'v1-stepper-bar' },
-      stepsMeta.map(s =>
+  return h('div', {},
+    renderBreadcrumbs(L('nav_tasks'), [{ label: `${w.centrale} Centrale`, onClick: () => {} }]),
+    h('div', { className: 'v1-wizard-card' },
+      h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
         h('button', {
           type: 'button',
-          className: 'v1-step-indicator' + (w.step === s.num ? ' active' : (w.step > s.num ? ' done' : '')),
+          className: 'v1-btn v1-btn-ghost v1-btn-sm',
           onClick: () => {
-            if (s.num < w.step || validateWizardStep(w, w.step)) {
-              w.step = s.num;
-              saveWizardDraftLocal();
-              renderApp();
-            } else {
-              renderApp();
-            }
+            saveWizardDraftLocal();
+            V1.wizard = null;
+            renderApp();
           },
-        }, s.label)
-      )
-    ),
-    w.error ? h('div', { className: 'v1-error-alert', role: 'alert' }, w.error) : null,
-    stepContent,
-    h('div', { style: { display: 'flex', justifyContent: 'space-between', marginTop: '24px', paddingTop: '16px', borderTop: '1px solid var(--border-color)' } },
-      w.step > 1
-        ? h('button', {
+        }, msIcon('arrow_back', 16), h('span', {}, 'Back to My Tasks')),
+        renderLozenge(`Step ${w.step} of 4 · Draft Saved`, 'info', 'cloud_done')
+      ),
+      /* Section 5.2: Cisco Momentum Compact Mobile Progress Header */
+      h('div', { className: 'v1-momentum-progress-header' },
+        h('span', {}, stepsMeta[w.step - 1].label),
+        h('span', { className: 'v1-mono' }, `${w.step} / 4`)
+      ),
+      w.correction_note
+        ? h('div', { className: 'v1-error-alert' },
+            msIcon('error', 20),
+            h('span', {}, `Reviewer Requested Correction (Step ${w.correction_step || 1}): "${w.correction_note}"`)
+          )
+        : null,
+      h('div', { className: 'v1-stepper-bar' },
+        stepsMeta.map(s =>
+          h('button', {
             type: 'button',
-            className: 'v1-btn v1-btn-secondary',
+            className: 'v1-step-indicator' + (w.step === s.num ? ' active' : (w.step > s.num ? ' done' : '')),
             onClick: () => {
-              w.step -= 1;
-              w.error = '';
-              saveWizardDraftLocal();
-              renderApp();
-            },
-          }, '← Previous Step')
-        : h('div'),
-      w.step < 4
-        ? h('button', {
-            type: 'button',
-            className: 'v1-btn',
-            onClick: () => {
-              if (validateWizardStep(w, w.step)) {
-                w.step += 1;
+              if (s.num < w.step || validateWizardStep(w, w.step)) {
+                w.step = s.num;
                 saveWizardDraftLocal();
+                renderApp();
+              } else {
+                renderApp();
               }
-              renderApp();
             },
-          }, 'Next Step →')
-        : h('button', {
-            type: 'button',
-            className: 'v1-btn',
-            onClick: async () => {
-              if (!validateWizardStep(w, 3)) {
+          }, s.label)
+        )
+      ),
+      w.error
+        ? h('div', { className: 'v1-error-alert', role: 'alert' },
+            msIcon('error', 20),
+            h('span', {}, w.error)
+          )
+        : null,
+      stepContent,
+      /* Section 3.2 & 5.2: Carbon Ghost Back + Single Primary Action Button (Sticky on Mobile) */
+      h('div', { className: 'v1-wizard-footer' },
+        w.step > 1
+          ? h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-ghost',
+              onClick: () => {
+                w.step -= 1;
+                w.error = '';
+                saveWizardDraftLocal();
                 renderApp();
-                return;
-              }
-              const payload = {
-                id: w.id,
-                task_id: task.id,
-                parish_code: w.parish_code,
-                centrale: w.centrale,
-                event_date: w.event_date,
-                collection_mode: w.collection_mode,
-                women: w.women,
-                men: w.men,
-                age_u18: w.age_u18,
-                age_18_35: w.age_18_35,
-                age_36_64: w.age_36_64,
-                age_65: w.age_65,
-                disability: w.disability,
-                sessions_done: w.sessions_done,
-                outcome_value: w.outcome_value,
-                issue_severity: w.issue_severity,
-                issue_categories: w.issue_categories,
-                issue_note: w.issue_note,
-                duration_hours: w.duration_hours,
-                consensus_notes: w.consensus_notes,
-                respondents: w.respondents,
-                forms_distributed: w.forms_distributed,
-                forms_returned: w.forms_returned,
-                checklist: w.checklist,
-                observation_notes: w.observation_notes,
-                story_of_change: w.story_of_change,
-                attachments: w.attachments,
-                privacy_confirmed: w.privacy_confirmed,
-              };
-              try {
-                if (V1.simulateOffline) throw new Error('offline');
-                await apiV1('/v1/logs', 'POST', payload);
-                localStorage.removeItem('apse-v1-draft-' + task.id);
-                V1.wizard = null;
-                await loadBootstrap();
+              },
+            }, msIcon('arrow_back', 20), h('span', {}, 'Back'))
+          : h('div'),
+        w.step < 4
+          ? h('button', {
+              type: 'button',
+              className: 'v1-btn',
+              onClick: () => {
+                if (validateWizardStep(w, w.step)) {
+                  w.step += 1;
+                  saveWizardDraftLocal();
+                }
                 renderApp();
-              } catch (err) {
-                if (V1.simulateOffline || err.message === 'offline' || err.message.includes('Failed to fetch')) {
-                  V1.offlineQueue.push(payload);
-                  localStorage.setItem('apse-v1-offline-queue', JSON.stringify(V1.offlineQueue));
+              },
+            }, h('span', {}, 'Next Step'), msIcon('arrow_forward', 20))
+          : h('button', {
+              type: 'button',
+              className: 'v1-btn',
+              onClick: async () => {
+                if (!validateWizardStep(w, 3)) {
+                  renderApp();
+                  return;
+                }
+                const payload = {
+                  id: w.id,
+                  task_id: task.id,
+                  parish_code: w.parish_code,
+                  centrale: w.centrale,
+                  event_date: w.event_date,
+                  collection_mode: w.collection_mode,
+                  women: w.women,
+                  men: w.men,
+                  age_u18: w.age_u18,
+                  age_18_35: w.age_18_35,
+                  age_36_64: w.age_36_64,
+                  age_65: w.age_65,
+                  disability: w.disability,
+                  sessions_done: w.sessions_done,
+                  outcome_value: w.outcome_value,
+                  issue_severity: w.issue_severity,
+                  issue_categories: w.issue_categories,
+                  issue_note: w.issue_note,
+                  duration_hours: w.duration_hours,
+                  consensus_notes: w.consensus_notes,
+                  respondents: w.respondents,
+                  forms_distributed: w.forms_distributed,
+                  forms_returned: w.forms_returned,
+                  checklist: w.checklist,
+                  observation_notes: w.observation_notes,
+                  story_of_change: w.story_of_change,
+                  attachments: w.attachments,
+                  privacy_confirmed: w.privacy_confirmed,
+                };
+                try {
+                  if (V1.simulateOffline) throw new Error('offline');
+                  await apiV1('/v1/logs', 'POST', payload);
                   localStorage.removeItem('apse-v1-draft-' + task.id);
                   V1.wizard = null;
+                  await loadBootstrap();
                   renderApp();
-                } else {
-                  w.error = err.message;
-                  renderApp();
+                } catch (err) {
+                  if (V1.simulateOffline || err.message === 'offline' || err.message.includes('Failed to fetch')) {
+                    V1.offlineQueue.push(payload);
+                    localStorage.setItem('apse-v1-offline-queue', JSON.stringify(V1.offlineQueue));
+                    localStorage.removeItem('apse-v1-draft-' + task.id);
+                    V1.wizard = null;
+                    renderApp();
+                  } else {
+                    w.error = err.message;
+                    renderApp();
+                  }
                 }
-              }
+              },
             },
-          }, V1.simulateOffline ? L('save_offline_btn') : L('submit_parish'))
+            h('span', {}, V1.simulateOffline ? L('save_offline_btn') : L('submit_parish')),
+            msIcon('check', 20)
+          )
+      )
     )
   );
 }
@@ -1007,18 +1264,20 @@ function renderNewTaskModal() {
   });
 
   return h('div', { className: 'v1-wizard-card', style: { marginBottom: '24px' } },
-    h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' } },
-      h('h3', { style: { margin: 0 } }, L('add_planned')),
+    h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
+      h('h2', { className: 'v1-section-title' }, L('add_planned')),
       h('button', {
         type: 'button',
-        className: 'v1-btn v1-btn-secondary v1-btn-sm',
+        className: 'v1-btn v1-btn-ghost v1-btn-sm',
         onClick: () => { V1.newTaskModal = false; renderApp(); },
-      }, 'Cancel')
+      }, h('span', {}, 'Cancel'), msIcon('close', 16))
     ),
-    state.error ? h('div', { className: 'v1-error-alert' }, state.error) : null,
-    h('div', { style: { marginBottom: '14px' } },
-      h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } },
-        '1. Choose Strategic Goal (Backend Automatically Binds Axis, Outcome & KPI IDs):'
+    state.error
+      ? h('div', { className: 'v1-error-alert' }, msIcon('error', 20), h('span', {}, state.error))
+      : null,
+    h('div', { className: 'v1-field' },
+      h('label', { className: 'v1-field-label' },
+        '1. Choose Strategic Goal (Backend Automatically Binds Axis, Outcome & KPI IDs)'
       ),
       h('div', { className: 'v1-chips' },
         goals.slice(0, 6).map(g =>
@@ -1030,27 +1289,27 @@ function renderNewTaskModal() {
         )
       )
     ),
-    h('div', { style: { marginBottom: '14px' } },
-      h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, '2. Natural Activity Title (Plain Action Statement):'),
+    h('div', { className: 'v1-field' },
+      h('label', { className: 'v1-field-label' }, '2. Natural Activity Title (Plain Action Statement)'),
       h('input', {
         type: 'text',
-        className: 'v1-step-input',
-        style: { textAlign: 'left', padding: '0 12px' },
+        className: 'v1-input',
         placeholder: 'e.g., Train 25 youth mediators in peaceful family dialogue',
         value: state.title,
         onChange: e => { state.title = e.target.value; },
-      })
+      }),
+      h('div', { className: 'v1-field-helper' }, 'No form codes or strategic IDs needed.')
     ),
     h('div', { className: 'v1-number-grid', style: { marginBottom: '16px' } },
-      h('div', {},
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Assigned Parish'),
+      h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+        h('label', { className: 'v1-field-label' }, 'Assigned Parish'),
         renderParishCombobox(state.parish_code, code => { if (code) state.parish_code = code; renderApp(); }, false)
       ),
-      h('div', {},
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Target Due Date'),
+      h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+        h('label', { className: 'v1-field-label' }, 'Target Due Date'),
         h('input', {
           type: 'date',
-          className: 'v1-step-input',
+          className: 'v1-input',
           value: state.due_date,
           onChange: e => { state.due_date = e.target.value; },
         })
@@ -1080,12 +1339,12 @@ function renderNewTaskModal() {
             renderApp();
           }
         },
-      }, 'Save Activity to To-Do List')
+      }, h('span', {}, 'Save Activity to To-Do List'), msIcon('check', 20))
     )
   );
 }
 
-/* WORKSPACE 1: My Tasks (To-Do List) */
+/* WORKSPACE 1: My Tasks (To-Do List — Carbon Desktop + Polaris Mobile Cards) */
 function renderTasksWorkspace() {
   if (V1.wizard) return renderWizardView();
   const tasks = (V1.data?.tasks || []).filter(t => {
@@ -1108,6 +1367,7 @@ function renderTasksWorkspace() {
   ];
 
   return h('div', {},
+    renderBreadcrumbs(L('nav_tasks')),
     h('div', { className: 'v1-page-header' },
       h('div', {},
         h('h1', { className: 'v1-page-title' }, L('nav_tasks')),
@@ -1115,20 +1375,26 @@ function renderTasksWorkspace() {
           'Your assigned field activities, recurring quarterly goals, and saved drafts. All internal M&E codes are handled automatically.'
         )
       ),
+      /* Section 3.2: Only ONE Primary (#0F62FE) button per view */
       h('div', { className: 'v1-header-actions' },
         h('button', {
           type: 'button',
-          className: 'v1-btn v1-btn-sensitive',
+          className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
+          onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
+        }, h('span', {}, 'Filter'), msIcon('filter_list', 20)),
+        h('button', {
+          type: 'button',
+          className: 'v1-btn v1-btn-danger',
           onClick: () => {
             const sensTask = (V1.data?.tasks || []).find(t => t.is_sensitive) || V1.data?.tasks?.[0];
             if (sensTask) openWizardForTask(sensTask);
           },
-        }, '🔒 ' + L('nav_confidential')),
+        }, h('span', {}, L('nav_confidential')), msIcon('lock', 20)),
         h('button', {
           type: 'button',
-          className: 'v1-btn',
+          className: 'v1-btn' + (V1.newTaskModal ? ' v1-btn-secondary' : ''),
           onClick: () => { V1.newTaskModal = !V1.newTaskModal; renderApp(); },
-        }, L('add_planned'))
+        }, h('span', {}, L('add_planned')), msIcon('add', 20))
       )
     ),
     V1.newTaskModal ? renderNewTaskModal() : null,
@@ -1176,7 +1442,7 @@ function renderTasksWorkspace() {
         )
       )
     ),
-    /* Task Cards List */
+    /* Task Cards List (Atlassian Lozenges + Carbon Secondary Action Buttons) */
     h('div', { className: 'v1-task-list' },
       tasks.map(t => {
         const isDone = t.completion_pct >= 100;
@@ -1185,28 +1451,32 @@ function renderTasksWorkspace() {
         return h('article', { className: 'v1-task-card' },
           h('div', { className: 'v1-task-left' },
             h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')) },
-              isDone ? '✓' : (needsFix ? '!' : '')
+              isDone ? msIcon('check', 16) : (needsFix ? msIcon('error', 16) : msIcon('assignment', 16))
             ),
             h('div', { style: { flex: 1, minWidth: 0 } },
-              h('h3', { className: 'v1-task-title' },
-                localize(t.titles),
-                t.is_sensitive ? h('span', { className: 'v1-badge LOW', style: { marginLeft: '8px' } }, 'Confidential') : null,
-                hasLocalDraft ? h('span', { className: 'v1-badge GOOD', style: { marginLeft: '8px' } }, 'Saved Draft') : null
+              h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' } },
+                h('h3', { className: 'v1-task-title' }, localize(t.titles)),
+                h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
+                  t.is_sensitive ? renderLozenge('Confidential', 'LOW', 'lock') : null,
+                  hasLocalDraft ? renderLozenge('Saved Draft', 'GOOD', 'description') : null,
+                  renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
+                )
               ),
+              /* Section 2.2 Neutral Metadata Lozenges for hidden-code labels */
               h('div', { className: 'v1-task-meta' },
-                h('span', {}, `📍 ${t.parish_name} Parish`),
-                h('span', {}, `· 📅 Due: ${t.due_date} (${t.pastoral_quarter})`),
-                h('span', {}, `· 🎯 ${localize(t.axis_labels)}`),
-                t.frequency > 1 ? h('span', {}, `· 🔄 Quarterly (${t.quarters_completed} of ${t.frequency} logged)`) : null
+                renderLozenge(`${t.parish_name} Parish`, 'neutral'),
+                renderLozenge(localize(t.axis_labels), 'neutral'),
+                renderLozenge(t.pastoral_quarter, 'neutral'),
+                h('span', { className: 'v1-tabular' }, `Due ${t.due_date}`),
+                t.frequency > 1 ? h('span', { className: 'v1-tabular' }, `· Quarterly (${t.quarters_completed}/${t.frequency} logged)`) : null
               ),
               h('div', { className: 'v1-progress-wrap' },
                 h('div', { className: 'v1-progress-bar' },
-                  h('div', { className: 'v1-progress-fill', style: { width: `${t.completion_pct}%` } })
+                  h('div', { className: 'v1-progress-fill' + (isDone ? ' great' : ''), style: { width: `${t.completion_pct}%` } })
                 ),
-                h('span', { style: { fontSize: '12px', fontWeight: '700' } },
-                  `Action: ${t.completion_pct}% (${t.completed_units}/${t.planned_target} ${t.unit_label})`
-                ),
-                h('span', { className: 'v1-badge ' + t.impact_rating }, L('impact_' + t.impact_rating))
+                h('span', { className: 'v1-progress-stat', style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } },
+                  `${t.completion_pct}% (${t.completed_units}/${t.planned_target} ${t.unit_label})`
+                )
               )
             )
           ),
@@ -1214,14 +1484,20 @@ function renderTasksWorkspace() {
             needsFix
               ? h('button', {
                   type: 'button',
-                  className: 'v1-btn v1-btn-sensitive',
+                  className: 'v1-btn v1-btn-danger',
                   onClick: () => openWizardForTask(t, t.latest_log, t.latest_log?.payload?.correction_step || 1),
-                }, L('fix_step', t.latest_log?.payload?.correction_step || 1))
+                },
+                h('span', {}, L('fix_step', t.latest_log?.payload?.correction_step || 1)),
+                msIcon('arrow_forward', 20)
+              )
               : h('button', {
                   type: 'button',
-                  className: 'v1-btn' + (isDone ? ' v1-btn-secondary' : ''),
+                  className: 'v1-btn ' + (isDone ? 'v1-btn-ghost' : 'v1-btn-secondary'),
                   onClick: () => openWizardForTask(t, t.latest_log),
-                }, isDone ? L('view_summary') : L('log_progress'))
+                },
+                h('span', {}, isDone ? L('view_summary') : L('log_progress')),
+                msIcon('chevron_right', 20)
+              )
           )
         );
       })
@@ -1248,7 +1524,10 @@ function renderApprovalsWorkspace() {
     CORRECTION: L('stage_correction'),
   };
 
+  let primaryAssigned = false;
+
   return h('div', {},
+    renderBreadcrumbs(L('nav_approvals')),
     h('div', { className: 'v1-page-header' },
       h('div', {},
         h('h1', { className: 'v1-page-title' }, L('nav_approvals')),
@@ -1275,87 +1554,101 @@ function renderApprovalsWorkspace() {
       )
     ),
     h('div', { className: 'v1-task-list' },
-      logs.map(l =>
-        h('article', { className: 'v1-panel', style: { marginBottom: '4px' } },
-          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' } },
-            h('div', {},
-              h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' } },
-                h('span', { className: 'v1-badge ' + (l.stage === 'DIOCESE_APPROVED' ? 'GREAT' : (l.stage === 'CORRECTION' ? 'LOW' : 'GOOD')) },
-                  stageLabelMap[l.stage] || l.stage
-                ),
-                h('span', { className: 'v1-badge ' + l.impact_rating }, L('impact_' + l.impact_rating)),
-                h('span', { style: { fontSize: '13px', color: 'var(--ink-secondary)' } },
-                  `📍 ${l.parish_name} · ${l.centrale} · 📅 ${l.event_date} (${l.pastoral_quarter})`
-                )
+      logs.map(l => {
+        const canDioceseApprove = l.stage in { SUBMITTED: 1, PARISH_APPROVED: 1 };
+        const usePrimaryHere = canDioceseApprove && !primaryAssigned;
+        if (usePrimaryHere) primaryAssigned = true;
+
+        return h('article', { className: 'v1-task-card' },
+          h('div', { style: { flex: 1, minWidth: 0 } },
+            h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' } },
+              renderLozenge(
+                stageLabelMap[l.stage] || l.stage,
+                l.stage === 'DIOCESE_APPROVED' ? 'GREAT' : (l.stage === 'CORRECTION' ? 'LOW' : (l.stage === 'SUBMITTED' ? 'warn' : 'GOOD')),
+                l.stage === 'DIOCESE_APPROVED' ? 'check' : (l.stage === 'CORRECTION' ? 'error' : 'fact_check')
               ),
-              h('h3', { style: { margin: '4px 0 8px', fontSize: '17px' } }, localize(l.task_titles)),
-              h('div', { style: { fontSize: '14px', color: 'var(--ink-secondary)' } },
-                `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities) · Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
-              ),
-              l.issue_severity !== 'NONE'
-                ? h('div', { style: { marginTop: '8px', padding: '8px 12px', background: 'var(--warn-bg)', color: 'var(--warn-ink)', borderRadius: '6px', fontSize: '13px' } },
-                    `⚠ Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`
-                  )
-                : null
+              renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
+              renderLozenge(`${l.parish_name} · ${l.centrale}`, 'neutral'),
+              renderLozenge(`${l.event_date} (${l.pastoral_quarter})`, 'neutral')
             ),
-            h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap' } },
-              l.stage === 'SUBMITTED'
-                ? h('button', {
-                    type: 'button',
-                    className: 'v1-btn v1-btn-sm',
-                    onClick: async () => {
-                      await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'PARISH_APPROVED', note: 'Verified by Parish CPJP Reviewer' });
-                      await loadBootstrap();
-                      renderApp();
-                    },
-                  }, '✓ Approve (Parish CPJP)')
-                : null,
-              l.stage in { SUBMITTED: 1, PARISH_APPROVED: 1 }
-                ? h('button', {
-                    type: 'button',
-                    className: 'v1-btn v1-btn-sm',
-                    onClick: async () => {
-                      await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'DIOCESE_APPROVED', note: 'Finalized by CDJP Diocese' });
-                      await loadBootstrap();
-                      renderApp();
-                    },
-                  }, '✓✓ Final Approve (Diocese)')
-                : null,
-              l.stage !== 'DIOCESE_APPROVED'
-                ? h('button', {
-                    type: 'button',
-                    className: 'v1-btn v1-btn-secondary v1-btn-sm',
-                    onClick: async () => {
-                      const stepStr = prompt('Which step needs fixing? Enter 1 (When/Where), 2 (Attendance), or 3 (Outcome/Issues):', '2');
-                      if (!stepStr) return;
-                      const note = prompt('Write a short, clear instruction for the field reporter:', 'Please verify the age group numbers and attach the attendance sheet.');
-                      if (!note) return;
-                      await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'CORRECTION', correction_step: Number(stepStr) || 2, note });
-                      await loadBootstrap();
-                      renderApp();
-                    },
-                  }, '↩ Return for Correction')
-                : null
-            )
+            h('h3', { className: 'v1-task-title', style: { margin: '4px 0' } }, localize(l.task_titles)),
+            h('div', { className: 'v1-tabular', style: { fontSize: '0.875rem', color: 'var(--text-secondary)' } },
+              `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities) · Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
+            ),
+            l.issue_severity !== 'NONE'
+              ? h('div', { style: { marginTop: '8px', padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' } },
+                  msIcon(l.issue_severity === 'MAJOR' ? 'error' : 'warning', 16),
+                  h('span', {}, `Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`)
+                )
+              : null
+          ),
+          h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
+            l.stage === 'SUBMITTED'
+              ? h('button', {
+                  type: 'button',
+                  className: 'v1-btn v1-btn-secondary v1-btn-sm',
+                  onClick: async () => {
+                    await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'PARISH_APPROVED', note: 'Verified by Parish CPJP Reviewer' });
+                    await loadBootstrap();
+                    renderApp();
+                  },
+                }, h('span', {}, 'Approve (Parish CPJP)'), msIcon('check', 16))
+              : null,
+            canDioceseApprove
+              ? h('button', {
+                  type: 'button',
+                  className: 'v1-btn v1-btn-sm' + (usePrimaryHere ? '' : ' v1-btn-secondary'),
+                  onClick: async () => {
+                    await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'DIOCESE_APPROVED', note: 'Finalized by CDJP Diocese' });
+                    await loadBootstrap();
+                    renderApp();
+                  },
+                }, h('span', {}, 'Final Approve (Diocese)'), msIcon('fact_check', 16))
+              : null,
+            l.stage !== 'DIOCESE_APPROVED'
+              ? h('button', {
+                  type: 'button',
+                  className: 'v1-btn v1-btn-danger v1-btn-sm',
+                  onClick: async () => {
+                    const stepStr = prompt('Which step needs fixing? Enter 1 (When/Where), 2 (Attendance), or 3 (Outcome/Issues):', '2');
+                    if (!stepStr) return;
+                    const note = prompt('Write a short, clear instruction for the field reporter:', 'Please verify the age group numbers and attach the attendance sheet.');
+                    if (!note) return;
+                    await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'CORRECTION', correction_step: Number(stepStr) || 2, note });
+                    await loadBootstrap();
+                    renderApp();
+                  },
+                }, h('span', {}, 'Return for Correction'), msIcon('undo', 16))
+              : null
           )
-        )
-      )
+        );
+      })
     )
   );
 }
 
-/* WORKSPACE 3: Impact & Analytics (Outcome Accordions, Regional Parish Map & Issue Trends) */
+/* WORKSPACE 3: Impact & Analytics (Carbon Charts, Outcome Accordions & Polaris Mobile Cards) */
 function renderAnalyticsWorkspace() {
   const analytics = V1.data?.analytics || { summary: {}, accordions: [], parish_map: [], monthly_trends: [] };
   const s = analytics.summary || {};
+  const activePeriodLabel = V1.filters.period === 'Q1' ? L('period_q1') : (V1.filters.period === 'AP1' ? L('period_ap1') : L('period_all'));
+  const catColors = ['var(--chart-cat-1)', 'var(--chart-cat-2)', 'var(--chart-cat-3)', 'var(--chart-cat-4)'];
 
   return h('div', {},
+    renderBreadcrumbs(L('nav_analytics')),
     h('div', { className: 'v1-page-header' },
       h('div', {},
         h('h1', { className: 'v1-page-title' }, L('nav_analytics')),
         h('p', { className: 'v1-page-subtitle' },
           'Action Completion vs. Threshold-Based Impact Ratings, Regional Parish Map, and Field Bottleneck Trends.'
         )
+      ),
+      h('div', { className: 'v1-header-actions' },
+        h('button', {
+          type: 'button',
+          className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
+          onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
+        }, h('span', {}, 'Filter'), msIcon('filter_list', 20))
       )
     ),
     /* Contextual Filter Bar */
@@ -1381,47 +1674,66 @@ function renderAnalyticsWorkspace() {
     ),
     /* Bottleneck Insight Banner */
     s.top_bottleneck_category
-      ? h('div', { style: { background: 'var(--warn-bg)', color: 'var(--warn-ink)', padding: '14px 18px', borderRadius: '10px', marginBottom: '18px', fontWeight: '700' } },
-          `⚡ Field Bottleneck Insight: ${s.top_bottleneck_pct}% of reported field delays this period involved "${s.top_bottleneck_category}" challenges.`
+      ? h('div', { style: { background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', padding: '12px 16px', borderRadius: 'var(--radius-md)', marginBottom: '20px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' } },
+          msIcon('warning', 20),
+          h('span', { className: 'v1-tabular' },
+            `Field Bottleneck Insight: ${s.top_bottleneck_pct}% of reported field delays this period involved "${s.top_bottleneck_category}" challenges.`
+          )
         )
       : null,
-    /* Top KPI Strip */
+    /* Top KPI Strip (16-Column Grid, 28px IBM Plex Mono tabular-nums) */
     h('div', { className: 'v1-kpi-grid' },
       h('div', { className: 'v1-kpi-card' },
         h('span', {}, 'Average Action Completion'),
-        h('strong', {}, `${s.avg_completion_pct ?? 0}%`),
-        h('div', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: '4px' } },
+        h('strong', { className: 'v1-kpi-value' }, `${s.avg_completion_pct ?? 0}%`),
+        h('div', { className: 'v1-field-helper v1-tabular' },
           `${s.tasks_completed ?? 0} of ${s.tasks_total ?? 0} planned actions completed`
         )
       ),
       h('div', { className: 'v1-kpi-card' },
         h('span', {}, 'Total Participants Reached'),
-        h('strong', {}, Number(s.total_participants || 0).toLocaleString()),
-        h('div', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: '4px' } },
+        h('strong', { className: 'v1-kpi-value' }, Number(s.total_participants || 0).toLocaleString()),
+        h('div', { className: 'v1-field-helper v1-tabular' },
           `${s.women || 0} Women · ${s.men || 0} Men · ${s.disability || 0} with Disabilities`
         )
       ),
       h('div', { className: 'v1-kpi-card' },
         h('span', {}, 'Outcome Impact Quality'),
-        h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '10px' } },
-          h('span', { className: 'v1-badge GREAT' }, `${s.impact_counts?.GREAT || 0} Great`),
-          h('span', { className: 'v1-badge GOOD' }, `${s.impact_counts?.GOOD || 0} Good`),
-          h('span', { className: 'v1-badge LOW' }, `${s.impact_counts?.LOW || 0} Low`)
+        h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '12px' } },
+          renderLozenge(`${s.impact_counts?.GREAT || 0} Great`, 'GREAT'),
+          renderLozenge(`${s.impact_counts?.GOOD || 0} Good`, 'GOOD'),
+          renderLozenge(`${s.impact_counts?.LOW || 0} Low`, 'LOW')
         )
       ),
       h('div', { className: 'v1-kpi-card' },
         h('span', {}, 'Pending Approvals'),
-        h('strong', {}, String(s.pending_approvals || 0)),
-        h('div', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: '4px' } }, 'Reports awaiting Parish or Diocese sign-off')
+        h('strong', { className: 'v1-kpi-value' }, String(s.pending_approvals || 0)),
+        h('div', { className: 'v1-field-helper' }, 'Reports awaiting Parish or Diocese sign-off')
       )
     ),
-    /* Split Grid: Interactive Regional Parish Map + Monthly Issue Trends Chart */
+    /* Section 3.3: Carbon Chart Containers (Top-left Title + Active Filter Subtitle + Top-right Legend) */
     h('div', { className: 'v1-analytics-split' },
       /* Regional Parish SVG Map */
       h('div', { className: 'v1-panel' },
-        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' } },
-          h('h3', { style: { margin: 0 } }, 'Diocese of Butare — Regional Parish Map'),
-          h('span', { style: { fontSize: '12px', color: 'var(--ink-secondary)' } }, 'Click any Parish node to filter')
+        h('div', { className: 'v1-chart-header' },
+          h('div', {},
+            h('h2', { className: 'v1-section-title' }, 'Diocese of Butare — Regional Parish Map'),
+            h('p', { className: 'v1-chart-subtitle' }, `Active Filter: ${activePeriodLabel} · Click any Parish node`)
+          ),
+          h('div', { className: 'v1-chart-legend' },
+            h('span', { className: 'v1-legend-item' },
+              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-great)' } }),
+              '≥80% Target'
+            ),
+            h('span', { className: 'v1-legend-item' },
+              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-medium)' } }),
+              'In Progress'
+            ),
+            h('span', { className: 'v1-legend-item' },
+              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-major)' } }),
+              'Major Issue'
+            )
+          )
         ),
         (() => {
           const svgNS = 'http://www.w3.org/2000/svg';
@@ -1429,8 +1741,8 @@ function renderAnalyticsWorkspace() {
           svg.setAttribute('viewBox', '0 0 100 92');
           svg.style.width = '100%';
           svg.style.height = '240px';
-          svg.style.background = 'var(--bg-subtle)';
-          svg.style.borderRadius = '8px';
+          svg.style.background = 'var(--bg-input)';
+          svg.style.borderRadius = 'var(--radius-sm)';
 
           const regions = [
             { label: 'NYANZA', x: 46, y: 12 },
@@ -1442,10 +1754,10 @@ function renderAnalyticsWorkspace() {
             const txt = document.createElementNS(svgNS, 'text');
             txt.setAttribute('x', String(reg.x));
             txt.setAttribute('y', String(reg.y));
-            txt.setAttribute('fill', 'var(--ink-muted)');
+            txt.setAttribute('fill', 'var(--text-muted)');
             txt.setAttribute('font-size', '3.5');
-            txt.setAttribute('font-weight', '800');
-            txt.setAttribute('opacity', '0.45');
+            txt.setAttribute('font-weight', '700');
+            txt.setAttribute('opacity', '0.5');
             txt.textContent = reg.label;
             svg.appendChild(txt);
           }
@@ -1461,10 +1773,15 @@ function renderAnalyticsWorkspace() {
             const circle = document.createElementNS(svgNS, 'circle');
             circle.setAttribute('cx', String(p.x));
             circle.setAttribute('cy', String(p.y));
-            circle.setAttribute('r', V1.filters.parish === p.code ? '3.4' : '2.4');
-            const fill = p.status_color === 'red' ? '#dc2626' : (p.status_color === 'green' ? '#16a34a' : (p.status_color === 'amber' ? '#d97706' : '#64748b'));
+            circle.setAttribute('r', V1.filters.parish === p.code ? '3.5' : '2.4');
+            /* Section 3.3 Carbon Status Palette */
+            const fill = p.status_color === 'red'
+              ? 'var(--chart-status-major)'
+              : (p.status_color === 'green'
+                ? 'var(--chart-status-great)'
+                : (p.status_color === 'amber' ? 'var(--chart-status-medium)' : 'var(--chart-status-idle)'));
             circle.setAttribute('fill', fill);
-            circle.setAttribute('stroke', '#ffffff');
+            circle.setAttribute('stroke', 'var(--bg-surface)');
             circle.setAttribute('stroke-width', '0.7');
             const title = document.createElementNS(svgNS, 'title');
             title.textContent = `${p.name} (${p.district}): ${p.completion_pct ?? 0}% complete · ${p.participants} participants`;
@@ -1475,32 +1792,44 @@ function renderAnalyticsWorkspace() {
               const label = document.createElementNS(svgNS, 'text');
               label.setAttribute('x', String(p.x + 3));
               label.setAttribute('y', String(p.y + 1));
-              label.setAttribute('fill', 'var(--ink-primary)');
+              label.setAttribute('fill', 'var(--text-primary)');
               label.setAttribute('font-size', '2.8');
-              label.setAttribute('font-weight', '700');
+              label.setAttribute('font-weight', '600');
               label.textContent = p.name.split(' ')[0];
               g.appendChild(label);
             }
             svg.appendChild(g);
           }
           return svg;
-        })(),
-        h('div', { style: { display: 'flex', gap: '14px', fontSize: '12px', marginTop: '10px', flexWrap: 'wrap' } },
-          h('span', {}, '🟢 ≥80% Action Complete'),
-          h('span', {}, '🟠 In Progress (<80%)'),
-          h('span', {}, '🔴 Active Major Field Issue'),
-          h('span', {}, '⚪ No Active Tasks Logged')
-        )
+        })()
       ),
-      /* Issue Trends Stacked Bar Chart */
+      /* Issue Trends Stacked Bar Chart (Carbon Horizontal Gridlines + Status Palette) */
       h('div', { className: 'v1-panel' },
-        h('h3', {}, 'Field Issues & Bottlenecks Over Time'),
+        h('div', { className: 'v1-chart-header' },
+          h('div', {},
+            h('h2', { className: 'v1-section-title' }, 'Field Issues & Bottlenecks Over Time'),
+            h('p', { className: 'v1-chart-subtitle' }, `Active Filter: ${activePeriodLabel} · Category: ${V1.filters.issueCategory}`)
+          ),
+          h('div', { className: 'v1-chart-legend' },
+            h('span', { className: 'v1-legend-item' },
+              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-minor)' } }),
+              'Minor'
+            ),
+            h('span', { className: 'v1-legend-item' },
+              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-medium)' } }),
+              'Medium'
+            ),
+            h('span', { className: 'v1-legend-item' },
+              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-major)' } }),
+              'Major'
+            )
+          )
+        ),
         h('div', { className: 'v1-chips', style: { marginBottom: '10px' } },
           ['ALL', ...(V1.data?.issue_categories || [])].map(cat =>
             h('button', {
               type: 'button',
               className: 'v1-chip' + (V1.filters.issueCategory === cat ? ' active' : ''),
-              style: { padding: '4px 10px', minHeight: '28px', fontSize: '12px' },
               onClick: () => { V1.filters.issueCategory = cat; renderApp(); },
             }, cat === 'ALL' ? 'All Categories' : cat)
           )
@@ -1515,71 +1844,118 @@ function renderAnalyticsWorkspace() {
             const hMed = catFilter === 'ALL' ? m.MEDIUM * 28 : total * 14;
             const hMaj = catFilter === 'ALL' ? m.MAJOR * 28 : total * 14;
             return h('div', { className: 'v1-bar-col' },
-              h('span', { style: { fontSize: '11px', fontWeight: '700', marginBottom: '4px' } }, total ? String(total) : ''),
+              h('span', { className: 'v1-mono', style: { fontSize: '0.6875rem', fontWeight: '700', marginBottom: '4px' } }, total ? String(total) : ''),
               h('div', { className: 'v1-bar-stack' },
-                h('div', { style: { height: `${hMinor}px`, background: '#93c5fd' }, title: `Minor: ${m.MINOR}` }),
-                h('div', { style: { height: `${hMed}px`, background: '#f59e0b' }, title: `Medium: ${m.MEDIUM}` }),
-                h('div', { style: { height: `${hMaj}px`, background: '#dc2626' }, title: `Major: ${m.MAJOR}` })
+                h('div', { style: { height: `${hMinor}px`, background: 'var(--chart-status-minor)' }, title: `Minor: ${m.MINOR}` }),
+                h('div', { style: { height: `${hMed}px`, background: 'var(--chart-status-medium)' }, title: `Medium: ${m.MEDIUM}` }),
+                h('div', { style: { height: `${hMaj}px`, background: 'var(--chart-status-major)' }, title: `Major: ${m.MAJOR}` })
               ),
-              h('span', { style: { fontSize: '12px', color: 'var(--ink-secondary)', marginTop: '6px' } }, m.month)
+              h('span', { className: 'v1-tabular', style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '6px' } }, m.month)
             );
           })
-        ),
-        h('div', { style: { display: 'flex', gap: '14px', fontSize: '12px', marginTop: '10px' } },
-          h('span', {}, '🟦 Minor Issue'),
-          h('span', {}, '🟧 Medium Delay'),
-          h('span', {}, '🟥 Major Bottleneck')
         )
       )
     ),
-    /* Expandable Outcome & Impact Accordions */
-    h('h2', { style: { fontSize: '19px', marginBottom: '12px' } },
-      'Strategic Outcomes & Impact Accordions (Click to Expand Actions, Stories & Issues)'
+    /* Expandable Outcome & Impact Accordions (Carbon Table on Desktop -> Polaris Resource Cards on < 768px) */
+    h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } },
+      'Strategic Outcomes & Impact Accordions'
     ),
     (analytics.accordions || []).map((acc, idx) =>
       h('details', { className: 'v1-accordion', open: idx === 0 },
         h('summary', {},
-          h('div', { style: { flex: 1 } },
-            h('div', { style: { fontSize: '12px', color: 'var(--brand-primary)', fontWeight: '800', textTransform: 'uppercase' } },
-              localize(acc.axis_labels)
+          h('div', { style: { flex: 1, minWidth: 0 } },
+            h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' } },
+              h('span', {
+                className: 'v1-legend-swatch',
+                style: { background: catColors[idx % catColors.length] },
+              }),
+              renderLozenge(localize(acc.axis_labels), 'neutral')
             ),
-            h('div', { style: { fontSize: '16px', marginTop: '2px' } }, localize(acc.labels))
+            h('h3', { className: 'v1-accordion-title' }, localize(acc.labels))
           ),
-          h('div', { style: { display: 'flex', alignItems: 'center', gap: '14px' } },
+          h('div', { style: { display: 'flex', alignItems: 'center', gap: '16px' } },
             h('div', { style: { width: '140px' } },
-              h('div', { style: { fontSize: '12px', marginBottom: '4px' } }, `Actions: ${acc.completion_pct}%`),
+              h('div', { className: 'v1-tabular', style: { fontSize: '0.75rem', marginBottom: '4px', color: 'var(--text-secondary)' } }, `Actions: ${acc.completion_pct}%`),
               h('div', { className: 'v1-progress-bar' },
                 h('div', { className: 'v1-progress-fill', style: { width: `${acc.completion_pct}%` } })
               )
             ),
-            h('span', { className: 'v1-badge ' + acc.impact_rating }, L('impact_' + acc.impact_rating))
+            renderLozenge(L('impact_' + acc.impact_rating), acc.impact_rating)
           )
         ),
         h('div', { className: 'v1-accordion-body' },
-          h('h4', { style: { margin: '0 0 8px' } }, '1. Underlying Parish Actions'),
-          acc.tasks.map(t =>
-            h('div', { style: { display: 'flex', justifyContent: 'space-between', padding: '8px 12px', background: 'var(--bg-surface)', borderRadius: '6px', marginBottom: '6px' } },
-              h('span', { style: { fontWeight: '600' } }, `${localize(t.titles)} (${t.parish_name})`),
-              h('span', {}, `${t.completed_units}/${t.planned_target} ${t.unit_label} (${t.completion_pct}%) · ${L('impact_' + t.impact_rating)}`)
+          h('div', { className: 'v1-field-label', style: { marginBottom: '8px' } }, '1. Underlying Parish Actions'),
+          /* Desktop Carbon Table */
+          h('table', { className: 'v1-data-table' },
+            h('thead', {},
+              h('tr', {},
+                h('th', {}, 'Action Title'),
+                h('th', {}, 'Parish'),
+                h('th', {}, 'Completed / Target'),
+                h('th', {}, 'Completion %'),
+                h('th', {}, 'Impact Rating')
+              )
+            ),
+            h('tbody', {},
+              acc.tasks.map(t =>
+                h('tr', {},
+                  h('td', { style: { fontWeight: '600' } }, localize(t.titles)),
+                  h('td', {}, t.parish_name),
+                  h('td', { className: 'v1-mono' }, `${t.completed_units} / ${t.planned_target} ${t.unit_label}`),
+                  h('td', { className: 'v1-mono' }, `${t.completion_pct}%`),
+                  h('td', {}, renderLozenge(L('impact_' + t.impact_rating), t.impact_rating))
+                )
+              )
+            )
+          ),
+          /* Section 5.1: Mobile (< 768px) Shopify Polaris Resource Cards */
+          h('div', { className: 'v1-polaris-resource-list' },
+            acc.tasks.map(t =>
+              h('div', {
+                className: 'v1-resource-card',
+                onClick: () => {
+                  const fullTask = (V1.data?.tasks || []).find(x => x.id === t.id);
+                  if (fullTask) {
+                    V1.workspace = 'tasks';
+                    openWizardForTask(fullTask, fullTask.latest_log);
+                  }
+                },
+              },
+                h('div', { className: 'v1-resource-top' },
+                  h('strong', { style: { fontSize: '0.875rem' } }, localize(t.titles)),
+                  renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
+                ),
+                h('div', { className: 'v1-resource-middle' }, `${t.parish_name} Parish · Oct 2026`),
+                h('div', { className: 'v1-resource-bottom' },
+                  h('div', { style: { flex: 1, display: 'flex', alignItems: 'center', gap: '8px' } },
+                    h('div', { className: 'v1-progress-bar' },
+                      h('div', { className: 'v1-progress-fill', style: { width: `${t.completion_pct}%` } })
+                    ),
+                    h('span', { className: 'v1-mono', style: { fontSize: '0.75rem' } }, `${t.completed_units}/${t.planned_target} completed`)
+                  ),
+                  msIcon('chevron_right', 20)
+                )
+              )
             )
           ),
           acc.stories.length || acc.documents.length
-            ? h('div', { style: { marginTop: '12px' } },
-                h('h4', { style: { margin: '0 0 6px' } }, '2. Stories of Change & Attached Impact Evidence'),
+            ? h('div', { style: { marginTop: '14px' } },
+                h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, '2. Stories of Change & Attached Impact Evidence'),
                 acc.stories.map(st =>
-                  h('p', { style: { margin: '4px 0', fontSize: '13px', fontStyle: 'italic' } }, `"${st.text}" — ${st.parish} (${st.date})`)
+                  h('p', { style: { margin: '4px 0', fontSize: '0.875rem', fontStyle: 'italic', color: 'var(--text-primary)' } }, `"${st.text}" — ${st.parish} (${st.date})`)
                 ),
                 h('div', { className: 'v1-chips', style: { marginTop: '6px' } },
-                  acc.documents.map(doc => h('span', { className: 'v1-badge GOOD' }, `📄 ${doc.name} (${doc.parish})`))
+                  acc.documents.map(doc => renderLozenge(`${doc.name} (${doc.parish})`, 'GOOD', 'description'))
                 )
               )
             : null,
           acc.issues.length
-            ? h('div', { style: { marginTop: '12px' } },
-                h('h4', { style: { margin: '0 0 6px', color: 'var(--warn-ink)' } }, '3. Under-Achievement Explanations & Field Issues'),
+            ? h('div', { style: { marginTop: '14px' } },
+                h('div', { className: 'v1-field-label', style: { marginBottom: '6px', color: 'var(--tag-warn-text)' } }, '3. Under-Achievement Explanations & Field Issues'),
                 acc.issues.map(iss =>
-                  h('div', { style: { padding: '8px 12px', background: 'var(--warn-bg)', color: 'var(--warn-ink)', borderRadius: '6px', fontSize: '13px', marginBottom: '6px' } },
-                    `${iss.parish} (${iss.severity} · ${iss.categories.join(', ')}): ${iss.note}`
+                  h('div', { style: { padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' } },
+                    msIcon(iss.severity === 'MAJOR' ? 'error' : 'warning', 16),
+                    h('span', {}, `${iss.parish} (${iss.severity} · ${iss.categories.join(', ')}): ${iss.note}`)
                   )
                 )
               )
@@ -1600,6 +1976,7 @@ function renderExportsWorkspace() {
   ];
 
   return h('div', {},
+    renderBreadcrumbs(L('nav_exports')),
     h('div', { className: 'v1-page-header' },
       h('div', {},
         h('h1', { className: 'v1-page-title' }, L('nav_exports')),
@@ -1609,24 +1986,26 @@ function renderExportsWorkspace() {
       )
     ),
     h('div', { className: 'v1-analytics-split' },
-      /* Left Panel: One-Click Export Builder */
+      /* Left Panel: One-Click Export Builder (Primary Button Here) */
       h('div', { className: 'v1-panel' },
-        h('h3', {}, '1. Export Clean Reports & Data'),
-        h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '8px' } }, 'Choose Report Type:'),
-        h('div', { className: 'v1-radio-cards', style: { gridTemplateColumns: '1fr' } },
-          reportTypes.map(rt =>
-            h('button', {
-              type: 'button',
-              className: 'v1-radio-card' + (eo.reportType === rt.code ? ' active' : ''),
-              onClick: () => { eo.reportType = rt.code; renderApp(); },
-            },
-              h('strong', {}, rt.title),
-              h('span', {}, rt.desc)
+        h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } }, '1. Export Clean Reports & Data'),
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Choose Report Type'),
+          h('div', { className: 'v1-radio-cards', style: { gridTemplateColumns: '1fr' } },
+            reportTypes.map(rt =>
+              h('button', {
+                type: 'button',
+                className: 'v1-radio-card' + (eo.reportType === rt.code ? ' active' : ''),
+                onClick: () => { eo.reportType = rt.code; renderApp(); },
+              },
+                h('strong', {}, rt.title),
+                h('span', {}, rt.desc)
+              )
             )
           )
         ),
-        h('div', { style: { marginBottom: '16px' } },
-          h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'File Format:'),
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'File Format'),
           h('div', { className: 'v1-segmented' },
             [
               ['xlsx', 'Excel (.XLSX)'],
@@ -1642,8 +2021,8 @@ function renderExportsWorkspace() {
             )
           )
         ),
-        h('div', { style: { marginBottom: '20px' } },
-          h('label', { style: { fontWeight: '700', display: 'block', marginBottom: '6px' } }, 'Column Header Preset (For Excel & CSV):'),
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Column Header Preset (For Excel & CSV)'),
           h('div', { className: 'v1-segmented' },
             [
               ['natural', 'Natural Plain Labels'],
@@ -1675,43 +2054,50 @@ function renderExportsWorkspace() {
             if (V1.filters.parish) q.set('parish', V1.filters.parish);
             window.location.href = '/apse-service/v1/export?' + q.toString();
           },
-        }, '⬇ Download Report Now')
+        }, h('span', {}, 'Download Report Now'), msIcon('download', 20))
       ),
-      /* Right Panel: Guided Bulk CSV Import */
+      /* Right Panel: Guided Bulk CSV Import (Secondary Action Button) */
       h('div', { className: 'v1-panel' },
-        h('h3', {}, '2. Guided Bulk Spreadsheet Import (CSV)'),
-        h('p', { style: { fontSize: '13px', color: 'var(--ink-secondary)', marginTop: 0 } },
+        h('h2', { className: 'v1-section-title', style: { marginBottom: '8px' } }, '2. Guided Bulk Spreadsheet Import (CSV)'),
+        h('p', { className: 'v1-page-subtitle', style: { marginBottom: '14px' } },
           'Upload a CSV file from field enumerators. If any column name is different, the system asks you which column to use in plain language.'
         ),
-        h('input', {
-          type: 'file',
-          accept: '.csv',
-          style: { marginBottom: '14px' },
-          onChange: async e => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-            const csvText = await file.text();
-            try {
-              const res = await apiV1('/v1/import', 'POST', { csv_text: csvText, commit: false });
-              V1.csvImportState = { csvText, ...res, mapping: res.mapping || {}, message: '' };
-              renderApp();
-            } catch (err) {
-              V1.csvImportState = { error: err.message };
-              renderApp();
-            }
-          },
-        }),
-        V1.csvImportState?.error ? h('div', { className: 'v1-error-alert' }, V1.csvImportState.error) : null,
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Select CSV File'),
+          h('input', {
+            type: 'file',
+            className: 'v1-input',
+            accept: '.csv',
+            onChange: async e => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const csvText = await file.text();
+              try {
+                const res = await apiV1('/v1/import', 'POST', { csv_text: csvText, commit: false });
+                V1.csvImportState = { csvText, ...res, mapping: res.mapping || {}, message: '' };
+                renderApp();
+              } catch (err) {
+                V1.csvImportState = { error: err.message };
+                renderApp();
+              }
+            },
+          })
+        ),
+        V1.csvImportState?.error
+          ? h('div', { className: 'v1-error-alert' }, msIcon('error', 20), h('span', {}, V1.csvImportState.error))
+          : null,
         V1.csvImportState && !V1.csvImportState.error
           ? h('div', {},
               V1.csvImportState.missing?.length
                 ? h('div', {},
                     V1.csvImportState.missing.map(m =>
-                      h('div', { className: 'v1-error-alert' },
-                        h('div', { style: { marginBottom: '6px' } }, m.message),
+                      h('div', { className: 'v1-error-alert', style: { flexDirection: 'column', alignItems: 'stretch' } },
+                        h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
+                          msIcon('warning', 20),
+                          h('span', {}, m.message)
+                        ),
                         h('select', {
-                          className: 'v1-step-input',
-                          style: { height: '34px', fontSize: '13px' },
+                          className: 'v1-select',
                           onChange: async ev => {
                             V1.csvImportState.mapping[m.key] = ev.target.value;
                             const updated = await apiV1('/v1/import', 'POST', {
@@ -1730,12 +2116,12 @@ function renderExportsWorkspace() {
                     )
                   )
                 : h('div', {},
-                    h('p', { style: { fontWeight: '700', color: 'var(--impact-great-ink)' } },
-                      `✓ All columns matched (${V1.csvImportState.total_rows} rows ready).`
+                    h('div', { style: { marginBottom: '12px' } },
+                      renderLozenge(`All columns matched (${V1.csvImportState.total_rows} rows ready)`, 'GREAT', 'check')
                     ),
                     h('button', {
                       type: 'button',
-                      className: 'v1-btn',
+                      className: 'v1-btn v1-btn-secondary',
                       onClick: async () => {
                         const res = await apiV1('/v1/import', 'POST', {
                           csv_text: V1.csvImportState.csvText,
@@ -1746,7 +2132,7 @@ function renderExportsWorkspace() {
                         await loadBootstrap();
                         renderApp();
                       },
-                    }, 'Import All Rows Now')
+                    }, h('span', {}, 'Import All Rows Now'), msIcon('upload_file', 20))
                   ),
               V1.csvImportState.message
                 ? h('div', { className: 'v1-total-banner', style: { marginTop: '12px' } }, V1.csvImportState.message)
@@ -1767,22 +2153,27 @@ function renderApp() {
   const pendingTasksCount = (V1.data?.tasks || []).filter(t => t.completion_pct < 100).length;
   const pendingApprovalsCount = V1.data?.analytics?.summary?.pending_approvals || 0;
   const qLen = V1.offlineQueue.length;
+  const isDark = V1.theme === 'dark';
 
   let syncClass = 'v1-sync-pill synced';
-  let syncText = '🟢 ' + L('sync_synced');
+  let syncIcon = 'cloud_done';
+  let syncText = L('sync_synced');
   if (V1.syncingState) {
     syncClass = 'v1-sync-pill syncing';
-    syncText = '🔵 ' + L('sync_updating', V1.syncingState.current, V1.syncingState.total);
+    syncIcon = 'sync';
+    syncText = L('sync_updating', V1.syncingState.current, V1.syncingState.total);
   } else if (qLen > 0 || V1.simulateOffline) {
     syncClass = 'v1-sync-pill offline';
-    syncText = '🟡 ' + L('sync_offline', qLen);
+    syncIcon = 'cloud_off';
+    syncText = L('sync_offline', qLen);
   }
 
+  /* Section 4: Core Functional Mapping for Navigation Icons */
   const navItems = [
-    { id: 'tasks', icon: '☑', label: L('nav_tasks'), badge: pendingTasksCount },
-    { id: 'approvals', icon: '✓', label: L('nav_approvals'), badge: pendingApprovalsCount },
-    { id: 'analytics', icon: '📊', label: L('nav_analytics'), badge: null },
-    { id: 'exports', icon: '⬇', label: L('nav_exports'), badge: null },
+    { id: 'tasks', icon: 'check_box', label: L('nav_tasks'), badge: pendingTasksCount },
+    { id: 'approvals', icon: 'fact_check', label: L('nav_approvals'), badge: pendingApprovalsCount },
+    { id: 'analytics', icon: 'insights', label: L('nav_analytics'), badge: null },
+    { id: 'exports', icon: 'download', label: L('nav_exports'), badge: null },
   ];
 
   const shell = h('div', {},
@@ -1793,7 +2184,7 @@ function renderApp() {
         h('span', { className: 'v1-brand-text' }, 'APSE')
       ),
       h('div', { className: 'v1-search-wrap' },
-        h('span', { className: 'v1-search-icon' }, '🔍'),
+        h('span', { className: 'v1-search-icon' }, msIcon('search', 20)),
         h('input', {
           type: 'search',
           className: 'v1-search-input',
@@ -1818,7 +2209,10 @@ function renderApp() {
               renderApp();
             }
           },
-        }, syncText),
+        },
+          msIcon(syncIcon, 16),
+          h('span', {}, syncText)
+        ),
         h('div', { className: 'v1-lang-pills', role: 'group', 'aria-label': 'Language' },
           ['rw', 'fr', 'en', 'sw'].map(code =>
             h('button', {
@@ -1832,10 +2226,23 @@ function renderApp() {
             }, code.toUpperCase())
           )
         ),
-        h('span', { className: 'v1-user-pill' }, `👤 ${V1.data?.user?.name || 'LOCAL_MEL'}`)
+        h('button', {
+          type: 'button',
+          className: 'v1-theme-toggle',
+          title: 'Toggle Light / Dark Theme',
+          onClick: () => {
+            V1.theme = isDark ? 'light' : 'dark';
+            localStorage.setItem('apse-theme', V1.theme);
+            renderApp();
+          },
+        },
+          msIcon(isDark ? 'light_mode' : 'dark_mode', 16),
+          h('span', {}, isDark ? 'Light' : 'Dark')
+        ),
+        h('span', { className: 'v1-user-pill' }, V1.data?.user?.name || 'LOCAL_MEL')
       )
     ),
-    /* Main Shell: Left Navigation (220px) + Main Workspace Canvas */
+    /* Main Shell: Fixed 240px Left Navigation + Fluid 16-Column Workspace Canvas */
     h('div', { className: 'v1-shell' },
       h('aside', { className: 'v1-sidebar' },
         navItems.map(item =>
@@ -1849,7 +2256,7 @@ function renderApp() {
             },
           },
             h('span', { className: 'v1-nav-label' },
-              h('span', {}, item.icon),
+              msIcon(item.icon, 20),
               h('span', {}, item.label)
             ),
             item.badge ? h('span', { className: 'v1-nav-badge' }, String(item.badge)) : null
@@ -1867,21 +2274,24 @@ function renderApp() {
             }
           },
         },
-          h('span', { className: 'v1-nav-label' }, h('span', {}, '🔒'), h('span', {}, L('nav_confidential')))
+          h('span', { className: 'v1-nav-label' },
+            msIcon('lock', 20),
+            h('span', {}, L('nav_confidential'))
+          )
         ),
         h('div', { className: 'v1-sidebar-footer' },
-          h('label', { style: { fontSize: '12px', fontWeight: '700', color: 'var(--ink-secondary)' } }, 'Display Theme'),
+          h('label', { className: 'v1-field-label', style: { marginBottom: '4px' } }, 'Surface Theme'),
           h('div', { className: 'v1-segmented', style: { width: '100%' } },
             [
-              ['cdjp', 'CDJP'],
               ['light', 'Light'],
-              ['soft', 'Soft'],
               ['dark', 'Dark'],
+              ['soft', 'Soft'],
+              ['contrast', 'Contrast'],
             ].map(([th, lbl]) =>
               h('button', {
                 type: 'button',
-                className: 'v1-seg-btn' + (V1.theme === th ? ' active' : ''),
-                style: { flex: 1, padding: '4px 6px', fontSize: '11px' },
+                className: 'v1-seg-btn' + (V1.theme === th || (th === 'light' && V1.theme === 'cdjp') ? ' active' : ''),
+                style: { flex: 1, padding: '4px 6px', fontSize: '0.6875rem' },
                 onClick: () => {
                   V1.theme = th;
                   localStorage.setItem('apse-theme', th);
@@ -1902,7 +2312,7 @@ function renderApp() {
           : renderExportsWorkspace()
       )
     ),
-    /* Mobile 4-Tab Bottom Navigation Bar (360px - 1023px) */
+    /* Mobile 4-Tab Bottom Navigation Bar (24px Material Symbols) */
     h('nav', { className: 'v1-bottom-nav', 'aria-label': 'Mobile Workspace Navigation' },
       navItems.map(item =>
         h('button', {
@@ -1914,11 +2324,12 @@ function renderApp() {
             renderApp();
           },
         },
-          h('span', { style: { fontSize: '16px' } }, item.icon),
+          msIcon(item.icon, 24),
           h('span', {}, item.label)
         )
       )
-    )
+    ),
+    renderMobileBottomSheet()
   );
 
   const root = document.getElementById('v1_root') || document.body;
@@ -1933,4 +2344,3 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.body.innerHTML = `<div style="padding:32px;font-family:sans-serif"><h2>APSE Service Starting...</h2><p>${err.message}</p></div>`;
   }
 });
-
