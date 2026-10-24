@@ -2,7 +2,10 @@
 /* ==========================================================================
    APSE v1.0 Unified Design System Frontend
    - IBM Carbon Desktop Grid (16-col), Breadcrumbs, Forms & Data Viz
-   - Atlassian Typography (Inter + IBM Plex Mono tabular-nums), Lozenges & Light/Dark Themes
+   - Atlassian Typography (Inter + IBM Plex Mono tabular-nums) & Light/Dark Themes
+   - Neutral Badges (--bg-badge) with 8px Circular Status Dots (--dot-*)
+   - Neutral Outline Buttons (.btn-outline) & Neutral Issue Callout Boxes
+   - Red (--color-error) Restricted Strictly to Form Validation Blockers
    - Material Symbols Outlined Iconography (16px / 20px / 24px)
    - Shopify Polaris Resource Cards & Cisco Momentum Slide-Up Bottom Sheets (< 768px)
    ========================================================================== */
@@ -360,10 +363,37 @@ function renderBreadcrumbs(workspaceLabel, extraTrail = []) {
   return nav;
 }
 
-/* Section 2.2: Atlassian Lozenge / Status Tag Helper */
-function renderLozenge(text, variant = 'neutral', iconName = null) {
-  return h('span', { className: `v1-badge ${variant}` },
-    iconName ? msIcon(iconName, 16) : null,
+/* Section 2.2: Neutral Badge with 8px Circular Status Dot (No colored backgrounds or text) */
+const DOT_TOKEN_MAP = {
+  GREAT: 'var(--dot-great)',
+  great: 'var(--dot-great)',
+  success: 'var(--dot-great)',
+  synced: 'var(--dot-great)',
+  GOOD: 'var(--dot-good)',
+  good: 'var(--dot-good)',
+  info: 'var(--dot-good)',
+  syncing: 'var(--dot-good)',
+  MEDIUM: 'var(--dot-warn)',
+  warn: 'var(--dot-warn)',
+  warning: 'var(--dot-warn)',
+  offline: 'var(--dot-warn)',
+  LOW: 'var(--dot-low)',
+  low: 'var(--dot-low)',
+  MAJOR: 'var(--dot-low)',
+  danger: 'var(--dot-low)',
+  MINOR: 'var(--dot-neutral)',
+  PENDING: 'var(--dot-neutral)',
+  neutral: 'var(--dot-neutral)',
+};
+
+function renderLozenge(text, variant = 'neutral') {
+  const dotColor = DOT_TOKEN_MAP[variant] || 'var(--dot-neutral)';
+  return h('span', { className: `badge v1-badge ${variant}` },
+    h('span', {
+      className: `badge-dot ${variant}`,
+      style: { backgroundColor: dotColor },
+      'aria-hidden': 'true',
+    }),
     h('span', {}, text)
   );
 }
@@ -495,7 +525,7 @@ function validateWizardStep(w, step) {
 }
 
 /* Section 5.4: Touch Stepper Input Control (- / + 44x44px hit areas with tabular-nums) */
-function renderStepperInput(labelTxt, value, onChange, min = 0) {
+function renderStepperInput(labelTxt, value, onChange, min = 0, hasError = false) {
   return h('div', { className: 'v1-stepper-box' },
     h('label', { className: 'v1-field-label' }, labelTxt),
     h('div', { className: 'v1-stepper-controls' },
@@ -510,7 +540,7 @@ function renderStepperInput(labelTxt, value, onChange, min = 0) {
       }, '−'),
       h('input', {
         type: 'number',
-        className: 'v1-step-input v1-tabular',
+        className: 'v1-step-input v1-tabular' + (hasError ? ' has-error' : ''),
         min: String(min),
         value: String(value ?? 0),
         onChange: e => onChange(Math.max(min, Number(e.target.value || 0))),
@@ -600,7 +630,7 @@ function renderMobileBottomSheet() {
         h('h2', { className: 'v1-section-title' }, V1.mobileSheet === 'location' ? 'Select Parish & Location' : 'Filter Workspace'),
         h('button', {
           type: 'button',
-          className: 'v1-btn v1-btn-ghost v1-btn-sm',
+          className: 'v1-btn btn-outline v1-btn-outline v1-btn-sm',
           onClick: () => { V1.mobileSheet = null; renderApp(); },
         }, msIcon('close', 20))
       ),
@@ -654,7 +684,7 @@ function renderMobileBottomSheet() {
       h('div', { className: 'v1-sheet-footer' },
         h('button', {
           type: 'button',
-          className: 'v1-btn v1-btn-ghost',
+          className: 'v1-btn btn-outline v1-btn-outline',
           onClick: async () => {
             V1.filters.period = 'ALL';
             V1.filters.axis = '';
@@ -716,7 +746,7 @@ function renderWizardView() {
       h('div', { style: { background: 'var(--bg-input)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' } },
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' } },
           renderLozenge(localize(task.axis_labels), 'neutral'),
-          renderLozenge(`Target: ${task.planned_target} ${task.unit_label}`, 'info')
+          renderLozenge(`Target: ${task.planned_target} ${task.unit_label}`, 'GOOD')
         ),
         h('h2', { className: 'v1-section-title' }, localize(task.titles)),
         h('div', { className: 'v1-field-helper' },
@@ -798,6 +828,8 @@ function renderWizardView() {
       )
     );
   } else if (w.step === 2) {
+    const hasAgeError = totalParticipants > 0 && ageDiff !== 0;
+    const hasDisError = Number(w.disability || 0) > totalParticipants;
     stepContent = h('div', {},
       h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } }, 'Participant Counts (Auto-Calculated Total)'),
       h('div', { className: 'v1-number-grid' },
@@ -824,16 +856,12 @@ function renderWizardView() {
       h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginTop: '20px', marginBottom: '8px' } },
         h('h3', { className: 'v1-task-title' }, 'Age Group Breakdown & Inclusion'),
         ageDiff === 0
-          ? renderLozenge(`${ageSum} of ${totalParticipants} participants assigned ✓`, 'GREAT', 'check')
+          ? renderLozenge(`${ageSum} of ${totalParticipants} participants assigned`, 'GREAT')
           : h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
-              renderLozenge(
-                `Age group numbers add up to ${ageSum}, but you entered ${totalParticipants} total participants. ${ageDiff > 0 ? `Add ${ageDiff} more.` : `Remove ${Math.abs(ageDiff)}.`}`,
-                'LOW',
-                'warning'
-              ),
+              renderLozenge(`${ageSum} of ${totalParticipants} assigned`, 'LOW'),
               h('button', {
                 type: 'button',
-                className: 'v1-btn v1-btn-secondary v1-btn-sm',
+                className: 'v1-btn btn-outline v1-btn-outline v1-btn-sm',
                 onClick: () => {
                   w.age_18_35 = Math.max(0, Number(w.age_18_35 || 0) + ageDiff);
                   saveWizardDraftLocal();
@@ -843,12 +871,25 @@ function renderWizardView() {
             )
       ),
       h('div', { className: 'v1-number-grid' },
-        renderStepperInput('Under 18 Years', w.age_u18, v => { w.age_u18 = v; saveWizardDraftLocal(); renderApp(); }),
-        renderStepperInput('18–35 Years', w.age_18_35, v => { w.age_18_35 = v; saveWizardDraftLocal(); renderApp(); }),
-        renderStepperInput('36–64 Years', w.age_36_64, v => { w.age_36_64 = v; saveWizardDraftLocal(); renderApp(); }),
-        renderStepperInput('65+ Years', w.age_65, v => { w.age_65 = v; saveWizardDraftLocal(); renderApp(); }),
-        renderStepperInput('Persons with Disabilities', w.disability, v => { w.disability = v; saveWizardDraftLocal(); renderApp(); })
+        renderStepperInput('Under 18 Years', w.age_u18, v => { w.age_u18 = v; saveWizardDraftLocal(); renderApp(); }, 0, hasAgeError),
+        renderStepperInput('18–35 Years', w.age_18_35, v => { w.age_18_35 = v; saveWizardDraftLocal(); renderApp(); }, 0, hasAgeError),
+        renderStepperInput('36–64 Years', w.age_36_64, v => { w.age_36_64 = v; saveWizardDraftLocal(); renderApp(); }, 0, hasAgeError),
+        renderStepperInput('65+ Years', w.age_65, v => { w.age_65 = v; saveWizardDraftLocal(); renderApp(); }, 0, hasAgeError),
+        renderStepperInput('Persons with Disabilities', w.disability, v => { w.disability = v; saveWizardDraftLocal(); renderApp(); }, 0, hasDisError)
       ),
+      /* Section 3: Inline red validation error directly underneath the invalid age/disability inputs */
+      hasAgeError
+        ? h('div', { className: 'v1-field-error', role: 'alert' },
+            msIcon('warning', 16),
+            h('span', {}, `Age group numbers add up to ${ageSum}, but you entered ${totalParticipants} total participants. ${ageDiff > 0 ? `Add ${ageDiff} more.` : `Remove ${Math.abs(ageDiff)}.`}`)
+          )
+        : null,
+      hasDisError
+        ? h('div', { className: 'v1-field-error', role: 'alert' },
+            msIcon('warning', 16),
+            h('span', {}, `Participants with disabilities (${w.disability}) cannot be higher than total participants (${totalParticipants}).`)
+          )
+        : null,
       h('hr', { style: { border: 0, borderTop: '1px solid var(--border-subtle)', margin: '24px 0' } }),
       w.collection_mode === 'ENUMERATOR'
         ? h('div', {},
@@ -856,7 +897,7 @@ function renderWizardView() {
               h('h3', { className: 'v1-task-title' }, 'Individual Respondent Quick-Entry Cards'),
               h('button', {
                 type: 'button',
-                className: 'v1-btn v1-btn-secondary v1-btn-sm',
+                className: 'v1-btn btn-outline v1-btn-outline v1-btn-sm',
                 onClick: () => {
                   w.respondents.push({ code: `RESP-0${w.respondents.length + 1}`, score: 80, resolved_case: true });
                   saveWizardDraftLocal();
@@ -942,11 +983,15 @@ function renderWizardView() {
     );
   } else if (w.step === 3) {
     const severities = [
-      { code: 'NONE', label: 'No Issues', icon: null },
-      { code: 'MINOR', label: 'Minor', icon: 'info' },
-      { code: 'MEDIUM', label: 'Medium', icon: 'warning' },
-      { code: 'MAJOR', label: 'Major', icon: 'error' },
+      { code: 'NONE', label: 'No Issues' },
+      { code: 'MINOR', label: 'Minor' },
+      { code: 'MEDIUM', label: 'Medium' },
+      { code: 'MAJOR', label: 'Major' },
     ];
+    const minT = Number(task.min_threshold || 0);
+    const targetMissed = Number(w.outcome_value || 0) < minT;
+    const missingIssueExplanation = targetMissed && (w.issue_severity === 'NONE' || !String(w.issue_note || '').trim());
+
     stepContent = h('div', {},
       h('div', { style: { background: 'var(--bg-input)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' } },
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' } },
@@ -956,11 +1001,7 @@ function renderWizardView() {
               `Minimum Threshold for Good Impact: ${task.min_threshold} · Great Impact Target: ${task.target_threshold}`
             )
           ),
-          renderLozenge(
-            L('impact_' + previewImpact),
-            previewImpact,
-            previewImpact === 'GREAT' ? 'check' : (previewImpact === 'LOW' ? 'warning' : 'info')
-          )
+          renderLozenge(L('impact_' + previewImpact), previewImpact)
         ),
         h('div', { style: { maxWidth: '260px', marginTop: '12px' } },
           renderStepperInput('Measured Outcome Achieved', w.outcome_value, val => {
@@ -986,10 +1027,18 @@ function renderWizardView() {
           )
         )
       ),
-      (w.issue_severity !== 'NONE' || Number(w.outcome_value || 0) < Number(task.min_threshold || 0))
-        ? h('div', { style: { background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '18px' } },
-            h('div', { className: 'v1-field' },
-              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Select Issue Categories (Filter Chips)'),
+      /* Section 4: Neutral Issue Callout Box (--bg-input, 1px subtle border, 3px slate left border) */
+      (w.issue_severity !== 'NONE' || targetMissed)
+        ? h('div', { className: 'v1-issue-callout', style: { flexDirection: 'column', alignItems: 'stretch', marginBottom: '18px' } },
+            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+              h('span', { className: 'v1-field-label', style: { margin: 0 } }, 'Field Challenge & Support Details'),
+              renderLozenge(
+                w.issue_severity === 'NONE' ? 'Explanation Needed' : `${w.issue_severity} Issue`,
+                w.issue_severity === 'NONE' ? 'warn' : w.issue_severity
+              )
+            ),
+            h('div', { className: 'v1-field', style: { marginTop: '8px' } },
+              h('label', { className: 'v1-field-label' }, 'Select Issue Categories (Filter Chips)'),
               h('div', { className: 'v1-chips' },
                 (V1.data?.issue_categories || ['Transport', 'Turnout', 'Budget', 'Weather', 'Security', 'Other']).map(cat =>
                   h('button', {
@@ -1006,14 +1055,20 @@ function renderWizardView() {
               )
             ),
             h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Short Explanation (What happened and what support is needed?)'),
+              h('label', { className: 'v1-field-label' }, 'Short Explanation (What happened and what support is needed?)'),
               h('textarea', {
                 rows: '3',
-                className: 'v1-textarea',
+                className: 'v1-textarea' + (missingIssueExplanation ? ' has-error' : ''),
                 placeholder: 'Example: Heavy rain delayed transport from distant CEBs...',
                 value: w.issue_note,
                 onChange: e => { w.issue_note = e.target.value; saveWizardDraftLocal(); },
-              })
+              }),
+              missingIssueExplanation
+                ? h('div', { className: 'v1-field-error', role: 'alert' },
+                    msIcon('warning', 16),
+                    h('span', {}, `Target not reached (${w.outcome_value} of ${minT}). Please select an issue level and add a short note.`)
+                  )
+                : null
             )
           )
         : null,
@@ -1045,7 +1100,7 @@ function renderWizardView() {
         }),
         w.attachments.length
           ? h('div', { className: 'v1-chips', style: { marginTop: '8px' } },
-              w.attachments.map(a => renderLozenge(a, 'GOOD', 'attach_file'))
+              w.attachments.map(a => renderLozenge(a, 'GOOD'))
             )
           : null
       ),
@@ -1092,11 +1147,10 @@ function renderWizardView() {
         )
       ),
       w.issue_severity !== 'NONE'
-        ? h('div', { style: { padding: '12px 16px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-md)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' } },
-            msIcon(w.issue_severity === 'MAJOR' ? 'error' : (w.issue_severity === 'MEDIUM' ? 'warning' : 'info'), 20),
-            h('div', {},
-              h('strong', {}, `Logged Field Issue (${w.issue_severity}): `),
-              `${w.issue_categories.join(', ') || 'General'} — ${w.issue_note}`
+        ? h('div', { className: 'v1-issue-callout', style: { marginBottom: '16px' } },
+            h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
+              renderLozenge(`${w.issue_severity} Issue`, w.issue_severity),
+              h('span', {}, `${w.issue_categories.join(', ') || 'General'} — ${w.issue_note}`)
             )
           )
         : null
@@ -1116,17 +1170,18 @@ function renderWizardView() {
             renderApp();
           },
         }, msIcon('arrow_back', 16), h('span', {}, 'Back to My Tasks')),
-        renderLozenge(`Step ${w.step} of 4 · Draft Saved`, 'info', 'cloud_done')
+        renderLozenge(`Step ${w.step} of 4 · Draft Saved`, 'GOOD')
       ),
       /* Section 5.2: Cisco Momentum Compact Mobile Progress Header */
       h('div', { className: 'v1-momentum-progress-header' },
         h('span', {}, stepsMeta[w.step - 1].label),
         h('span', { className: 'v1-mono' }, `${w.step} / 4`)
       ),
+      /* Section 4: Neutral Reviewer Comment Callout Box */
       w.correction_note
-        ? h('div', { className: 'v1-error-alert' },
-            msIcon('error', 20),
-            h('span', {}, `Reviewer Requested Correction (Step ${w.correction_step || 1}): "${w.correction_note}"`)
+        ? h('div', { className: 'v1-issue-callout', style: { marginBottom: '16px' } },
+            renderLozenge(`Fix Step ${w.correction_step || 1}`, 'warn'),
+            h('span', {}, `Reviewer Note: "${w.correction_note}"`)
           )
         : null,
       h('div', { className: 'v1-stepper-bar' },
@@ -1147,18 +1202,18 @@ function renderWizardView() {
         )
       ),
       w.error
-        ? h('div', { className: 'v1-error-alert', role: 'alert' },
-            msIcon('error', 20),
+        ? h('div', { className: 'v1-field-error', role: 'alert', style: { marginBottom: '12px' } },
+            msIcon('warning', 16),
             h('span', {}, w.error)
           )
         : null,
       stepContent,
-      /* Section 3.2 & 5.2: Carbon Ghost Back + Single Primary Action Button (Sticky on Mobile) */
+      /* Section 3.2 & 5.2: Neutral Outline Back + Single Primary Action Button (Sticky on Mobile) */
       h('div', { className: 'v1-wizard-footer' },
         w.step > 1
           ? h('button', {
               type: 'button',
-              className: 'v1-btn v1-btn-ghost',
+              className: 'v1-btn btn-outline v1-btn-outline',
               onClick: () => {
                 w.step -= 1;
                 w.error = '';
@@ -1268,13 +1323,10 @@ function renderNewTaskModal() {
       h('h2', { className: 'v1-section-title' }, L('add_planned')),
       h('button', {
         type: 'button',
-        className: 'v1-btn v1-btn-ghost v1-btn-sm',
+        className: 'v1-btn btn-outline v1-btn-outline v1-btn-sm',
         onClick: () => { V1.newTaskModal = false; renderApp(); },
       }, h('span', {}, 'Cancel'), msIcon('close', 16))
     ),
-    state.error
-      ? h('div', { className: 'v1-error-alert' }, msIcon('error', 20), h('span', {}, state.error))
-      : null,
     h('div', { className: 'v1-field' },
       h('label', { className: 'v1-field-label' },
         '1. Choose Strategic Goal (Backend Automatically Binds Axis, Outcome & KPI IDs)'
@@ -1293,12 +1345,14 @@ function renderNewTaskModal() {
       h('label', { className: 'v1-field-label' }, '2. Natural Activity Title (Plain Action Statement)'),
       h('input', {
         type: 'text',
-        className: 'v1-input',
+        className: 'v1-input' + (state.error ? ' has-error' : ''),
         placeholder: 'e.g., Train 25 youth mediators in peaceful family dialogue',
         value: state.title,
         onChange: e => { state.title = e.target.value; },
       }),
-      h('div', { className: 'v1-field-helper' }, 'No form codes or strategic IDs needed.')
+      state.error
+        ? h('div', { className: 'v1-field-error', role: 'alert' }, msIcon('warning', 16), h('span', {}, state.error))
+        : h('div', { className: 'v1-field-helper' }, 'No form codes or strategic IDs needed.')
     ),
     h('div', { className: 'v1-number-grid', style: { marginBottom: '16px' } },
       h('div', { className: 'v1-field', style: { marginBottom: 0 } },
@@ -1375,16 +1429,16 @@ function renderTasksWorkspace() {
           'Your assigned field activities, recurring quarterly goals, and saved drafts. All internal M&E codes are handled automatically.'
         )
       ),
-      /* Section 3.2: Only ONE Primary (#0F62FE) button per view */
+      /* Section 3.2: Only ONE Primary (#0F62FE) button per view; supporting actions use .btn-outline */
       h('div', { className: 'v1-header-actions' },
         h('button', {
           type: 'button',
-          className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
+          className: 'v1-btn btn-outline v1-btn-outline v1-mobile-filter-trigger',
           onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
         }, h('span', {}, 'Filter'), msIcon('filter_list', 20)),
         h('button', {
           type: 'button',
-          className: 'v1-btn v1-btn-danger',
+          className: 'v1-btn btn-outline v1-btn-outline',
           onClick: () => {
             const sensTask = (V1.data?.tasks || []).find(t => t.is_sensitive) || V1.data?.tasks?.[0];
             if (sensTask) openWizardForTask(sensTask);
@@ -1392,7 +1446,7 @@ function renderTasksWorkspace() {
         }, h('span', {}, L('nav_confidential')), msIcon('lock', 20)),
         h('button', {
           type: 'button',
-          className: 'v1-btn' + (V1.newTaskModal ? ' v1-btn-secondary' : ''),
+          className: 'v1-btn' + (V1.newTaskModal ? ' btn-outline v1-btn-outline' : ''),
           onClick: () => { V1.newTaskModal = !V1.newTaskModal; renderApp(); },
         }, h('span', {}, L('add_planned')), msIcon('add', 20))
       )
@@ -1442,7 +1496,7 @@ function renderTasksWorkspace() {
         )
       )
     ),
-    /* Task Cards List (Atlassian Lozenges + Carbon Secondary Action Buttons) */
+    /* Task Cards List (Neutral Badges + 8px Status Dots + Uniform Carbon Blue Progress Bar) */
     h('div', { className: 'v1-task-list' },
       tasks.map(t => {
         const isDone = t.completion_pct >= 100;
@@ -1451,18 +1505,19 @@ function renderTasksWorkspace() {
         return h('article', { className: 'v1-task-card' },
           h('div', { className: 'v1-task-left' },
             h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')) },
-              isDone ? msIcon('check', 16) : (needsFix ? msIcon('error', 16) : msIcon('assignment', 16))
+              isDone ? msIcon('check', 16) : (needsFix ? msIcon('undo', 16) : msIcon('assignment', 16))
             ),
             h('div', { style: { flex: 1, minWidth: 0 } },
               h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' } },
                 h('h3', { className: 'v1-task-title' }, localize(t.titles)),
                 h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
-                  t.is_sensitive ? renderLozenge('Confidential', 'LOW', 'lock') : null,
-                  hasLocalDraft ? renderLozenge('Saved Draft', 'GOOD', 'description') : null,
+                  t.is_sensitive ? renderLozenge('Confidential', 'neutral') : null,
+                  hasLocalDraft ? renderLozenge('Saved Draft', 'neutral') : null,
+                  needsFix ? renderLozenge('Waiting Fix', 'warn') : null,
                   renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
                 )
               ),
-              /* Section 2.2 Neutral Metadata Lozenges for hidden-code labels */
+              /* Section 2.2 Neutral Metadata Badges for hidden-code labels */
               h('div', { className: 'v1-task-meta' },
                 renderLozenge(`${t.parish_name} Parish`, 'neutral'),
                 renderLozenge(localize(t.axis_labels), 'neutral'),
@@ -1470,9 +1525,10 @@ function renderTasksWorkspace() {
                 h('span', { className: 'v1-tabular' }, `Due ${t.due_date}`),
                 t.frequency > 1 ? h('span', { className: 'v1-tabular' }, `· Quarterly (${t.quarters_completed}/${t.frequency} logged)`) : null
               ),
+              /* Section 4: Uniform Carbon Blue Progress Bar on Neutral Track */
               h('div', { className: 'v1-progress-wrap' },
                 h('div', { className: 'v1-progress-bar' },
-                  h('div', { className: 'v1-progress-fill' + (isDone ? ' great' : ''), style: { width: `${t.completion_pct}%` } })
+                  h('div', { className: 'v1-progress-fill', style: { width: `${t.completion_pct}%` } })
                 ),
                 h('span', { className: 'v1-progress-stat', style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } },
                   `${t.completion_pct}% (${t.completed_units}/${t.planned_target} ${t.unit_label})`
@@ -1484,7 +1540,7 @@ function renderTasksWorkspace() {
             needsFix
               ? h('button', {
                   type: 'button',
-                  className: 'v1-btn v1-btn-danger',
+                  className: 'v1-btn btn-outline v1-btn-outline',
                   onClick: () => openWizardForTask(t, t.latest_log, t.latest_log?.payload?.correction_step || 1),
                 },
                 h('span', {}, L('fix_step', t.latest_log?.payload?.correction_step || 1)),
@@ -1492,7 +1548,7 @@ function renderTasksWorkspace() {
               )
               : h('button', {
                   type: 'button',
-                  className: 'v1-btn ' + (isDone ? 'v1-btn-ghost' : 'v1-btn-secondary'),
+                  className: 'v1-btn ' + (isDone ? 'btn-outline v1-btn-outline' : 'v1-btn-secondary'),
                   onClick: () => openWizardForTask(t, t.latest_log),
                 },
                 h('span', {}, isDone ? L('view_summary') : L('log_progress')),
@@ -1505,7 +1561,7 @@ function renderTasksWorkspace() {
   );
 }
 
-/* WORKSPACE 2: Review & Approvals (Streamlined 3-Tier Flow) */
+/* WORKSPACE 2: Review & Approvals (Streamlined 3-Tier Flow with Neutral Outline Buttons) */
 function renderApprovalsWorkspace() {
   const logs = (V1.data?.logs || []).filter(l => {
     if (l.parent_id) return false;
@@ -1564,8 +1620,7 @@ function renderApprovalsWorkspace() {
             h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' } },
               renderLozenge(
                 stageLabelMap[l.stage] || l.stage,
-                l.stage === 'DIOCESE_APPROVED' ? 'GREAT' : (l.stage === 'CORRECTION' ? 'LOW' : (l.stage === 'SUBMITTED' ? 'warn' : 'GOOD')),
-                l.stage === 'DIOCESE_APPROVED' ? 'check' : (l.stage === 'CORRECTION' ? 'error' : 'fact_check')
+                l.stage === 'DIOCESE_APPROVED' ? 'GREAT' : (l.stage === 'CORRECTION' ? 'warn' : (l.stage === 'SUBMITTED' ? 'warn' : 'GOOD'))
               ),
               renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
               renderLozenge(`${l.parish_name} · ${l.centrale}`, 'neutral'),
@@ -1575,13 +1630,17 @@ function renderApprovalsWorkspace() {
             h('div', { className: 'v1-tabular', style: { fontSize: '0.875rem', color: 'var(--text-secondary)' } },
               `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities) · Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
             ),
+            /* Section 4: Neutral Issue Callout Box with 8px dot badge */
             l.issue_severity !== 'NONE'
-              ? h('div', { style: { marginTop: '8px', padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' } },
-                  msIcon(l.issue_severity === 'MAJOR' ? 'error' : 'warning', 16),
-                  h('span', {}, `Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`)
+              ? h('div', { className: 'v1-issue-callout', style: { marginTop: '8px' } },
+                  h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
+                    renderLozenge(`${l.issue_severity} Issue`, l.issue_severity),
+                    h('span', {}, `${l.issue_categories.join(', ')}: ${l.issue_note}`)
+                  )
                 )
               : null
           ),
+          /* Section 2: Neutralized Workflow Buttons (.btn-outline for "Return for Fix") */
           h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
             l.stage === 'SUBMITTED'
               ? h('button', {
@@ -1608,7 +1667,7 @@ function renderApprovalsWorkspace() {
             l.stage !== 'DIOCESE_APPROVED'
               ? h('button', {
                   type: 'button',
-                  className: 'v1-btn v1-btn-danger v1-btn-sm',
+                  className: 'v1-btn btn-outline v1-btn-outline v1-btn-sm',
                   onClick: async () => {
                     const stepStr = prompt('Which step needs fixing? Enter 1 (When/Where), 2 (Attendance), or 3 (Outcome/Issues):', '2');
                     if (!stepStr) return;
@@ -1618,7 +1677,7 @@ function renderApprovalsWorkspace() {
                     await loadBootstrap();
                     renderApp();
                   },
-                }, h('span', {}, 'Return for Correction'), msIcon('undo', 16))
+                }, h('span', {}, 'Return for Fix'), msIcon('undo', 16))
               : null
           )
         );
@@ -1627,12 +1686,12 @@ function renderApprovalsWorkspace() {
   );
 }
 
-/* WORKSPACE 3: Impact & Analytics (Carbon Charts, Outcome Accordions & Polaris Mobile Cards) */
+/* WORKSPACE 3: Impact & Analytics (Restrained Carbon Blues & Neutral Slates Palette + Neutral Callouts) */
 function renderAnalyticsWorkspace() {
   const analytics = V1.data?.analytics || { summary: {}, accordions: [], parish_map: [], monthly_trends: [] };
   const s = analytics.summary || {};
   const activePeriodLabel = V1.filters.period === 'Q1' ? L('period_q1') : (V1.filters.period === 'AP1' ? L('period_ap1') : L('period_all'));
-  const catColors = ['var(--chart-cat-1)', 'var(--chart-cat-2)', 'var(--chart-cat-3)', 'var(--chart-cat-4)'];
+  const chartBluesAndSlates = ['#0F62FE', '#4589FF', '#A6C8FF', '#8D8D8D'];
 
   return h('div', {},
     renderBreadcrumbs(L('nav_analytics')),
@@ -1646,7 +1705,7 @@ function renderAnalyticsWorkspace() {
       h('div', { className: 'v1-header-actions' },
         h('button', {
           type: 'button',
-          className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
+          className: 'v1-btn btn-outline v1-btn-outline v1-mobile-filter-trigger',
           onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
         }, h('span', {}, 'Filter'), msIcon('filter_list', 20))
       )
@@ -1672,12 +1731,14 @@ function renderAnalyticsWorkspace() {
         renderApp();
       }, true)
     ),
-    /* Bottleneck Insight Banner */
+    /* Section 4: Neutral Bottleneck Insight Callout Box */
     s.top_bottleneck_category
-      ? h('div', { style: { background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', padding: '12px 16px', borderRadius: 'var(--radius-md)', marginBottom: '20px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' } },
-          msIcon('warning', 20),
-          h('span', { className: 'v1-tabular' },
-            `Field Bottleneck Insight: ${s.top_bottleneck_pct}% of reported field delays this period involved "${s.top_bottleneck_category}" challenges.`
+      ? h('div', { className: 'v1-issue-callout', style: { marginBottom: '20px' } },
+          h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
+            renderLozenge('Bottleneck Insight', 'warn'),
+            h('span', { className: 'v1-tabular' },
+              `${s.top_bottleneck_pct}% of reported field delays this period involved "${s.top_bottleneck_category}" challenges.`
+            )
           )
         )
       : null,
@@ -1711,7 +1772,7 @@ function renderAnalyticsWorkspace() {
         h('div', { className: 'v1-field-helper' }, 'Reports awaiting Parish or Diocese sign-off')
       )
     ),
-    /* Section 3.3: Carbon Chart Containers (Top-left Title + Active Filter Subtitle + Top-right Legend) */
+    /* Section 3.3 & Section 4: Carbon Chart Containers (Carbon Blues & Neutral Slates Palette) */
     h('div', { className: 'v1-analytics-split' },
       /* Regional Parish SVG Map */
       h('div', { className: 'v1-panel' },
@@ -1722,16 +1783,20 @@ function renderAnalyticsWorkspace() {
           ),
           h('div', { className: 'v1-chart-legend' },
             h('span', { className: 'v1-legend-item' },
-              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-great)' } }),
+              h('span', { className: 'v1-legend-swatch', style: { background: '#0F62FE' } }),
               '≥80% Target'
             ),
             h('span', { className: 'v1-legend-item' },
-              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-medium)' } }),
+              h('span', { className: 'v1-legend-swatch', style: { background: '#4589FF' } }),
               'In Progress'
             ),
             h('span', { className: 'v1-legend-item' },
-              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-major)' } }),
-              'Major Issue'
+              h('span', { className: 'v1-legend-swatch', style: { background: '#A6C8FF' } }),
+              'Needs Support'
+            ),
+            h('span', { className: 'v1-legend-item' },
+              h('span', { className: 'v1-legend-swatch', style: { background: '#8D8D8D' } }),
+              'No Activity'
             )
           )
         ),
@@ -1774,12 +1839,12 @@ function renderAnalyticsWorkspace() {
             circle.setAttribute('cx', String(p.x));
             circle.setAttribute('cy', String(p.y));
             circle.setAttribute('r', V1.filters.parish === p.code ? '3.5' : '2.4');
-            /* Section 3.3 Carbon Status Palette */
-            const fill = p.status_color === 'red'
-              ? 'var(--chart-status-major)'
-              : (p.status_color === 'green'
-                ? 'var(--chart-status-great)'
-                : (p.status_color === 'amber' ? 'var(--chart-status-medium)' : 'var(--chart-status-idle)'));
+            /* Section 4: Restrained Carbon Blues & Neutral Slates Palette */
+            const fill = p.status_color === 'green'
+              ? '#0F62FE'
+              : (p.status_color === 'amber'
+                ? '#4589FF'
+                : (p.status_color === 'red' ? '#A6C8FF' : '#8D8D8D'));
             circle.setAttribute('fill', fill);
             circle.setAttribute('stroke', 'var(--bg-surface)');
             circle.setAttribute('stroke-width', '0.7');
@@ -1803,7 +1868,7 @@ function renderAnalyticsWorkspace() {
           return svg;
         })()
       ),
-      /* Issue Trends Stacked Bar Chart (Carbon Horizontal Gridlines + Status Palette) */
+      /* Issue Trends Stacked Bar Chart (Carbon Blues & Neutral Slates: #0F62FE, #4589FF, #A6C8FF, #8D8D8D) */
       h('div', { className: 'v1-panel' },
         h('div', { className: 'v1-chart-header' },
           h('div', {},
@@ -1812,15 +1877,15 @@ function renderAnalyticsWorkspace() {
           ),
           h('div', { className: 'v1-chart-legend' },
             h('span', { className: 'v1-legend-item' },
-              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-minor)' } }),
+              h('span', { className: 'v1-legend-swatch', style: { background: '#8D8D8D' } }),
               'Minor'
             ),
             h('span', { className: 'v1-legend-item' },
-              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-medium)' } }),
+              h('span', { className: 'v1-legend-swatch', style: { background: '#4589FF' } }),
               'Medium'
             ),
             h('span', { className: 'v1-legend-item' },
-              h('span', { className: 'v1-legend-swatch', style: { background: 'var(--chart-status-major)' } }),
+              h('span', { className: 'v1-legend-swatch', style: { background: '#0F62FE' } }),
               'Major'
             )
           )
@@ -1846,9 +1911,9 @@ function renderAnalyticsWorkspace() {
             return h('div', { className: 'v1-bar-col' },
               h('span', { className: 'v1-mono', style: { fontSize: '0.6875rem', fontWeight: '700', marginBottom: '4px' } }, total ? String(total) : ''),
               h('div', { className: 'v1-bar-stack' },
-                h('div', { style: { height: `${hMinor}px`, background: 'var(--chart-status-minor)' }, title: `Minor: ${m.MINOR}` }),
-                h('div', { style: { height: `${hMed}px`, background: 'var(--chart-status-medium)' }, title: `Medium: ${m.MEDIUM}` }),
-                h('div', { style: { height: `${hMaj}px`, background: 'var(--chart-status-major)' }, title: `Major: ${m.MAJOR}` })
+                h('div', { style: { height: `${hMinor}px`, background: '#8D8D8D' }, title: `Minor: ${m.MINOR}` }),
+                h('div', { style: { height: `${hMed}px`, background: '#4589FF' }, title: `Medium: ${m.MEDIUM}` }),
+                h('div', { style: { height: `${hMaj}px`, background: '#0F62FE' }, title: `Major: ${m.MAJOR}` })
               ),
               h('span', { className: 'v1-tabular', style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '6px' } }, m.month)
             );
@@ -1867,7 +1932,7 @@ function renderAnalyticsWorkspace() {
             h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' } },
               h('span', {
                 className: 'v1-legend-swatch',
-                style: { background: catColors[idx % catColors.length] },
+                style: { background: chartBluesAndSlates[idx % chartBluesAndSlates.length] },
               }),
               renderLozenge(localize(acc.axis_labels), 'neutral')
             ),
@@ -1945,17 +2010,20 @@ function renderAnalyticsWorkspace() {
                   h('p', { style: { margin: '4px 0', fontSize: '0.875rem', fontStyle: 'italic', color: 'var(--text-primary)' } }, `"${st.text}" — ${st.parish} (${st.date})`)
                 ),
                 h('div', { className: 'v1-chips', style: { marginTop: '6px' } },
-                  acc.documents.map(doc => renderLozenge(`${doc.name} (${doc.parish})`, 'GOOD', 'description'))
+                  acc.documents.map(doc => renderLozenge(`${doc.name} (${doc.parish})`, 'GOOD'))
                 )
               )
             : null,
+          /* Section 4: Neutral Issue Callout Boxes in Accordion */
           acc.issues.length
             ? h('div', { style: { marginTop: '14px' } },
-                h('div', { className: 'v1-field-label', style: { marginBottom: '6px', color: 'var(--tag-warn-text)' } }, '3. Under-Achievement Explanations & Field Issues'),
+                h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, '3. Under-Achievement Explanations & Field Issues'),
                 acc.issues.map(iss =>
-                  h('div', { style: { padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' } },
-                    msIcon(iss.severity === 'MAJOR' ? 'error' : 'warning', 16),
-                    h('span', {}, `${iss.parish} (${iss.severity} · ${iss.categories.join(', ')}): ${iss.note}`)
+                  h('div', { className: 'v1-issue-callout', style: { marginBottom: '6px' } },
+                    h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
+                      renderLozenge(`${iss.severity} Issue`, iss.severity),
+                      h('span', {}, `${iss.parish} (${iss.categories.join(', ')}): ${iss.note}`)
+                    )
                   )
                 )
               )
@@ -2056,7 +2124,7 @@ function renderExportsWorkspace() {
           },
         }, h('span', {}, 'Download Report Now'), msIcon('download', 20))
       ),
-      /* Right Panel: Guided Bulk CSV Import (Secondary Action Button) */
+      /* Right Panel: Guided Bulk CSV Import (Neutral Outline Action Button) */
       h('div', { className: 'v1-panel' },
         h('h2', { className: 'v1-section-title', style: { marginBottom: '8px' } }, '2. Guided Bulk Spreadsheet Import (CSV)'),
         h('p', { className: 'v1-page-subtitle', style: { marginBottom: '14px' } },
@@ -2066,7 +2134,7 @@ function renderExportsWorkspace() {
           h('label', { className: 'v1-field-label' }, 'Select CSV File'),
           h('input', {
             type: 'file',
-            className: 'v1-input',
+            className: 'v1-input' + (V1.csvImportState?.error ? ' has-error' : ''),
             accept: '.csv',
             onChange: async e => {
               const file = e.target.files?.[0];
@@ -2081,23 +2149,21 @@ function renderExportsWorkspace() {
                 renderApp();
               }
             },
-          })
+          }),
+          V1.csvImportState?.error
+            ? h('div', { className: 'v1-field-error', role: 'alert' }, msIcon('warning', 16), h('span', {}, V1.csvImportState.error))
+            : null
         ),
-        V1.csvImportState?.error
-          ? h('div', { className: 'v1-error-alert' }, msIcon('error', 20), h('span', {}, V1.csvImportState.error))
-          : null,
         V1.csvImportState && !V1.csvImportState.error
           ? h('div', {},
               V1.csvImportState.missing?.length
                 ? h('div', {},
                     V1.csvImportState.missing.map(m =>
-                      h('div', { className: 'v1-error-alert', style: { flexDirection: 'column', alignItems: 'stretch' } },
-                        h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
-                          msIcon('warning', 20),
-                          h('span', {}, m.message)
-                        ),
+                      /* Section 3: Invalid select input gets 2px solid #DA1E28 border + inline error message underneath */
+                      h('div', { className: 'v1-field' },
+                        h('label', { className: 'v1-field-label' }, `Map Column: ${m.key}`),
                         h('select', {
-                          className: 'v1-select',
+                          className: 'v1-select has-error',
                           onChange: async ev => {
                             V1.csvImportState.mapping[m.key] = ev.target.value;
                             const updated = await apiV1('/v1/import', 'POST', {
@@ -2111,17 +2177,21 @@ function renderExportsWorkspace() {
                         },
                           h('option', { value: '' }, 'Select matching column from your file...'),
                           V1.csvImportState.headers.map(hdr => h('option', { value: hdr }, hdr))
+                        ),
+                        h('div', { className: 'v1-field-error', role: 'alert' },
+                          msIcon('warning', 16),
+                          h('span', {}, m.message)
                         )
                       )
                     )
                   )
                 : h('div', {},
                     h('div', { style: { marginBottom: '12px' } },
-                      renderLozenge(`All columns matched (${V1.csvImportState.total_rows} rows ready)`, 'GREAT', 'check')
+                      renderLozenge(`All columns matched (${V1.csvImportState.total_rows} rows ready)`, 'GREAT')
                     ),
                     h('button', {
                       type: 'button',
-                      className: 'v1-btn v1-btn-secondary',
+                      className: 'v1-btn btn-outline v1-btn-outline',
                       onClick: async () => {
                         const res = await apiV1('/v1/import', 'POST', {
                           csv_text: V1.csvImportState.csvText,
@@ -2155,16 +2225,13 @@ function renderApp() {
   const qLen = V1.offlineQueue.length;
   const isDark = V1.theme === 'dark';
 
-  let syncClass = 'v1-sync-pill synced';
-  let syncIcon = 'cloud_done';
+  let syncDotVariant = 'synced';
   let syncText = L('sync_synced');
   if (V1.syncingState) {
-    syncClass = 'v1-sync-pill syncing';
-    syncIcon = 'sync';
+    syncDotVariant = 'syncing';
     syncText = L('sync_updating', V1.syncingState.current, V1.syncingState.total);
   } else if (qLen > 0 || V1.simulateOffline) {
-    syncClass = 'v1-sync-pill offline';
-    syncIcon = 'cloud_off';
+    syncDotVariant = 'offline';
     syncText = L('sync_offline', qLen);
   }
 
@@ -2197,9 +2264,10 @@ function renderApp() {
         })
       ),
       h('div', { className: 'v1-topbar-right' },
+        /* Section 1: Neutral Sync Badge with 8px Status Dot */
         h('button', {
           type: 'button',
-          className: syncClass,
+          className: 'badge v1-sync-pill',
           title: qLen > 0 ? 'Click to synchronize queued offline records now' : 'Click to toggle offline mode simulation',
           onClick: () => {
             if (qLen > 0) {
@@ -2210,7 +2278,11 @@ function renderApp() {
             }
           },
         },
-          msIcon(syncIcon, 16),
+          h('span', {
+            className: `badge-dot ${syncDotVariant}`,
+            style: { backgroundColor: DOT_TOKEN_MAP[syncDotVariant] },
+            'aria-hidden': 'true',
+          }),
           h('span', {}, syncText)
         ),
         h('div', { className: 'v1-lang-pills', role: 'group', 'aria-label': 'Language' },
