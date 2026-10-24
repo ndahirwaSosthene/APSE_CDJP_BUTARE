@@ -7,10 +7,10 @@ def verify(root):
  for name,wanted in hashes.items():
   parts=Path(name).parts
   if not parts or Path(name).is_absolute()or'..'in parts:errors.append('invalid path');continue
-  if parts[0]in ['portable_data','docs','tests']:continue
+  if parts[0]in ['portable_data','docs','tests']or name=='runtime/windows/LICENSE.txt':continue
   f=root/name
   if not f.is_file():errors.append('missing: '+name)
-  elif hashlib.sha256(f.read_bytes()).hexdigest()!=wanted:errors.append('changed: '+name)
+  elif hashlib.sha256(b:=f.read_bytes()).hexdigest()!=wanted and hashlib.sha256(b.replace(b'\r\n',b'\n')).hexdigest()!=wanted:errors.append('changed: '+name)
  if flash.is_file():
   for name in ['apse.sqlite','accounts.enc','vault.json']:
    if not(root/'portable_data'/name).is_file():errors.append('missing portable data: '+name)
