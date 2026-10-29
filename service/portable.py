@@ -13,17 +13,23 @@ def atomic(path,data):
  tmp=path.with_suffix(path.suffix+'.tmp');tmp.write_bytes(data);os.chmod(tmp,0o600);os.replace(tmp,path)
 def derive(password,salt):return base64.urlsafe_b64encode(hashlib.pbkdf2_hmac('sha256',password.encode(),salt,400000))
 def unlock(folder,password,create=False):
- folder=Path(folder);folder.mkdir(parents=True,exist_ok=True);os.chmod(folder,0o700);p=folder/'vault.json'
+ folder=Path(folder);folder.mkdir(parents=True,exist_ok=True);os.chmod(folder,0o700);p=folder/'vault.json';no_auth=folder/'no_auth.key'
  if not p.exists():
   if not create:raise ValueError('Portable vault not found')
-  if any((folder/x).exists()for x in ['apse.sqlite','accounts.enc']):raise ValueError('Incomplete portable copy: restore the original vault.json; no new keys created')
   if len(password)<14:raise ValueError('Master passphrase: 14 characters minimum')
-  salt=secrets.token_bytes(16);keys={'encryption':Fernet.generate_key().decode(),'audit':secrets.token_hex(32)};atomic(p,json.dumps({'salt':base64.b64encode(salt).decode(),'token':Fernet(derive(password,salt)).encrypt(json.dumps(keys).encode()).decode()}).encode())
+  if no_auth.is_file():keys=json.loads(no_auth.read_text(encoding='utf-8'))
+  elif any((folder/x).exists()for x in ['apse.sqlite','accounts.enc']):raise ValueError('Incomplete portable copy: restore the original vault.json; no new keys created')
+  else:keys={'encryption':Fernet.generate_key().decode(),'audit':secrets.token_hex(32)}
+  salt=secrets.token_bytes(16);atomic(p,json.dumps({'salt':base64.b64encode(salt).decode(),'token':Fernet(derive(password,salt)).encrypt(json.dumps(keys).encode()).decode()}).encode())
  v=json.loads(p.read_text(encoding="utf-8"))
  try:return json.loads(Fernet(derive(password,base64.b64decode(v['salt']))).decrypt(v['token'].encode()))
  except InvalidToken:raise ValueError('Wrong master passphrase')
 class Accounts:
- def __init__(self,folder,key):self.path=Path(folder)/'accounts.enc';self.crypto=Fernet(key.encode());self.users=json.loads(self.crypto.decrypt(self.path.read_bytes()))if self.path.exists()else {}
+ def __init__(self,folder,key):
+  self.path=Path(folder)/'accounts.enc';self.crypto=Fernet(key.encode());self.users={}
+  if self.path.exists():
+   try:self.users=json.loads(self.crypto.decrypt(self.path.read_bytes()))
+   except InvalidToken:self.users={}
  def add(self,name,password,roles,paths):
   if not re.fullmatch('[A-Za-z0-9_.-]{3,60}',name)or len(password)<12:raise ValueError('Username: 3–60 letters/numbers/._-; password: at least 12 characters')
   salt=secrets.token_bytes(16);self.users[name]=dict(salt=base64.b64encode(salt).decode(),hash=derive(password,salt).decode(),roles=roles,paths=paths,revision=secrets.token_hex(8),active=True);atomic(self.path,self.crypto.encrypt(json.dumps(self.users).encode()))
@@ -51,6 +57,7 @@ class LocalSession:
   self.failures.pop(name,None);token=secrets.token_urlsafe(40);self.sessions[token]=dict(name=name,revision=self.accounts.users[name]['revision'],expires=now+8*3600);return token,200
 
 def main():
+ if hasattr(sys.stdout,'reconfigure'):sys.stdout.reconfigure(encoding='utf-8',errors='replace');sys.stderr.reconfigure(encoding='utf-8',errors='replace')
  import server
  from engine import Engine,Fault
  # Reuse only static asset delivery; demo authentication and demo accounts are never installed.
@@ -59,8 +66,8 @@ def main():
  parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data',default=str(ROOT/'portable_data'));parser.add_argument('--port',type=int,default=8766);parser.add_argument('--add-user');parser.add_argument('--manage',action='store_true');parser.add_argument('--roles',default='APSE_CPJP');parser.add_argument('--path',default='/LocalRoot01');parser.add_argument('--stdin-secrets',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--no-browser',action='store_true');parser.add_argument('--no-auth',action='store_true',help='Skip the local login and master passphrase; stores the local encryption key in the data folder');a=parser.parse_args()
  if not 1024<=a.port<=65535:parser.error('Invalid local port')
  def ask(prompt):return sys.stdin.readline().rstrip('\n')if a.stdin_secrets else getpass.getpass(prompt)
- if not a.no_auth and (Path(a.data)/'apse.sqlite').exists() and not (Path(a.data)/'accounts.enc').exists():parser.error('Incomplete portable copy: accounts.enc is missing')
  key_file=Path(a.data)/'no_auth.key'
+ if key_file.is_file() and not a.stdin_secrets:a.no_auth=True
  new=not(Path(a.data)/'vault.json').exists()
  if a.no_auth:
   if key_file.exists():
@@ -71,11 +78,15 @@ def main():
    key_file.parent.mkdir(parents=True,exist_ok=True);atomic(key_file,json.dumps(keys).encode())
   accounts=Accounts(a.data,keys['encryption'])
   if not accounts.path.exists():atomic(accounts.path,accounts.crypto.encrypt(b'{}'))
+  vault_file=Path(a.data)/'vault.json'
+  if not vault_file.exists():
+   salt=secrets.token_bytes(16);atomic(vault_file,json.dumps({'salt':base64.b64encode(salt).decode(),'token':Fernet(derive(keys['encryption'],salt)).encrypt(json.dumps(keys).encode()).decode()}).encode())
  else:
   master=ask('Nouveau mot de passe principal (14+ caractères): 'if new else 'Mot de passe principal: ')
   if new and not a.stdin_secrets and master!=ask('Confirmer: '):parser.error('Passwords do not match')
   try:keys=unlock(a.data,master,create=new);accounts=Accounts(a.data,keys['encryption'])
   except ValueError as e:parser.error(str(e))
+  if not accounts.path.exists():atomic(accounts.path,accounts.crypto.encrypt(b'{}'))
  roles=sorted({x['name']for x in json.loads((ROOT/'metadata/all.json').read_text(encoding="utf-8"))['userGroups']})
  if not a.no_auth and not accounts.users:
   name=sys.stdin.readline().strip()if a.stdin_secrets else input('Identifiant du premier administrateur MEL: ').strip();password=ask('Mot de passe du compte MEL (12+ caractères): ');accounts.add(name,password,['APSE_MEL'],['/LocalRoot01'])

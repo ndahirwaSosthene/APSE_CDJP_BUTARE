@@ -6,7 +6,7 @@ import sqlite3,zipfile,tempfile,hashlib,json,io,datetime
 SKIP={'__pycache__','.venv','.runtime','vendor','portable_data','logs'}
 def archive_bytes(root):
  root=Path(root).resolve();folder=root/'portable_data'
- if not all((folder/x).is_file()for x in ['apse.sqlite','vault.json','accounts.enc']):raise ValueError('Portable database/account/vault not initialised')
+ if not(folder/'apse.sqlite').is_file()or not((folder/'vault.json').is_file()or(folder/'no_auth.key').is_file()):raise ValueError('Portable database/account/vault not initialised')
  with tempfile.TemporaryDirectory(prefix='apse-flash-snapshot-')as tmp:
   snapshot=Path(tmp)/'apse.sqlite';src=sqlite3.connect((folder/'apse.sqlite').as_uri()+'?mode=ro',uri=True);dst=sqlite3.connect(snapshot)
   try:src.backup(dst)
@@ -17,7 +17,10 @@ def archive_bytes(root):
    if not f.is_file()or f.name in ['SHA256SUMS.json','FLASH_MANIFEST.json'] or set(rel.parts)&SKIP or f.name.endswith(('.pyc','.sqlite','.sqlite-wal','.sqlite-shm')):continue
    if f.suffix=='.zip'and 'runtime'not in rel.parts:continue
    files.append((f,str(rel)))
-  files.extend([(snapshot,'portable_data/apse.sqlite'),(folder/'vault.json','portable_data/vault.json'),(folder/'accounts.enc','portable_data/accounts.enc')]);manifest={};out=io.BytesIO()
+  files.append((snapshot,'portable_data/apse.sqlite'))
+  for name in ['vault.json','accounts.enc','no_auth.key']:
+   if (folder/name).is_file():files.append((folder/name,'portable_data/'+name))
+  manifest={};out=io.BytesIO()
   with zipfile.ZipFile(out,'w',zipfile.ZIP_DEFLATED)as z:
    for f,rel in files:
     b=f.read_bytes();manifest[rel]=hashlib.sha256(b).hexdigest();z.writestr(root.name+'/'+rel,b)

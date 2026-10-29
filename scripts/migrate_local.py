@@ -6,7 +6,8 @@ def migrate(source,target):
  source=Path(source).resolve();target=Path(target).resolve()
  if source==target:raise ValueError('Source and destination must differ')
  if target.exists():raise ValueError('Destination data already exists; no files overwritten')
- for name in ['apse.sqlite','vault.json','accounts.enc']:
+ req=['apse.sqlite']+(['no_auth.key']if(source/'no_auth.key').is_file()and not(source/'vault.json').is_file()else['vault.json','accounts.enc'])
+ for name in req:
   if not(source/name).is_file():raise ValueError('Incomplete source dataset: '+name)
  target.parent.mkdir(parents=True,exist_ok=True)
  with tempfile.TemporaryDirectory(prefix='apse-migration-',dir=target.parent)as tmp:
@@ -15,7 +16,8 @@ def migrate(source,target):
    src.backup(dst)
    if dst.execute('PRAGMA integrity_check').fetchone()[0]!='ok':raise ValueError('SQLite integrity check failed')
   finally:dst.close();src.close()
-  for name in ['vault.json','accounts.enc']:shutil.copyfile(source/name,stage/name)
+  for name in ['vault.json','accounts.enc','no_auth.key']:
+   if (source/name).is_file():shutil.copyfile(source/name,stage/name)
   os.replace(stage,target)
  return target
 if __name__=='__main__':
