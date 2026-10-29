@@ -1,1 +1,8 @@
-APSE verification OK
+changed: README.md
+changed: app/operations.html
+changed: service/portable.py
+changed: service/server.py
+changed: service/engine.py
+changed: service/v1_redesign.py
+changed: app/v1.css
+changed: app/v1.js
