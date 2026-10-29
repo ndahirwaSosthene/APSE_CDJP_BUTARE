@@ -11,12 +11,12 @@ if errorlevel 1 goto runtime_failed
 if errorlevel 1 goto integrity_failed
 echo.
 echo CDJP BUTARE - APSE LOCAL
-echo Keep this window open. This launcher uses local no-auth mode.
-echo Garder cette fenetre ouverte. Ce lanceur utilise le mode local sans authentification.
-echo Iyi porogaramu ikoresha uburyo bwo mu karere butagira kwemeza.
+echo Keep this window open. Leave password entry blank on screen: this is normal.
+echo Garder cette fenetre ouverte. Le mot de passe tape est invisible.
+echo Kwandika ijambobanga ntibigaragara kuri ecran: ni ibisanzwe.
 echo Browser: http://127.0.0.1:8766/
 echo.
-"%~dp0runtime\windows\python.exe" -X utf8 "%~dp0service\portable_boot.py" --no-auth
+"%~dp0runtime\windows\python.exe" -X utf8 "%~dp0service\portable_boot.py"
 if errorlevel 1 goto server_failed
 echo APSE stopped / APSE arrete / APSE yahagaze.
 pause

@@ -4,8 +4,6 @@ Start with LIRE_AVANT_UTILISATION_RW.md. Download the complete Windows ZIP and i
 
 This is the APSE application/service with DHIS2 metadata, not a bundled DHIS2 server. Live DHIS2 authentication, UID bindings, imports and interoperability must be tested on the selected instance before production. Custom MEL collection schemas remain in the APSE service and do not automatically create DHIS2 programs.
 
-The `START_APSE_WINDOWS.cmd` launcher runs local no-auth mode. It stores the local encryption key in `portable_data/no_auth.key` and automatically grants the local MEL identity; do not expose this loopback service beyond the local computer. Existing password-encrypted portable data requires an explicit one-time migration before no-auth mode can use it; no-auth mode will refuse to guess or replace that data.
-
 V0.8 changes:
 - UTF-8 transport and stable-code language switching; entered narrative remains in its source language.
 - Automatic record/project/program codes; Project, Program, Operations and Other classifications.
@@ -18,3 +16,4 @@ V0.8 changes:
 Legacy stored records retain their codes, bodies and review history. The V8 capture profile is enforced for new HTTP/import records; existing legacy records retain their historical validation profile until revised through the application. Autosave is not submission or approval. Browser-only drafts must be sent to the server before a full-server backup includes them. Backups and retention procedures remain necessary.
 
 Build chain: build.py → add_analytics.py → extend_v2.py → finalise_v2.py → extend_v3.py → localise_v3.py → finalise_v3.py → extend_v4.py → extend_v5.py → extend_v6.py → extend_v7.py → extend_v8.py → validate_package.py → package.py. Source-backed registry assets are retained in registers/ and sources/. Never regenerate or replace production data with seed files.
+
