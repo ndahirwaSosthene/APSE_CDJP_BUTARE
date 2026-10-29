@@ -90,9 +90,8 @@ from governance import Governance
 from transfers import Transfers
 from collection_forms import CollectionForms
 from capture import Capture
-from v1_redesign import V1Redesign
 
-class Engine(Governance,Transfers,CollectionForms,Capture,V1Redesign):
+class Engine(Governance,Transfers,CollectionForms,Capture):
  def __init__(self,path,key,audit_key):
   if len(audit_key)<32:raise ValueError('Audit key must be at least 32 bytes')
   self.crypto=Fernet(key);self.audit_key=audit_key;self.lock=threading.RLock();self.db=sqlite3.connect(path,check_same_thread=False,isolation_level=None);self.db.row_factory=sqlite3.Row
@@ -117,7 +116,6 @@ CREATE INDEX IF NOT EXISTS rec_filter ON records(unit,form,state,event_date);
   self.init_capture()
   self.init_collections()
   self.init_governance()
-  self.init_v1()
  @contextlib.contextmanager
  def tx(self):
   with self.lock:

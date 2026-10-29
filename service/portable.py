@@ -1,4 +1,4 @@
-"""Persistent loopback operation, independent of DHIS2.
+"""Persistent, password-protected loopback operation, independent of DHIS2.
 No bundled accounts, secrets or production data. Never expose this mode over a LAN.
 """
 import argparse,base64,getpass,hashlib,hmac,http.cookies,json,os,re,secrets,sys,time,urllib.parse,webbrowser
@@ -37,9 +37,8 @@ def local_units():
   uid='L'+hashlib.sha256(('LOCAL:'+x['code']).encode()).hexdigest()[:10];units.append(dict(id=uid,name=x['labels']['fr'],path='/'+root+'/'+uid,kind='CPJP',sourceCode=x['code']))
  return units
 class LocalSession:
- def __init__(self,accounts,units,instance='LOCAL',no_auth=False):self.instance=instance;self.accounts=accounts;self.units=units;self.sessions={};self.failures={};self.no_auth=no_auth
+ def __init__(self,accounts,units,instance='LOCAL'):self.instance=instance;self.accounts=accounts;self.units=units;self.sessions={};self.failures={}
  def identity(self,headers):
-  if self.no_auth:return dict(id=self.instance+':NO_AUTH',name='LOCAL_MEL',roles=['APSE_MEL'],paths=['/LocalRoot01'],units=self.units,mode='LOCAL_PORTABLE')
   from engine import Fault
   cookie=http.cookies.SimpleCookie();cookie.load(headers.get('Cookie',''));token=cookie['apse_local'].value if 'apse_local'in cookie else '';s=self.sessions.get(token);u=self.accounts.users.get(s['name'],{})if s else {}
   if not s or s['expires']<time.time()or not u.get('active')or s['revision']!=u.get('revision'):raise Fault(401,'local_login_required')
@@ -56,28 +55,16 @@ def main():
  # Reuse only static asset delivery; demo authentication and demo accounts are never installed.
  sys.path.insert(0,str(ROOT/'scripts'))
  from demo_offline import DemoHandler
- parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data',default=str(ROOT/'portable_data'));parser.add_argument('--port',type=int,default=8766);parser.add_argument('--add-user');parser.add_argument('--manage',action='store_true');parser.add_argument('--roles',default='APSE_CPJP');parser.add_argument('--path',default='/LocalRoot01');parser.add_argument('--stdin-secrets',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--no-browser',action='store_true');parser.add_argument('--no-auth',action='store_true',help='Skip the local login and master passphrase; stores the local encryption key in the data folder');a=parser.parse_args()
+ parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data',default=str(ROOT/'portable_data'));parser.add_argument('--port',type=int,default=8766);parser.add_argument('--add-user');parser.add_argument('--manage',action='store_true');parser.add_argument('--roles',default='APSE_CPJP');parser.add_argument('--path',default='/LocalRoot01');parser.add_argument('--stdin-secrets',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--no-browser',action='store_true');a=parser.parse_args()
  if not 1024<=a.port<=65535:parser.error('Invalid local port')
  def ask(prompt):return sys.stdin.readline().rstrip('\n')if a.stdin_secrets else getpass.getpass(prompt)
- if not a.no_auth and (Path(a.data)/'apse.sqlite').exists() and not (Path(a.data)/'accounts.enc').exists():parser.error('Incomplete portable copy: accounts.enc is missing')
- key_file=Path(a.data)/'no_auth.key'
- new=not(Path(a.data)/'vault.json').exists()
- if a.no_auth:
-  if key_file.exists():
-   try:keys=json.loads(key_file.read_text(encoding='utf-8'))
-   except (OSError,json.JSONDecodeError):parser.error('Invalid no-auth key file: '+str(key_file))
-  else:
-   keys={'encryption':Fernet.generate_key().decode(),'audit':secrets.token_hex(32)}
-   key_file.parent.mkdir(parents=True,exist_ok=True);atomic(key_file,json.dumps(keys).encode())
-  accounts=Accounts(a.data,keys['encryption'])
-  if not accounts.path.exists():atomic(accounts.path,accounts.crypto.encrypt(b'{}'))
- else:
-  master=ask('Nouveau mot de passe principal (14+ caractères): 'if new else 'Mot de passe principal: ')
-  if new and not a.stdin_secrets and master!=ask('Confirmer: '):parser.error('Passwords do not match')
-  try:keys=unlock(a.data,master,create=new);accounts=Accounts(a.data,keys['encryption'])
-  except ValueError as e:parser.error(str(e))
+ if (Path(a.data)/'apse.sqlite').exists() and not (Path(a.data)/'accounts.enc').exists():parser.error('Incomplete portable copy: accounts.enc is missing')
+ new=not(Path(a.data)/'vault.json').exists();master=ask('Nouveau mot de passe principal (14+ caractères): 'if new else 'Mot de passe principal: ')
+ if new and not a.stdin_secrets and master!=ask('Confirmer: '):parser.error('Passwords do not match')
+ try:keys=unlock(a.data,master,create=new);accounts=Accounts(a.data,keys['encryption'])
+ except ValueError as e:parser.error(str(e))
  roles=sorted({x['name']for x in json.loads((ROOT/'metadata/all.json').read_text(encoding="utf-8"))['userGroups']})
- if not a.no_auth and not accounts.users:
+ if not accounts.users:
   name=sys.stdin.readline().strip()if a.stdin_secrets else input('Identifiant du premier administrateur MEL: ').strip();password=ask('Mot de passe du compte MEL (12+ caractères): ');accounts.add(name,password,['APSE_MEL'],['/LocalRoot01'])
  if a.manage:
   a.add_user=input('Identifiant du compte: ').strip();a.roles=input('Roles (APSE_COORDINATION, APSE_DIRECTION, APSE_CPJP…): ').strip()
@@ -90,7 +77,7 @@ def main():
   units=local_units()
   if a.path not in [x['path']for x in units]:parser.error('Unknown path; inspect the local unit list in the application')
   accounts.add(a.add_user,ask('Mot de passe du compte: '),selected,[a.path]);print('Compte enregistré.');return
- units=local_units();sessions=LocalSession(accounts,units,hashlib.sha256(keys['encryption'].encode()).hexdigest()[:12],a.no_auth);server.PUBLIC='http://127.0.0.1:'+str(a.port);server.PREFIX='/apse-service';server.identity=sessions.identity
+ units=local_units();sessions=LocalSession(accounts,units,hashlib.sha256(keys['encryption'].encode()).hexdigest()[:12]);server.PUBLIC='http://127.0.0.1:'+str(a.port);server.PREFIX='/apse-service';server.identity=sessions.identity
  def upstream(path,headers):
   if path.startswith('organisationUnits.json'):return {'organisationUnits':units}
   uid=urllib.parse.unquote(path.split('/')[1].split('?')[0])if path.startswith('organisationUnits/')else ''
@@ -111,8 +98,6 @@ def main():
      with server.ENGINE.tx():server.ENGINE.audit(user,'EXPORT_PORTABLE_BACKUP','LOCAL',{'bytes':len(data)})
      return self.send(200,data,'application/zip','APSE_FLASH.zip')
     except Fault as e:return self.send(e.status,{'error':e.code})
-   if path in ['/','/local/login'] and sessions.no_auth:
-    self.send_response(303);self.send_header('Location','/api/apps/apse/operations.html');self.end_headers();return
    if path in ['/','/local/login']:
     html='<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>APSE local</title><link rel="stylesheet" href="/api/apps/apse/style.css"><header>CDJP BUTARE — APSE LOCAL</header><main><section><h1>Connexion / Login / Kwinjira / Ingia</h1><form id="local_login"><label>Identifiant / Username / Konti / Mtumiaji<input id="local_user" autocomplete="username" required maxlength="60"></label><label>Mot de passe / Password / Ijambobanga / Nenosiri<input id="local_password" type="password" autocomplete="current-password" required></label><button>Connexion</button><p id="local_error" role="alert"></p></form></section></main><script src="/api/apps/apse/portable_login.js"></script></html>'
     return self.send(200,html.encode(),'text/html;charset=utf-8')
