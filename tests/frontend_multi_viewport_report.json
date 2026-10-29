@@ -1,7 +1,7 @@
 {
   "total_checks": 42,
-  "passed": 35,
-  "prd_discrepancies": 7,
+  "passed": 42,
+  "prd_discrepancies": 0,
   "results": [
     {
       "test_id": "TC-UI-01",
@@ -102,10 +102,10 @@
     {
       "test_id": "TC-UI-08-STEP4",
       "viewport": "Tablet Portrait 768x1024",
-      "title": "Wizard Step 4 Summary KPI Cards Responsive Reflow vs Inline gridColumn",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Wizard Step 4 sets inline style gridColumn=['span 5', 'span 5', 'span 6'], overriding @media .v1-kpi-card span 8/16 so all 3 cards squeeze onto 1 row (tops=[295, 295, 295], widths=[193, 193, 236]px)"
+      "title": "Wizard Step 4 Summary KPI Cards Responsive Reflow (.v1-step4-card-5 / .v1-step4-card-6)",
+      "status": "PASS",
+      "passed": true,
+      "details": "Wizard Step 4 cards responsive reflow: tops=[295, 295, 435], widths=[323, 323, 323]px"
     },
     {
       "test_id": "TC-UI-10",
@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[558, 698, 837, 951]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[392, 524, 655, 761]"
     },
     {
       "test_id": "TC-UI-11",
@@ -129,7 +129,7 @@
       "title": "48px Primary Button Touch Target & 44x44px Touch Steppers (.v1-step-btn / .v1-step-input)",
       "status": "PASS",
       "passed": true,
-      "details": "btnHeight=48px, stepBtn=44x44px, stepInputH=44px (Note: Enumerator score input inline height=36px)"
+      "details": "btnHeight=48px, stepBtn=44x44px, stepInputH=44px, enumScoreInputH=44px"
     },
     {
       "test_id": "TC-UI-13",
@@ -137,7 +137,7 @@
       "title": "Cisco Momentum Progress Header, 2x2 Stepper Bar & Sticky Footer (bottom: 60px)",
       "status": "PASS",
       "passed": true,
-      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[244, 244, 307, 307]), footer=sticky bottom=60px"
+      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[276, 276, 339, 339]), footer=sticky bottom=60px"
     },
     {
       "test_id": "TC-UI-14",
@@ -145,15 +145,15 @@
       "title": "Mobile Filter Trigger & Slide-Up .v1-bottom-sheet (16px Top Radius, 36x4px Handle, Reset/Apply)",
       "status": "PASS",
       "passed": true,
-      "details": "trigger=flex (CSS inline-flex blockified in flex parent), sheetRadius=16px 16px 0px 0px, handle=36x4px, buttons=['Reset', 'Apply Filters'] (Council Note: .v1-context-filters display=flex on mobile)"
+      "details": "trigger=flex, ctxFiltersDisplay=none, sheetRadius=16px 16px 0px 0px, handle=36x4px, buttons=['Reset', 'Apply Filters']"
     },
     {
       "test_id": "TC-UI-15",
       "viewport": "Mobile Android 360x800",
       "title": "Zero Horizontal Overflow Check (scrollWidth <= 360px) Across Workspaces & Wizard Steps",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: At 360px viewport, .v1-topbar forces scrollWidth=480px (rightEdge=480px > 360px). Without topbar, wizard step scrollWidths={'wiz_step_1_no_topbar': 438, 'wiz_step_2_no_topbar': 363, 'wiz_step_3_no_topbar': 363, 'wiz_step_4_no_topbar': 463}"
+      "status": "PASS",
+      "passed": true,
+      "details": "At 360px viewport, topbarScrollW=345px (rightEdge=337px <= 360px), maxScrollWidth=345px, report={'ws_tasks': 345, 'ws_approvals': 345, 'ws_analytics': 345, 'ws_exports': 345, 'wiz_step_1': 345, 'wiz_step_2': 345, 'wiz_step_3': 345, 'wiz_step_4': 345}"
     },
     {
       "test_id": "TC-UI-10",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[504, 644, 783, 897]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[372, 504, 635, 741]"
     },
     {
       "test_id": "TC-UI-11",
@@ -177,7 +177,7 @@
       "title": "48px Primary Button Touch Target & 44x44px Touch Steppers (.v1-step-btn / .v1-step-input)",
       "status": "PASS",
       "passed": true,
-      "details": "btnHeight=48px, stepBtn=44x44px, stepInputH=44px (Note: Enumerator score input inline height=36px)"
+      "details": "btnHeight=48px, stepBtn=44x44px, stepInputH=44px, enumScoreInputH=44px"
     },
     {
       "test_id": "TC-UI-13",
@@ -185,7 +185,7 @@
       "title": "Cisco Momentum Progress Header, 2x2 Stepper Bar & Sticky Footer (bottom: 60px)",
       "status": "PASS",
       "passed": true,
-      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[244, 244, 307, 307]), footer=sticky bottom=60px"
+      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[276, 276, 339, 339]), footer=sticky bottom=60px"
     },
     {
       "test_id": "TC-UI-14",
@@ -193,15 +193,15 @@
       "title": "Mobile Filter Trigger & Slide-Up .v1-bottom-sheet (16px Top Radius, 36x4px Handle, Reset/Apply)",
       "status": "PASS",
       "passed": true,
-      "details": "trigger=flex (CSS inline-flex blockified in flex parent), sheetRadius=16px 16px 0px 0px, handle=36x4px, buttons=['Reset', 'Apply Filters'] (Council Note: .v1-context-filters display=flex on mobile)"
+      "details": "trigger=flex, ctxFiltersDisplay=none, sheetRadius=16px 16px 0px 0px, handle=36x4px, buttons=['Reset', 'Apply Filters']"
     },
     {
       "test_id": "TC-UI-15",
       "viewport": "Mobile iPhone 390x844",
       "title": "Zero Horizontal Overflow Check (scrollWidth <= 390px) Across Workspaces & Wizard Steps",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: At 390px viewport, .v1-topbar forces scrollWidth=480px (rightEdge=480px > 390px). Without topbar, wizard step scrollWidths={'wiz_step_1_no_topbar': 438, 'wiz_step_2_no_topbar': 375, 'wiz_step_3_no_topbar': 375, 'wiz_step_4_no_topbar': 463}"
+      "status": "PASS",
+      "passed": true,
+      "details": "At 390px viewport, topbarScrollW=375px (rightEdge=367px <= 390px), maxScrollWidth=375px, report={'ws_tasks': 375, 'ws_approvals': 375, 'ws_analytics': 375, 'ws_exports': 375, 'wiz_step_1': 375, 'wiz_step_2': 375, 'wiz_step_3': 375, 'wiz_step_4': 375}"
     },
     {
       "test_id": "TC-UI-16",
@@ -247,9 +247,9 @@
       "test_id": "TC-STRAT-04",
       "viewport": "Interactive E2E",
       "title": "All 13 Strategic Outcomes Selectable in '+ Add Planned Activity' Modal",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Backend sends 13 strategic goals, but renderNewTaskModal() slices goals.slice(0, 6), rendering only 6 chips (hiding A3.R2, A4.*, A5.*)"
+      "status": "PASS",
+      "passed": true,
+      "details": "Catalogue goals=13, rendered goal chips=13"
     },
     {
       "test_id": "TC-STRAT-05",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-EEAD29', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-D03589', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",
@@ -271,9 +271,9 @@
       "test_id": "TC-CAP-02",
       "viewport": "Interactive E2E",
       "title": "Local Draft Persistence (apse-v1-draft-*) & Resume Step Restoration",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Draft saved at step=4 and 'Saved Draft' lozenge rendered=True, but openWizardForTask(task, existingLog, forceStep=1) defaults forceStep=1, resetting reopenedStep=1"
+      "status": "PASS",
+      "passed": true,
+      "details": "Draft saved at step=4, 'Saved Draft' lozenge=True, reopenedStep=4"
     },
     {
       "test_id": "TC-GOV-09",
@@ -303,9 +303,9 @@
       "test_id": "TC-STRAT-01-I18N",
       "viewport": "Interactive E2E",
       "title": "Theme Filter Chips Localization in My Tasks & Mobile Filter Sheet",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: When switched to French (FR), 'All Themes' translates to 'Tous les th\u00e8mes', but axis chips remain hardcoded English: ['Healing & Unity', 'Conflict Resolution', 'Environmental Care', 'Human Rights', 'Committee Support']"
+      "status": "PASS",
+      "passed": true,
+      "details": "When switched to French (FR), localized theme chips=['Tous les th\u00e8mes', 'Gu\u00e9rison, Unit\u00e9 et R\u00e9conciliation', 'R\u00e9solution Pacifique des Conflits', 'Justice \u00c9cologique et Environnement', 'Droits Humains et Aide Juridique', 'Renforcement des Comit\u00e9s et \u00c9quipes']"
     },
     {
       "test_id": "TC-GOV-04..06",
@@ -327,75 +327,18 @@
       "test_id": "TC-ANA-08",
       "viewport": "Interactive E2E",
       "title": "Field Issues Stacked Bar Chart Category Filter Bar Proportions",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Filtering Issue Trends by category ('Transport') sets all 3 severity segments (Minor, Medium, Major) to identical height total*14px: ['28px', '28px', '28px']"
+      "status": "PASS",
+      "passed": true,
+      "details": "Filtering Issue Trends by category ('Transport') severity segment heights=['0px', '28px', '28px']"
     },
     {
       "test_id": "TC-ANA-15..16",
       "viewport": "Interactive E2E",
-      "title": "Guided Bulk CSV Import Missing-Column Prompt, Dropdown Mapping & Bulk Commit",
+      "title": "Guided Bulk CSV Import Missing-Column Prompt, Dropdown Mapping, Preview Table & Bulk Commit",
       "status": "PASS",
       "passed": true,
-      "details": "missingPrompt='Column 'Parish_Name' is missing in your file....', ready='All columns matched (1 rows ready)', commit='\u2713 Imported 1 activity logs into your queue.' (Council Note: API returned 0 preview rows, DOM table rendered=False)"
+      "details": "missingPrompt='Column 'Parish_Name' is missing in your file....', ready='All columns matched (1 rows ready)', previewTableRendered=True, commit='\u2713 Imported 1 activity logs into your queue.'"
     }
   ],
-  "discrepancies": [
-    {
-      "test_id": "TC-UI-08-STEP4",
-      "viewport": "Tablet Portrait 768x1024",
-      "title": "Wizard Step 4 Summary KPI Cards Responsive Reflow vs Inline gridColumn",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Wizard Step 4 sets inline style gridColumn=['span 5', 'span 5', 'span 6'], overriding @media .v1-kpi-card span 8/16 so all 3 cards squeeze onto 1 row (tops=[295, 295, 295], widths=[193, 193, 236]px)"
-    },
-    {
-      "test_id": "TC-UI-15",
-      "viewport": "Mobile Android 360x800",
-      "title": "Zero Horizontal Overflow Check (scrollWidth <= 360px) Across Workspaces & Wizard Steps",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: At 360px viewport, .v1-topbar forces scrollWidth=480px (rightEdge=480px > 360px). Without topbar, wizard step scrollWidths={'wiz_step_1_no_topbar': 438, 'wiz_step_2_no_topbar': 363, 'wiz_step_3_no_topbar': 363, 'wiz_step_4_no_topbar': 463}"
-    },
-    {
-      "test_id": "TC-UI-15",
-      "viewport": "Mobile iPhone 390x844",
-      "title": "Zero Horizontal Overflow Check (scrollWidth <= 390px) Across Workspaces & Wizard Steps",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: At 390px viewport, .v1-topbar forces scrollWidth=480px (rightEdge=480px > 390px). Without topbar, wizard step scrollWidths={'wiz_step_1_no_topbar': 438, 'wiz_step_2_no_topbar': 375, 'wiz_step_3_no_topbar': 375, 'wiz_step_4_no_topbar': 463}"
-    },
-    {
-      "test_id": "TC-STRAT-04",
-      "viewport": "Interactive E2E",
-      "title": "All 13 Strategic Outcomes Selectable in '+ Add Planned Activity' Modal",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Backend sends 13 strategic goals, but renderNewTaskModal() slices goals.slice(0, 6), rendering only 6 chips (hiding A3.R2, A4.*, A5.*)"
-    },
-    {
-      "test_id": "TC-CAP-02",
-      "viewport": "Interactive E2E",
-      "title": "Local Draft Persistence (apse-v1-draft-*) & Resume Step Restoration",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Draft saved at step=4 and 'Saved Draft' lozenge rendered=True, but openWizardForTask(task, existingLog, forceStep=1) defaults forceStep=1, resetting reopenedStep=1"
-    },
-    {
-      "test_id": "TC-STRAT-01-I18N",
-      "viewport": "Interactive E2E",
-      "title": "Theme Filter Chips Localization in My Tasks & Mobile Filter Sheet",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: When switched to French (FR), 'All Themes' translates to 'Tous les th\u00e8mes', but axis chips remain hardcoded English: ['Healing & Unity', 'Conflict Resolution', 'Environmental Care', 'Human Rights', 'Committee Support']"
-    },
-    {
-      "test_id": "TC-ANA-08",
-      "viewport": "Interactive E2E",
-      "title": "Field Issues Stacked Bar Chart Category Filter Bar Proportions",
-      "status": "PRD_DISCREPANCY",
-      "passed": false,
-      "details": "Council Finding Confirmed: Filtering Issue Trends by category ('Transport') sets all 3 severity segments (Minor, Medium, Major) to identical height total*14px: ['28px', '28px', '28px']"
-    }
-  ]
+  "discrepancies": []
 }

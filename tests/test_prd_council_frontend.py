@@ -36,7 +36,7 @@ if not CHROME_EXE.exists():
     CHROME_EXE = Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
 
 PARENT_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\153a4561-1c61-4c3d-b9fe-43ed1d186c63")
-OWN_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\c5f0ddb6-c38f-4d52-838c-fde887855e75")
+OWN_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\b8e8e53f-2716-4d3f-a88d-24e6cf9af15b")
 
 
 def get_free_port() -> int:
@@ -529,7 +529,7 @@ async def run_frontend_suite():
                     f"table={ui09['tableDisplay']}, polaris={ui09['polarisDisplay']}, scroll={ui09['scrollWidth']}/{ui09['innerWidth']}",
                 )
 
-            # Check Council Finding on Tablet/Mobile Wizard Step 4 inline gridColumn override
+            # Check Tablet/Mobile Wizard Step 4 responsive reflow
             await cdp.set_viewport(768, 1024, mobile=True)
             await cdp.evaluate("V1.workspace = 'tasks'; openWizardForTask(V1.data.tasks[0], V1.data.tasks[0].latest_log, 4); V1.wizard.step = 4; renderApp();")
             step4_tablet = await cdp.evaluate("""(() => {
@@ -540,15 +540,14 @@ async def run_frontend_suite():
                     widths: cards.map(c => Math.round(c.getBoundingClientRect().width))
                 };
             })()""")
-            # On 768px tablet, CSS rule says .v1-kpi-card { grid-column: span 8 }, which should wrap 3 cards onto 2 rows,
-            # but inline style gridColumn: span 5 / span 5 / span 6 forces all 3 onto 1 row!
+            step4_reflowed = len(set(step4_tablet["tops"])) > 1
             rec.record(
                 "TC-UI-08-STEP4",
                 "Tablet Portrait 768x1024",
-                "Wizard Step 4 Summary KPI Cards Responsive Reflow vs Inline gridColumn",
-                len(set(step4_tablet["tops"])) > 1,
-                f"Council Finding Confirmed: Wizard Step 4 sets inline style gridColumn={step4_tablet['inlineCols']}, overriding @media .v1-kpi-card span 8/16 so all 3 cards squeeze onto 1 row (tops={step4_tablet['tops']}, widths={step4_tablet['widths']}px)",
-                is_prd_discrepancy=True,
+                "Wizard Step 4 Summary KPI Cards Responsive Reflow (.v1-step4-card-5 / .v1-step4-card-6)",
+                step4_reflowed,
+                f"Wizard Step 4 cards responsive reflow: tops={step4_tablet['tops']}, widths={step4_tablet['widths']}px",
+                is_prd_discrepancy=(not step4_reflowed),
             )
 
             # ==================================================================
@@ -634,8 +633,8 @@ async def run_frontend_suite():
                     "TC-UI-12",
                     vp_name,
                     "48px Primary Button Touch Target & 44x44px Touch Steppers (.v1-step-btn / .v1-step-input)",
-                    ui12["btnHeight"] >= 48 and ui12["stepBtnW"] == 44 and ui12["stepBtnH"] == 44 and ui12["stepInputH"] == 44,
-                    f"btnHeight={ui12['btnHeight']}px, stepBtn={ui12['stepBtnW']}x{ui12['stepBtnH']}px, stepInputH={ui12['stepInputH']}px (Note: Enumerator score input inline height={ui12['enumScoreInputH']}px)",
+                    ui12["btnHeight"] >= 48 and ui12["stepBtnW"] == 44 and ui12["stepBtnH"] == 44 and ui12["stepInputH"] == 44 and ui12["enumScoreInputH"] == 44,
+                    f"btnHeight={ui12['btnHeight']}px, stepBtn={ui12['stepBtnW']}x{ui12['stepBtnH']}px, stepInputH={ui12['stepInputH']}px, enumScoreInputH={ui12['enumScoreInputH']}px",
                 )
 
                 # TC-UI-13: Momentum Progress Header, 2x2 Stepper Bar & Sticky Footer (bottom: 60px)
@@ -698,23 +697,21 @@ async def run_frontend_suite():
                     vp_name,
                     "Mobile Filter Trigger & Slide-Up .v1-bottom-sheet (16px Top Radius, 36x4px Handle, Reset/Apply)",
                     ui14["trigDisp"] in ("flex", "inline-flex")
+                    and ui14["ctxDisp"] == "none"
                     and ui14["sheetRadius"] == "16px 16px 0px 0px"
                     and ui14["handleW"] == 36
                     and ui14["handleH"] == 4
                     and "Reset" in ui14["footerBtns"][0]
                     and "Apply Filters" in ui14["footerBtns"][1],
-                    f"trigger={ui14['trigDisp']} (CSS inline-flex blockified in flex parent), sheetRadius={ui14['sheetRadius']}, handle={ui14['handleW']}x{ui14['handleH']}px, buttons={ui14['footerBtns']} (Council Note: .v1-context-filters display={ui14['ctxDisp']} on mobile)",
+                    f"trigger={ui14['trigDisp']}, ctxFiltersDisplay={ui14['ctxDisp']}, sheetRadius={ui14['sheetRadius']}, handle={ui14['handleW']}x{ui14['handleH']}px, buttons={ui14['footerBtns']}",
                 )
 
                 # TC-UI-15: Measure exact scrollWidth vs target viewport width (360px / 390px) across all 4 workspaces & 4 wizard steps
-                # Use mobile=False briefly so Chrome does not auto-inflate window.innerWidth to 480px due to .v1-topbar overflow
                 await cdp.set_viewport(w_px, h_px, mobile=False)
                 ui15 = await cdp.evaluate("""(() => {
                     const report = {};
                     const topbarRightRect = document.querySelector('.v1-topbar-right').getBoundingClientRect();
                     const topbarScrollW = document.querySelector('.v1-topbar').scrollWidth;
-                    // Temporarily hide topbar to also measure pure canvas/wizard overflow independently
-                    const tb = document.querySelector('.v1-topbar');
                     for (const ws of ['tasks', 'approvals', 'analytics', 'exports']) {
                         V1.wizard = null;
                         V1.workspace = ws;
@@ -723,15 +720,11 @@ async def run_frontend_suite():
                     }
                     V1.workspace = 'tasks';
                     openWizardForTask(V1.data.tasks[0], V1.data.tasks[0].latest_log, 1);
-                    const canvasOnlyStepScroll = {};
                     for (const st of [1, 2, 3, 4]) {
                         V1.wizard.step = st;
                         V1.wizard.collection_mode = 'ENUMERATOR';
                         renderApp();
                         report['wiz_step_' + st] = document.documentElement.scrollWidth;
-                        document.querySelector('.v1-topbar').style.display = 'none';
-                        canvasOnlyStepScroll['wiz_step_' + st + '_no_topbar'] = document.documentElement.scrollWidth;
-                        document.querySelector('.v1-topbar').style.display = '';
                     }
                     V1.wizard = null;
                     renderApp();
@@ -739,8 +732,7 @@ async def run_frontend_suite():
                         innerWidth: window.innerWidth,
                         topbarScrollW,
                         topbarRightEdge: Math.round(topbarRightRect.right),
-                        report,
-                        canvasOnlyStepScroll
+                        report
                     };
                 })()""")
                 await cdp.set_viewport(w_px, h_px, mobile=True)
@@ -750,7 +742,7 @@ async def run_frontend_suite():
                     vp_name,
                     f"Zero Horizontal Overflow Check (scrollWidth <= {w_px}px) Across Workspaces & Wizard Steps",
                     max_scroll <= w_px,
-                    f"Council Finding Confirmed: At {w_px}px viewport, .v1-topbar forces scrollWidth={ui15['topbarScrollW']}px (rightEdge={ui15['topbarRightEdge']}px > {w_px}px). Without topbar, wizard step scrollWidths={ui15['canvasOnlyStepScroll']}",
+                    f"At {w_px}px viewport, topbarScrollW={ui15['topbarScrollW']}px (rightEdge={ui15['topbarRightEdge']}px <= {w_px}px), maxScrollWidth={max_scroll}px, report={ui15['report']}",
                     is_prd_discrepancy=(max_scroll > w_px),
                 )
 
@@ -924,13 +916,14 @@ async def run_frontend_suite():
                 const renderedGoalChips = document.querySelectorAll('.v1-wizard-card .v1-chips .v1-chip').length;
                 return { totalCatalogueGoals, renderedGoalChips };
             })()""")
+            strat04_ok = strat04["renderedGoalChips"] == 13
             rec.record(
                 "TC-STRAT-04",
                 "Interactive E2E",
                 "All 13 Strategic Outcomes Selectable in '+ Add Planned Activity' Modal",
-                strat04["renderedGoalChips"] == 13,
-                f"Council Finding Confirmed: Backend sends {strat04['totalCatalogueGoals']} strategic goals, but renderNewTaskModal() slices goals.slice(0, 6), rendering only {strat04['renderedGoalChips']} chips (hiding A3.R2, A4.*, A5.*)",
-                is_prd_discrepancy=True,
+                strat04_ok,
+                f"Catalogue goals={strat04['totalCatalogueGoals']}, rendered goal chips={strat04['renderedGoalChips']}",
+                is_prd_discrepancy=(not strat04_ok),
             )
 
             strat05 = await cdp.evaluate("""(async () => {
@@ -1097,7 +1090,7 @@ async def run_frontend_suite():
                 f"dateErr='{cap_flow['dateErr']}', ageAutoFit=10->{cap_flow['age18_35AfterAutoFit']}, enumResp={cap_flow['enumCount']}, obsChip={cap_flow['obsChecked']}, underAchErr='{cap_flow['underAchErr'][:42]}...'",
             )
 
-            # TC-CAP-02: Local draft persistence & Council Finding on forceStep = 1 default
+            # TC-CAP-02: Local draft persistence & step restoration
             cap02 = await cdp.evaluate("""(() => {
                 saveWizardDraftLocal();
                 const taskId = V1.wizard.task.id;
@@ -1106,17 +1099,18 @@ async def run_frontend_suite():
                 renderApp();
                 const hasSavedDraftBadge = [...document.querySelectorAll('.v1-badge')].some(b => b.textContent.includes('Saved Draft'));
                 const task = V1.data.tasks.find(t => t.id === taskId);
-                openWizardForTask(task, task.latest_log); // called without forceStep arg -> defaults to forceStep=1
+                openWizardForTask(task, task.latest_log); // called without forceStep arg -> restores draft.step
                 const reopenedStep = V1.wizard.step;
                 return { savedStep, hasSavedDraftBadge, reopenedStep };
             })()""")
+            cap02_ok = cap02["hasSavedDraftBadge"] and cap02["reopenedStep"] == cap02["savedStep"]
             rec.record(
                 "TC-CAP-02",
                 "Interactive E2E",
                 "Local Draft Persistence (apse-v1-draft-*) & Resume Step Restoration",
-                cap02["hasSavedDraftBadge"] and cap02["reopenedStep"] == cap02["savedStep"],
-                f"Council Finding Confirmed: Draft saved at step={cap02['savedStep']} and 'Saved Draft' lozenge rendered={cap02['hasSavedDraftBadge']}, but openWizardForTask(task, existingLog, forceStep=1) defaults forceStep=1, resetting reopenedStep={cap02['reopenedStep']}",
-                is_prd_discrepancy=True,
+                cap02_ok,
+                f"Draft saved at step={cap02['savedStep']}, 'Saved Draft' lozenge={cap02['hasSavedDraftBadge']}, reopenedStep={cap02['reopenedStep']}",
+                is_prd_discrepancy=(not cap02_ok),
             )
 
             # TC-GOV-09 & TC-CAP-03: Confidential Case Button & Privacy Checkbox Gate
@@ -1154,7 +1148,6 @@ async def run_frontend_suite():
 
             # 5.3 Offline Queue & Live Sync Pill (TC-CAP-15 & TC-CAP-16)
             cap15_16 = await cdp.evaluate("""(async () => {
-                // Clean any draft from earlier test cases
                 for (const k of Object.keys(localStorage)) {
                     if (k.startsWith('apse-v1-draft-')) localStorage.removeItem(k);
                 }
@@ -1163,7 +1156,6 @@ async def run_frontend_suite():
                 V1.simulateOffline = false;
                 renderApp();
 
-                // Toggle offline mode via sync pill click
                 document.querySelector('.v1-sync-pill').click();
                 const isSimOffline = V1.simulateOffline;
                 const task = V1.data.tasks.find(t => !t.is_sensitive) || V1.data.tasks[0];
@@ -1186,7 +1178,6 @@ async def run_frontend_suite():
                 const queueLenAfterSave = V1.offlineQueue.length;
                 const pillTextWaiting = document.querySelector('.v1-sync-pill').textContent.trim();
 
-                // Click sync pill to flush queue to central database
                 await syncOfflineQueue();
                 const queueLenAfterSync = V1.offlineQueue.length;
                 const pillTextSynced = document.querySelector('.v1-sync-pill').textContent.trim();
@@ -1246,13 +1237,14 @@ async def run_frontend_suite():
                 all(v["htmlLang"] == k and v["narrativePreserved"] for k, v in cap12_13["langResults"].items()),
                 f"langs={ {k: v['navFirst'] for k, v in cap12_13['langResults'].items()} }, narrativePreserved=True",
             )
+            strat01_i18n_ok = "Healing & Unity" not in cap12_13["themeChipTextsFr"]
             rec.record(
                 "TC-STRAT-01-I18N",
                 "Interactive E2E",
                 "Theme Filter Chips Localization in My Tasks & Mobile Filter Sheet",
-                "Healing & Unity" not in cap12_13["themeChipTextsFr"],
-                f"Council Finding Confirmed: When switched to French (FR), 'All Themes' translates to '{cap12_13['themeChipTextsFr'][0]}', but axis chips remain hardcoded English: {cap12_13['themeChipTextsFr'][1:]}",
-                is_prd_discrepancy=True,
+                strat01_i18n_ok,
+                f"When switched to French (FR), localized theme chips={cap12_13['themeChipTextsFr']}",
+                is_prd_discrepancy=(not strat01_i18n_ok),
             )
 
             # 5.5 3-Tier Approvals & Correction Deep-Link (TC-GOV-04 & TC-GOV-06)
@@ -1359,13 +1351,14 @@ async def run_frontend_suite():
                 and ana_flow["activeCircleRadius"] == "3.5",
                 f"circles={ana_flow['circleCount']}, districts4={ana_flow['hasFourDistricts']}, clickedParish={ana_flow['activeParishAfterClick']} (r={ana_flow['activeCircleRadius']})",
             )
+            ana08_ok = len(set(ana_flow["octSegHeights"])) > 1
             rec.record(
                 "TC-ANA-08",
                 "Interactive E2E",
                 "Field Issues Stacked Bar Chart Category Filter Bar Proportions",
-                len(set(ana_flow["octSegHeights"])) > 1,
-                f"Council Finding Confirmed: Filtering Issue Trends by category ('Transport') sets all 3 severity segments (Minor, Medium, Major) to identical height total*14px: {ana_flow['octSegHeights']}",
-                is_prd_discrepancy=True,
+                ana08_ok,
+                f"Filtering Issue Trends by category ('Transport') severity segment heights={ana_flow['octSegHeights']}",
+                is_prd_discrepancy=(not ana08_ok),
             )
 
             # 5.7 Exports & Guided Bulk CSV Import (TC-ANA-15 & TC-ANA-16)
@@ -1410,12 +1403,13 @@ async def run_frontend_suite():
             rec.record(
                 "TC-ANA-15..16",
                 "Interactive E2E",
-                "Guided Bulk CSV Import Missing-Column Prompt, Dropdown Mapping & Bulk Commit",
+                "Guided Bulk CSV Import Missing-Column Prompt, Dropdown Mapping, Preview Table & Bulk Commit",
                 "Parish_Name" in ana15_16["missingAlertText"]
                 and ana15_16["hasSelect"]
                 and "All columns matched" in ana15_16["readyLozengeText"]
+                and ana15_16["previewTableRenderedInDom"]
                 and "Imported 1 activity logs" in ana15_16["commitMessage"],
-                f"missingPrompt='{ana15_16['missingAlertText'][:45]}...', ready='{ana15_16['readyLozengeText']}', commit='{ana15_16['commitMessage']}' (Council Note: API returned {ana15_16['apiReturnedPreviewCount']} preview rows, DOM table rendered={ana15_16['previewTableRenderedInDom']})",
+                f"missingPrompt='{ana15_16['missingAlertText'][:45]}...', ready='{ana15_16['readyLozengeText']}', previewTableRendered={ana15_16['previewTableRenderedInDom']}, commit='{ana15_16['commitMessage']}'",
             )
 
     finally:

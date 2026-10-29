@@ -332,6 +332,7 @@ th {
   font-size: 0.875rem;
   color: var(--text-primary);
   white-space: nowrap;
+  cursor: pointer;
 }
 
 .v1-brand-badge {
@@ -355,11 +356,13 @@ html[data-theme="contrast"] .v1-brand-badge {
 .v1-search-wrap {
   flex: 1;
   max-width: 380px;
+  min-width: 0;
   position: relative;
 }
 
 .v1-search-input {
   width: 100%;
+  min-width: 0;
   height: 36px;
   padding: 0 12px 0 36px;
   border: 0;
@@ -500,6 +503,12 @@ html[data-theme="contrast"] .v1-lang-btn.active {
   background: var(--tag-neutral-bg);
   border-radius: var(--radius-xs);
   white-space: nowrap;
+  cursor: pointer;
+}
+
+.v1-user-pill:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 /* Main App Shell: Fixed 240px Left Sidebar + 16-Column Fluid Workspace */
@@ -800,6 +809,7 @@ html[data-theme="contrast"] .v1-btn {
   margin: 0 0 var(--space-1) 0; /* 4px bottom margin */
 }
 
+/* Carbon Text Input, Date Picker & Select: 40px height, --bg-input, 1px bottom border */
 .v1-input,
 .v1-select,
 .v1-textarea,
@@ -807,16 +817,14 @@ html[data-theme="contrast"] .v1-btn {
   width: 100%;
   min-height: 40px;
   padding: 8px 12px;
-  font-family: var(--font-sans);
-  font-size: 0.875rem; /* 14px */
-  font-weight: 400;
-  line-height: 1.43;
-  color: var(--text-primary);
   background: var(--bg-input);
+  color: var(--text-primary);
   border: 0;
-  border-bottom: 1px solid var(--border-strong); /* Carbon 1px bottom border at rest */
-  border-radius: var(--radius-sm); /* 4px */
-  box-shadow: var(--shadow-flat);
+  border-bottom: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  line-height: 1.43;
   transition: box-shadow 0.12s, border-color 0.12s;
 }
 
@@ -825,17 +833,19 @@ html[data-theme="contrast"] .v1-btn {
   resize: vertical;
 }
 
-/* Carbon 2px solid #0F62FE inset border on focus */
+/* Focus State: 2px solid --color-primary inset outline */
 .v1-input:focus,
 .v1-select:focus,
 .v1-textarea:focus,
 .v1-step-input:focus {
   outline: none;
-  border-bottom-color: transparent;
   box-shadow: inset 0 0 0 2px var(--color-primary);
 }
 
+/* Error State: 2px bottom border in --color-danger */
 .v1-input.has-error,
+.v1-select.has-error,
+.v1-textarea.has-error,
 .v1-step-input.has-error {
   border-bottom: 2px solid var(--color-danger);
 }
@@ -1202,6 +1212,7 @@ html[data-theme="contrast"] .v1-chip.active {
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 12px;
+  min-width: 0;
 }
 
 .v1-stepper-box label {
@@ -1249,7 +1260,10 @@ html[data-theme="contrast"] .v1-chip.active {
 
 .v1-step-input {
   width: 100%;
+  min-width: 0;
+  flex: 1;
   height: 44px;
+  min-height: 44px;
   text-align: center;
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
@@ -1265,6 +1279,8 @@ html[data-theme="contrast"] .v1-chip.active {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   margin: var(--space-3) 0;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -1312,6 +1328,14 @@ html[data-theme="contrast"] .v1-chip.active {
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   box-shadow: var(--shadow-card);
+}
+
+.v1-step4-card-5 {
+  grid-column: span 5;
+}
+
+.v1-step4-card-6 {
+  grid-column: span 6;
 }
 
 .v1-kpi-card span {
@@ -1584,6 +1608,8 @@ html[data-theme="contrast"] .v1-chip.active {
 .v1-sheet-handle {
   width: 36px;
   height: 4px;
+  min-height: 4px;
+  flex-shrink: 0;
   background: var(--border-strong);
   border-radius: 999px;
   margin: 10px auto 4px;
@@ -1630,7 +1656,9 @@ html[data-theme="contrast"] .v1-chip.active {
   .v1-canvas {
     padding: var(--space-4) var(--space-3) 88px;
   }
-  .v1-kpi-card {
+  .v1-kpi-card,
+  .v1-step4-card-5,
+  .v1-step4-card-6 {
     grid-column: span 8;
   }
   .v1-panel {
@@ -1644,10 +1672,52 @@ html[data-theme="contrast"] .v1-chip.active {
 @media (max-width: 767px) {
   .v1-topbar {
     padding: 0 var(--space-2);
-    gap: var(--space-2);
+    gap: 6px;
+    overflow: hidden;
   }
   .v1-brand span.v1-brand-text {
     display: none;
+  }
+  .v1-search-wrap {
+    min-width: 0;
+    flex: 1 1 60px;
+  }
+  .v1-search-input {
+    min-width: 0;
+    padding: 0 8px 0 28px;
+    font-size: 0.75rem;
+  }
+  .v1-topbar-right {
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .v1-sync-pill {
+    padding: 4px 6px;
+  }
+  .v1-sync-pill span:not(.v1-icon) {
+    display: none;
+  }
+  .v1-theme-toggle {
+    padding: 0 6px;
+  }
+  .v1-theme-toggle span:not(.v1-icon) {
+    display: none;
+  }
+  .v1-lang-btn {
+    padding: 2px 5px;
+    font-size: 0.625rem;
+  }
+  .v1-context-filters {
+    display: none;
+  }
+  .v1-badge,
+  .v1-lozenge {
+    white-space: normal;
+    max-width: 100%;
+  }
+  .v1-number-grid,
+  .v1-radio-cards {
+    grid-template-columns: minmax(0, 1fr);
   }
   /* 3.2 Carbon Buttons expand to 48px touch height on mobile */
   .v1-btn {
@@ -1656,7 +1726,15 @@ html[data-theme="contrast"] .v1-chip.active {
   .v1-btn-sm {
     min-height: 38px;
   }
-  .v1-kpi-card {
+  .v1-kpi-grid,
+  .v1-analytics-split,
+  .v1-grid-16 {
+    column-gap: var(--space-2);
+    row-gap: var(--space-3);
+  }
+  .v1-kpi-card,
+  .v1-step4-card-5,
+  .v1-step4-card-6 {
     grid-column: span 16;
   }
   /* 5.1 Tables collapse into Shopify Polaris Resource Cards on < 768px */
@@ -1690,10 +1768,13 @@ html[data-theme="contrast"] .v1-chip.active {
     margin: var(--space-3) calc(-1 * var(--space-3)) calc(-1 * var(--space-3));
     box-shadow: var(--shadow-hover);
     z-index: 50;
+    flex-wrap: wrap;
   }
   .v1-wizard-footer .v1-btn {
     flex: 1;
     min-height: 48px;
+    padding: 0 10px;
+    gap: 8px;
   }
   /* 5.3 Mobile Filter Trigger for Slide-Up Bottom Sheet */
   .v1-mobile-filter-trigger {

@@ -26,6 +26,8 @@ const V1 = {
   syncingState: null, // null | { current: 1, total: 3 }
   wizard: null, // Active 4-step guided form state
   newTaskModal: false,
+  personaModal: false,
+  returningLog: null, // { id, step: 2, note: '' }
   mobileSheet: null, // null | 'filters' | 'location'
   exportOptions: {
     reportType: 'impact_summary',
@@ -106,6 +108,11 @@ const I18N = {
     period_q1: 'This Quarter (Q1)',
     period_ap1: '2026–2027 Year',
     all_themes: 'All Themes',
+    axis_A1: 'Healing, Unity & Reconciliation',
+    axis_A2: 'Peaceful Conflict Resolution',
+    axis_A3: 'Environmental Care & Climate Action',
+    axis_A4: 'Human Rights & Legal Aid',
+    axis_A5: 'Parish Committee & Team Strengthening',
     all_parishes: 'All Parishes',
     status_all: 'All',
     status_pending: 'Pending',
@@ -146,6 +153,11 @@ const I18N = {
     period_q1: 'Igihembwe (Q1)',
     period_ap1: 'Umwaka wa 2026–2027',
     all_themes: 'Insanganyamatsiko Zose',
+    axis_A1: 'Isanamitima, Ubumwe n’Ubwiyunge',
+    axis_A2: 'Gukemura Amakimbirane mu Mahoro',
+    axis_A3: 'Kubungabunga Ibidukikije',
+    axis_A4: 'Uburenganzira bwa Muntu n’Ubuvugizi',
+    axis_A5: 'Kubaka Ubushobozi bwa Komite n’Abakozi',
     all_parishes: 'Paruwasi Zose',
     status_all: 'Byose',
     status_pending: 'Bitegereje',
@@ -186,6 +198,11 @@ const I18N = {
     period_q1: 'Ce Trimestre (T1)',
     period_ap1: 'Année 2026–2027',
     all_themes: 'Tous les thèmes',
+    axis_A1: 'Guérison, Unité et Réconciliation',
+    axis_A2: 'Résolution Pacifique des Conflits',
+    axis_A3: 'Justice Écologique et Environnement',
+    axis_A4: 'Droits Humains et Aide Juridique',
+    axis_A5: 'Renforcement des Comités et Équipes',
     all_parishes: 'Toutes les paroisses',
     status_all: 'Tous',
     status_pending: 'À faire',
@@ -226,6 +243,11 @@ const I18N = {
     period_q1: 'Robo Hii (Q1)',
     period_ap1: 'Mwaka 2026–2027',
     all_themes: 'Mada Zote',
+    axis_A1: 'Uponyaji, Umoja na Upatanishishi',
+    axis_A2: 'Utatuzi wa Migogoro kwa Amani',
+    axis_A3: 'Utunzaji wa Mazingira',
+    axis_A4: 'Haki za Binadamu na Msaada wa Kisheria',
+    axis_A5: 'Kuimarisha Kamati na Timu',
     all_parishes: 'Parokia Zote',
     status_all: 'Zote',
     status_pending: 'Inasubiri',
@@ -259,6 +281,17 @@ function localize(obj) {
   if (!obj) return '';
   if (typeof obj === 'string') return obj;
   return obj[V1.lang] || obj.en || obj.rw || obj.fr || Object.values(obj)[0] || '';
+}
+
+function getThemesList() {
+  return [
+    { code: '', label: L('all_themes') },
+    { code: 'A1', label: L('axis_A1') },
+    { code: 'A2', label: L('axis_A2') },
+    { code: 'A3', label: L('axis_A3') },
+    { code: 'A4', label: L('axis_A4') },
+    { code: 'A5', label: L('axis_A5') },
+  ];
 }
 
 function calcPastoralClient(dateStr) {
@@ -404,7 +437,7 @@ async function syncOfflineQueue() {
   renderApp();
 }
 
-function openWizardForTask(task, existingLog = null, forceStep = 1) {
+function openWizardForTask(task, existingLog = null, forceStep = null) {
   const savedDraft = JSON.parse(localStorage.getItem('apse-v1-draft-' + task.id) || 'null');
   const parishes = V1.data?.parishes || [];
   const pcode = existingLog?.parish_code || task.parish_code || V1.data?.user?.assigned_parish || 'PAR-01';
@@ -576,14 +609,7 @@ function renderParishCombobox(selectedCode, onSelect, allowAll = true) {
 function renderMobileBottomSheet() {
   if (!V1.mobileSheet) return null;
   const parishes = V1.data?.parishes || [];
-  const themes = [
-    { code: '', label: L('all_themes') },
-    { code: 'A1', label: 'Healing & Unity' },
-    { code: 'A2', label: 'Conflict Resolution' },
-    { code: 'A3', label: 'Environmental Care' },
-    { code: 'A4', label: 'Human Rights' },
-    { code: 'A5', label: 'Committee Support' },
-  ];
+  const themes = getThemesList();
 
   return h('div', {
     className: 'v1-sheet-backdrop',
@@ -680,6 +706,57 @@ function renderMobileBottomSheet() {
   );
 }
 
+/* Web GUI Role & Parish Persona Switcher Modal (Replaces CLI Account Management) */
+function renderPersonaModal() {
+  if (!V1.personaModal) return null;
+  const personas = V1.data?.personas || [];
+  const activeKey = V1.data?.user?.active_persona || 'mel_diocese';
+
+  return h('div', {
+    className: 'v1-sheet-backdrop',
+    onClick: e => {
+      if (e.target.classList.contains('v1-sheet-backdrop')) {
+        V1.personaModal = false;
+        renderApp();
+      }
+    },
+  },
+    h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true', style: { borderRadius: 'var(--radius-md)', margin: 'auto' } },
+      h('div', { className: 'v1-sheet-header' },
+        h('h2', { className: 'v1-section-title' }, 'Switch Active User Role & Parish Scope (Web GUI)'),
+        h('button', {
+          type: 'button',
+          className: 'v1-btn v1-btn-ghost v1-btn-sm',
+          onClick: () => { V1.personaModal = false; renderApp(); },
+        }, msIcon('close', 20))
+      ),
+      h('div', { className: 'v1-sheet-body' },
+        h('p', { className: 'v1-page-subtitle', style: { marginBottom: '12px' } },
+          'Select any Diocesan or Parish role below to switch active permissions and auto-scoped parish views directly from the browser (no CLI required).'
+        ),
+        h('div', { className: 'v1-radio-cards', style: { gridTemplateColumns: '1fr' } },
+          personas.map(p =>
+            h('button', {
+              type: 'button',
+              className: 'v1-radio-card' + (activeKey === p.key ? ' active' : ''),
+              onClick: async () => {
+                await apiV1('/v1/persona', 'POST', { persona_key: p.key });
+                V1.filters.parish = '';
+                V1.personaModal = false;
+                await loadBootstrap();
+                renderApp();
+              },
+            },
+              h('strong', {}, `${p.name} — ${p.label}`),
+              h('span', {}, `Roles: ${p.roles.join(', ')} · Scope: ${p.parish_code ? p.parish_code : 'All 27 Parishes (Diocesan)'}`)
+            )
+          )
+        )
+      )
+    )
+  );
+}
+
 /* 4-Step Guided Data Collection Wizard View (Carbon Desktop + Momentum Mobile Focused View) */
 function renderWizardView() {
   const w = V1.wizard;
@@ -714,7 +791,7 @@ function renderWizardView() {
     ];
     stepContent = h('div', {},
       h('div', { style: { background: 'var(--bg-input)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' } },
-        h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' } },
+        h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' } },
           renderLozenge(localize(task.axis_labels), 'neutral'),
           renderLozenge(`Target: ${task.planned_target} ${task.unit_label}`, 'info')
         ),
@@ -852,7 +929,7 @@ function renderWizardView() {
       h('hr', { style: { border: 0, borderTop: '1px solid var(--border-subtle)', margin: '24px 0' } }),
       w.collection_mode === 'ENUMERATOR'
         ? h('div', {},
-            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' } },
+            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '12px' } },
               h('h3', { className: 'v1-task-title' }, 'Individual Respondent Quick-Entry Cards'),
               h('button', {
                 type: 'button',
@@ -865,13 +942,13 @@ function renderWizardView() {
               }, h('span', {}, '+ Add Respondent'), msIcon('add', 16))
             ),
             w.respondents.map((r, idx) =>
-              h('div', { style: { display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '8px', background: 'var(--bg-input)', padding: '8px 12px', borderRadius: 'var(--radius-sm)' } },
+              h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center', marginBottom: '8px', background: 'var(--bg-input)', padding: '8px 12px', borderRadius: 'var(--radius-sm)' } },
                 h('span', { className: 'v1-mono', style: { fontWeight: '600', minWidth: '80px' } }, r.code),
                 h('label', { className: 'v1-field-label', style: { margin: 0 } }, 'Score (%):'),
                 h('input', {
                   type: 'number',
                   className: 'v1-step-input',
-                  style: { width: '90px', height: '36px', minHeight: '36px' },
+                  style: { width: '90px' },
                   value: String(r.score),
                   onChange: e => { r.score = Number(e.target.value); saveWizardDraftLocal(); },
                 }),
@@ -1066,21 +1143,21 @@ function renderWizardView() {
     stepContent = h('div', {},
       h('h2', { className: 'v1-section-title', style: { marginBottom: '14px' } }, 'Quick Summary Before Submitting'),
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '18px' } },
-        h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
+        h('div', { className: 'v1-kpi-card v1-step4-card-5' },
           h('span', {}, 'Location & Pastoral Period'),
           h('strong', { style: { fontSize: '1.125rem', fontFamily: 'var(--font-sans)' } }, `${currentParish.name} · ${w.centrale}`),
           h('div', { className: 'v1-field-helper' },
             `${w.event_date} (${period.yearLabel} · ${period.quarter})`
           )
         ),
-        h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
+        h('div', { className: 'v1-kpi-card v1-step4-card-5' },
           h('span', {}, 'Total Participants'),
           h('strong', {}, String(totalParticipants)),
           h('div', { className: 'v1-field-helper' },
             `${w.women} Women · ${w.men} Men · ${w.disability} with Disabilities`
           )
         ),
-        h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 6' } },
+        h('div', { className: 'v1-kpi-card v1-step4-card-6' },
           h('span', {}, 'Action Completion & Impact Badge'),
           h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' } },
             h('strong', { style: { margin: 0, fontSize: '1.5rem' } }, `${actionPct}%`),
@@ -1106,7 +1183,7 @@ function renderWizardView() {
   return h('div', {},
     renderBreadcrumbs(L('nav_tasks'), [{ label: `${w.centrale} Centrale`, onClick: () => {} }]),
     h('div', { className: 'v1-wizard-card' },
-      h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
+      h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' } },
         h('button', {
           type: 'button',
           className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -1280,7 +1357,7 @@ function renderNewTaskModal() {
         '1. Choose Strategic Goal (Backend Automatically Binds Axis, Outcome & KPI IDs)'
       ),
       h('div', { className: 'v1-chips' },
-        goals.slice(0, 6).map(g =>
+        goals.map(g =>
           h('button', {
             type: 'button',
             className: 'v1-chip' + (state.outcome_code === g.outcome_code ? ' active' : ''),
@@ -1357,14 +1434,7 @@ function renderTasksWorkspace() {
     return true;
   });
 
-  const themes = [
-    { code: '', label: L('all_themes') },
-    { code: 'A1', label: 'Healing & Unity' },
-    { code: 'A2', label: 'Conflict Resolution' },
-    { code: 'A3', label: 'Environmental Care' },
-    { code: 'A4', label: 'Human Rights' },
-    { code: 'A5', label: 'Committee Support' },
-  ];
+  const themes = getThemesList();
 
   return h('div', {},
     renderBreadcrumbs(L('nav_tasks')),
@@ -1508,7 +1578,7 @@ function renderTasksWorkspace() {
 /* WORKSPACE 2: Review & Approvals (Streamlined 3-Tier Flow) */
 function renderApprovalsWorkspace() {
   const logs = (V1.data?.logs || []).filter(l => {
-    if (l.parent_id) return false;
+    if (l.is_superseded) return false;
     if (V1.filters.approvalStage !== 'ALL' && l.stage !== V1.filters.approvalStage) return false;
     if (V1.searchQuery) {
       const q = V1.searchQuery.toLowerCase();
@@ -1558,69 +1628,112 @@ function renderApprovalsWorkspace() {
         const canDioceseApprove = l.stage in { SUBMITTED: 1, PARISH_APPROVED: 1 };
         const usePrimaryHere = canDioceseApprove && !primaryAssigned;
         if (usePrimaryHere) primaryAssigned = true;
+        const isReturning = V1.returningLog && V1.returningLog.id === l.id;
 
-        return h('article', { className: 'v1-task-card' },
-          h('div', { style: { flex: 1, minWidth: 0 } },
-            h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' } },
-              renderLozenge(
-                stageLabelMap[l.stage] || l.stage,
-                l.stage === 'DIOCESE_APPROVED' ? 'GREAT' : (l.stage === 'CORRECTION' ? 'LOW' : (l.stage === 'SUBMITTED' ? 'warn' : 'GOOD')),
-                l.stage === 'DIOCESE_APPROVED' ? 'check' : (l.stage === 'CORRECTION' ? 'error' : 'fact_check')
+        return h('article', { className: 'v1-task-card', style: { flexDirection: 'column', alignItems: 'stretch' } },
+          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' } },
+            h('div', { style: { flex: 1, minWidth: 0 } },
+              h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' } },
+                renderLozenge(
+                  stageLabelMap[l.stage] || l.stage,
+                  l.stage === 'DIOCESE_APPROVED' ? 'GREAT' : (l.stage === 'CORRECTION' ? 'LOW' : (l.stage === 'SUBMITTED' ? 'warn' : 'GOOD')),
+                  l.stage === 'DIOCESE_APPROVED' ? 'check' : (l.stage === 'CORRECTION' ? 'error' : 'fact_check')
+                ),
+                l.version > 1 ? renderLozenge(`Amended v${l.version}`, 'info') : null,
+                renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
+                renderLozenge(`${l.parish_name} · ${l.centrale}`, 'neutral'),
+                renderLozenge(`${l.event_date} (${l.pastoral_quarter})`, 'neutral')
               ),
-              renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
-              renderLozenge(`${l.parish_name} · ${l.centrale}`, 'neutral'),
-              renderLozenge(`${l.event_date} (${l.pastoral_quarter})`, 'neutral')
+              h('h3', { className: 'v1-task-title', style: { margin: '4px 0' } }, localize(l.task_titles)),
+              h('div', { className: 'v1-tabular', style: { fontSize: '0.875rem', color: 'var(--text-secondary)' } },
+                `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities) · Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
+              ),
+              l.issue_severity !== 'NONE'
+                ? h('div', { style: { marginTop: '8px', padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' } },
+                    msIcon(l.issue_severity === 'MAJOR' ? 'error' : 'warning', 16),
+                    h('span', {}, `Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`)
+                  )
+                : null
             ),
-            h('h3', { className: 'v1-task-title', style: { margin: '4px 0' } }, localize(l.task_titles)),
-            h('div', { className: 'v1-tabular', style: { fontSize: '0.875rem', color: 'var(--text-secondary)' } },
-              `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities) · Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
-            ),
-            l.issue_severity !== 'NONE'
-              ? h('div', { style: { marginTop: '8px', padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' } },
-                  msIcon(l.issue_severity === 'MAJOR' ? 'error' : 'warning', 16),
-                  h('span', {}, `Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`)
-                )
-              : null
+            h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
+              l.stage === 'SUBMITTED'
+                ? h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-secondary v1-btn-sm',
+                    onClick: async () => {
+                      await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'PARISH_APPROVED', note: 'Verified by Parish CPJP Reviewer' });
+                      await loadBootstrap();
+                      renderApp();
+                    },
+                  }, h('span', {}, 'Approve (Parish CPJP)'), msIcon('check', 16))
+                : null,
+              canDioceseApprove
+                ? h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-sm' + (usePrimaryHere ? '' : ' v1-btn-secondary'),
+                    onClick: async () => {
+                      await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'DIOCESE_APPROVED', note: 'Finalized by CDJP Diocese' });
+                      await loadBootstrap();
+                      renderApp();
+                    },
+                  }, h('span', {}, 'Final Approve (Diocese)'), msIcon('fact_check', 16))
+                : null,
+              l.stage !== 'DIOCESE_APPROVED'
+                ? h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-danger v1-btn-sm',
+                    onClick: () => {
+                      V1.returningLog = isReturning ? null : {
+                        id: l.id,
+                        step: 2,
+                        note: 'Please verify the age group numbers and attach the attendance sheet.',
+                      };
+                      renderApp();
+                    },
+                  }, h('span', {}, 'Return for Correction'), msIcon('undo', 16))
+                : null
+            )
           ),
-          h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
-            l.stage === 'SUBMITTED'
-              ? h('button', {
-                  type: 'button',
-                  className: 'v1-btn v1-btn-secondary v1-btn-sm',
-                  onClick: async () => {
-                    await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'PARISH_APPROVED', note: 'Verified by Parish CPJP Reviewer' });
-                    await loadBootstrap();
-                    renderApp();
+          isReturning
+            ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-input)', borderRadius: 'var(--radius-sm)', display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'flex-end' } },
+                h('div', { className: 'v1-field', style: { marginBottom: 0, minWidth: '180px' } },
+                  h('label', { className: 'v1-field-label' }, 'Step to Fix'),
+                  h('select', {
+                    className: 'v1-select',
+                    value: String(V1.returningLog.step),
+                    onChange: e => { V1.returningLog.step = Number(e.target.value) || 2; },
                   },
-                }, h('span', {}, 'Approve (Parish CPJP)'), msIcon('check', 16))
-              : null,
-            canDioceseApprove
-              ? h('button', {
-                  type: 'button',
-                  className: 'v1-btn v1-btn-sm' + (usePrimaryHere ? '' : ' v1-btn-secondary'),
-                  onClick: async () => {
-                    await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'DIOCESE_APPROVED', note: 'Finalized by CDJP Diocese' });
-                    await loadBootstrap();
-                    renderApp();
-                  },
-                }, h('span', {}, 'Final Approve (Diocese)'), msIcon('fact_check', 16))
-              : null,
-            l.stage !== 'DIOCESE_APPROVED'
-              ? h('button', {
+                    h('option', { value: '1' }, 'Step 1: When & Where'),
+                    h('option', { value: '2' }, 'Step 2: Attendance & Activity'),
+                    h('option', { value: '3' }, 'Step 3: Outcome & Issues')
+                  )
+                ),
+                h('div', { className: 'v1-field', style: { marginBottom: 0, flex: 1, minWidth: '220px' } },
+                  h('label', { className: 'v1-field-label' }, 'Reviewer Note for Field Reporter'),
+                  h('input', {
+                    type: 'text',
+                    className: 'v1-input',
+                    value: V1.returningLog.note,
+                    onChange: e => { V1.returningLog.note = e.target.value; },
+                  })
+                ),
+                h('button', {
                   type: 'button',
                   className: 'v1-btn v1-btn-danger v1-btn-sm',
                   onClick: async () => {
-                    const stepStr = prompt('Which step needs fixing? Enter 1 (When/Where), 2 (Attendance), or 3 (Outcome/Issues):', '2');
-                    if (!stepStr) return;
-                    const note = prompt('Write a short, clear instruction for the field reporter:', 'Please verify the age group numbers and attach the attendance sheet.');
-                    if (!note) return;
-                    await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'CORRECTION', correction_step: Number(stepStr) || 2, note });
+                    await apiV1('/v1/review', 'POST', {
+                      id: l.id,
+                      target_stage: 'CORRECTION',
+                      correction_step: V1.returningLog.step,
+                      note: V1.returningLog.note,
+                    });
+                    V1.returningLog = null;
                     await loadBootstrap();
                     renderApp();
                   },
-                }, h('span', {}, 'Return for Correction'), msIcon('undo', 16))
-              : null
-          )
+                }, h('span', {}, 'Send Back Now'), msIcon('undo', 16))
+              )
+            : null
         );
       })
     )
@@ -1767,6 +1880,7 @@ function renderAnalyticsWorkspace() {
             g.style.cursor = 'pointer';
             g.addEventListener('click', async () => {
               V1.filters.parish = V1.filters.parish === p.code ? '' : p.code;
+              renderApp();
               await loadBootstrap();
               renderApp();
             });
@@ -1837,18 +1951,21 @@ function renderAnalyticsWorkspace() {
         h('div', { className: 'v1-bar-chart' },
           (analytics.monthly_trends || []).map(m => {
             const catFilter = V1.filters.issueCategory;
+            const catSev = catFilter === 'ALL'
+              ? { MINOR: m.MINOR, MEDIUM: m.MEDIUM, MAJOR: m.MAJOR }
+              : (m.by_category_severity?.[catFilter] || { MINOR: 0, MEDIUM: 0, MAJOR: 0 });
             const total = catFilter === 'ALL'
               ? (m.MINOR + m.MEDIUM + m.MAJOR)
               : (m.by_category?.[catFilter] || 0);
-            const hMinor = catFilter === 'ALL' ? m.MINOR * 28 : total * 14;
-            const hMed = catFilter === 'ALL' ? m.MEDIUM * 28 : total * 14;
-            const hMaj = catFilter === 'ALL' ? m.MAJOR * 28 : total * 14;
+            const hMinor = (catSev.MINOR || 0) * 28;
+            const hMed = (catSev.MEDIUM || 0) * 28;
+            const hMaj = (catSev.MAJOR || 0) * 28;
             return h('div', { className: 'v1-bar-col' },
               h('span', { className: 'v1-mono', style: { fontSize: '0.6875rem', fontWeight: '700', marginBottom: '4px' } }, total ? String(total) : ''),
               h('div', { className: 'v1-bar-stack' },
-                h('div', { style: { height: `${hMinor}px`, background: 'var(--chart-status-minor)' }, title: `Minor: ${m.MINOR}` }),
-                h('div', { style: { height: `${hMed}px`, background: 'var(--chart-status-medium)' }, title: `Medium: ${m.MEDIUM}` }),
-                h('div', { style: { height: `${hMaj}px`, background: 'var(--chart-status-major)' }, title: `Major: ${m.MAJOR}` })
+                h('div', { style: { height: `${hMinor}px`, background: 'var(--chart-status-minor)' }, title: `Minor: ${catSev.MINOR || 0}` }),
+                h('div', { style: { height: `${hMed}px`, background: 'var(--chart-status-medium)' }, title: `Medium: ${catSev.MEDIUM || 0}` }),
+                h('div', { style: { height: `${hMaj}px`, background: 'var(--chart-status-major)' }, title: `Major: ${catSev.MAJOR || 0}` })
               ),
               h('span', { className: 'v1-tabular', style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '6px' } }, m.month)
             );
@@ -2119,6 +2236,32 @@ function renderExportsWorkspace() {
                     h('div', { style: { marginBottom: '12px' } },
                       renderLozenge(`All columns matched (${V1.csvImportState.total_rows} rows ready)`, 'GREAT', 'check')
                     ),
+                    V1.csvImportState.preview?.length
+                      ? h('table', { className: 'v1-data-table', style: { marginBottom: '12px' } },
+                          h('thead', {},
+                            h('tr', {},
+                              h('th', {}, '#'),
+                              h('th', {}, 'Parish'),
+                              h('th', {}, 'Centrale'),
+                              h('th', {}, 'Date'),
+                              h('th', {}, 'Total'),
+                              h('th', {}, 'Outcome')
+                            )
+                          ),
+                          h('tbody', {},
+                            V1.csvImportState.preview.map(pr =>
+                              h('tr', {},
+                                h('td', { className: 'v1-mono' }, String(pr.row)),
+                                h('td', {}, pr.parish),
+                                h('td', {}, pr.centrale),
+                                h('td', { className: 'v1-mono' }, pr.event_date),
+                                h('td', { className: 'v1-mono' }, String(pr.total)),
+                                h('td', { className: 'v1-mono' }, String(pr.outcome_value))
+                              )
+                            )
+                          )
+                        )
+                      : null,
                     h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-secondary',
@@ -2179,7 +2322,17 @@ function renderApp() {
   const shell = h('div', {},
     /* Single 56px Top Bar */
     h('header', { className: 'v1-topbar' },
-      h('div', { className: 'v1-brand' },
+      h('div', {
+        className: 'v1-brand',
+        title: 'Return to My Tasks Home',
+        onClick: () => {
+          V1.wizard = null;
+          V1.newTaskModal = false;
+          V1.personaModal = false;
+          V1.workspace = 'tasks';
+          renderApp();
+        },
+      },
         h('span', { className: 'v1-brand-badge' }, 'CDJP BUTARE'),
         h('span', { className: 'v1-brand-text' }, 'APSE')
       ),
@@ -2239,7 +2392,14 @@ function renderApp() {
           msIcon(isDark ? 'light_mode' : 'dark_mode', 16),
           h('span', {}, isDark ? 'Light' : 'Dark')
         ),
-        h('span', { className: 'v1-user-pill' }, V1.data?.user?.name || 'LOCAL_MEL')
+        h('span', {
+          className: 'v1-user-pill',
+          title: 'Click to switch user role or parish scope (Web GUI)',
+          onClick: () => {
+            V1.personaModal = !V1.personaModal;
+            renderApp();
+          },
+        }, V1.data?.user?.name || 'LOCAL_MEL')
       )
     ),
     /* Main Shell: Fixed 240px Left Navigation + Fluid 16-Column Workspace Canvas */
@@ -2329,7 +2489,8 @@ function renderApp() {
         )
       )
     ),
-    renderMobileBottomSheet()
+    renderMobileBottomSheet(),
+    renderPersonaModal()
   );
 
   const root = document.getElementById('v1_root') || document.body;

@@ -1,5 +1,5 @@
-"""Persistent loopback operation, independent of DHIS2.
-No bundled accounts, secrets or production data. Never expose this mode over a LAN.
+"""Persistent local or LAN web server operation, independent of DHIS2.
+Starts cleanly without blocking CLI password prompts by default (--no-auth).
 """
 import argparse,base64,getpass,hashlib,hmac,http.cookies,json,os,re,secrets,sys,time,urllib.parse,webbrowser
 from pathlib import Path
@@ -53,10 +53,23 @@ class LocalSession:
 def main():
  import server
  from engine import Engine,Fault
- # Reuse only static asset delivery; demo authentication and demo accounts are never installed.
  sys.path.insert(0,str(ROOT/'scripts'))
  from demo_offline import DemoHandler
- parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--data',default=str(ROOT/'portable_data'));parser.add_argument('--port',type=int,default=8766);parser.add_argument('--add-user');parser.add_argument('--manage',action='store_true');parser.add_argument('--roles',default='APSE_CPJP');parser.add_argument('--path',default='/LocalRoot01');parser.add_argument('--stdin-secrets',action='store_true',help=argparse.SUPPRESS);parser.add_argument('--no-browser',action='store_true');parser.add_argument('--no-auth',action='store_true',help='Skip the local login and master passphrase; stores the local encryption key in the data folder');a=parser.parse_args()
+ parser=argparse.ArgumentParser(description=__doc__)
+ parser.add_argument('--data',default=str(ROOT/'portable_data'))
+ parser.add_argument('--host',default='127.0.0.1',help='Bind address (127.0.0.1 for local or 0.0.0.0 for LAN/mobile access)')
+ parser.add_argument('--port',type=int,default=8766)
+ parser.add_argument('--add-user')
+ parser.add_argument('--manage',action='store_true')
+ parser.add_argument('--roles',default='APSE_CPJP')
+ parser.add_argument('--path',default='/LocalRoot01')
+ parser.add_argument('--stdin-secrets',action='store_true',help=argparse.SUPPRESS)
+ parser.add_argument('--no-browser',action='store_true')
+ parser.add_argument('--no-auth',action='store_true',default=True,help='Skip CLI master passphrase prompt and use automatic local encryption key (default)')
+ parser.add_argument('--require-cli-vault',action='store_true',help='Require legacy CLI master passphrase prompt')
+ a=parser.parse_args()
+ if a.require_cli_vault or a.manage or a.add_user:
+  a.no_auth=False
  if not 1024<=a.port<=65535:parser.error('Invalid local port')
  def ask(prompt):return sys.stdin.readline().rstrip('\n')if a.stdin_secrets else getpass.getpass(prompt)
  if not a.no_auth and (Path(a.data)/'apse.sqlite').exists() and not (Path(a.data)/'accounts.enc').exists():parser.error('Incomplete portable copy: accounts.enc is missing')
@@ -123,7 +136,11 @@ def main():
   def do_POST(self):
    path=urllib.parse.urlsplit(self.path).path
    if path not in ['/local/login','/local/logout']:return super().do_POST()
-   if self.headers.get('Origin')!=server.PUBLIC or not self.headers.get('Content-Type','').startswith('application/json'):return self.send(403,{'error':'origin_denied'})
+   origin=(self.headers.get('Origin') or '').rstrip('/')
+   host=self.headers.get('Host','')
+   allowed_origins={server.PUBLIC}
+   if host:allowed_origins.update({'http://'+host,'https://'+host})
+   if origin not in allowed_origins or not self.headers.get('Content-Type','').startswith('application/json'):return self.send(403,{'error':'origin_denied'})
    if path=='/local/logout':
     cookie=http.cookies.SimpleCookie();cookie.load(self.headers.get('Cookie',''));sessions.sessions.pop(cookie['apse_local'].value if 'apse_local'in cookie else '',None);self.send_response(200);self.send_header('Set-Cookie','apse_local=; Path=/; Max-Age=0; HttpOnly; SameSite=Strict');self.end_headers();return
    try:
@@ -135,7 +152,7 @@ def main():
    token,status=sessions.login(name,password)
    if not token:return self.send(status,{'error':'login_failed'})
    self.send_response(200);self.send_header('Set-Cookie','apse_local='+token+'; Path=/; HttpOnly; SameSite=Strict; Max-Age=28800');self.send_header('Cache-Control','no-store');self.send_header('Content-Type','application/json');self.end_headers();self.wfile.write(b'{"ok":true}')
- httpd=server.ThreadingHTTPServer(('127.0.0.1',a.port),Handler);print('APSE LOCAL — '+server.PUBLIC+'/',flush=True)
+ httpd=server.ThreadingHTTPServer((a.host,a.port),Handler);print('APSE LOCAL — '+server.PUBLIC+'/',flush=True)
  if not a.no_browser:webbrowser.open(server.PUBLIC+'/')
  try:httpd.serve_forever()
  except KeyboardInterrupt:pass

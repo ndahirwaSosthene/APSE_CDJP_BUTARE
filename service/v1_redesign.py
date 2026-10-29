@@ -74,6 +74,58 @@ PARISH_DISTRICTS = {
     'PAR-27': ('Ruramba', 'Nyaruguru', 20, 54),
 }
 
+PERSONA_PROFILES = [
+    {
+        'key': 'mel_diocese',
+        'name': 'LOCAL_MEL',
+        'label': 'CDJP Diocesan MEL Lead (All 27 Parishes)',
+        'roles': ['APSE_MEL'],
+        'parish_code': None,
+    },
+    {
+        'key': 'coord_diocese',
+        'name': 'CDJP_COORDINATOR',
+        'label': 'CDJP Diocesan Coordinator & Director (All 27 Parishes)',
+        'roles': ['APSE_COORDINATION', 'APSE_DIRECTION'],
+        'parish_code': None,
+    },
+    {
+        'key': 'cpjp_gakoma',
+        'name': 'CPJP_GAKOMA',
+        'label': 'Parish CPJP Committee — Gakoma (PAR-01)',
+        'roles': ['APSE_CPJP'],
+        'parish_code': 'PAR-01',
+    },
+    {
+        'key': 'cpjp_save',
+        'name': 'CPJP_SAVE',
+        'label': 'Parish CPJP Committee — Save (PAR-03)',
+        'roles': ['APSE_CPJP'],
+        'parish_code': 'PAR-03',
+    },
+    {
+        'key': 'cpjp_butare',
+        'name': 'CPJP_BUTARE',
+        'label': 'Parish CPJP Committee — Butare Cathedral (PAR-10)',
+        'roles': ['APSE_CPJP'],
+        'parish_code': 'PAR-10',
+    },
+    {
+        'key': 'cpjp_kibeho',
+        'name': 'CPJP_KIBEHO',
+        'label': 'Parish CPJP Committee — Kibeho (PAR-24)',
+        'roles': ['APSE_CPJP'],
+        'parish_code': 'PAR-24',
+    },
+    {
+        'key': 'reporter_gakoma',
+        'name': 'REPORTER_GAKOMA',
+        'label': 'Parish Field Reporter — Gakoma (PAR-01)',
+        'roles': ['APSE_PARISH_REPORTER'],
+        'parish_code': 'PAR-01',
+    },
+]
+
 
 def compute_pastoral(event_date_str):
     try:
@@ -110,6 +162,7 @@ def compute_impact_rating(outcome_value, min_threshold, target_threshold):
 
 class V1Redesign:
     def init_v1(self):
+        self._v1_persona_key = 'mel_diocese'
         self.db.executescript('''
 CREATE TABLE IF NOT EXISTS v1_tasks(
     id TEXT PRIMARY KEY,
@@ -169,6 +222,48 @@ CREATE TABLE IF NOT EXISTS v1_logs(
 );
 ''')
         self._seed_v1_if_empty()
+
+    def _resolve_v1_user(self, user):
+        persona_key = getattr(self, '_v1_persona_key', 'mel_diocese')
+        if not persona_key or persona_key == 'mel_diocese':
+            return user
+        if not str(user.get('id', '')).endswith(':NO_AUTH'):
+            return user
+        prof = next((p for p in PERSONA_PROFILES if p['key'] == persona_key), None)
+        if not prof:
+            return user
+        if not prof['parish_code']:
+            return {
+                'id': f"PERSONA:{prof['key']}",
+                'name': prof['name'],
+                'roles': list(prof['roles']),
+                'paths': ['/LocalRoot01'],
+                'units': user.get('units', [{'id': 'LocalRoot01', 'name': 'CDJP BUTARE', 'path': '/LocalRoot01', 'kind': 'CDJP'}]),
+            }
+        pcode = prof['parish_code']
+        uid = f'UNIT-{pcode}'
+        return {
+            'id': f"PERSONA:{prof['key']}",
+            'name': prof['name'],
+            'roles': list(prof['roles']),
+            'paths': [f'/LocalRoot01/{uid}'],
+            'units': [{
+                'id': uid,
+                'name': f'Paroisse {pcode}',
+                'path': f'/LocalRoot01/{uid}',
+                'kind': 'CPJP',
+                'sourceCode': pcode,
+            }],
+        }
+
+    def v1_set_persona(self, user, body):
+        from engine import Fault
+        key = str(body.get('persona_key', '')).strip()
+        prof = next((p for p in PERSONA_PROFILES if p['key'] == key), None)
+        if not prof:
+            raise Fault(422, 'plain_error', 'Choose a valid user role profile.')
+        self._v1_persona_key = key
+        return {'ok': True, 'active_persona': key, 'profile': prof}
 
     def _seed_v1_if_empty(self):
         from engine import NOW
@@ -578,9 +673,16 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             })
         return goals
 
+    def _active_latest_logs(self, logs):
+        superseded_ids = {l['parent_id'] for l in logs if l.get('parent_id')}
+        for l in logs:
+            l['is_superseded'] = l['id'] in superseded_ids
+        return [l for l in logs if l['id'] not in superseded_ids]
+
     def _serial_task(self, row, logs):
         body = self.dec(row['body'])
-        task_logs = [l for l in logs if l['task_id'] == row['id'] and l.get('parent_id') is None]
+        latest_lineage_logs = self._active_latest_logs(logs)
+        task_logs = [l for l in latest_lineage_logs if l['task_id'] == row['id']]
         approved_logs = [l for l in task_logs if l['stage'] in ('PARISH_APPROVED', 'DIOCESE_APPROVED')]
         active_logs = task_logs
         completed_units = sum(float(l['sessions_done']) for l in active_logs)
@@ -662,26 +764,33 @@ CREATE TABLE IF NOT EXISTS v1_logs(
 
     def v1_bootstrap(self, user, parish_filter=None, period_filter=None, axis_filter=None):
         with self.lock:
+            user = self._resolve_v1_user(user)
             parishes, assigned_parish, is_diocesan = self._parishes_and_centrales(user)
             parish_map = {p['code']: p['name'] for p in parishes}
             raw_logs = [self._serial_log(r) for r in self.db.execute('SELECT * FROM v1_logs ORDER BY event_date, created')]
+            self._active_latest_logs(raw_logs)
             raw_tasks = list(self.db.execute('SELECT * FROM v1_tasks ORDER BY due_date, created'))
             tasks = [self._serial_task(t, raw_logs) for t in raw_tasks]
             for t in tasks:
-                t['parish_name'] = parish_map.get(t['parish_code'], t['parish_code'])
+                t['parish_name'] = parish_map.get(t['parish_code'], PARISH_DISTRICTS.get(t['parish_code'], (t['parish_code'],))[0])
             task_lookup = {t['id']: t for t in tasks}
             for l in raw_logs:
                 t = task_lookup.get(l['task_id'], {})
                 l['task_titles'] = t.get('titles', {'en': 'Field Activity', 'rw': 'Igikorwa', 'fr': 'Activité', 'sw': 'Shughuli'})
-                l['parish_name'] = parish_map.get(l['parish_code'], l['parish_code'])
+                l['parish_name'] = parish_map.get(l['parish_code'], PARISH_DISTRICTS.get(l['parish_code'], (l['parish_code'],))[0])
                 l['axis'] = t.get('axis', 'A1')
                 l['outcome'] = t.get('outcome', 'A1.R1')
                 l['planned_target'] = t.get('planned_target', 1)
                 l['min_threshold'] = t.get('min_threshold', 1)
                 l['target_threshold'] = t.get('target_threshold', 1)
 
+            effective_parish = parish_filter if is_diocesan else assigned_parish
+            if not is_diocesan:
+                tasks = [t for t in tasks if t['parish_code'] == assigned_parish]
+                raw_logs = [l for l in raw_logs if l['parish_code'] == assigned_parish]
+
             drafts = self.draft_listing(user, 'ACTIVE')
-            analytics = self._compute_v1_analytics(tasks, raw_logs, parishes, parish_filter, period_filter, axis_filter)
+            analytics = self._compute_v1_analytics(tasks, raw_logs, parishes, effective_parish, period_filter, axis_filter)
             return {
                 'user': {
                     'id': user['id'],
@@ -689,7 +798,9 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                     'roles': user.get('roles', []),
                     'is_diocesan': is_diocesan,
                     'assigned_parish': assigned_parish,
+                    'active_persona': getattr(self, '_v1_persona_key', 'mel_diocese'),
                 },
+                'personas': PERSONA_PROFILES,
                 'parishes': parishes,
                 'goals': self._goals_catalogue(),
                 'issue_categories': ISSUE_CATEGORIES,
@@ -701,6 +812,10 @@ CREATE TABLE IF NOT EXISTS v1_logs(
 
     def v1_create_task(self, user, body):
         from engine import Fault, NOW
+        user = self._resolve_v1_user(user)
+        roles = self.roles(user)
+        if not (roles & {'APSE_MEL', 'APSE_STAFF', 'APSE_COORDINATION', 'APSE_DIRECTION', 'APSE_FINANCE', 'APSE_HR', 'APSE_CPJP'}):
+            raise Fault(403, 'planning_cdjp_cpjp_only', 'Only CDJP Diocesan staff and Parish CPJP committees can create planned activities.')
         title = str(body.get('title', '')).strip()
         if not title:
             raise Fault(422, 'plain_error', 'Please enter a short, clear title for this activity.')
@@ -752,6 +867,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
 
     def v1_submit_log(self, user, body):
         from engine import Fault, NOW
+        user = self._resolve_v1_user(user)
         task_id = str(body.get('task_id', '')).strip()
         with self.tx():
             task_row = self.db.execute('SELECT * FROM v1_tasks WHERE id=?', (task_id,)).fetchone()
@@ -907,12 +1023,18 @@ CREATE TABLE IF NOT EXISTS v1_logs(
 
     def v1_review_log(self, user, body):
         from engine import Fault, NOW
+        user = self._resolve_v1_user(user)
+        roles = self.roles(user)
         log_id = str(body.get('id', '')).strip()
         target_stage = str(body.get('target_stage', '')).strip()
         note = str(body.get('note', '')).strip()
         correction_step = body.get('correction_step')
         if target_stage not in ('PARISH_APPROVED', 'DIOCESE_APPROVED', 'CORRECTION'):
             raise Fault(422, 'plain_error', 'Choose a valid review action (Parish Approve, Diocese Approve, or Return).')
+        if target_stage == 'DIOCESE_APPROVED' and not (roles & {'APSE_MEL', 'APSE_COORDINATION', 'APSE_DIRECTION'}):
+            raise Fault(403, 'diocese_review_role_required', 'Only CDJP Diocesan reviewers can grant final Diocese approval.')
+        if target_stage in ('PARISH_APPROVED', 'CORRECTION') and not (roles & {'APSE_CPJP', 'APSE_MEL', 'APSE_COORDINATION', 'APSE_DIRECTION'}):
+            raise Fault(403, 'review_role_required', 'Only Parish CPJP committees or Diocesan reviewers can approve or return reports.')
         if target_stage == 'CORRECTION' and not note:
             raise Fault(422, 'plain_error', 'Please write a short note explaining what needs to be fixed.')
 
@@ -943,11 +1065,12 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             return self._serial_log(updated)
 
     def _compute_v1_analytics(self, tasks, logs, parishes, parish_filter=None, period_filter=None, axis_filter=None):
-        active_logs = [l for l in logs if l.get('parent_id') is None]
+        active_logs = list(self._active_latest_logs(logs))
         if parish_filter:
             tasks = [t for t in tasks if t['parish_code'] == parish_filter]
             active_logs = [l for l in active_logs if l['parish_code'] == parish_filter]
         if period_filter and period_filter in ('Q1', 'Q2', 'Q3', 'Q4'):
+            tasks = [t for t in tasks if t['pastoral_quarter'] == period_filter]
             active_logs = [l for l in active_logs if l['pastoral_quarter'] == period_filter]
         elif period_filter and period_filter.startswith('AP'):
             tasks = [t for t in tasks if t['ap'] == period_filter]
@@ -993,6 +1116,14 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 'MAJOR': sum(1 for l in mlogs if l['issue_severity'] == 'MAJOR'),
                 'by_category': {
                     c: sum(1 for l in mlogs if c in l['issue_categories'] and l['issue_severity'] != 'NONE')
+                    for c in ISSUE_CATEGORIES
+                },
+                'by_category_severity': {
+                    c: {
+                        'MINOR': sum(1 for l in mlogs if c in l['issue_categories'] and l['issue_severity'] == 'MINOR'),
+                        'MEDIUM': sum(1 for l in mlogs if c in l['issue_categories'] and l['issue_severity'] == 'MEDIUM'),
+                        'MAJOR': sum(1 for l in mlogs if c in l['issue_categories'] and l['issue_severity'] == 'MAJOR'),
+                    }
                     for c in ISSUE_CATEGORIES
                 },
             })
@@ -1047,12 +1178,13 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             })
 
         # Regional Parish Map nodes
+        latest_all_logs = self._active_latest_logs(logs)
         all_tasks_unfiltered = [self._serial_task(t, logs) for t in self.db.execute('SELECT * FROM v1_tasks')]
         parish_nodes = []
         for p in parishes:
             pcode = p['code']
             ptasks = [t for t in all_tasks_unfiltered if t['parish_code'] == pcode]
-            plogs = [l for l in logs if l['parish_code'] == pcode and l.get('parent_id') is None]
+            plogs = [l for l in latest_all_logs if l['parish_code'] == pcode]
             p_comp = round(sum(t['completion_pct'] for t in ptasks) / len(ptasks), 1) if ptasks else None
             major_issues = sum(1 for l in plogs if l['issue_severity'] == 'MAJOR')
             parish_nodes.append({
@@ -1091,8 +1223,9 @@ CREATE TABLE IF NOT EXISTS v1_logs(
         }
 
     def v1_export(self, user, report_type='impact_summary', fmt='csv', preset='natural', lang='en', parish_filter=None):
+        from reports import safe
         data = self.v1_bootstrap(user, parish_filter=parish_filter)
-        logs = data['logs']
+        logs = self._active_latest_logs(data['logs'])
         tasks = data['tasks']
 
         headers_by_preset = {
@@ -1113,7 +1246,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             if parish_filter and l['parish_code'] != parish_filter:
                 continue
             title = l.get('task_titles', {}).get(lang) or l.get('task_titles', {}).get('en', 'Activity')
-            rows.append([
+            raw_row = [
                 l['event_date'],
                 l.get('parish_name', l['parish_code']),
                 l['centrale'],
@@ -1128,7 +1261,8 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 ', '.join(l['issue_categories']),
                 l['issue_note'],
                 stage_natural.get(l['stage'], l['stage']),
-            ])
+            ]
+            rows.append([safe(c) if isinstance(c, str) else c for c in raw_row])
 
         if fmt == 'csv':
             out = io.StringIO()
@@ -1172,6 +1306,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
 
     def v1_import_csv(self, user, body):
         from engine import Fault
+        user = self._resolve_v1_user(user)
         raw_text = str(body.get('csv_text', '')).strip()
         if not raw_text:
             raise Fault(422, 'plain_error', 'Choose a CSV file with at least one activity row.')

@@ -100,7 +100,7 @@ class Domain1StrategyAndMETests(unittest.TestCase):
             self.assertEqual(set(g['labels'].keys()), {'en', 'rw', 'fr', 'sw'})
             self.assertTrue(g['outcome_code'].startswith(g['axis_code'] + '.'))
 
-        # Verify Council Note: registers/strategic_results.json uses "label" vs "labels" in metadata_seed.json
+        # Verify registers/strategic_results.json uses "label" vs "labels" in metadata_seed.json
         strat_results = json.loads((ROOT / 'registers/strategic_results.json').read_text(encoding='utf-8'))
         self.assertEqual(len(strat_results), 13)
         self.assertIn('label', strat_results[0])
@@ -129,7 +129,6 @@ class Domain1StrategyAndMETests(unittest.TestCase):
             self.assertEqual(item['observations'], 0)
             self.assertIsNone(item['value'], f"KPI {item['code']} should be None when 0 observations")
 
-        # Verify Council Note: _goals_catalogue binds *.I1 and KPI-A*-R* instead of A1-K1
         goals = self.engine._goals_catalogue()
         a1_r2 = next(g for g in goals if g['outcome_code'] == 'A1.R2')
         self.assertEqual(a1_r2['intervention_code'], 'A1.I1')
@@ -257,7 +256,6 @@ class Domain1StrategyAndMETests(unittest.TestCase):
 
     def test_tc_strat_12_action_completion_decoupled_from_impact_rating(self):
         """TC-STRAT-12: Task can be 100% completed with LOW impact, or 50% completed with GREAT impact."""
-        # Case A: 100% completed (sessions_done=150 of 150) with LOW impact (outcome_value=40 < min_threshold=90)
         self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a4-save-03',
             'centrale': 'Save Centre',
@@ -269,7 +267,6 @@ class Domain1StrategyAndMETests(unittest.TestCase):
             'issue_categories': ['Turnout'],
             'issue_note': 'Many participants arrived late for the legal test.',
         })
-        # Case B: 50% completed (sessions_done=3 of 6) with GREAT impact (outcome_value=6 >= target_threshold=6)
         self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a5-nyanza-06',
             'centrale': 'Nyanza Centre',
@@ -320,7 +317,6 @@ class Domain1StrategyAndMETests(unittest.TestCase):
 
     def test_tc_strat_15_outcome_accordion_rollup_impact_rating(self):
         """TC-STRAT-15: Outcome Accordion roll-up impact rating (LOW if any LOW, GREAT if all GREAT, else GOOD/PENDING)."""
-        # Add a second task to A1.R1 (which currently has 1 GREAT task)
         t2 = self.engine.v1_create_task(self.mel_user, {
             'title': 'Second A1.R1 Healing Circle',
             'outcome_code': 'A1.R1',
@@ -330,12 +326,10 @@ class Domain1StrategyAndMETests(unittest.TestCase):
             'min_threshold': 12,
             'target_threshold': 18,
         })
-        # While t2 is PENDING, non-PENDING ratings for A1.R1 are ['GREAT'] -> overall 'GREAT'
         boot1 = self.engine.v1_bootstrap(self.mel_user)
         acc_a1r1 = next(a for a in boot1['analytics']['accordions'] if a['outcome_code'] == 'A1.R1')
         self.assertEqual(acc_a1r1['impact_rating'], 'GREAT')
 
-        # Log GOOD outcome on t2 -> ratings ['GREAT', 'GOOD'] -> overall 'GOOD'
         log_t2 = self.engine.v1_submit_log(self.mel_user, {
             'task_id': t2['id'],
             'centrale': 'Ste Thérèse',
@@ -347,7 +341,6 @@ class Domain1StrategyAndMETests(unittest.TestCase):
         acc_a1r1_good = next(a for a in boot2['analytics']['accordions'] if a['outcome_code'] == 'A1.R1')
         self.assertEqual(acc_a1r1_good['impact_rating'], 'GOOD')
 
-        # Update log_t2 to LOW outcome -> ratings ['GREAT', 'LOW'] -> overall 'LOW'
         self.engine.v1_submit_log(self.mel_user, {
             'id': log_t2['id'],
             'task_id': t2['id'],
@@ -410,7 +403,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
             'Please check the box confirming no victim names or private medical details are in the notes.'
         )
 
-        # Succeeds when privacy_confirmed=True
         ok_log = self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a1-ngoma-05',
             'centrale': 'Ngoma Centre',
@@ -424,7 +416,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
 
     def test_tc_cap_04_to_07_all_four_collection_modes_payload_persistence(self):
         """TC-CAP-04, TC-CAP-05, TC-CAP-06, TC-CAP-07: ENUMERATOR, FOCUS_GROUP, SURVEY, OBSERVATION modes."""
-        # TC-CAP-04: ENUMERATOR mode
         respondents = [
             {'code': 'RESP-01', 'score': 92, 'resolved_case': True},
             {'code': 'RESP-02', 'score': 65, 'resolved_case': False},
@@ -441,7 +432,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
         self.assertEqual(log_enum['collection_mode'], 'ENUMERATOR')
         self.assertEqual(log_enum['payload']['respondents'], respondents)
 
-        # TC-CAP-05: FOCUS_GROUP mode
         log_fg = self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a1-butare-02',
             'centrale': 'Ste Thérèse',
@@ -456,7 +446,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
         self.assertEqual(log_fg['payload']['duration_hours'], 4)
         self.assertEqual(log_fg['payload']['consensus_notes'], 'Strong community consensus on reconciliation.')
 
-        # TC-CAP-06: SURVEY mode (including Council Note: forms_returned > forms_distributed is not blocked)
         log_surv = self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a4-save-03',
             'centrale': 'Save Centre',
@@ -471,7 +460,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
         self.assertEqual(log_surv['payload']['forms_distributed'], 50)
         self.assertEqual(log_surv['payload']['forms_returned'], 60)
 
-        # TC-CAP-07: OBSERVATION mode
         checklist = ['✓ Attendance sheet signed', '✓ Community action plan agreed']
         log_obs = self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a3-kibeho-04',
@@ -505,7 +493,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
 
     def test_tc_cap_09_age_group_sum_validation_add_and_remove_messages(self):
         """TC-CAP-09: Age group sum mismatch raises exact actionable 'Add X more.' / 'Remove X.' message."""
-        # Case 1: age_sum (17) < total (20) -> Add 3 more.
         with self.assertRaises(Fault) as ctx_add:
             self.engine.v1_submit_log(self.mel_user, {
                 'task_id': 'task-a2-gakoma-01',
@@ -521,7 +508,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
             'Age group numbers add up to 17, but you entered 20 total participants. Add 3 more.'
         )
 
-        # Case 2: age_sum (24) > total (20) -> Remove 4.
         with self.assertRaises(Fault) as ctx_rem:
             self.engine.v1_submit_log(self.mel_user, {
                 'task_id': 'task-a2-gakoma-01',
@@ -557,7 +543,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
 
     def test_tc_cap_11_under_achievement_both_severity_and_note_required(self):
         """TC-CAP-11: Under-achievement rejects when either issue_severity=='NONE' or issue_note is blank."""
-        # Severity provided, but note is blank -> rejected
         with self.assertRaises(Fault) as ctx1:
             self.engine.v1_submit_log(self.mel_user, {
                 'task_id': 'task-a2-gakoma-01',  # min_threshold = 12
@@ -570,7 +555,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
             })
         self.assertEqual(ctx1.exception.status, 422)
 
-        # Note provided, but severity is NONE -> rejected
         with self.assertRaises(Fault) as ctx2:
             self.engine.v1_submit_log(self.mel_user, {
                 'task_id': 'task-a2-gakoma-01',
@@ -609,7 +593,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
 
     def test_tc_cap_14_v8_capture_nfc_normalization_and_distinct_preparers(self):
         """TC-CAP-14: validate_capture normalizes NFC + casefold to reject duplicate preparers and requires CNV/DNH/trauma checks."""
-        # NFD 'Je\u0301ro\u0302me' vs NFC 'J\u00e9r\u00f4me' should collide after NFC + casefold
         nfd_name = unicodedata.normalize('NFD', 'Jérôme Ndayisaba')
         nfc_name = unicodedata.normalize('NFC', 'jérôme ndayisaba')
         self.assertNotEqual(nfd_name, nfc_name)
@@ -634,7 +617,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
             )
         self.assertEqual(ctx_dup.exception.code, 'distinct_preparation_names_required')
 
-        # Missing trauma_checked or sensitivity_notes raises sensitivity_review_required
         with self.assertRaises(Fault) as ctx_sens:
             self.engine.validate_capture(
                 self.mel_user,
@@ -674,12 +656,10 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
         self.assertEqual(d1['revision'], 1)
         self.assertEqual(d1['status'], 'ACTIVE')
 
-        # Verify encrypted at rest
         raw_blob = self.engine.db.execute('SELECT body FROM working_drafts WHERE id=?', (did,)).fetchone()[0]
         self.assertTrue(raw_blob.startswith(b'gAAAAA'))
         self.assertNotIn(b'Draft Secret Healing Session', raw_blob)
 
-        # Stale revision=0 raises 409 draft_revision_conflict
         with self.assertRaises(Fault) as ctx_conflict:
             self.engine.save_working_draft(
                 self.mel_user,
@@ -697,7 +677,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
         self.assertEqual(ctx_conflict.exception.status, 409)
         self.assertEqual(ctx_conflict.exception.code, 'draft_revision_conflict')
 
-        # Lifecycle transitions: ACTIVE -> TRASH -> ACTIVE -> COMMITTED
         t_res = self.engine.draft_action(self.mel_user, did, 1, 'TRASH')
         self.assertEqual(t_res['status'], 'TRASH')
         self.assertEqual(t_res['revision'], 2)
@@ -710,7 +689,6 @@ class Domain3FieldCaptureLocalizationOfflineTests(unittest.TestCase):
         self.assertEqual(c_res['status'], 'COMMITTED')
         self.assertEqual(c_res['revision'], 4)
 
-        # Verify draft_history append-only triggers block UPDATE and DELETE
         with self.assertRaises(sqlite3.IntegrityError):
             self.engine.db.execute("UPDATE draft_history SET status='TRASH'")
         with self.assertRaises(sqlite3.IntegrityError):
@@ -740,8 +718,8 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
         ccjp_units = self.engine.metadata()['ccjp_units']
         self.assertEqual(len(ccjp_units), 101)
 
-    def test_tc_gov_02_parish_scoped_role_and_bootstrap_unfiltered_tasks_finding(self):
-        """TC-GOV-02: Non-diocesan user is scoped to assigned_parish; verify Council Finding on unfiltered tasks/logs."""
+    def test_tc_gov_02_parish_scoped_role_and_bootstrap_scoping(self):
+        """TC-GOV-02: Non-diocesan user is strictly scoped to assigned_parish across parishes, tasks, logs, and analytics."""
         cpjp_user = make_parish_user('PAR-03', 'APSE_CPJP')
         boot = self.engine.v1_bootstrap(cpjp_user)
         self.assertFalse(boot['user']['is_diocesan'])
@@ -749,11 +727,10 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
         self.assertEqual(len(boot['parishes']), 1)
         self.assertEqual(boot['parishes'][0]['code'], 'PAR-03')
 
-        # Council Finding verification: v1_bootstrap returns all 6 tasks and 3 logs across parishes when parish_filter is None
         parish_codes_in_tasks = {t['parish_code'] for t in boot['tasks']}
-        self.assertGreater(len(parish_codes_in_tasks), 1)
-        self.assertEqual(len(boot['tasks']), 6)
-        self.assertEqual(len(boot['logs']), 3)
+        self.assertEqual(parish_codes_in_tasks, {'PAR-03'})
+        self.assertEqual(len(boot['tasks']), 1)
+        self.assertEqual(len(boot['logs']), 0)
 
     def test_tc_gov_03_centrale_and_ceb_cascading_per_parish(self):
         """TC-GOV-03: Every parish provides up to 6 Centrales and derived CEB lists."""
@@ -767,9 +744,17 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
                 self.assertEqual(set(c['labels'].keys()), {'en', 'rw', 'fr', 'sw'})
 
     def test_tc_gov_04_three_tier_approval_transitions_and_audit(self):
-        """TC-GOV-04: 3-Tier Approval flow (SUBMITTED -> PARISH_APPROVED -> DIOCESE_APPROVED)."""
-        # log-seed-002 starts at SUBMITTED with revision 1
-        r1 = self.engine.v1_review_log(self.mel_user, {
+        """TC-GOV-04: 3-Tier Approval flow (SUBMITTED -> PARISH_APPROVED -> DIOCESE_APPROVED) & role guards."""
+        # Non-review role (APSE_CCJP) is blocked from reviewing
+        ccjp_user = make_parish_user('PAR-01', 'APSE_CCJP')
+        with self.assertRaises(Fault) as ctx_ccjp:
+            self.engine.v1_review_log(ccjp_user, {'id': 'log-seed-002', 'target_stage': 'PARISH_APPROVED'})
+        self.assertEqual(ctx_ccjp.exception.status, 403)
+        self.assertEqual(ctx_ccjp.exception.code, 'review_role_required')
+
+        # Parish CPJP can do Stage 2 (PARISH_APPROVED) but not Stage 3 (DIOCESE_APPROVED)
+        cpjp_user = make_parish_user('PAR-01', 'APSE_CPJP')
+        r1 = self.engine.v1_review_log(cpjp_user, {
             'id': 'log-seed-002',
             'target_stage': 'PARISH_APPROVED',
             'note': 'Verified by Gakoma CPJP Committee.',
@@ -778,6 +763,11 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
         self.assertEqual(r1['revision'], 2)
         self.assertEqual(len(r1['payload']['reviews']), 1)
         self.assertEqual(r1['payload']['reviews'][0]['stage'], 'PARISH_APPROVED')
+
+        with self.assertRaises(Fault) as ctx_cpjp_dioc:
+            self.engine.v1_review_log(cpjp_user, {'id': 'log-seed-002', 'target_stage': 'DIOCESE_APPROVED'})
+        self.assertEqual(ctx_cpjp_dioc.exception.status, 403)
+        self.assertEqual(ctx_cpjp_dioc.exception.code, 'diocese_review_role_required')
 
         r2 = self.engine.v1_review_log(self.mel_user, {
             'id': 'log-seed-002',
@@ -822,7 +812,7 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
         self.assertEqual(task['status'], 'NEEDS_CORRECTION')
 
     def test_tc_gov_07_and_08_silent_amendment_creation_and_lineage_filter_behavior(self):
-        """TC-GOV-07 & TC-GOV-08: Editing DIOCESE_APPROVED log creates version=2 child; verify parent_id filter finding."""
+        """TC-GOV-07 & TC-GOV-08: Editing DIOCESE_APPROVED log creates version=2 child and supersedes v1 in analytics & exports."""
         # log-seed-001 is DIOCESE_APPROVED (version=1, total=48, outcome_value=46)
         amended = self.engine.v1_submit_log(self.mel_user, {
             'id': 'log-seed-001',
@@ -848,13 +838,12 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
         self.assertEqual(orig_row['stage'], 'DIOCESE_APPROVED')
         self.assertEqual(orig_row['total'], 48)
 
-        # Verify Council Finding TC-GOV-08: _compute_v1_analytics filters parent_id is None (keeping 140 instead of 152),
-        # whereas v1_export iterates all logs without filtering parent_id (exporting 4 rows instead of 3).
+        # Verify active latest lineage: analytics counts v2 (60 + 12 + 80 = 152) and export outputs 3 active logs (4 CSV rows)
         boot = self.engine.v1_bootstrap(self.mel_user)
-        self.assertEqual(boot['analytics']['summary']['total_participants'], 140)
+        self.assertEqual(boot['analytics']['summary']['total_participants'], 152)
         csv_bytes, _, _ = self.engine.v1_export(self.mel_user, 'impact_summary', 'csv', 'natural', 'en')
         csv_rows = list(csv.reader(io.StringIO(csv_bytes.decode('utf-8-sig'))))
-        self.assertEqual(len(csv_rows), 5)  # 1 header + 4 logs (both parent v1 and child v2 exported)
+        self.assertEqual(len(csv_rows), 4)  # 1 header + 3 active latest logs
 
     def test_tc_gov_12_fernet_encryption_at_rest_all_tables(self):
         """TC-GOV-12: Raw SQLite body blobs in v1_tasks, v1_logs, and records start with gAAAAA and contain no plaintext."""
@@ -889,22 +878,18 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
     def test_tc_gov_14_portable_vault_pbkdf2_password_policy_and_429_lockout(self):
         """TC-GOV-14: Portable vault 14+ char master passphrase, 12+ char user password, and 429 rate limiting."""
         with tempfile.TemporaryDirectory() as tmp:
-            # Master passphrase < 14 chars rejected
             with self.assertRaises(ValueError) as ctx_short:
                 portable.unlock(tmp, 'shortpass123', create=True)
             self.assertIn('14 characters minimum', str(ctx_short.exception))
 
-            # Valid 14+ char master passphrase creates vault.json
             keys = portable.unlock(tmp, 'StrongMasterPass14!', create=True)
             self.assertIn('encryption', keys)
             self.assertIn('audit', keys)
 
-            # Wrong master passphrase rejected
             with self.assertRaises(ValueError) as ctx_wrong:
                 portable.unlock(tmp, 'WrongMasterPass14!', create=False)
             self.assertIn('Wrong master passphrase', str(ctx_wrong.exception))
 
-            # User account password < 12 chars rejected
             accounts = portable.Accounts(tmp, keys['encryption'])
             with self.assertRaises(ValueError):
                 accounts.add('mel_admin', 'short11char', ['APSE_MEL'], ['/LocalRoot01'])
@@ -913,7 +898,6 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
             self.assertTrue(accounts.verify('mel_admin', 'ValidPassword12!'))
             self.assertFalse(accounts.verify('mel_admin', 'WrongPassword12!'))
 
-            # 5 failed logins in 60s -> 6th returns 429 even with valid password
             sess = portable.LocalSession(accounts, portable.local_units())
             for _ in range(5):
                 tok, status = sess.login('mel_admin', 'WrongPassword12!')
@@ -923,8 +907,8 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
             self.assertIsNone(tok6)
             self.assertEqual(status6, 429)
 
-    def test_tc_gov_15_institutional_planning_boundary_and_v1_tasks_role_finding(self):
-        """TC-GOV-15: CCJP/CEB/PARISH_REPORTER denied on /planning; verify Council Finding on v1_create_task."""
+    def test_tc_gov_15_institutional_planning_boundary_and_v1_tasks_role_guard(self):
+        """TC-GOV-15: CCJP/CEB/PARISH_REPORTER denied on both /planning and v1_create_task."""
         for role in ('APSE_CCJP', 'APSE_CEB', 'APSE_PARISH_REPORTER'):
             u = make_parish_user('PAR-01', role)
             with self.assertRaises(Fault) as ctx:
@@ -932,19 +916,21 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
             self.assertEqual(ctx.exception.status, 403)
             self.assertEqual(ctx.exception.code, 'planning_cdjp_cpjp_only')
 
-        # CPJP can access CPJP planning, but is denied CDJP/STAFF planning
+            with self.assertRaises(Fault) as ctx_v1:
+                self.engine.v1_create_task(u, {'title': 'Unauthorized Task Creation', 'planned_target': 10})
+            self.assertEqual(ctx_v1.exception.status, 403)
+            self.assertEqual(ctx_v1.exception.code, 'planning_cdjp_cpjp_only')
+
+        # CPJP can access CPJP planning and v1_create_task, but is denied CDJP/STAFF planning
         cpjp_u = make_parish_user('PAR-01', 'APSE_CPJP')
         plan_cpjp = self.engine.planning(cpjp_u, 'AP1', 'CPJP')
         self.assertEqual(plan_cpjp['audience'], 'CPJP')
+        created = self.engine.v1_create_task(cpjp_u, {'title': 'Authorized CPJP Task', 'planned_target': 10})
+        self.assertTrue(created['id'].startswith('task-'))
         with self.assertRaises(Fault) as ctx_staff:
             self.engine.planning(cpjp_u, 'AP1', 'CDJP')
         self.assertEqual(ctx_staff.exception.status, 403)
         self.assertEqual(ctx_staff.exception.code, 'staff_plan_denied')
-
-        # Verify Council Finding: v1_create_task does not check user roles, allowing APSE_CCJP to create a v1 task
-        ccjp_u = make_parish_user('PAR-01', 'APSE_CCJP')
-        created = self.engine.v1_create_task(ccjp_u, {'title': 'CCJP Task Allowed Without Role Guard', 'planned_target': 10})
-        self.assertTrue(created['id'].startswith('task-'))
 
     def test_tc_gov_16_portfolio_classification_and_cpjp_6_seat_invariant(self):
         """TC-GOV-16: Enforces active project on PROJECT, no project on OPERATIONAL, and committeeSize == 6."""
@@ -956,7 +942,6 @@ class Domain4GovernanceApprovalsSecurityTests(unittest.TestCase):
             self.engine.validate_portfolio(self.mel_user, {'work_type': 'OPERATIONAL', 'project': 'PRJ-01'}, '2026-10-20')
         self.assertEqual(ctx2.exception.code, 'operational_cannot_have_project')
 
-        # CPJP governance 6-seat invariant
         gov_entry = dict(self.engine.metadata()['cpjp_governance'][0], committeeSize=5)
         with self.assertRaises(Fault) as ctx3:
             self.engine.put_metadata(self.mel_user, 'cpjp_governance', gov_entry, 0, 'Attempt to shrink committee')
@@ -1002,8 +987,8 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertIsNone(ana_par10['summary']['top_bottleneck_category'])
         self.assertEqual(ana_par10['summary']['top_bottleneck_pct'], 0)
 
-    def test_tc_ana_03_contextual_filtering_by_parish_axis_and_period_finding(self):
-        """TC-ANA-03: Contextual filtering by parish, axis, AP1, and verify Council Finding on Q2 task filtering."""
+    def test_tc_ana_03_contextual_filtering_by_parish_axis_and_period(self):
+        """TC-ANA-03: Contextual filtering by parish, axis, AP1, and pastoral quarter Q2."""
         ana_par01 = self.engine.v1_bootstrap(self.mel_user, parish_filter='PAR-01')['analytics']
         self.assertEqual(ana_par01['summary']['tasks_total'], 1)
         self.assertEqual(ana_par01['summary']['total_participants'], 12)
@@ -1014,10 +999,10 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertEqual(ana_axis_a3['summary']['total_participants'], 80)
         self.assertEqual([a['outcome_code'] for a in ana_axis_a3['accordions']], ['A3.R1'])
 
-        # Council Finding verification: period_filter='Q2' filters active_logs (0 participants) but does not filter tasks (remains 6)
+        # period_filter='Q2' filters both active_logs and tasks by pastoral_quarter == 'Q2' (0 seed tasks in Q2)
         ana_q2 = self.engine.v1_bootstrap(self.mel_user, period_filter='Q2')['analytics']
         self.assertEqual(ana_q2['summary']['total_participants'], 0)
-        self.assertEqual(ana_q2['summary']['tasks_total'], 6)
+        self.assertEqual(ana_q2['summary']['tasks_total'], 0)
 
     def test_tc_ana_04_and_05_regional_parish_map_nodes_and_status_color_precedence(self):
         """TC-ANA-04 & TC-ANA-05: 27 Parish map nodes and status color precedence (red > green > amber > neutral)."""
@@ -1028,14 +1013,12 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
             self.assertEqual(pmap[code]['district'], district)
             self.assertEqual((pmap[code]['x'], pmap[code]['y']), (x, y))
 
-        # Verify seed status colors
         self.assertEqual(pmap['PAR-24']['status_color'], 'red')      # major_issues = 1
         self.assertEqual(pmap['PAR-10']['status_color'], 'green')    # completion_pct = 100.0 >= 80, major_issues = 0
         self.assertEqual(pmap['PAR-01']['status_color'], 'amber')    # completion_pct = 60.0 < 80, major_issues = 0
         self.assertEqual(pmap['PAR-03']['status_color'], 'amber')    # completion_pct = 0.0 (not None)
         self.assertEqual(pmap['PAR-02']['status_color'], 'neutral')  # 0 tasks -> completion_pct is None
 
-        # Verify red > green precedence: submit a MAJOR issue log on PAR-10 (where completion_pct is 100.0)
         self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a1-butare-02',
             'centrale': 'Ste Thérèse',
@@ -1052,7 +1035,7 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertEqual(pmap_after['PAR-10']['status_color'], 'red')
 
     def test_tc_ana_07_and_08_monthly_trends_6_pastoral_months_and_by_category(self):
-        """TC-ANA-07 & TC-ANA-08: monthly_trends spans Sept-Feb and tracks MINOR/MEDIUM/MAJOR and by_category."""
+        """TC-ANA-07 & TC-ANA-08: monthly_trends spans Sept-Feb and tracks MINOR/MEDIUM/MAJOR, by_category & by_category_severity."""
         trends = self.engine.v1_bootstrap(self.mel_user)['analytics']['monthly_trends']
         self.assertEqual([m['month'] for m in trends], ['Sept', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb'])
         oct_entry = next(m for m in trends if m['ym'] == '2026-10')
@@ -1062,6 +1045,10 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertEqual(
             oct_entry['by_category'],
             {'Transport': 2, 'Budget': 1, 'Weather': 1, 'Turnout': 0, 'Security': 0, 'Other': 0}
+        )
+        self.assertEqual(
+            oct_entry['by_category_severity']['Transport'],
+            {'MINOR': 0, 'MEDIUM': 1, 'MAJOR': 1}
         )
 
     def test_tc_ana_09_and_11_accordions_stories_evidence_and_issues(self):
@@ -1104,7 +1091,6 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
                 self.assertEqual(rows[0][0], first_col)
                 self.assertEqual(len(rows), 4)  # 1 header + 3 seed logs
 
-        # XLSX verification
         xlsx_bytes, xlsx_mime, xlsx_fname = self.engine.v1_export(self.mel_user, 'impact_summary', 'xlsx', 'donor', 'en')
         self.assertEqual(xlsx_fname, 'APSE_impact_summary_donor.xlsx')
         wb = load_workbook(io.BytesIO(xlsx_bytes))
@@ -1114,7 +1100,6 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertTrue(ws['A1'].font.bold)
         self.assertTrue(str(ws['A1'].fill.fgColor.rgb).endswith('1E3A2F'))
 
-        # DOCX verification
         docx_bytes, docx_mime, docx_fname = self.engine.v1_export(self.mel_user, 'impact_summary', 'docx', 'natural', 'en')
         self.assertEqual(docx_fname, 'APSE_impact_summary.docx')
         doc = Document(io.BytesIO(docx_bytes))
@@ -1126,12 +1111,11 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertEqual([c.text for c in tbl.rows[0].cells], ['Date', 'Parish', 'Activity', 'Total', 'Outcome', 'Impact', 'Status'])
 
     def test_tc_ana_14_formula_sanitization_and_xlsx_formula_guard(self):
-        """TC-ANA-14: Verify safe() prefixing, parse_transfer XLSX formula rejection, and v1_export Council Finding."""
+        """TC-ANA-14: Verify safe() prefixing, parse_transfer XLSX formula rejection, and v1_export formula neutralization."""
         for dangerous in ('=CMD()', '+SUM(A1)', '-1+2', '@SUM(A1)', '\tTAB', '\rCR'):
             self.assertEqual(safe(dangerous), "'" + dangerous)
         self.assertEqual(safe('Normal text'), 'Normal text')
 
-        # Build an XLSX with an embedded formula and verify parse_transfer raises 422 excel_formulas_not_imported
         wb = Workbook()
         ws = wb.active
         ws.append(['event_date', 'title'])
@@ -1143,7 +1127,7 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertEqual(ctx.exception.status, 422)
         self.assertEqual(ctx.exception.code, 'excel_formulas_not_imported')
 
-        # Verify Council Finding: v1_export does not apply safe() to formula-prefixed field notes
+        # Verify v1_export applies safe() to formula-prefixed field notes
         self.engine.v1_submit_log(self.mel_user, {
             'task_id': 'task-a2-gakoma-01',
             'centrale': 'Kizenga',
@@ -1156,11 +1140,10 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         csv_bytes, _, _ = self.engine.v1_export(self.mel_user, 'impact_summary', 'csv', 'natural', 'en')
         rows = list(csv.reader(io.StringIO(csv_bytes.decode('utf-8-sig'))))
         last_note = rows[-1][12]
-        self.assertEqual(last_note, '=HYPERLINK("http://malicious.example")')
+        self.assertEqual(last_note, "'=HYPERLINK(\"http://malicious.example\")")
 
     def test_tc_ana_15_and_16_guided_csv_import_aliases_missing_prompt_and_commit(self):
         """TC-ANA-15 & TC-ANA-16: Multilingual alias auto-matching, missing column prompt, custom mapping & bulk commit."""
-        # Kinyarwanda / mixed aliases auto-match without custom mapping
         rw_csv = 'Paruwasi,Santarali,Itariki,Abagore,Abagabo,Outcome\nGakoma,Kizenga,2026-10-25,11,9,18\n'
         prev = self.engine.v1_import_csv(self.mel_user, {'csv_text': rw_csv})
         self.assertEqual(prev['missing'], [])
@@ -1168,7 +1151,6 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
         self.assertEqual(prev['preview'][0]['total'], 20)
         self.assertEqual(prev['imported'], 0)
 
-        # Missing column detection and 422 on commit=True when unmapped
         bad_csv = 'Unknown_Parish_Col,Centrale,Activity_Date,Women_Count,Men_Count,Outcome_Achieved\nGakoma,Kizenga,2026-10-25,10,10,18\nGakoma,Kizenga,2026-10-26,4,4,6\n'
         miss_res = self.engine.v1_import_csv(self.mel_user, {'csv_text': bad_csv})
         self.assertEqual(len(miss_res['missing']), 1)
@@ -1180,7 +1162,6 @@ class Domain5AnalyticsMapAndTransfersTests(unittest.TestCase):
             self.engine.v1_import_csv(self.mel_user, {'csv_text': bad_csv, 'commit': True})
         self.assertEqual(ctx_commit_unmapped.exception.status, 422)
 
-        # Custom mapping + commit=True imports both rows and auto-tags under-achieving row (outcome 6 < 12) as MINOR
         commit_res = self.engine.v1_import_csv(self.mel_user, {
             'csv_text': bad_csv,
             'mapping': {'parish': 'Unknown_Parish_Col'},
@@ -1252,27 +1233,22 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
 
     def test_tc_gov_10_http_csrf_origin_content_type_options_and_body_guards(self):
         """TC-GOV-10: Verify 405 cors_disabled, 403 client_header_required, 403 origin_denied, 415 json_required, 400 object_required."""
-        # OPTIONS -> 405 cors_disabled
         st, _, raw = self._req('OPTIONS', '/apse-service/v1/tasks')
         self.assertEqual(st, 405)
         self.assertEqual(json.loads(raw)['error'], 'cors_disabled')
 
-        # Missing X-APSE-Client -> 403 client_header_required
         st, _, raw = self._req('POST', '/apse-service/v1/tasks', {'title': 'T'}, {'Origin': self.base_url, 'Content-Type': 'application/json'})
         self.assertEqual(st, 403)
         self.assertEqual(json.loads(raw)['error'], 'client_header_required')
 
-        # Wrong Origin -> 403 origin_denied
         st, _, raw = self._req('POST', '/apse-service/v1/tasks', {'title': 'T'}, {'X-APSE-Client': 'web', 'Origin': 'https://evil.example', 'Content-Type': 'application/json'})
         self.assertEqual(st, 403)
         self.assertEqual(json.loads(raw)['error'], 'origin_denied')
 
-        # Wrong Content-Type -> 415 json_required
         st, _, raw = self._req('POST', '/apse-service/v1/tasks', b'{"title":"T"}', {'X-APSE-Client': 'web', 'Origin': self.base_url, 'Content-Type': 'text/plain'})
         self.assertEqual(st, 415)
         self.assertEqual(json.loads(raw)['error'], 'json_required')
 
-        # Non-object JSON body ([1, 2, 3]) -> 400 object_required
         st, _, raw = self._req('POST', '/apse-service/v1/tasks', b'[1,2,3]', self._valid_post_headers())
         self.assertEqual(st, 400)
         self.assertEqual(json.loads(raw)['error'], 'object_required')
@@ -1302,13 +1278,27 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
         self.assertEqual(json.loads(raw)['error'], 'auditor_required')
 
     def test_live_http_v1_workflow_end_to_end(self):
-        """Live HTTP end-to-end verification of /v1/bootstrap, /v1/tasks, /v1/logs, /v1/review, /v1/export, /v1/import."""
+        """Live HTTP end-to-end verification of /v1/bootstrap, /v1/persona, /v1/tasks, /v1/logs, /v1/review, /v1/export, /v1/import."""
         # 1. GET /v1/bootstrap
         st, _, raw = self._req('GET', '/apse-service/v1/bootstrap')
         self.assertEqual(st, 200)
         boot = json.loads(raw)
         self.assertEqual(len(boot['parishes']), 27)
         self.assertEqual(len(boot['goals']), 13)
+        self.assertEqual(len(boot['personas']), 7)
+
+        # 1b. POST /v1/persona (switch to parish CPJP PAR-01 and back to APSE_MEL)
+        st_p1, _, raw_p1 = self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'cpjp_gakoma',
+        }, self._valid_post_headers())
+        self.assertEqual(st_p1, 200)
+        self.assertEqual(json.loads(raw_p1)['profile']['parish_code'], 'PAR-01')
+
+        st_p2, _, raw_p2 = self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'mel_diocese',
+        }, self._valid_post_headers())
+        self.assertEqual(st_p2, 200)
+        self.assertEqual(json.loads(raw_p2)['active_persona'], 'mel_diocese')
 
         # 2. POST /v1/tasks
         st_task, _, raw_task = self._req('POST', '/apse-service/v1/tasks', {

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Loopback-only APSE service behind HTTPS reverse proxy and DHIS2 authentication."""
+"""Loopback-only or LAN-accessible APSE service."""
 import base64,json,os,re,secrets,sys,urllib.request,urllib.error,urllib.parse
 from http.server import BaseHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
@@ -25,7 +25,7 @@ def identity(headers):
  if not roles or not units:raise Fault(403,'apse_assignment_required')
  return dict(id=me['id'],name=me.get('displayName',''),roles=roles,paths=[o['path'] for o in units],units=units)
 class Handler(BaseHTTPRequestHandler):
- server_version='APSE/0.8'
+ server_version='APSE/1.0'
  def log_message(self,fmt,*args):pass # No request paths, cookies or case codes in access logs.
  def send(self,status,value,mime='application/json',filename=None):
   data=value if isinstance(value,bytes) else json.dumps(value,ensure_ascii=False).encode()
@@ -40,12 +40,18 @@ class Handler(BaseHTTPRequestHandler):
  def route(self,method):
   try:
    parsed=urllib.parse.urlsplit(self.path);path=parsed.path
-   if path==PREFIX+'/health':return self.send(200,{'status':'up','version':'0.8.0'})
+   if path==PREFIX+'/health':return self.send(200,{'status':'up','version':'1.0.0'})
    if not path.startswith(PREFIX+'/'):raise Fault(404,'not_found')
    if method!='GET':
     # Same-origin JS custom header prevents cross-site form CSRF; no CORS enabled.
     if self.headers.get('X-APSE-Client')!='web':raise Fault(403,'client_header_required')
-    if self.headers.get('Origin')!=PUBLIC:raise Fault(403,'origin_denied')
+    origin=(self.headers.get('Origin') or '').rstrip('/')
+    host=self.headers.get('Host','')
+    allowed_origins={PUBLIC}
+    if host:
+     allowed_origins.add('http://'+host)
+     allowed_origins.add('https://'+host)
+    if not origin or origin not in allowed_origins:raise Fault(403,'origin_denied')
     if not self.headers.get('Content-Type','').startswith('application/json'):raise Fault(415,'json_required')
    user=identity(self.headers);body={};q=urllib.parse.parse_qs(parsed.query)
    if method!='GET':
@@ -64,6 +70,7 @@ class Handler(BaseHTTPRequestHandler):
     all_units=upstream('organisationUnits.json?fields=id,name,path&paging=false',self.headers).get('organisationUnits',[])
     user['units']=[u for u in all_units if any(u['path']==p or u['path'].startswith(p+'/')for p in user['paths'])]
     return self.send(200,ENGINE.v1_bootstrap(user,get('parish'),get('period'),get('axis')))
+   if path==PREFIX+'/v1/persona' and method=='POST':return self.send(200,ENGINE.v1_set_persona(user,body))
    if path==PREFIX+'/v1/tasks' and method=='POST':return self.send(201,ENGINE.v1_create_task(user,body))
    if path==PREFIX+'/v1/logs' and method=='POST':return self.send(201,ENGINE.v1_submit_log(user,body))
    if path==PREFIX+'/v1/review' and method=='POST':return self.send(200,ENGINE.v1_review_log(user,body))
