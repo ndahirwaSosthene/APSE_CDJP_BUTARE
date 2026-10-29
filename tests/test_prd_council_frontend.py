@@ -29,8 +29,7 @@ from pathlib import Path
 import websockets
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME_PYTHON = ROOT / "runtime" / "windows" / "python.exe"
-BOOT_SCRIPT = ROOT / "service" / "portable_boot.py"
+BOOT_SCRIPT = ROOT / "run.py"
 CHROME_EXE = Path(r"C:\Program Files\Google\Chrome\Application\chrome.exe")
 if not CHROME_EXE.exists():
     CHROME_EXE = Path(r"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe")
@@ -170,7 +169,7 @@ async def run_frontend_suite():
 
     try:
         # 1. Start isolated loopback APSE server
-        python_bin = str(RUNTIME_PYTHON if RUNTIME_PYTHON.exists() else sys.executable)
+        python_bin = sys.executable
         server_cmd = [
             python_bin,
             "-X",

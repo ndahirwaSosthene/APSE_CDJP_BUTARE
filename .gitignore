@@ -1,5 +1,12 @@
 __pycache__/
-*.pyc
-logs/
-portable_data/no_auth.key
-tests/frontend_multi_viewport_report.json
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+data/runtime_store/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.key
+*.enc

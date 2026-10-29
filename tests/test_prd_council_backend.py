@@ -27,8 +27,9 @@ from openpyxl import Workbook, load_workbook
 from docx import Document
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / 'service'))
+sys.path.insert(0, str(ROOT / 'backend'))
 
+from catalog import get_catalog
 from engine import Engine, Fault
 from v1_redesign import AXIS_NATURAL, ISSUE_CATEGORIES, PARISH_DISTRICTS, compute_impact_rating, compute_pastoral
 from reports import safe
@@ -100,15 +101,15 @@ class Domain1StrategyAndMETests(unittest.TestCase):
             self.assertEqual(set(g['labels'].keys()), {'en', 'rw', 'fr', 'sw'})
             self.assertTrue(g['outcome_code'].startswith(g['axis_code'] + '.'))
 
-        # Verify registers/strategic_results.json uses "label" vs "labels" in metadata_seed.json
-        strat_results = json.loads((ROOT / 'registers/strategic_results.json').read_text(encoding='utf-8'))
+        # Verify unified catalog strategic_results uses "label" vs "labels" in metadata_seed
+        strat_results = get_catalog()['strategic_results']
         self.assertEqual(len(strat_results), 13)
         self.assertIn('label', strat_results[0])
         self.assertNotIn('labels', strat_results[0])
 
     def test_tc_strat_03_15_interventions_and_35_kpis_null_on_zero_observations(self):
         """TC-STRAT-03: 15 Interventions (A1.I1-A5.I3) & 35 KPIs (null when 0 observations)."""
-        interventions = json.loads((ROOT / 'registers/strategic_interventions.json').read_text(encoding='utf-8'))
+        interventions = get_catalog()['strategic_interventions']
         self.assertEqual(len(interventions), 15)
         seed_interventions = self.engine.metadata()['interventions']
         self.assertEqual(len(seed_interventions), 15)
@@ -117,7 +118,7 @@ class Domain1StrategyAndMETests(unittest.TestCase):
             axis_ints = [i['code'] for i in seed_interventions if i['axis'] == axis_code]
             self.assertEqual(axis_ints, [f'{axis_code}.I1', f'{axis_code}.I2', f'{axis_code}.I3'])
 
-        kpi_dict = json.loads((ROOT / 'registers/kpi_dictionary.json').read_text(encoding='utf-8'))
+        kpi_dict = get_catalog()['kpi_dictionary']
         self.assertEqual(len(kpi_dict), 35)
         for item in kpi_dict:
             self.assertEqual(set(item['label'].keys()), {'en', 'fr', 'rw', 'sw'})
@@ -1180,13 +1181,14 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        import time
         cls.temp_dir = tempfile.TemporaryDirectory()
         cls.port = 18791
         cls.base_url = f'http://127.0.0.1:{cls.port}'
         cls.proc = subprocess.Popen(
             [
                 sys.executable, '-X', 'utf8',
-                str(ROOT / 'service/portable_boot.py'),
+                str(ROOT / 'run.py'),
                 '--no-auth', '--no-browser',
                 '--port', str(cls.port),
                 '--data', cls.temp_dir.name,
@@ -1198,7 +1200,14 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
         )
         ready_line = cls.proc.stdout.readline()
         if 'APSE LOCAL' not in ready_line:
-            raise RuntimeError(f'Portable server failed to start: {ready_line}')
+            raise RuntimeError(f'FastAPI server failed to start: {ready_line}')
+        for _ in range(40):
+            try:
+                with urllib.request.urlopen(cls.base_url + '/apse-service/health', timeout=1) as r:
+                    if r.status == 200:
+                        break
+            except Exception:
+                time.sleep(0.15)
 
     @classmethod
     def tearDownClass(cls):
