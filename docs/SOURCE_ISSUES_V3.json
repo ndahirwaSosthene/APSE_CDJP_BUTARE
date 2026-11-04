@@ -1,0 +1,26 @@
+[
+  {
+    "code": "GEOGRAPHY_INCOMPLETE",
+    "detail": "No complete named CCJP/CEB/sector/cell register in attached files; do not fabricate or infer parents."
+  },
+  {
+    "code": "PARISH_ALIASES",
+    "detail": "Kibirizi/Kibilizi; Kirarammogo/Kirarambogo; St. Dominique/St Dominique require institutional alias confirmation."
+  },
+  {
+    "code": "ANNUAL_TOTAL_FORMULAS",
+    "detail": "Economat total G73 repeats G64 and G58 and references blank G74; use source line values, not this total."
+  },
+  {
+    "code": "DUPLICATE_SOURCE_NUMBER",
+    "detail": "Annual activity numbering includes repeated 7 and omits 5; IDs use source row, not the displayed number."
+  },
+  {
+    "code": "A3_NO_DETAILED_ANNUAL_ROWS",
+    "detail": "Economat AP1 template has no filled annual activity rows under A3; strategic operational types remain available, not invented tasks."
+  },
+  {
+    "code": "TRANSLATION_REVIEW",
+    "detail": "All metadata support four languages; source-only narrative translations must be completed/validated by MEL or via human-reviewed AI assistance."
+  }
+]

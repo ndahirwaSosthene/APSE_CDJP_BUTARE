@@ -141,6 +141,18 @@ PERSONA_PROFILES = [
 ]
 
 
+
+STAFF_TEST_PROFILES = [
+    {'key': 'mel.theophile', 'name': 'Théophile Habimana (MEL)', 'label': 'Chargé APSE MEL & Communication — Théophile (All 27 Parishes)', 'roles': ['APSE_MEL', 'APSE_COMMUNICATION', 'APSE_STAFF'], 'parish_code': None},
+    {'key': 'direction.janvier', 'name': 'Abbé Janvier Nduwayezu (Directeur)', 'label': 'Directeur CDJP — Abbé Janvier (Final Approval)', 'roles': ['APSE_DIRECTION'], 'parish_code': None},
+    {'key': 'coordination.emmanuel', 'name': 'Emmanuel Nsabimana (Coordinateur)', 'label': 'Coordinateur CDJP — Emmanuel (Operational Verification)', 'roles': ['APSE_COORDINATION', 'APSE_REVIEWER', 'APSE_STAFF'], 'parish_code': None},
+    {'key': 'finance.marceline', 'name': 'Marceline Mukandayisenga (Finance & RH)', 'label': 'Comptable / Finance & RH — Marceline (F19 / F31 / F32)', 'roles': ['APSE_FINANCE', 'APSE_HR', 'APSE_STAFF'], 'parish_code': None},
+    {'key': 'cooperation.ruth', 'name': 'Ruth Kamanzi (Assistante Technique)', 'label': 'Assistante Technique / Coopération — Ruth (Programmes & Learning)', 'roles': ['APSE_STAFF', 'APSE_REVIEWER'], 'parish_code': None},
+    {'key': 'driver.emmanuel', 'name': 'Emmanuel Uwimana (Chauffeur)', 'label': 'Chauffeur & Logistique — Emmanuel (Missions F33 & Timesheets F31)', 'roles': ['APSE_STAFF'], 'parish_code': None},
+    {'key': 'cpjp.test', 'name': 'Comité CPJP Gakoma (PAR-01)', 'label': 'Comité Paroissial CPJP — Gakoma (PAR-01)', 'roles': ['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP', 'APSE_CEB'], 'parish_code': 'PAR-01'},
+]
+
+
 def compute_pastoral(event_date_str):
     try:
         d = date.fromisoformat(str(event_date_str))
@@ -247,7 +259,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             return user
         if not str(user.get('id', '')).endswith(':NO_AUTH'):
             return user
-        prof = next((p for p in PERSONA_PROFILES if p['key'] == persona_key), None)
+        prof = next((p for p in (PERSONA_PROFILES + STAFF_TEST_PROFILES) if p['key'] == persona_key), None)
         if not prof:
             return user
         if not prof['parish_code']:
@@ -277,7 +289,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
     def v1_set_persona(self, user, body):
         from engine import Fault
         key = str(body.get('persona_key', '')).strip()
-        prof = next((p for p in PERSONA_PROFILES if p['key'] == key), None)
+        prof = next((p for p in (PERSONA_PROFILES + STAFF_TEST_PROFILES) if p['key'] == key), None)
         if not prof:
             raise Fault(422, 'plain_error', 'Choose a valid user role profile.')
         self._v1_persona_key = key
@@ -875,7 +887,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                     'active_persona': getattr(self, '_v1_persona_key', 'mel_diocese'),
                     'permissions': perms,
                 },
-                'personas': PERSONA_PROFILES,
+                'personas': PERSONA_PROFILES, 'staff_accounts': STAFF_TEST_PROFILES,
                 'volets': rbac.VOLETS,
                 'plan_horizons': rbac.PLAN_HORIZONS,
                 'parishes': parishes,

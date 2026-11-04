@@ -1,0 +1,41 @@
+{
+  "ps": {
+    "name": "Plan strategique CDJP Butare 2026 2031 Version Finale 03.09.2026 (1).docx",
+    "authority": "Latest supplied final PS",
+    "sections": [
+      "Strategic objectives",
+      "Result/intervention chain",
+      "Indicative annual costing",
+      "Annual roadmap",
+      "Governance RACI",
+      "Feedback hierarchy",
+      "Pastoral periods"
+    ]
+  },
+  "specification": {
+    "name": "Specifications_Systeme_APSE_CDJP_Butare_2026-2031.docx",
+    "version": "2"
+  },
+  "manual": {
+    "name": "20260805_Manuel des Procedures CDJP Butare July 2026(1).docx",
+    "scope": "Institutional, administrative and procedural monitoring; not automated tax or payroll rules"
+  },
+  "historicalPS": {
+    "name": "Plan strategique CDJP Butare 2026-2031 12 8 2026 Final(1).docx",
+    "library_file_id": "libfile_4282508117ac819198d4eeb8cc21278a",
+    "sections": [
+      "Table 17",
+      "3.6.5",
+      "4.4",
+      "Table 21"
+    ]
+  },
+  "planningTemplates": [
+    "Nshyashya - Iteganyabikorwa CPJP 2026-2031 PS.xlsx",
+    "202609_Planification Annuel 2026-2027_Economa Butare(1).xlsx"
+  ],
+  "organigrams": [
+    "FR_Organigramme CPJP_2025.docx",
+    "Organigramme_Diocese_Butare_EDITABLE_LANDSCAPE.pptx"
+  ]
+}

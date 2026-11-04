@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[671, 818, 965, 1081]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[660, 795, 929, 1045]"
     },
     {
       "test_id": "TC-UI-11",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[649, 796, 944, 1059]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[638, 773, 908, 1023]"
     },
     {
       "test_id": "TC-UI-11",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-24B499', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-6E5266', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",
@@ -265,7 +265,7 @@
       "title": "4-Step Wizard Validations (Date, Auto Total, Age Mismatch + Auto-Fit, Disability, 4 Modes, Under-Achievement Gate)",
       "status": "PASS",
       "passed": true,
-      "details": "dateErr='Pick a date between 1 Sept 2026 and 31 Aug 2031.', ageAutoFit=10->15, enumResp=2, obsChip=True, underAchErr='Target not reached (5 of 90). Please selec...'"
+      "details": "dateErr='Pick a date between 1 Sept 2026 and 31 Aug 2031.', ageAutoFit=10->15, enumResp=2, obsChip=True, underAchErr='Target not reached (5 of 15). Please selec...'"
     },
     {
       "test_id": "TC-CAP-02",

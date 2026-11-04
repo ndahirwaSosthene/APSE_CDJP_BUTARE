@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "errors": [],
+  "counts": {
+    "optionSets": 5,
+    "options": 43,
+    "dataElements": 246,
+    "programs": 45,
+    "programStages": 45,
+    "programStageSections": 0,
+    "userGroups": 24,
+    "dashboards": 10,
+    "indicatorTypes": 2,
+    "indicators": 28,
+    "dataSets": 1
+  },
+  "languageCoverage": {
+    "rw": 186,
+    "en": 186,
+    "fr": 186,
+    "sw": 186
+  },
+  "notTested": [
+    "Live DHIS2 metadata/schema import",
+    "Live authentication/permissions",
+    "Android offline sync",
+    "Production performance/restore/security",
+    "Native DHIS2 interface translations in rw/sw",
+    "Live pseudonymous journey permissions and production restore"
+  ]
+}

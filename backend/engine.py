@@ -46,7 +46,7 @@ def validate(form,values,event_date,config=None):
    try:date.fromisoformat(s)
    except ValueError:errors.append('date:'+k)
   if field.get('options') and s not in [o['code'] for o in CONFIG['options'][field['options']]]:errors.append('option:'+k)
- nonnegative=['budget','in_kind','planned_cost','spent','committed','local','secured','quantity','unit_cost','hours','km_start','km_end','fuel','balance','group_a_n','group_a_d','group_b_n','group_b_d']
+ nonnegative=['budget','in_kind','planned_cost','spent','committed','local','secured','quantity','unit_cost','hours','km_start','km_end','fuel','balance','group_a_n','group_a_d','group_b_n','group_b_d','q1_target','q1_budget','q2_target','q2_budget','q3_target','q3_budget','q4_target','q4_budget','person_age']
  for k in nonnegative:
   if k in v:
    try:
@@ -92,8 +92,9 @@ from collection_forms import CollectionForms
 from capture import Capture
 from v1_redesign import V1Redesign
 from sync_engine import SyncEngine
+from v091_features import V091FeaturesMixin
 
-class Engine(Governance,Transfers,CollectionForms,Capture,V1Redesign,SyncEngine):
+class Engine(Governance,Transfers,CollectionForms,Capture,V1Redesign,SyncEngine,V091FeaturesMixin):
  def __init__(self,path,key,audit_key,seed_demo=True):
   if len(audit_key)<32:raise ValueError('Audit key must be at least 32 bytes')
   self.db_path=path;self._raw_fernet_key=key;self.crypto=Fernet(key);self.audit_key=audit_key;self.lock=threading.RLock();self.db=sqlite3.connect(path,check_same_thread=False,isolation_level=None);self.db.row_factory=sqlite3.Row
@@ -119,6 +120,7 @@ CREATE INDEX IF NOT EXISTS rec_filter ON records(unit,form,state,event_date);
   self.init_collections()
   self.init_governance()
   self.init_v1(seed_demo=seed_demo)
+  self.init_v091(seed_demo=seed_demo)
  @contextlib.contextmanager
  def tx(self):
   with self.lock:

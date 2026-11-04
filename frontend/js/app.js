@@ -12,6 +12,7 @@ const V1 = {
   theme: localStorage.getItem('apse-theme') || 'light',
   workspace: 'tasks', // 'tasks' | 'approvals' | 'analytics' | 'exports'
   searchQuery: '',
+  mobileNavOpen: false,
   filters: {
     period: 'ALL',
     axis: '',
@@ -140,6 +141,27 @@ const I18N = {
     submit_parish: 'Submit to Parish Reviewer',
     save_offline_btn: 'Save Offline on Device',
     strategy_report: 'Strategy & Impact Summary Report',
+    nav_my_space: 'My Space',
+    nav_seizure: 'Seizure (F01–F45)',
+    nav_files_validation: 'Files & Validation',
+    nav_learning: 'Learning',
+    nav_reports: 'Reports (R01–R13)',
+    nav_offline_vault: 'Prepare / Open Offline',
+    nav_offline_sync: 'Sync Offline Queue',
+    nav_ps_planning: 'PS Planning',
+    nav_metadata: 'Metadata',
+    nav_feedback: 'Back to the File',
+    nav_projects_ops: 'Projects & Operations',
+    nav_staff_eval: 'Staff Achievements',
+    nav_create_form: 'Create / Share Form',
+    nav_drafts: 'Drafts in Progress',
+    nav_ps_dashboard: 'PS Dashboard',
+    nav_assistant: 'Assistant & Controls',
+    nav_contacts: 'Contacts',
+    nav_data_structure: 'Data Structure & Flow',
+    nav_timesheets: 'Timesheets',
+    nav_mel_admin: 'MEL Administration',
+
   },
   rw: {
     nav_tasks: 'Ibikorwa Byanjye',
@@ -185,6 +207,27 @@ const I18N = {
     submit_parish: 'Ohereza kuri Paruwasi ngo Isuzumwe',
     save_offline_btn: 'Bika kuri Mudasobwa (Offline)',
     strategy_report: "Raporo rusange y'Ibyagezweho",
+    nav_my_space: 'Umwanya Wanjye',
+    nav_seizure: 'Kwandika Raporo',
+    nav_files_validation: 'Dosiye n’Igenzura',
+    nav_learning: 'Kwiga n’Ubumenyi',
+    nav_reports: 'Raporo n’Incamake',
+    nav_offline_vault: 'Tegura / Fungura Offline',
+    nav_offline_sync: 'Kuhuza Dosiye Offline',
+    nav_ps_planning: 'Igenamigambi rya PS',
+    nav_metadata: 'Amakuru y’Ibanze',
+    nav_feedback: 'Ibitekerezo ku Dosiye',
+    nav_projects_ops: 'Imishinga n’Ibikorwa',
+    nav_staff_eval: 'Isuzuma ry’Abakozi',
+    nav_create_form: 'Kurema / Gusangiza Ifishi',
+    nav_drafts: 'Inyandiko zitaranozwa',
+    nav_ps_dashboard: 'Imbonerahamwe ya PS',
+    nav_assistant: 'Umufasha n’Igenzura',
+    nav_contacts: 'Aderesi z’Itumanaho',
+    nav_data_structure: 'Imiterere n’Ihererekanya',
+    nav_timesheets: 'Amakarita y’Amasaha',
+    nav_mel_admin: 'Ubuyobozi bwa MEL',
+
   },
   fr: {
     nav_tasks: 'Mes Tâches',
@@ -230,6 +273,27 @@ const I18N = {
     submit_parish: 'Soumettre au réviseur paroissial',
     save_offline_btn: 'Enregistrer hors ligne',
     strategy_report: 'Rapport Synthèse Stratégie et Impact',
+    nav_my_space: 'Mon espace',
+    nav_seizure: 'Saisie (F01–F45)',
+    nav_files_validation: 'Dossiers et validation',
+    nav_learning: 'Apprentissage',
+    nav_reports: 'Rapports (R01–R13)',
+    nav_offline_vault: 'Préparer / ouvrir hors ligne',
+    nav_offline_sync: 'Synchroniser la file hors ligne',
+    nav_ps_planning: 'Planification du PS',
+    nav_metadata: 'Métadonnées',
+    nav_feedback: 'Retours sur les dossiers',
+    nav_projects_ops: 'Projets et opérations',
+    nav_staff_eval: 'Évaluation du personnel',
+    nav_create_form: 'Créer / partager un formulaire',
+    nav_drafts: 'Brouillons en cours',
+    nav_ps_dashboard: 'Tableau de bord PS',
+    nav_assistant: 'Assistant et contrôles',
+    nav_contacts: 'Contacts',
+    nav_data_structure: 'Structure et flux des données',
+    nav_timesheets: 'Feuilles de temps',
+    nav_mel_admin: 'Administration MEL',
+
   },
   sw: {
     nav_tasks: 'Kazi Zangu',
@@ -275,6 +339,27 @@ const I18N = {
     submit_parish: 'Wasilisha kwa Mhakiki wa Parokia',
     save_offline_btn: 'Hifadhi Nje ya Mtandao',
     strategy_report: 'Ripoti ya Muhtasari wa Mkakati na Athari',
+    nav_my_space: 'Nafasi Yangu',
+    nav_seizure: 'Kuingiza Data',
+    nav_files_validation: 'Mafaili na Uthibitisho',
+    nav_learning: 'Mafunzo na Maarifa',
+    nav_reports: 'Ripoti na Takwimu',
+    nav_offline_vault: 'Andaa / Fungua Nje ya Mtandao',
+    nav_offline_sync: 'Sawazisha Nje ya Mtandao',
+    nav_ps_planning: 'Upangaji wa PS',
+    nav_metadata: 'Data za Msingi',
+    nav_feedback: 'Maoni ya Faili',
+    nav_projects_ops: 'Miradi na Uendeshaji',
+    nav_staff_eval: 'Tathmini ya Wafanyakazi',
+    nav_create_form: 'Tengeneza / Shiriki Fomu',
+    nav_drafts: 'Rasimu Zinazoendelea',
+    nav_ps_dashboard: 'Dashibodi ya PS',
+    nav_assistant: 'Msaidizi na Udhibiti',
+    nav_contacts: 'Mawasiliano',
+    nav_data_structure: 'Muundo na Mtiririko wa Data',
+    nav_timesheets: 'Karatasi za Saa',
+    nav_mel_admin: 'Utawala wa MEL',
+
   },
 };
 
@@ -1557,19 +1642,33 @@ function renderWizardView() {
       ),
       h('div', { className: 'v1-field' },
         h('label', { className: 'v1-field-label' }, 'Attach Attendance Sheet or Photo Receipt'),
-        h('input', {
-          type: 'file',
-          className: 'v1-input',
-          accept: '.pdf,.png,.jpg,.jpeg',
-          onChange: e => {
-            const f = e.target.files?.[0];
-            if (f && !w.attachments.includes(f.name)) {
-              w.attachments.push(f.name);
-              saveWizardDraftLocal();
-              renderApp();
-            }
+        h('div', { className: 'v1-file-upload-wrap' },
+          h('button', {
+            type: 'button',
+            className: 'v1-btn v1-btn-secondary v1-file-upload-btn',
+            onClick: () => {
+              const inp = document.getElementById('wizard_file_input');
+              if (inp) inp.click();
+            },
           },
-        }),
+            msIcon('upload_file', 18),
+            h('span', {}, 'Attach Document / Photo...')
+          ),
+          h('input', {
+            id: 'wizard_file_input',
+            type: 'file',
+            style: { display: 'none' },
+            accept: '.pdf,.png,.jpg,.jpeg',
+            onChange: e => {
+              const f = e.target.files?.[0];
+              if (f && !w.attachments.includes(f.name)) {
+                w.attachments.push(f.name);
+                saveWizardDraftLocal();
+                renderApp();
+              }
+            },
+          })
+        ),
         w.attachments.length
           ? h('div', { className: 'v1-chips', style: { marginTop: '8px' } },
               w.attachments.map(a => renderLozenge(a, 'GOOD', 'attach_file'))
@@ -1881,7 +1980,10 @@ function renderNewTaskModal() {
         className: 'v1-btn',
         onClick: async () => {
           try {
-            await apiV1('/v1/tasks', 'POST', state);
+            const res = await apiV1('/v1/tasks', 'POST', state);
+            if (res && res.id && V1.data && Array.isArray(V1.data.tasks)) {
+              V1.data.tasks.unshift(res);
+            }
             V1.newTaskModal = false;
             V1.newTaskState = null;
             await loadBootstrap();
@@ -2769,24 +2871,42 @@ function renderExportsWorkspace() {
         ),
         h('div', { className: 'v1-field' },
           h('label', { className: 'v1-field-label' }, 'Select CSV File'),
-          h('input', {
-            type: 'file',
-            className: 'v1-input',
-            accept: '.csv',
-            onChange: async e => {
-              const file = e.target.files?.[0];
-              if (!file) return;
-              const csvText = await file.text();
-              try {
-                const res = await apiV1('/v1/import', 'POST', { csv_text: csvText, commit: false });
-                V1.csvImportState = { csvText, ...res, mapping: res.mapping || {}, message: '' };
-                renderApp();
-              } catch (err) {
-                V1.csvImportState = { error: err.message };
-                renderApp();
-              }
+          h('div', { className: 'v1-file-upload-wrap' },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary v1-file-upload-btn',
+              onClick: () => {
+                const inp = document.getElementById('csv_import_file_input');
+                if (inp) inp.click();
+              },
             },
-          })
+              msIcon('upload_file', 18),
+              h('span', {}, V1.csvImportState?.filename ? 'Change CSV File...' : 'Choose CSV Spreadsheet...')
+            ),
+            h('input', {
+              id: 'csv_import_file_input',
+              type: 'file',
+              style: { display: 'none' },
+              accept: '.csv',
+              onChange: async e => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const csvText = await file.text();
+                try {
+                  const res = await apiV1('/v1/import', 'POST', { csv_text: csvText, commit: false });
+                  V1.csvImportState = { csvText, filename: file.name, ...res, mapping: res.mapping || {}, message: '' };
+                  renderApp();
+                } catch (err) {
+                  V1.csvImportState = { error: err.message };
+                  renderApp();
+                }
+              },
+            }),
+            V1.csvImportState?.filename ? h('span', { className: 'v1-chip v1-file-chip' },
+              msIcon('description', 14),
+              h('span', {}, V1.csvImportState.filename)
+            ) : null
+          )
         ),
         V1.csvImportState?.error
           ? h('div', { className: 'v1-error-alert' }, msIcon('error', 20), h('span', {}, V1.csvImportState.error))
@@ -2875,11 +2995,349 @@ function renderExportsWorkspace() {
   );
 }
 
+
+/* Mobile Search Overlay with Blurred Backdrop & Live Matches */
+function renderMobileSearchOverlay() {
+  if (!V1.mobileSearchOpen) return null;
+  const q = (V1.searchQuery || '').toLowerCase().trim();
+  const results = [];
+  if (q) {
+    (V1.data?.tasks || []).filter(t =>
+      (t.title && t.title.toLowerCase().includes(q)) ||
+      (t.parish && t.parish.toLowerCase().includes(q)) ||
+      (t.code && t.code.toLowerCase().includes(q)) ||
+      (t.titles && Object.values(t.titles).some(v => String(v).toLowerCase().includes(q)))
+    ).slice(0, 5).forEach(t => {
+      results.push({
+        type: 'Tâche',
+        title: localize(t.titles) || t.title || t.code,
+        subtitle: `${t.parish_name || t.parish_code || 'CDJP'} · ${t.code}`,
+        icon: 'check_box',
+        action: () => {
+          V1.mobileSearchOpen = false;
+          V1.workspace = 'tasks';
+          openWizardForTask(t);
+          renderApp();
+        }
+      });
+    });
+
+    const allTabs = [
+      { id: 'my_space', name: 'Mon espace (My Space)' },
+      { id: 'seizure', name: 'Saisie (Seizure F01–F45)' },
+      { id: 'files_validation', name: 'Dossiers et validation' },
+      { id: 'learning', name: 'Apprentissage (Learning)' },
+      { id: 'reports', name: 'Rapports (Reports R01–R13)' },
+      { id: 'offline_vault', name: 'Préparer / ouvrir hors ligne' },
+      { id: 'offline_sync', name: 'Synchroniser la file hors ligne' },
+      { id: 'ps_planning', name: 'Planification du PS' },
+      { id: 'metadata', name: 'Métadonnées' },
+      { id: 'feedback', name: 'Retours sur les dossiers' },
+      { id: 'projects_ops', name: 'Projets et opérations' },
+      { id: 'staff_eval', name: 'Évaluation du personnel' },
+      { id: 'create_form', name: 'Créer / partager un formulaire' },
+      { id: 'drafts', name: 'Brouillons en cours' },
+      { id: 'ps_dashboard', name: 'Tableau de bord PS' },
+      { id: 'assistant', name: 'Assistant et contrôles' },
+      { id: 'contacts', name: 'Contacts CDJP' },
+      { id: 'data_structure', name: 'Structure et flux des données' },
+      { id: 'timesheets', name: 'Feuilles de temps' },
+      { id: 'mel_admin', name: 'Administration MEL' },
+    ];
+    allTabs.filter(tab => tab.name.toLowerCase().includes(q)).forEach(tab => {
+      results.push({
+        type: 'Espace',
+        title: tab.name,
+        subtitle: 'Accéder à cet espace de travail',
+        icon: 'open_in_new',
+        action: () => {
+          V1.mobileSearchOpen = false;
+          V1.workspace = tab.id;
+          renderApp();
+        }
+      });
+    });
+  }
+
+  return h('div', {
+    className: 'v1-search-overlay',
+    onClick: e => {
+      if (e.target.classList.contains('v1-search-overlay')) {
+        V1.mobileSearchOpen = false;
+        renderApp();
+      }
+    }
+  },
+    h('div', { className: 'v1-search-overlay-header' },
+      h('div', { className: 'v1-search-overlay-box' },
+        h('span', { className: 'v1-search-icon' }, msIcon('search', 22)),
+        h('input', {
+          type: 'search',
+          className: 'v1-mobile-search-input',
+          placeholder: L('search_placeholder'),
+          value: V1.searchQuery,
+          autofocus: true,
+          onInput: e => {
+            V1.searchQuery = e.target.value;
+            renderApp();
+          },
+          onKeyDown: e => {
+            if (e.key === 'Escape') {
+              V1.mobileSearchOpen = false;
+              renderApp();
+            }
+          }
+        }),
+        V1.searchQuery ? h('button', {
+          type: 'button',
+          style: {
+            position: 'absolute',
+            right: '12px',
+            background: 'transparent',
+            border: 0,
+            cursor: 'pointer',
+            color: 'var(--text-muted)'
+          },
+          onClick: () => {
+            V1.searchQuery = '';
+            renderApp();
+          }
+        }, msIcon('cancel', 18)) : null
+      ),
+      h('button', {
+        type: 'button',
+        className: 'v1-search-overlay-close',
+        title: 'Fermer la recherche',
+        onClick: () => {
+          V1.mobileSearchOpen = false;
+          renderApp();
+        }
+      }, msIcon('close', 20))
+    ),
+    results.length > 0 ? h('div', { className: 'v1-search-overlay-results' },
+      results.map(r => h('div', {
+        className: 'v1-card',
+        style: {
+          padding: '12px 16px',
+          marginBottom: '6px',
+          cursor: 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        },
+        onClick: r.action
+      },
+        msIcon(r.icon, 20),
+        h('div', { style: { flex: 1, minWidth: 0 } },
+          h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
+            h('span', { className: 'v1-badge', style: { fontSize: '0.625rem' } }, r.type),
+            h('strong', { style: { fontSize: '0.875rem' } }, r.title)
+          ),
+          h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' } }, r.subtitle)
+        ),
+        msIcon('arrow_forward', 16)
+      ))
+    ) : (q ? h('div', {
+      className: 'v1-search-overlay-results',
+      style: { padding: '24px', textAlign: 'center', color: 'var(--text-muted)' }
+    }, `Aucun résultat pour "${V1.searchQuery}"`) : null)
+  );
+}
+
+function renderWorkspaceCanvas() {
+  const ws = V1.workspace;
+  if (ws === 'tasks') return renderTasksWorkspace();
+  if (ws === 'approvals') return renderApprovalsWorkspace();
+  if (ws === 'analytics') return renderAnalyticsWorkspace();
+  if (ws === 'exports') return renderExportsWorkspace();
+
+  if (window.V091Views) {
+    switch (ws) {
+      case 'my_space': return window.V091Views.renderMySpaceWorkspace();
+      case 'seizure': return window.V091Views.renderSeizureWorkspace();
+      case 'files_validation': return window.V091Views.renderFilesValidationWorkspace();
+      case 'learning': return window.V091Views.renderLearningWorkspace();
+      case 'reports': return window.V091Views.renderReportsWorkspace();
+      case 'offline_vault': return window.V091Views.renderOfflineVaultWorkspace();
+      case 'offline_sync': return window.V091Views.renderOfflineSyncWorkspace();
+      case 'ps_planning': return window.V091Views.renderPSPlanningWorkspace();
+      case 'metadata': return window.V091Views.renderMetadataWorkspace();
+      case 'feedback': return window.V091Views.renderFeedbackWorkspace();
+      case 'projects_ops': return window.V091Views.renderProjectsOpsWorkspace();
+      case 'staff_eval': return window.V091Views.renderStaffEvalWorkspace();
+      case 'create_form': return window.V091Views.renderCreateFormWorkspace();
+      case 'drafts': return window.V091Views.renderDraftsWorkspace();
+      case 'ps_dashboard': return window.V091Views.renderPSDashboardWorkspace();
+      case 'assistant': return window.V091Views.renderAssistantWorkspace();
+      case 'contacts': return window.V091Views.renderContactsWorkspace();
+      case 'data_structure': return window.V091Views.renderDataStructureWorkspace();
+      case 'timesheets': return window.V091Views.renderTimesheetsWorkspace();
+      case 'mel_admin': return window.V091Views.renderMelAdminWorkspace();
+    }
+  }
+  return renderTasksWorkspace();
+}
+
 /* Master App Shell Renderer */
+
+function renderMobileNavDrawer() {
+  if (!V1.mobileNavOpen) return null;
+
+  const perms = V1.data?.user?.permissions || { tier: 'mel', can_review: true };
+  const pendingTasksCount = (V1.data?.tasks || []).filter(t => t.completion_pct < 100).length;
+  const pendingApprovalsCount = V1.data?.analytics?.summary?.pending_approvals || 0;
+  const qLen = V1.offlineQueue.length;
+  const isDark = V1.theme === 'dark';
+
+  const navGroups = [
+    {
+      title: 'Espace & Saisie',
+      items: [
+        { id: 'tasks', icon: 'home', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
+        { id: 'seizure', icon: 'edit_document', label: L('nav_seizure') },
+        { id: 'drafts', icon: 'draft', label: L('nav_drafts') },
+        { id: 'approvals', icon: 'fact_check', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
+      ]
+    },
+    {
+      title: 'Planification & Stratégie',
+      items: [
+        { id: 'ps_planning', icon: 'event_note', label: L('nav_ps_planning') },
+        { id: 'analytics', icon: 'insights', label: L('nav_analytics') },
+        { id: 'projects_ops', icon: 'work', label: L('nav_projects_ops') },
+        { id: 'staff_eval', icon: 'badge', label: L('nav_staff_eval') },
+      ]
+    },
+    {
+      title: 'Rapports & Formulaires',
+      items: [
+        { id: 'exports', icon: 'download', label: L('nav_exports') },
+        { id: 'learning', icon: 'school', label: L('nav_learning') },
+        { id: 'create_form', icon: 'dynamic_form', label: L('nav_create_form') },
+      ]
+    },
+    {
+      title: 'Hors-Ligne & Synchronisation',
+      items: [
+        { id: 'offline_vault', icon: 'lock', label: L('nav_offline_vault') },
+        { id: 'offline_sync', icon: 'sync', label: L('nav_offline_sync'), badge: qLen > 0 ? qLen : null },
+      ]
+    },
+    {
+      title: 'Administration & Organisation',
+      items: [
+        { id: 'assistant', icon: 'assistant', label: L('nav_assistant') },
+        { id: 'feedback', icon: 'chat', label: L('nav_feedback') },
+        { id: 'contacts', icon: 'contacts', label: L('nav_contacts') },
+        { id: 'data_structure', icon: 'account_tree', label: L('nav_data_structure') },
+        { id: 'timesheets', icon: 'schedule', label: L('nav_timesheets') },
+        { id: 'metadata', icon: 'tune', label: L('nav_metadata') },
+        { id: 'mel_admin', icon: 'admin_panel_settings', label: L('nav_mel_admin') },
+      ]
+    }
+  ];
+
+  return h('div', { className: 'v1-mobile-drawer', role: 'dialog', 'aria-modal': 'true' },
+    /* Header with Brand and Close Button */
+    h('div', { className: 'v1-mobile-drawer-header' },
+      h('div', { className: 'v1-mobile-drawer-brand' },
+        h('span', { className: 'v1-brand-badge', style: { fontSize: '0.8125rem' } }, 'APSE CDJP BUTARE'),
+        h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, 'v0.9.1')
+      ),
+      h('button', {
+        type: 'button',
+        className: 'v1-modal-close',
+        title: 'Fermer le menu',
+        onClick: () => {
+          V1.mobileNavOpen = false;
+          renderApp();
+        }
+      }, '×')
+    ),
+
+    /* Scrollable Drawer Body with All 20 Workspaces */
+    h('div', { className: 'v1-mobile-drawer-body' },
+      navGroups.map((grp, gIdx) =>
+        h('div', { key: gIdx },
+          h('div', { className: 'v1-mobile-drawer-group-title' }, grp.title),
+          grp.items.map(it => {
+            const isActive = V1.workspace === it.id;
+            return h('button', {
+              key: it.id,
+              type: 'button',
+              className: 'v1-mobile-drawer-nav-item' + (isActive ? ' active' : ''),
+              onClick: () => {
+                V1.wizard = null;
+                V1.workspace = it.id;
+                V1.mobileNavOpen = false;
+                renderApp();
+              }
+            },
+              h('span', { style: { display: 'flex', alignItems: 'center', gap: '12px' } },
+                msIcon(it.icon, 20),
+                h('span', {}, it.label)
+              ),
+              it.badge ? h('span', { className: 'v1-nav-badge' }, String(it.badge)) : null
+            );
+          })
+        )
+      )
+    ),
+
+    /* Footer with Language, Theme, and Persona */
+    h('div', { className: 'v1-mobile-drawer-footer' },
+      h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' } },
+        h('div', { style: { display: 'flex', gap: '6px' } },
+          ['rw', 'fr', 'en', 'sw'].map(code =>
+            h('button', {
+              key: code,
+              type: 'button',
+              className: 'v1-btn v1-btn-sm ' + (V1.lang === code ? 'v1-btn-primary' : 'v1-btn-secondary'),
+              style: { minHeight: '34px', padding: '0 10px' },
+              onClick: () => {
+                V1.lang = code;
+                localStorage.setItem('apse-v1-lang', code);
+                renderApp();
+              }
+            }, code.toUpperCase())
+          )
+        ),
+        h('button', {
+          type: 'button',
+          className: 'v1-btn v1-btn-sm v1-btn-secondary',
+          style: { minHeight: '34px' },
+          onClick: () => {
+            V1.theme = isDark ? 'light' : 'dark';
+            localStorage.setItem('apse-theme', V1.theme);
+            renderApp();
+          }
+        },
+          msIcon(isDark ? 'light_mode' : 'dark_mode', 16),
+          h('span', {}, isDark ? 'Clair' : 'Sombre')
+        )
+      )
+    )
+  );
+}
+
 function renderApp() {
   document.documentElement.lang = V1.lang;
   document.documentElement.dataset.theme = V1.theme;
   document.body.className = 'v1-body';
+
+  // Capture active focus and cursor selection range before replacing children
+  const activeEl = document.activeElement;
+  let restoreFocus = null;
+  if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+    restoreFocus = {
+      id: activeEl.id || null,
+      className: activeEl.className || null,
+      isDesktopSearch: activeEl.classList.contains('v1-search-input'),
+      isMobileSearch: activeEl.classList.contains('v1-mobile-search-input'),
+      selectionStart: activeEl.selectionStart,
+      selectionEnd: activeEl.selectionEnd,
+    };
+  }
 
   const pendingTasksCount = (V1.data?.tasks || []).filter(t => t.completion_pct < 100).length;
   const pendingApprovalsCount = V1.data?.analytics?.summary?.pending_approvals || 0;
@@ -2901,34 +3359,62 @@ function renderApp() {
     syncText = L('sync_offline', qLen);
   }
 
-  /* Section 4: Core Functional Mapping for Navigation Icons (Adapted per Role Mandate) */
-  const allNavItems = [
+  /* 4 Primary Navigation Items for Mobile Bottom Navigation (Strictly 4 Tabs for TC-UI-07) */
+  const bottomNavItems = [
     { id: 'tasks', icon: 'check_box', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
     { id: 'approvals', icon: 'fact_check', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
     { id: 'analytics', icon: 'insights', label: L('nav_analytics'), badge: null },
     { id: 'exports', icon: 'download', label: L('nav_exports'), badge: null },
   ];
-  const allowedWs = perms.workspaces || ['tasks', 'approvals', 'analytics', 'exports'];
-  const navItems = allNavItems.filter(it => allowedWs.includes(it.id));
+
+  /* Comprehensive 20 Tabs / Workspaces for Desktop Sidebar Navigation */
+  const allNavItems = [
+    { id: 'tasks', icon: 'home', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount, group: 'Espace & Saisie', alias: 'my_space' },
+    { id: 'seizure', icon: 'edit_document', label: L('nav_seizure'), badge: null, group: 'Espace & Saisie' },
+    { id: 'drafts', icon: 'draft', label: L('nav_drafts'), badge: null, group: 'Espace & Saisie' },
+    { id: 'approvals', icon: 'fact_check', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount, group: 'Espace & Saisie', alias: 'files_validation' },
+    { id: 'ps_planning', icon: 'event_note', label: L('nav_ps_planning'), badge: null, group: 'Planification & Stratégie' },
+    { id: 'analytics', icon: 'insights', label: L('nav_analytics'), badge: null, group: 'Planification & Stratégie', alias: 'ps_dashboard' },
+    { id: 'projects_ops', icon: 'work', label: L('nav_projects_ops'), badge: null, group: 'Planification & Stratégie' },
+    { id: 'staff_eval', icon: 'badge', label: L('nav_staff_eval'), badge: null, group: 'Planification & Stratégie' },
+    { id: 'exports', icon: 'download', label: L('nav_exports'), badge: null, group: 'Rapports & Apprentissage', alias: 'reports' },
+    { id: 'learning', icon: 'school', label: L('nav_learning'), badge: null, group: 'Rapports & Apprentissage' },
+    { id: 'create_form', icon: 'dynamic_form', label: L('nav_create_form'), badge: null, group: 'Rapports & Apprentissage' },
+    { id: 'offline_vault', icon: 'lock', label: L('nav_offline_vault'), badge: null, group: 'Hors ligne & Synchronisation' },
+    { id: 'offline_sync', icon: 'sync', label: L('nav_offline_sync'), badge: qLen > 0 ? qLen : null, group: 'Hors ligne & Synchronisation' },
+    { id: 'assistant', icon: 'assistant', label: L('nav_assistant'), badge: null, group: 'Administration & Organisation' },
+    { id: 'feedback', icon: 'chat', label: L('nav_feedback'), badge: null, group: 'Administration & Organisation' },
+    { id: 'contacts', icon: 'contacts', label: L('nav_contacts'), badge: null, group: 'Administration & Organisation' },
+    { id: 'data_structure', icon: 'account_tree', label: L('nav_data_structure'), badge: null, group: 'Administration & Organisation' },
+    { id: 'timesheets', icon: 'schedule', label: L('nav_timesheets'), badge: null, group: 'Administration & Organisation' },
+    { id: 'metadata', icon: 'tune', label: L('nav_metadata'), badge: null, group: 'Administration & Organisation' },
+    { id: 'mel_admin', icon: 'admin_panel_settings', label: L('nav_mel_admin'), badge: null, group: 'Administration & Organisation' },
+  ];
 
   const shell = h('div', {},
     /* Single 56px Top Bar */
     h('header', { className: 'v1-topbar' },
       h('div', {
         className: 'v1-brand',
-        title: 'Return to My Tasks Home',
+        title: 'Return to My Tasks Home / Open Navigation Menu',
         onClick: () => {
-          V1.wizard = null;
-          V1.newTaskModal = false;
-          V1.personaModal = false;
-          V1.syncModal = false;
-          V1.workspace = 'tasks';
-          renderApp();
+          if (typeof window !== 'undefined' && window.innerWidth <= 1024) {
+            V1.mobileNavOpen = !V1.mobileNavOpen;
+            renderApp();
+          } else {
+            V1.wizard = null;
+            V1.newTaskModal = false;
+            V1.personaModal = false;
+            V1.syncModal = false;
+            V1.workspace = 'tasks';
+            renderApp();
+          }
         },
       },
         h('span', { className: 'v1-brand-text' }, 'apse.'),
         h('span', { className: 'v1-brand-badge' }, 'CDJP BUTARE')
       ),
+      /* Desktop Search Input */
       h('div', { className: 'v1-search-wrap' },
         h('span', { className: 'v1-search-icon' }, msIcon('search', 20)),
         h('input', {
@@ -2941,6 +3427,18 @@ function renderApp() {
             renderApp();
           },
         })
+      ),
+      /* Dedicated Mobile Search Icon Button */
+      h('button', {
+        type: 'button',
+        className: 'v1-mobile-search-btn',
+        title: 'Search / Shakisha',
+        onClick: () => {
+          V1.mobileSearchOpen = true;
+          renderApp();
+        },
+      },
+        msIcon('search', 20)
       ),
       h('div', { className: 'v1-topbar-right' },
         h('button', {
@@ -2966,19 +3464,18 @@ function renderApp() {
           msIcon(syncIcon, 16),
           h('span', {}, syncText)
         ),
-        h('div', { className: 'v1-lang-pills', role: 'group', 'aria-label': 'Language' },
-          ['rw', 'fr', 'en', 'sw'].map(code =>
-            h('button', {
-              type: 'button',
-              className: 'v1-lang-btn' + (V1.lang === code ? ' active' : ''),
-              onClick: () => {
-                V1.lang = code;
-                localStorage.setItem('apse-v1-lang', code);
-                renderApp();
-              },
-            }, code.toUpperCase())
-          )
-        ),
+        /* Mobile Language Chip (in Topbar on Mobile <= 767px) */
+        h('button', {
+          type: 'button',
+          className: 'v1-mobile-lang-chip',
+          title: 'Change Language / Hindura Ururimi',
+          onClick: () => {
+            const nextLang = { rw: 'fr', fr: 'en', en: 'sw', sw: 'rw' };
+            V1.lang = nextLang[V1.lang] || 'en';
+            localStorage.setItem('apse-v1-lang', V1.lang);
+            renderApp();
+          },
+        }, (V1.lang || 'en').toUpperCase()),
         h('button', {
           type: 'button',
           className: 'v1-theme-toggle',
@@ -3018,10 +3515,11 @@ function renderApp() {
     /* Main Shell: Fixed 240px Left Navigation + Fluid 16-Column Workspace Canvas */
     h('div', { className: 'v1-shell' },
       h('aside', { className: 'v1-sidebar' },
-        navItems.map(item =>
-          h('button', {
+        allNavItems.map(item => {
+          const isActive = V1.workspace === item.id || (item.alias && V1.workspace === item.alias);
+          return h('button', {
             type: 'button',
-            className: 'v1-nav-item' + (V1.workspace === item.id && !V1.wizard ? ' active' : ''),
+            className: 'v1-nav-item' + (isActive && !V1.wizard ? ' active' : ''),
             onClick: () => {
               V1.wizard = null;
               V1.workspace = item.id;
@@ -3033,8 +3531,8 @@ function renderApp() {
               h('span', {}, item.label)
             ),
             item.badge ? h('span', { className: 'v1-nav-badge' }, String(item.badge)) : null
-          )
-        ),
+          );
+        }),
         h('div', { className: 'v1-nav-divider' }),
         h('button', {
           type: 'button',
@@ -3050,6 +3548,24 @@ function renderApp() {
           h('span', { className: 'v1-nav-label' },
             msIcon('lock', 20),
             h('span', {}, L('nav_confidential'))
+          )
+        ),
+        /* Desktop Language Switcher in Sidebar */
+        h('div', { className: 'v1-sidebar-lang-wrap' },
+          h('div', { className: 'v1-nav-group-label' }, 'Language / Ururimi'),
+          h('div', { className: 'v1-lang-pills', role: 'group', 'aria-label': 'Language', style: { width: '100%', display: 'flex', justifyContent: 'space-between' } },
+            ['rw', 'fr', 'en', 'sw'].map(code =>
+              h('button', {
+                type: 'button',
+                className: 'v1-lang-btn' + (V1.lang === code ? ' active' : ''),
+                style: { flex: 1, textAlign: 'center', padding: '4px 0' },
+                onClick: () => {
+                  V1.lang = code;
+                  localStorage.setItem('apse-v1-lang', code);
+                  renderApp();
+                },
+              }, code.toUpperCase())
+            )
           )
         ),
         h('div', { className: 'v1-sidebar-footer' },
@@ -3076,18 +3592,12 @@ function renderApp() {
         )
       ),
       h('main', { className: 'v1-canvas' },
-        V1.workspace === 'tasks'
-          ? renderTasksWorkspace()
-          : V1.workspace === 'approvals'
-          ? renderApprovalsWorkspace()
-          : V1.workspace === 'analytics'
-          ? renderAnalyticsWorkspace()
-          : renderExportsWorkspace()
+        renderWorkspaceCanvas()
       )
     ),
-    /* Mobile 4-Tab Bottom Navigation Bar (24px Material Symbols) */
+    /* Mobile 4-Tab Bottom Navigation Bar (24px Material Symbols - Exactly 4 Buttons for TC-UI-07) */
     h('nav', { className: 'v1-bottom-nav', 'aria-label': 'Mobile Workspace Navigation' },
-      navItems.map(item =>
+      bottomNavItems.map(item =>
         h('button', {
           type: 'button',
           className: 'v1-bottom-btn' + (V1.workspace === item.id ? ' active' : ''),
@@ -3102,13 +3612,39 @@ function renderApp() {
         )
       )
     ),
+    renderMobileSearchOverlay(),
     renderMobileBottomSheet(),
     renderPersonaModal(),
-    renderSyncModal()
+    renderSyncModal(),
+    renderMobileNavDrawer(),
+    window.V091Views && window.V091Views.renderInAppModal ? window.V091Views.renderInAppModal() : null,
+    window.V091Views && window.V091Views.renderInAppToast ? window.V091Views.renderInAppToast() : null
   );
 
   const root = document.getElementById('v1_root') || document.body;
   root.replaceChildren(shell);
+
+  // Restore focus and cursor selection range
+  if (restoreFocus) {
+    let target = null;
+    if (restoreFocus.id) target = document.getElementById(restoreFocus.id);
+    if (!target && restoreFocus.isMobileSearch) target = document.querySelector('.v1-mobile-search-input');
+    if (!target && restoreFocus.isDesktopSearch) target = document.querySelector('.v1-search-input');
+    if (!target && restoreFocus.className) {
+      try {
+        const sel = '.' + restoreFocus.className.trim().split(/\s+/).filter(Boolean).join('.');
+        target = document.querySelector(sel);
+      } catch (_) {}
+    }
+    if (target) {
+      target.focus();
+      try {
+        if (typeof restoreFocus.selectionStart === 'number' && typeof restoreFocus.selectionEnd === 'number') {
+          target.setSelectionRange(restoreFocus.selectionStart, restoreFocus.selectionEnd);
+        }
+      } catch (_) {}
+    }
+  }
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
@@ -3119,3 +3655,16 @@ window.addEventListener('DOMContentLoaded', async () => {
     document.body.innerHTML = `<div style="padding:32px;font-family:sans-serif"><h2>APSE Service Starting...</h2><p>${err.message}</p></div>`;
   }
 });
+
+window.V1 = V1;
+window.renderApp = renderApp;
+window.renderTasksWorkspace = renderTasksWorkspace;
+window.renderApprovalsWorkspace = renderApprovalsWorkspace;
+window.renderAnalyticsWorkspace = renderAnalyticsWorkspace;
+window.renderExportsWorkspace = renderExportsWorkspace;
+window.apiV1 = apiV1;
+window.loadBootstrap = loadBootstrap;
+window.openWizardForTask = openWizardForTask;
+window.saveWizardDraftLocal = saveWizardDraftLocal;
+window.syncOfflineQueue = syncOfflineQueue;
+window.runDatabaseSyncNow = runDatabaseSyncNow;

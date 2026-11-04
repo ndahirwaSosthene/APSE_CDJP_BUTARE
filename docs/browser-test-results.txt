@@ -1,0 +1,1 @@
+PASS real browser: UTF-8 accents, four-language switching preserves text/codes, automatic codes, pastoral dropdown, 4 sectors/5 cells, soft theme, real form commit/submission, encrypted server and disconnected-browser autosave/recovery, MEL oversight, CPJP annual-only with seven names, specialist pair and 360px mobile layout and all 43 native form renderers.

@@ -1,0 +1,10 @@
+APSE v0.8.0 verification
+
+Python: 176 tests (unit-test-results.txt contains the final run).
+UTF-8: all 77 formerly locale-dependent service/script file I/O calls now declare UTF-8; Windows launchers use -X utf8. A simulated cp1252 default locale preserves metadata labels and valid French circumflex characters. Reversible legacy metadata-label mojibake is repaired in display without rewriting record values or audit history.
+Browser: real HTTP service with Chromium on Linux, not mocked API. Four-language switching retains entered narrative and codes. Verified automatic codes, pastoral selects, more than three sectors/four cells, form commit and submission, encrypted autosave/recovery, disconnected browser-vault fallback, MEL oversight, CPJP annual-only planning, seven committee names/two specialist names, 360px mobile layout, all 43 native form renderers, optional soft palette and no page JavaScript errors.
+Core JavaScript: 10 groups passed. Vault: 500 encrypted offline records and identity isolation passed. All app JavaScript syntax checked.
+Metadata: static validation passed; 43 native programs/stages, 217 elements, 157 field labels in all four languages. Existing native identifiers retained. New monthly planning and CPJP review option included. Live DHIS2 import is not certified by static validation.
+Sources: NISR 2022-source four districts/51 sectors/259 cells; 101 CCJP entries from supplied scan with historical Sheke membership ambiguity retained. Individual CEB names unavailable; no fabricated names or validated CEB denominator.
+Upgrade: consistent SQLite backup and copying encrypted accounts/vault preserves original data, record IDs, passwords, drafts and audit. Existing destination is never overwritten.
+Native Windows/PowerShell execution, actual Android hardware, target DHIS2 authentication/UID bindings/import/integration, production load and field acceptance remain external checks. No 100% production readiness claim.

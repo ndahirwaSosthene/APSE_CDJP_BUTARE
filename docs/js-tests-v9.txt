@@ -1,0 +1,23 @@
+PASS pastoral year boundary
+PASS pastoral quarters and leap day
+PASS undefined denominator gives null, never zero
+PASS sex disaggregation reconciles
+PASS unknown age remains explicit
+PASS reject false consent, out-of-range risk and overspend
+PASS approval cannot be self-declared through app
+PASS financial computations preserve missing values
+PASS unique participants bounded by attendances
+PASS four-language coverage
+10 test groups passed
+✔ tests/core.test.js (68.922368ms)
+PASS 500 encrypted offline records
+PASS offline encryption, wrong-password refusal, account isolation, persisted removal
+✔ tests/vault.test.cjs (296.976571ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 309.091425

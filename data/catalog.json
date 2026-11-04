@@ -1,9 +1,9 @@
 {
-  "version": "2.0.0",
+  "version": "0.9.1",
   "diocese": "Catholic Diocese of Butare — CDJP",
   "pastoral_horizon": "2026-09-01 to 2031-08-31 (AP1–AP5)",
   "config": {
-    "version": "0.8.0",
+    "version": "0.9.1",
     "target": "DHIS2 2.42 API",
     "languages": [
       "rw",
@@ -2831,6 +2831,482 @@
           "sw": "ID ya jukumu la CDJP lililoidhinishwa. Mhusika atumie ID ya akaunti yake. Mpango wa mwaka uliounganishwa lazima ulingane."
         },
         "type": "TEXT"
+      },
+      "q1_selected": {
+        "id": "V91F0000001",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q1",
+          "fr": "Prévu en Q1",
+          "rw": "Gukora muri Q1",
+          "sw": "Imepangwa Q1"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q1_activity": {
+        "id": "V91F0000002",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q1 activities",
+          "fr": "Activités Q1",
+          "rw": "Ibikorwa Q1",
+          "sw": "Shughuli za Q1"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q1_target": {
+        "id": "V91F0000003",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q1 target",
+          "fr": "Cible Q1",
+          "rw": "Intego Q1",
+          "sw": "Lengo la Q1"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q1_budget": {
+        "id": "V91F0000004",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q1 budget RWF",
+          "fr": "Budget Q1 RWF",
+          "rw": "Budget Q1 RWF",
+          "sw": "Bajeti ya Q1 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q2_selected": {
+        "id": "V91F0000005",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q2",
+          "fr": "Prévu en Q2",
+          "rw": "Gukora muri Q2",
+          "sw": "Imepangwa Q2"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q2_activity": {
+        "id": "V91F0000006",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q2 activities",
+          "fr": "Activités Q2",
+          "rw": "Ibikorwa Q2",
+          "sw": "Shughuli za Q2"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q2_target": {
+        "id": "V91F0000007",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q2 target",
+          "fr": "Cible Q2",
+          "rw": "Intego Q2",
+          "sw": "Lengo la Q2"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q2_budget": {
+        "id": "V91F0000008",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q2 budget RWF",
+          "fr": "Budget Q2 RWF",
+          "rw": "Budget Q2 RWF",
+          "sw": "Bajeti ya Q2 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q3_selected": {
+        "id": "V91F0000009",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q3",
+          "fr": "Prévu en Q3",
+          "rw": "Gukora muri Q3",
+          "sw": "Imepangwa Q3"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q3_activity": {
+        "id": "V91F0000010",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q3 activities",
+          "fr": "Activités Q3",
+          "rw": "Ibikorwa Q3",
+          "sw": "Shughuli za Q3"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q3_target": {
+        "id": "V91F0000011",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q3 target",
+          "fr": "Cible Q3",
+          "rw": "Intego Q3",
+          "sw": "Lengo la Q3"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q3_budget": {
+        "id": "V91F0000012",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q3 budget RWF",
+          "fr": "Budget Q3 RWF",
+          "rw": "Budget Q3 RWF",
+          "sw": "Bajeti ya Q3 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q4_selected": {
+        "id": "V91F0000013",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q4",
+          "fr": "Prévu en Q4",
+          "rw": "Gukora muri Q4",
+          "sw": "Imepangwa Q4"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q4_activity": {
+        "id": "V91F0000014",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q4 activities",
+          "fr": "Activités Q4",
+          "rw": "Ibikorwa Q4",
+          "sw": "Shughuli za Q4"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q4_target": {
+        "id": "V91F0000015",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q4 target",
+          "fr": "Cible Q4",
+          "rw": "Intego Q4",
+          "sw": "Lengo la Q4"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "q4_budget": {
+        "id": "V91F0000016",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q4 budget RWF",
+          "fr": "Budget Q4 RWF",
+          "rw": "Budget Q4 RWF",
+          "sw": "Bajeti ya Q4 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "origin_ceb": {
+        "id": "V91F0000017",
+        "type": "TEXT",
+        "label": {
+          "en": "Source CEB",
+          "fr": "CEB source",
+          "rw": "CEB yatanze amakuru",
+          "sw": "CEB chanzo"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "manual_source_ref": {
+        "id": "V91F0000018",
+        "type": "TEXT",
+        "label": {
+          "en": "Manual source document reference",
+          "fr": "Référence du document reçu manuellement",
+          "rw": "Reference y’inyandiko yakusanyijwe manual",
+          "sw": "Rejea ya hati iliyopokelewa kwa mkono"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "manual_source_date": {
+        "id": "V91F0000019",
+        "type": "DATE",
+        "label": {
+          "en": "Date received at parish",
+          "fr": "Date de réception à la paroisse",
+          "rw": "Itariki paruwasi yakiriyeho amakuru",
+          "sw": "Tarehe iliyopokelewa parokiani"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "report_quarter": {
+        "id": "V91F0000020",
+        "type": "TEXT",
+        "label": {
+          "en": "Pastoral quarter",
+          "fr": "Trimestre pastoral",
+          "rw": "Igihembwe pastorale",
+          "sw": "Robo ya mwaka wa kichungaji"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "progress_summary": {
+        "id": "V91F0000021",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Quarterly achievements",
+          "fr": "Réalisations du trimestre",
+          "rw": "Ibyagezweho mu gihembwe",
+          "sw": "Mafanikio ya robo mwaka"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "challenges": {
+        "id": "V91F0000022",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Challenges and response",
+          "fr": "Contraintes et réponses",
+          "rw": "Imbogamizi n’ingamba",
+          "sw": "Changamoto na hatua"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "person_name": {
+        "id": "V91F0000023",
+        "type": "TEXT",
+        "label": {
+          "en": "Restricted name if necessary and authorised",
+          "fr": "Nom confidentiel si nécessaire et autorisé",
+          "rw": "Amazina arinzwe niba akenewe kandi abyemerewe",
+          "sw": "Jina la siri ikiwa ni lazima na limeidhinishwa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "person_phone": {
+        "id": "V91F0000024",
+        "type": "TEXT",
+        "label": {
+          "en": "Restricted phone if authorised",
+          "fr": "Téléphone confidentiel si autorisé",
+          "rw": "Telefone irinzwe niba yemewe",
+          "sw": "Simu ya siri ikiwa imeidhinishwa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "person_gender": {
+        "id": "V91F0000025",
+        "type": "TEXT",
+        "label": {
+          "en": "Reported gender",
+          "fr": "Genre déclaré",
+          "rw": "Igitsina cyatangajwe",
+          "sw": "Jinsia iliyoripotiwa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "person_age": {
+        "id": "V91F0000026",
+        "type": "INTEGER_ZERO_OR_POSITIVE",
+        "label": {
+          "en": "Age if known",
+          "fr": "Âge si connu",
+          "rw": "Imyaka niba izwi",
+          "sw": "Umri ikiwa unajulikana"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "identification_needs": {
+        "id": "V91F0000027",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Needs and initial support",
+          "fr": "Besoins et appui initial",
+          "rw": "Ibyifuzo n’ubufasha bw’ibanze",
+          "sw": "Mahitaji na msaada wa awali"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
+      },
+      "referral_service": {
+        "id": "V91F0000028",
+        "type": "TEXT",
+        "label": {
+          "en": "Referral service",
+          "fr": "Service d’orientation",
+          "rw": "Aho yoherejwe guhabwa ubufasha",
+          "sw": "Huduma ya rufaa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        }
       }
     },
     "options": {
@@ -3392,7 +3868,23 @@
           "women",
           "men",
           "undisclosed",
-          "disability"
+          "disability",
+          "q1_selected",
+          "q1_activity",
+          "q1_target",
+          "q1_budget",
+          "q2_selected",
+          "q2_activity",
+          "q2_target",
+          "q2_budget",
+          "q3_selected",
+          "q3_activity",
+          "q3_target",
+          "q3_budget",
+          "q4_selected",
+          "q4_activity",
+          "q4_target",
+          "q4_budget"
         ],
         "sensitive": false,
         "required": [
@@ -3663,7 +4155,10 @@
           "cell",
           "ccjp",
           "disability",
-          "task_ref"
+          "task_ref",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date"
         ],
         "sensitive": false,
         "required": [
@@ -3731,7 +4226,10 @@
           "reporter_level",
           "program",
           "classification_reason",
-          "ap"
+          "ap",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date"
         ],
         "sensitive": false,
         "required": [
@@ -4098,7 +4596,10 @@
           "trauma_checked",
           "sensitivity_notes",
           "reporter_level",
-          "ap"
+          "ap",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date"
         ],
         "sensitive": false,
         "required": [
@@ -5626,6 +6127,154 @@
         ],
         "captureStandard": "V8",
         "defaultLanguage": "fr"
+      },
+      {
+        "code": "F44",
+        "id": "V91FORM0044",
+        "stage": "V91STG00044",
+        "label": {
+          "en": "CPJP quarterly results report",
+          "fr": "Rapport trimestriel CPJP axé sur les résultats",
+          "rw": "Raporo y’igihembwe ya CPJP ishingiye ku musaruro",
+          "sw": "Ripoti ya robo mwaka ya CPJP inayozingatia matokeo"
+        },
+        "fields": [
+          "record",
+          "plan_ref",
+          "ap",
+          "report_quarter",
+          "axis",
+          "objective",
+          "result",
+          "intervention",
+          "volet",
+          "work_type",
+          "project",
+          "program",
+          "partners",
+          "district",
+          "sector",
+          "cell",
+          "ccjp",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date",
+          "title",
+          "activity",
+          "output_unit",
+          "target",
+          "outputs",
+          "progress_summary",
+          "outcome",
+          "challenges",
+          "lesson",
+          "action",
+          "owner",
+          "due",
+          "total",
+          "women",
+          "men",
+          "undisclosed",
+          "disability",
+          "evidence",
+          "state",
+          "capture_profile",
+          "preparer_mode",
+          "preparer_1",
+          "preparer_2",
+          "preparer_3",
+          "preparer_4",
+          "preparer_5",
+          "preparer_6",
+          "preparer_7",
+          "cnv_checked",
+          "dnh_checked",
+          "trauma_checked",
+          "sensitivity_notes",
+          "reporter_level",
+          "classification_reason"
+        ],
+        "sensitive": false,
+        "required": [
+          "record",
+          "plan_ref",
+          "ap",
+          "report_quarter",
+          "axis",
+          "result",
+          "title",
+          "progress_summary",
+          "owner"
+        ],
+        "captureStandard": "V8",
+        "defaultLanguage": "rw"
+      },
+      {
+        "code": "F45",
+        "id": "V91FORM0045",
+        "stage": "V91STG00045",
+        "label": {
+          "en": "Restricted released-prisoner identification & accompaniment",
+          "fr": "Identification confidentielle des anciens détenus et accompagnement",
+          "rw": "Umwirondoro urinzwe w’abafunguwe n’iherekeza",
+          "sw": "Utambulisho wa siri wa wafungwa walioachiwa na usindikizaji"
+        },
+        "fields": [
+          "record",
+          "case",
+          "consent",
+          "ap",
+          "axis",
+          "result",
+          "intervention",
+          "volet",
+          "work_type",
+          "project",
+          "program",
+          "district",
+          "sector",
+          "cell",
+          "ccjp",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date",
+          "person_name",
+          "person_phone",
+          "person_gender",
+          "person_age",
+          "identification_needs",
+          "referral_service",
+          "action",
+          "owner",
+          "due",
+          "evidence",
+          "state",
+          "capture_profile",
+          "preparer_mode",
+          "preparer_1",
+          "preparer_2",
+          "preparer_3",
+          "preparer_4",
+          "preparer_5",
+          "preparer_6",
+          "preparer_7",
+          "cnv_checked",
+          "dnh_checked",
+          "trauma_checked",
+          "sensitivity_notes",
+          "reporter_level",
+          "classification_reason"
+        ],
+        "sensitive": true,
+        "required": [
+          "record",
+          "case",
+          "consent",
+          "identification_needs",
+          "owner"
+        ],
+        "captureStandard": "V8",
+        "defaultLanguage": "rw"
       }
     ],
     "axes": [
@@ -15040,6 +15689,538 @@
         },
         "type": "TEXT",
         "code": "task_ref"
+      },
+      {
+        "key": "q1_selected",
+        "id": "V91F0000001",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q1",
+          "fr": "Prévu en Q1",
+          "rw": "Gukora muri Q1",
+          "sw": "Imepangwa Q1"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q1_selected"
+      },
+      {
+        "key": "q1_activity",
+        "id": "V91F0000002",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q1 activities",
+          "fr": "Activités Q1",
+          "rw": "Ibikorwa Q1",
+          "sw": "Shughuli za Q1"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q1_activity"
+      },
+      {
+        "key": "q1_target",
+        "id": "V91F0000003",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q1 target",
+          "fr": "Cible Q1",
+          "rw": "Intego Q1",
+          "sw": "Lengo la Q1"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q1_target"
+      },
+      {
+        "key": "q1_budget",
+        "id": "V91F0000004",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q1 budget RWF",
+          "fr": "Budget Q1 RWF",
+          "rw": "Budget Q1 RWF",
+          "sw": "Bajeti ya Q1 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q1_budget"
+      },
+      {
+        "key": "q2_selected",
+        "id": "V91F0000005",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q2",
+          "fr": "Prévu en Q2",
+          "rw": "Gukora muri Q2",
+          "sw": "Imepangwa Q2"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q2_selected"
+      },
+      {
+        "key": "q2_activity",
+        "id": "V91F0000006",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q2 activities",
+          "fr": "Activités Q2",
+          "rw": "Ibikorwa Q2",
+          "sw": "Shughuli za Q2"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q2_activity"
+      },
+      {
+        "key": "q2_target",
+        "id": "V91F0000007",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q2 target",
+          "fr": "Cible Q2",
+          "rw": "Intego Q2",
+          "sw": "Lengo la Q2"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q2_target"
+      },
+      {
+        "key": "q2_budget",
+        "id": "V91F0000008",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q2 budget RWF",
+          "fr": "Budget Q2 RWF",
+          "rw": "Budget Q2 RWF",
+          "sw": "Bajeti ya Q2 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q2_budget"
+      },
+      {
+        "key": "q3_selected",
+        "id": "V91F0000009",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q3",
+          "fr": "Prévu en Q3",
+          "rw": "Gukora muri Q3",
+          "sw": "Imepangwa Q3"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q3_selected"
+      },
+      {
+        "key": "q3_activity",
+        "id": "V91F0000010",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q3 activities",
+          "fr": "Activités Q3",
+          "rw": "Ibikorwa Q3",
+          "sw": "Shughuli za Q3"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q3_activity"
+      },
+      {
+        "key": "q3_target",
+        "id": "V91F0000011",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q3 target",
+          "fr": "Cible Q3",
+          "rw": "Intego Q3",
+          "sw": "Lengo la Q3"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q3_target"
+      },
+      {
+        "key": "q3_budget",
+        "id": "V91F0000012",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q3 budget RWF",
+          "fr": "Budget Q3 RWF",
+          "rw": "Budget Q3 RWF",
+          "sw": "Bajeti ya Q3 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q3_budget"
+      },
+      {
+        "key": "q4_selected",
+        "id": "V91F0000013",
+        "type": "BOOLEAN",
+        "label": {
+          "en": "Active in Q4",
+          "fr": "Prévu en Q4",
+          "rw": "Gukora muri Q4",
+          "sw": "Imepangwa Q4"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q4_selected"
+      },
+      {
+        "key": "q4_activity",
+        "id": "V91F0000014",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Q4 activities",
+          "fr": "Activités Q4",
+          "rw": "Ibikorwa Q4",
+          "sw": "Shughuli za Q4"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q4_activity"
+      },
+      {
+        "key": "q4_target",
+        "id": "V91F0000015",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q4 target",
+          "fr": "Cible Q4",
+          "rw": "Intego Q4",
+          "sw": "Lengo la Q4"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q4_target"
+      },
+      {
+        "key": "q4_budget",
+        "id": "V91F0000016",
+        "type": "NUMBER",
+        "label": {
+          "en": "Q4 budget RWF",
+          "fr": "Budget Q4 RWF",
+          "rw": "Budget Q4 RWF",
+          "sw": "Bajeti ya Q4 RWF"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "q4_budget"
+      },
+      {
+        "key": "origin_ceb",
+        "id": "V91F0000017",
+        "type": "TEXT",
+        "label": {
+          "en": "Source CEB",
+          "fr": "CEB source",
+          "rw": "CEB yatanze amakuru",
+          "sw": "CEB chanzo"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "origin_ceb"
+      },
+      {
+        "key": "manual_source_ref",
+        "id": "V91F0000018",
+        "type": "TEXT",
+        "label": {
+          "en": "Manual source document reference",
+          "fr": "Référence du document reçu manuellement",
+          "rw": "Reference y’inyandiko yakusanyijwe manual",
+          "sw": "Rejea ya hati iliyopokelewa kwa mkono"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "manual_source_ref"
+      },
+      {
+        "key": "manual_source_date",
+        "id": "V91F0000019",
+        "type": "DATE",
+        "label": {
+          "en": "Date received at parish",
+          "fr": "Date de réception à la paroisse",
+          "rw": "Itariki paruwasi yakiriyeho amakuru",
+          "sw": "Tarehe iliyopokelewa parokiani"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "manual_source_date"
+      },
+      {
+        "key": "report_quarter",
+        "id": "V91F0000020",
+        "type": "TEXT",
+        "label": {
+          "en": "Pastoral quarter",
+          "fr": "Trimestre pastoral",
+          "rw": "Igihembwe pastorale",
+          "sw": "Robo ya mwaka wa kichungaji"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "report_quarter"
+      },
+      {
+        "key": "progress_summary",
+        "id": "V91F0000021",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Quarterly achievements",
+          "fr": "Réalisations du trimestre",
+          "rw": "Ibyagezweho mu gihembwe",
+          "sw": "Mafanikio ya robo mwaka"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "progress_summary"
+      },
+      {
+        "key": "challenges",
+        "id": "V91F0000022",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Challenges and response",
+          "fr": "Contraintes et réponses",
+          "rw": "Imbogamizi n’ingamba",
+          "sw": "Changamoto na hatua"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "challenges"
+      },
+      {
+        "key": "person_name",
+        "id": "V91F0000023",
+        "type": "TEXT",
+        "label": {
+          "en": "Restricted name if necessary and authorised",
+          "fr": "Nom confidentiel si nécessaire et autorisé",
+          "rw": "Amazina arinzwe niba akenewe kandi abyemerewe",
+          "sw": "Jina la siri ikiwa ni lazima na limeidhinishwa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "person_name"
+      },
+      {
+        "key": "person_phone",
+        "id": "V91F0000024",
+        "type": "TEXT",
+        "label": {
+          "en": "Restricted phone if authorised",
+          "fr": "Téléphone confidentiel si autorisé",
+          "rw": "Telefone irinzwe niba yemewe",
+          "sw": "Simu ya siri ikiwa imeidhinishwa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "person_phone"
+      },
+      {
+        "key": "person_gender",
+        "id": "V91F0000025",
+        "type": "TEXT",
+        "label": {
+          "en": "Reported gender",
+          "fr": "Genre déclaré",
+          "rw": "Igitsina cyatangajwe",
+          "sw": "Jinsia iliyoripotiwa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "person_gender"
+      },
+      {
+        "key": "person_age",
+        "id": "V91F0000026",
+        "type": "INTEGER_ZERO_OR_POSITIVE",
+        "label": {
+          "en": "Age if known",
+          "fr": "Âge si connu",
+          "rw": "Imyaka niba izwi",
+          "sw": "Umri ikiwa unajulikana"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "person_age"
+      },
+      {
+        "key": "identification_needs",
+        "id": "V91F0000027",
+        "type": "LONG_TEXT",
+        "label": {
+          "en": "Needs and initial support",
+          "fr": "Besoins et appui initial",
+          "rw": "Ibyifuzo n’ubufasha bw’ibanze",
+          "sw": "Mahitaji na msaada wa awali"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "identification_needs"
+      },
+      {
+        "key": "referral_service",
+        "id": "V91F0000028",
+        "type": "TEXT",
+        "label": {
+          "en": "Referral service",
+          "fr": "Service d’orientation",
+          "rw": "Aho yoherejwe guhabwa ubufasha",
+          "sw": "Huduma ya rufaa"
+        },
+        "options": null,
+        "help": {
+          "rw": "Andika amakuru ajyanye n’uyu mwanya. Ntushyiremo amakuru y’ibanga y’umuntu mu nyandiko isangizwa benshi.",
+          "en": "Enter the information named by this field. Do not include private case identities in shared records.",
+          "fr": "Renseigner l’information indiquée. Ne pas inclure d’identités de dossiers confidentiels dans un document partagé.",
+          "sw": "Jaza taarifa inayotajwa hapa. Usiweke utambulisho wa kesi za siri katika rekodi inayoshirikiwa."
+        },
+        "code": "referral_service"
       }
     ],
     "forms": [
@@ -15202,7 +16383,23 @@
           "women",
           "men",
           "undisclosed",
-          "disability"
+          "disability",
+          "q1_selected",
+          "q1_activity",
+          "q1_target",
+          "q1_budget",
+          "q2_selected",
+          "q2_activity",
+          "q2_target",
+          "q2_budget",
+          "q3_selected",
+          "q3_activity",
+          "q3_target",
+          "q3_budget",
+          "q4_selected",
+          "q4_activity",
+          "q4_target",
+          "q4_budget"
         ],
         "sensitive": false,
         "required": [
@@ -15473,7 +16670,10 @@
           "cell",
           "ccjp",
           "disability",
-          "task_ref"
+          "task_ref",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date"
         ],
         "sensitive": false,
         "required": [
@@ -15541,7 +16741,10 @@
           "reporter_level",
           "program",
           "classification_reason",
-          "ap"
+          "ap",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date"
         ],
         "sensitive": false,
         "required": [
@@ -15908,7 +17111,10 @@
           "trauma_checked",
           "sensitivity_notes",
           "reporter_level",
-          "ap"
+          "ap",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date"
         ],
         "sensitive": false,
         "required": [
@@ -17436,6 +18642,154 @@
         ],
         "captureStandard": "V8",
         "defaultLanguage": "fr"
+      },
+      {
+        "code": "F44",
+        "id": "V91FORM0044",
+        "stage": "V91STG00044",
+        "label": {
+          "en": "CPJP quarterly results report",
+          "fr": "Rapport trimestriel CPJP axé sur les résultats",
+          "rw": "Raporo y’igihembwe ya CPJP ishingiye ku musaruro",
+          "sw": "Ripoti ya robo mwaka ya CPJP inayozingatia matokeo"
+        },
+        "fields": [
+          "record",
+          "plan_ref",
+          "ap",
+          "report_quarter",
+          "axis",
+          "objective",
+          "result",
+          "intervention",
+          "volet",
+          "work_type",
+          "project",
+          "program",
+          "partners",
+          "district",
+          "sector",
+          "cell",
+          "ccjp",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date",
+          "title",
+          "activity",
+          "output_unit",
+          "target",
+          "outputs",
+          "progress_summary",
+          "outcome",
+          "challenges",
+          "lesson",
+          "action",
+          "owner",
+          "due",
+          "total",
+          "women",
+          "men",
+          "undisclosed",
+          "disability",
+          "evidence",
+          "state",
+          "capture_profile",
+          "preparer_mode",
+          "preparer_1",
+          "preparer_2",
+          "preparer_3",
+          "preparer_4",
+          "preparer_5",
+          "preparer_6",
+          "preparer_7",
+          "cnv_checked",
+          "dnh_checked",
+          "trauma_checked",
+          "sensitivity_notes",
+          "reporter_level",
+          "classification_reason"
+        ],
+        "sensitive": false,
+        "required": [
+          "record",
+          "plan_ref",
+          "ap",
+          "report_quarter",
+          "axis",
+          "result",
+          "title",
+          "progress_summary",
+          "owner"
+        ],
+        "captureStandard": "V8",
+        "defaultLanguage": "rw"
+      },
+      {
+        "code": "F45",
+        "id": "V91FORM0045",
+        "stage": "V91STG00045",
+        "label": {
+          "en": "Restricted released-prisoner identification & accompaniment",
+          "fr": "Identification confidentielle des anciens détenus et accompagnement",
+          "rw": "Umwirondoro urinzwe w’abafunguwe n’iherekeza",
+          "sw": "Utambulisho wa siri wa wafungwa walioachiwa na usindikizaji"
+        },
+        "fields": [
+          "record",
+          "case",
+          "consent",
+          "ap",
+          "axis",
+          "result",
+          "intervention",
+          "volet",
+          "work_type",
+          "project",
+          "program",
+          "district",
+          "sector",
+          "cell",
+          "ccjp",
+          "origin_ceb",
+          "manual_source_ref",
+          "manual_source_date",
+          "person_name",
+          "person_phone",
+          "person_gender",
+          "person_age",
+          "identification_needs",
+          "referral_service",
+          "action",
+          "owner",
+          "due",
+          "evidence",
+          "state",
+          "capture_profile",
+          "preparer_mode",
+          "preparer_1",
+          "preparer_2",
+          "preparer_3",
+          "preparer_4",
+          "preparer_5",
+          "preparer_6",
+          "preparer_7",
+          "cnv_checked",
+          "dnh_checked",
+          "trauma_checked",
+          "sensitivity_notes",
+          "reporter_level",
+          "classification_reason"
+        ],
+        "sensitive": true,
+        "required": [
+          "record",
+          "case",
+          "consent",
+          "identification_needs",
+          "owner"
+        ],
+        "captureStandard": "V8",
+        "defaultLanguage": "rw"
       }
     ],
     "volets": [
