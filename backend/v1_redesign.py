@@ -90,6 +90,20 @@ PERSONA_PROFILES = [
         'parish_code': None,
     },
     {
+        'key': 'director_diocese',
+        'name': 'CDJP_DIRECTOR',
+        'label': 'CDJP Diocesan Director — Final Sign-Off (All 27 Parishes)',
+        'roles': ['APSE_DIRECTION'],
+        'parish_code': None,
+    },
+    {
+        'key': 'staff_diocese',
+        'name': 'CDJP_STAFF',
+        'label': 'CDJP Diocesan Thematic Staff Officer (F03/F04/F43/F05)',
+        'roles': ['APSE_STAFF'],
+        'parish_code': None,
+    },
+    {
         'key': 'cpjp_gakoma',
         'name': 'CPJP_GAKOMA',
         'label': 'Parish CPJP Committee — Gakoma (PAR-01)',
@@ -120,7 +134,7 @@ PERSONA_PROFILES = [
     {
         'key': 'reporter_gakoma',
         'name': 'REPORTER_GAKOMA',
-        'label': 'Parish Field Reporter — Gakoma (PAR-01)',
+        'label': 'Parish Volet / Field Enumerator — Gakoma (PAR-01)',
         'roles': ['APSE_PARISH_REPORTER'],
         'parish_code': 'PAR-01',
     },
@@ -161,7 +175,8 @@ def compute_impact_rating(outcome_value, min_threshold, target_threshold):
 
 
 class V1Redesign:
-    def init_v1(self):
+    def init_v1(self, seed_demo=True):
+        import migrations
         self._v1_persona_key = 'mel_diocese'
         self.db.executescript('''
 CREATE TABLE IF NOT EXISTS v1_tasks(
@@ -221,7 +236,10 @@ CREATE TABLE IF NOT EXISTS v1_logs(
     updated TEXT NOT NULL
 );
 ''')
-        self._seed_v1_if_empty()
+        self.migration_report = migrations.run(self.db, getattr(self, 'db_path', ':memory:'))
+        if seed_demo:
+            self._seed_v1_if_empty()
+        self.init_sync()
 
     def _resolve_v1_user(self, user):
         persona_key = getattr(self, '_v1_persona_key', 'mel_diocese')
@@ -471,16 +489,22 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                     'titles': t['titles'],
                     'outcome_prompt': t['outcome_prompt'],
                     'unit_label': t['unit_label'],
+                    'plan_horizon': 'ANNUAL',
                 }
                 self.db.execute(
-                    'INSERT INTO v1_tasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    '''INSERT INTO v1_tasks(
+                        id, code, unit, parish_code, axis, outcome, intervention, indicator,
+                        ap, pastoral_quarter, due_date, planned_target, min_threshold,
+                        target_threshold, frequency, is_sensitive, status, created_by,
+                        body, created, updated, plan_horizon
+                    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
                     (
                         t['id'], t['code'], t['unit'], t['parish_code'], t['axis'],
                         t['outcome'], t['intervention'], t['indicator'], t['ap'],
                         t['pastoral_quarter'], t['due_date'], t['planned_target'],
                         t['min_threshold'], t['target_threshold'], t['frequency'],
                         t['is_sensitive'], t['status'], 'SYSTEM_SEED',
-                        self.enc(body), stamp, stamp,
+                        self.enc(body), stamp, stamp, 'ANNUAL',
                     ),
                 )
 
@@ -548,8 +572,12 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                     'issue_categories': 'Budget,Transport',
                     'issue_note': 'Disbursement of transport allowance for distant CEBs arrived 1 week late, reducing turnout from 20 to 12.',
                     'stage': 'SUBMITTED',
-                    'author': 'CPJP_GAKOMA',
+                    'author': 'REPORTER_GAKOMA',
                     'payload': {
+                        'volet': 'MEDIATEURS',
+                        'prep_mode': 'PAIR',
+                        'prep_names': ['Ndayisaba Jean', 'Mukamana Claire'],
+                        'safeguards': {'cnv': True, 'dnh': True, 'trauma': True},
                         'respondents': [
                             {'code': 'MED-01', 'score': 85, 'resolved_case': True},
                             {'code': 'MED-02', 'score': 90, 'resolved_case': True},
@@ -586,6 +614,10 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                     'stage': 'PARISH_APPROVED',
                     'author': 'CPJP_KIBEHO',
                     'payload': {
+                        'volet': 'FIELD',
+                        'prep_mode': 'COMMITTEE',
+                        'prep_names': ['Président CPJP', 'Vice-Président', 'Secrétaire', 'Trésorier', 'Conseiller 1', 'Conseiller 2', 'Aumônier Paroissial'],
+                        'safeguards': {'cnv': True, 'dnh': True, 'trauma': True},
                         'checklist': ['Contour trenches dug', 'Indigenous seedlings planted', 'Youth eco-club committee active'],
                         'observation_notes': '340 agroforestry seedlings planted and mulched across 3 hillside CEBs.',
                         'attachments': ['Kibeho_Agroforestry_FieldCheck.jpg'],
@@ -598,7 +630,13 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             ]
             for l in seed_logs:
                 self.db.execute(
-                    'INSERT INTO v1_logs VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    '''INSERT INTO v1_logs(
+                        id, task_id, unit, parish_code, centrale, event_date, ap, pastoral_quarter,
+                        collection_mode, women, men, total, age_u18, age_18_35, age_36_64, age_65,
+                        disability, sessions_done, outcome_value, impact_rating, issue_severity,
+                        issue_categories, issue_note, stage, revision, version, parent_id,
+                        author, body, created, updated, volet, prep_mode
+                    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
                     (
                         l['id'], l['task_id'], l['unit'], l['parish_code'], l['centrale'],
                         l['event_date'], l['ap'], l['pastoral_quarter'], l['collection_mode'],
@@ -607,6 +645,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                         l['outcome_value'], l['impact_rating'], l['issue_severity'],
                         l['issue_categories'], l['issue_note'], l['stage'], 1, 1, None,
                         l['author'], self.enc(l['payload']), stamp, stamp,
+                        l['payload'].get('volet', 'FIELD'), l['payload'].get('prep_mode', 'PAIR'),
                     ),
                 )
 
@@ -680,10 +719,11 @@ CREATE TABLE IF NOT EXISTS v1_logs(
         return [l for l in logs if l['id'] not in superseded_ids]
 
     def _serial_task(self, row, logs):
+        row_dict = dict(row)
         body = self.dec(row['body'])
         latest_lineage_logs = self._active_latest_logs(logs)
         task_logs = [l for l in latest_lineage_logs if l['task_id'] == row['id']]
-        approved_logs = [l for l in task_logs if l['stage'] in ('PARISH_APPROVED', 'DIOCESE_APPROVED')]
+        approved_logs = [l for l in task_logs if l['stage'] in ('PARISH_APPROVED', 'MEL_VALIDATED', 'VERIFIED', 'DIOCESE_APPROVED')]
         active_logs = task_logs
         completed_units = sum(float(l['sessions_done']) for l in active_logs)
         target = float(row['planned_target'] or 1)
@@ -713,6 +753,8 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             'frequency': row['frequency'],
             'is_sensitive': bool(row['is_sensitive']),
             'status': status,
+            'plan_horizon': row_dict.get('plan_horizon') or body.get('plan_horizon', 'ANNUAL'),
+            'created_by': row['created_by'],
             'titles': body.get('titles', {}),
             'outcome_prompt': body.get('outcome_prompt', {}),
             'unit_label': body.get('unit_label', 'participants'),
@@ -727,6 +769,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
         }
 
     def _serial_log(self, row):
+        row_dict = dict(row)
         payload = self.dec(row['body'])
         return {
             'id': row['id'],
@@ -757,12 +800,17 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             'version': row['version'],
             'parent_id': row['parent_id'],
             'author': row['author'],
+            'volet': row_dict.get('volet') or payload.get('volet', 'FIELD'),
+            'prep_mode': row_dict.get('prep_mode') or payload.get('prep_mode', 'PAIR'),
+            'prep_names': payload.get('prep_names', []),
+            'safeguards': payload.get('safeguards', {'cnv': True, 'dnh': True, 'trauma': True}),
             'payload': payload,
             'created': row['created'],
             'updated': row['updated'],
         }
 
-    def v1_bootstrap(self, user, parish_filter=None, period_filter=None, axis_filter=None):
+    def v1_bootstrap(self, user, parish_filter=None, period_filter=None, axis_filter=None, date_from=None, date_to=None):
+        import rbac
         with self.lock:
             user = self._resolve_v1_user(user)
             parishes, assigned_parish, is_diocesan = self._parishes_and_centrales(user)
@@ -789,8 +837,34 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 tasks = [t for t in tasks if t['parish_code'] == assigned_parish]
                 raw_logs = [l for l in raw_logs if l['parish_code'] == assigned_parish]
 
+            filtered_tasks = list(tasks)
+            filtered_logs = list(raw_logs)
+            if effective_parish:
+                filtered_tasks = [t for t in filtered_tasks if t['parish_code'] == effective_parish]
+                filtered_logs = [l for l in filtered_logs if l['parish_code'] == effective_parish]
+            if period_filter and period_filter in ('Q1', 'Q2', 'Q3', 'Q4'):
+                filtered_tasks = [t for t in filtered_tasks if t['pastoral_quarter'] == period_filter]
+                filtered_logs = [l for l in filtered_logs if l['pastoral_quarter'] == period_filter]
+            elif period_filter and period_filter.startswith('AP'):
+                filtered_tasks = [t for t in filtered_tasks if t['ap'] == period_filter]
+                filtered_logs = [l for l in filtered_logs if l['ap'] == period_filter]
+            if axis_filter:
+                filtered_tasks = [t for t in filtered_tasks if t['axis'] == axis_filter]
+                filtered_logs = [l for l in filtered_logs if l.get('axis') == axis_filter]
+            if date_from:
+                df = str(date_from).strip()
+                filtered_logs = [l for l in filtered_logs if l['event_date'] >= df]
+                log_tids = {l['task_id'] for l in filtered_logs}
+                filtered_tasks = [t for t in filtered_tasks if t['due_date'] >= df or t['id'] in log_tids]
+            if date_to:
+                dt = str(date_to).strip()
+                filtered_logs = [l for l in filtered_logs if l['event_date'] <= dt]
+                log_tids = {l['task_id'] for l in filtered_logs}
+                filtered_tasks = [t for t in filtered_tasks if t['due_date'] <= dt or t['id'] in log_tids]
+
             drafts = self.draft_listing(user, 'ACTIVE')
-            analytics = self._compute_v1_analytics(tasks, raw_logs, parishes, effective_parish, period_filter, axis_filter)
+            analytics = self._compute_v1_analytics(tasks, raw_logs, parishes, effective_parish, period_filter, axis_filter, date_from, date_to)
+            perms = rbac.permissions(user.get('roles', []))
             return {
                 'user': {
                     'id': user['id'],
@@ -799,23 +873,32 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                     'is_diocesan': is_diocesan,
                     'assigned_parish': assigned_parish,
                     'active_persona': getattr(self, '_v1_persona_key', 'mel_diocese'),
+                    'permissions': perms,
                 },
                 'personas': PERSONA_PROFILES,
+                'volets': rbac.VOLETS,
+                'plan_horizons': rbac.PLAN_HORIZONS,
                 'parishes': parishes,
                 'goals': self._goals_catalogue(),
                 'issue_categories': ISSUE_CATEGORIES,
-                'tasks': tasks,
-                'logs': raw_logs,
+                'tasks': filtered_tasks,
+                'logs': filtered_logs,
                 'drafts': drafts,
                 'analytics': analytics,
+                'sync': self.sync_status(user),
             }
 
     def v1_create_task(self, user, body):
         from engine import Fault, NOW
+        import rbac
         user = self._resolve_v1_user(user)
         roles = self.roles(user)
-        if not (roles & {'APSE_MEL', 'APSE_STAFF', 'APSE_COORDINATION', 'APSE_DIRECTION', 'APSE_FINANCE', 'APSE_HR', 'APSE_CPJP'}):
+        allowed_horizons = rbac.plan_horizons(roles)
+        if not allowed_horizons:
             raise Fault(403, 'planning_cdjp_cpjp_only', 'Only CDJP Diocesan staff and Parish CPJP committees can create planned activities.')
+        plan_horizon = str(body.get('plan_horizon') or 'ANNUAL').upper().strip()
+        if plan_horizon not in allowed_horizons:
+            raise Fault(403, 'plan_horizon_restricted', f'Your institutional role can only create {", ".join(allowed_horizons)} plans.')
         title = str(body.get('title', '')).strip()
         if not title:
             raise Fault(422, 'plain_error', 'Please enter a short, clear title for this activity.')
@@ -848,25 +931,33 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             'titles': {'en': title, 'rw': title, 'fr': title, 'sw': title},
             'outcome_prompt': {'en': prompt_text, 'rw': prompt_text, 'fr': prompt_text, 'sw': prompt_text},
             'unit_label': str(body.get('unit_label') or 'participants').strip(),
+            'plan_horizon': plan_horizon,
         }
         with self.tx():
             self.db.execute(
-                'INSERT INTO v1_tasks VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                '''INSERT INTO v1_tasks(
+                    id, code, unit, parish_code, axis, outcome, intervention, indicator,
+                    ap, pastoral_quarter, due_date, planned_target, min_threshold,
+                    target_threshold, frequency, is_sensitive, status, created_by,
+                    body, created, updated, plan_horizon
+                ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
                 (
                     tid, code, 'LocalRoot01', parish_code, goal['axis_code'],
                     goal['outcome_code'], goal['intervention_code'], goal['indicator_code'],
                     period['ap'], period['quarter'], due_date, planned_target,
                     min_threshold, target_threshold, frequency,
                     1 if body.get('is_sensitive') else 0, 'PENDING', user['id'],
-                    self.enc(payload), stamp, stamp,
+                    self.enc(payload), stamp, stamp, plan_horizon,
                 ),
             )
-            self.audit(user, 'V1_CREATE_TASK', tid, {'code': code, 'outcome': goal['outcome_code']})
+            self._outbox('v1_tasks', tid)
+            self.audit(user, 'V1_CREATE_TASK', tid, {'code': code, 'outcome': goal['outcome_code'], 'horizon': plan_horizon})
             row = self.db.execute('SELECT * FROM v1_tasks WHERE id=?', (tid,)).fetchone()
             return self._serial_task(row, [])
 
     def v1_submit_log(self, user, body):
         from engine import Fault, NOW
+        import rbac
         user = self._resolve_v1_user(user)
         task_id = str(body.get('task_id', '')).strip()
         with self.tx():
@@ -887,6 +978,20 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             collection_mode = str(body.get('collection_mode') or 'ENUMERATOR').strip()
             if collection_mode not in ('ENUMERATOR', 'FOCUS_GROUP', 'SURVEY', 'OBSERVATION'):
                 collection_mode = 'ENUMERATOR'
+
+            volet = str(body.get('volet') or 'FIELD').upper().strip()
+            if volet not in rbac.VOLET_CODES:
+                volet = 'FIELD'
+            prep_mode = str(body.get('prep_mode') or rbac.prep_mode(self.roles(user)) or 'PAIR').upper().strip()
+            raw_prep = body.get('prep_names') or []
+            if isinstance(raw_prep, str):
+                raw_prep = [x.strip() for x in raw_prep.split(',') if x.strip()]
+            prep_names = [str(x).strip() for x in raw_prep if str(x).strip()]
+            safeguards = body.get('safeguards') if isinstance(body.get('safeguards'), dict) else {
+                'cnv': bool(body.get('cnv_checked', True)),
+                'dnh': bool(body.get('dnh_checked', True)),
+                'trauma': bool(body.get('trauma_checked', True)),
+            }
 
             try:
                 women = max(0, int(body.get('women', 0)))
@@ -967,6 +1072,10 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                         version = old['version']
 
             payload = {
+                'volet': volet,
+                'prep_mode': prep_mode,
+                'prep_names': prep_names,
+                'safeguards': safeguards,
                 'duration_hours': body.get('duration_hours', 2),
                 'consensus_notes': str(body.get('consensus_notes', '')).strip(),
                 'respondents': body.get('respondents', []),
@@ -990,7 +1099,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                         age_u18=?, age_18_35=?, age_36_64=?, age_65=?, disability=?,
                         sessions_done=?, outcome_value=?, impact_rating=?,
                         issue_severity=?, issue_categories=?, issue_note=?,
-                        stage='SUBMITTED', revision=?, body=?, updated=?
+                        stage='SUBMITTED', revision=?, body=?, updated=?, volet=?, prep_mode=?
                        WHERE id=?''',
                     (
                         parish_code, centrale, event_date, period['ap'], period['quarter'],
@@ -998,14 +1107,20 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                         age_u18, age_18_35, age_36_64, age_65, disability,
                         sessions_done, outcome_value, impact_rating,
                         issue_severity, issue_categories, issue_note,
-                        revision, self.enc(payload), stamp, existing_id,
+                        revision, self.enc(payload), stamp, volet, prep_mode, existing_id,
                     ),
                 )
                 lid = existing_id
             else:
                 lid = 'log-' + uuid.uuid4().hex[:12]
                 self.db.execute(
-                    'INSERT INTO v1_logs VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                    '''INSERT INTO v1_logs(
+                        id, task_id, unit, parish_code, centrale, event_date, ap, pastoral_quarter,
+                        collection_mode, women, men, total, age_u18, age_18_35, age_36_64, age_65,
+                        disability, sessions_done, outcome_value, impact_rating, issue_severity,
+                        issue_categories, issue_note, stage, revision, version, parent_id,
+                        author, body, created, updated, volet, prep_mode
+                    ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
                     (
                         lid, task_id, 'LocalRoot01', parish_code, centrale,
                         event_date, period['ap'], period['quarter'], collection_mode,
@@ -1013,43 +1128,57 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                         disability, sessions_done, outcome_value, impact_rating,
                         issue_severity, issue_categories, issue_note, 'SUBMITTED',
                         revision, version, parent_id, user['id'], self.enc(payload),
-                        stamp, stamp,
+                        stamp, stamp, volet, prep_mode,
                     ),
                 )
 
-            self.audit(user, 'V1_SUBMIT_LOG', lid, {'task_id': task_id, 'impact': impact_rating, 'total': total})
+            self._outbox('v1_logs', lid)
+            self.audit(user, 'V1_SUBMIT_LOG', lid, {'task_id': task_id, 'impact': impact_rating, 'total': total, 'volet': volet})
             saved = self.db.execute('SELECT * FROM v1_logs WHERE id=?', (lid,)).fetchone()
             return self._serial_log(saved)
 
     def v1_review_log(self, user, body):
         from engine import Fault, NOW
+        import rbac
         user = self._resolve_v1_user(user)
         roles = self.roles(user)
+        _, assigned_parish, _ = self._parishes_and_centrales(user)
         log_id = str(body.get('id', '')).strip()
         target_stage = str(body.get('target_stage', '')).strip()
         note = str(body.get('note', '')).strip()
         correction_step = body.get('correction_step')
-        if target_stage not in ('PARISH_APPROVED', 'DIOCESE_APPROVED', 'CORRECTION'):
-            raise Fault(422, 'plain_error', 'Choose a valid review action (Parish Approve, Diocese Approve, or Return).')
-        if target_stage == 'DIOCESE_APPROVED' and not (roles & {'APSE_MEL', 'APSE_COORDINATION', 'APSE_DIRECTION'}):
-            raise Fault(403, 'diocese_review_role_required', 'Only CDJP Diocesan reviewers can grant final Diocese approval.')
-        if target_stage in ('PARISH_APPROVED', 'CORRECTION') and not (roles & {'APSE_CPJP', 'APSE_MEL', 'APSE_COORDINATION', 'APSE_DIRECTION'}):
-            raise Fault(403, 'review_role_required', 'Only Parish CPJP committees or Diocesan reviewers can approve or return reports.')
-        if target_stage == 'CORRECTION' and not note:
-            raise Fault(422, 'plain_error', 'Please write a short note explaining what needs to be fixed.')
 
         with self.tx():
             row = self.db.execute('SELECT * FROM v1_logs WHERE id=?', (log_id,)).fetchone()
             if not row:
+                if target_stage not in rbac.REVIEW_TARGETS:
+                    raise Fault(422, 'plain_error', 'Choose a valid review action (Parish Approve, Diocese Approve, or Return).')
                 raise Fault(404, 'plain_error', 'Activity report was not found.')
-            payload = self.dec(row['body'])
+
+            log_dict = self._serial_log(row)
+            allowed, err_code, err_msg = rbac.review_decision(user, roles, assigned_parish, log_dict, target_stage)
+            if not allowed:
+                status_code = 422 if err_code == 'plain_error' else 403
+                raise Fault(status_code, err_code, err_msg)
+
+            if target_stage == 'CORRECTION' and not note:
+                raise Fault(422, 'plain_error', 'Please write a short note explaining what needs to be fixed.')
+
+            payload = log_dict['payload']
             reviews = payload.get('reviews', [])
             stamp = NOW()
+            default_notes = {
+                'PARISH_APPROVED': 'Verified at Parish CPJP level',
+                'MEL_VALIDATED': 'Validated by CDJP MEL Officer',
+                'VERIFIED': 'Verified by CDJP Diocesan Coordinator',
+                'DIOCESE_APPROVED': 'Finalized by CDJP Diocese',
+            }
             reviews.append({
                 'stage': target_stage,
                 'actor': user.get('name') or user['id'],
+                'actor_id': user['id'],
                 'time': stamp,
-                'note': note or ('Verified at Parish level' if target_stage == 'PARISH_APPROVED' else 'Finalized by Diocese'),
+                'note': note or default_notes.get(target_stage, 'Reviewed'),
                 'step': correction_step,
             })
             payload['reviews'] = reviews
@@ -1060,11 +1189,12 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 'UPDATE v1_logs SET stage=?, revision=revision+1, body=?, updated=? WHERE id=?',
                 (target_stage, self.enc(payload), stamp, log_id),
             )
+            self._outbox('v1_logs', log_id)
             self.audit(user, 'V1_REVIEW_LOG', log_id, {'stage': target_stage})
             updated = self.db.execute('SELECT * FROM v1_logs WHERE id=?', (log_id,)).fetchone()
             return self._serial_log(updated)
 
-    def _compute_v1_analytics(self, tasks, logs, parishes, parish_filter=None, period_filter=None, axis_filter=None):
+    def _compute_v1_analytics(self, tasks, logs, parishes, parish_filter=None, period_filter=None, axis_filter=None, date_from=None, date_to=None):
         active_logs = list(self._active_latest_logs(logs))
         if parish_filter:
             tasks = [t for t in tasks if t['parish_code'] == parish_filter]
@@ -1078,6 +1208,16 @@ CREATE TABLE IF NOT EXISTS v1_logs(
         if axis_filter:
             tasks = [t for t in tasks if t['axis'] == axis_filter]
             active_logs = [l for l in active_logs if l.get('axis') == axis_filter]
+        if date_from:
+            df = str(date_from).strip()
+            active_logs = [l for l in active_logs if l['event_date'] >= df]
+            log_tids = {l['task_id'] for l in active_logs}
+            tasks = [t for t in tasks if t['due_date'] >= df or t['id'] in log_tids]
+        if date_to:
+            dt = str(date_to).strip()
+            active_logs = [l for l in active_logs if l['event_date'] <= dt]
+            log_tids = {l['task_id'] for l in active_logs}
+            tasks = [t for t in tasks if t['due_date'] <= dt or t['id'] in log_tids]
 
         total_women = sum(l['women'] for l in active_logs)
         total_men = sum(l['men'] for l in active_logs)
@@ -1210,7 +1350,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 'women': total_women,
                 'men': total_men,
                 'disability': total_disability,
-                'pending_approvals': sum(1 for l in active_logs if l['stage'] in ('SUBMITTED', 'PARISH_APPROVED')),
+                'pending_approvals': sum(1 for l in active_logs if l['stage'] in ('SUBMITTED', 'PARISH_APPROVED', 'MEL_VALIDATED', 'VERIFIED')),
                 'impact_counts': impact_counts,
                 'top_bottleneck_category': top_cat,
                 'top_bottleneck_pct': top_pct,
@@ -1237,6 +1377,8 @@ CREATE TABLE IF NOT EXISTS v1_logs(
         stage_natural = {
             'SUBMITTED': 'Waiting for Parish Review',
             'PARISH_APPROVED': 'Approved by Parish',
+            'MEL_VALIDATED': 'Validated by MEL',
+            'VERIFIED': 'Verified by Coordinator',
             'DIOCESE_APPROVED': 'Approved by Diocese',
             'CORRECTION': 'Needs Correction',
         }

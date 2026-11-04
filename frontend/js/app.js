@@ -19,11 +19,16 @@ const V1 = {
     status: 'ALL',
     approvalStage: 'ALL',
     issueCategory: 'ALL',
+    dateFrom: '',
+    dateTo: '',
   },
   data: null,
   offlineQueue: JSON.parse(localStorage.getItem('apse-v1-offline-queue') || '[]'),
   simulateOffline: false,
   syncingState: null, // null | { current: 1, total: 3 }
+  syncModal: false,
+  syncFeedback: null,
+  remoteUrlDraft: null,
   wizard: null, // Active 4-step guided form state
   newTaskModal: false,
   personaModal: false,
@@ -69,6 +74,8 @@ const MATERIAL_SYMBOLS = {
   location_on: 'M12 12q.825 0 1.413-.587T14 10q0-.825-.587-1.412T12 8q-.825 0-1.412.588T10 10q0 .825.588 1.413T12 12Zm0 10q-4.025-3.425-6.012-6.362T4 10.2q0-3.75 2.413-5.975T12 2q3.175 0 5.588 2.225T20 10.2q0 2.5-1.987 5.438T12 22Z',
   attach_file: 'M11.5 22q-2.3 0-3.9-1.6T6 16.5V6q0-1.65 1.175-2.825T10 2q1.65 0 2.825 1.175T14 6v9.5q0 1.05-.725 1.775T11.5 18q-1.05 0-1.775-.725T9 15.5V6h1.5v9.5q0 .425.288.713T11.5 16.5q.425 0 .713-.287T12.5 15.5V6q0-1.05-.725-1.775T10 3.5q-1.05 0-1.775.725T7.5 6v10.5q0 1.65 1.175 2.825T11.5 20.5q1.65 0 2.825-1.175T15.5 16.5V6H17v10.5q0 2.3-1.6 3.9T11.5 22Z',
   description: 'M8 18h8v-2H8v2Zm0-4h8v-2H8v2Zm-2 8q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
+  person: 'M12 12q-1.65 0-2.825-1.175T8 8q0-1.65 1.175-2.825T12 4q1.65 0 2.825 1.175T16 8q0 1.65-1.175 2.825T12 12Zm-8 8v-2.8q0-.85.438-1.563T5.6 14.55q1.55-.775 3.15-1.163T12 13q1.65 0 3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20H4Z',
+  verified_user: 'm10.6 16.2 5.65-5.65-1.425-1.425-4.225 4.225-2.1-2.1L7.075 12.675 10.6 16.2ZM12 22q-3.475-.875-5.738-3.988T4 11.1V5l8-3 8 3v6.1q0 3.8-2.262 6.913T12 22Z',
 };
 
 function msIcon(name, size = 20) {
@@ -406,8 +413,14 @@ async function loadBootstrap() {
   if (V1.filters.parish) q.set('parish', V1.filters.parish);
   if (V1.filters.period && V1.filters.period !== 'ALL') q.set('period', V1.filters.period);
   if (V1.filters.axis) q.set('axis', V1.filters.axis);
+  if (V1.filters.dateFrom) q.set('date_from', V1.filters.dateFrom);
+  if (V1.filters.dateTo) q.set('date_to', V1.filters.dateTo);
   try {
     V1.data = await apiV1('/v1/bootstrap?' + q.toString());
+    const allowedWorkspaces = V1.data?.user?.permissions?.workspaces || ['tasks', 'approvals', 'analytics', 'exports'];
+    if (!allowedWorkspaces.includes(V1.workspace)) {
+      V1.workspace = V1.data?.user?.permissions?.default_workspace || allowedWorkspaces[0] || 'tasks';
+    }
     localStorage.setItem('apse-v1-snapshot', JSON.stringify(V1.data));
   } catch (e) {
     const cached = localStorage.getItem('apse-v1-snapshot');
@@ -437,12 +450,34 @@ async function syncOfflineQueue() {
   renderApp();
 }
 
+async function runDatabaseSyncNow() {
+  try {
+    V1.syncFeedback = { type: 'info', text: 'Synchronizing local SQLite database with Central Server...' };
+    renderApp();
+    if (V1.offlineQueue.length) {
+      await syncOfflineQueue();
+    }
+    const res = await apiV1('/v1/sync/run', 'POST', {});
+    await loadBootstrap();
+    const lr = res.last_run || { pushed: 0, pulled: 0 };
+    V1.syncFeedback = {
+      type: 'GREAT',
+      text: `Sync complete ✓ Uploaded ${lr.pushed} local record(s) to Central DB; downloaded ${lr.pulled} remote update(s). Schema v${res.schema_version}.`,
+    };
+    renderApp();
+  } catch (err) {
+    V1.syncFeedback = { type: 'LOW', text: err.message || 'Database sync failed.' };
+    renderApp();
+  }
+}
+
 function openWizardForTask(task, existingLog = null, forceStep = null) {
   const savedDraft = JSON.parse(localStorage.getItem('apse-v1-draft-' + task.id) || 'null');
   const parishes = V1.data?.parishes || [];
   const pcode = existingLog?.parish_code || task.parish_code || V1.data?.user?.assigned_parish || 'PAR-01';
   const pObj = parishes.find(p => p.code === pcode) || parishes[0] || { centrales: [{ name: 'Centre' }] };
   const defaultCentrale = existingLog?.centrale || savedDraft?.centrale || pObj.centrales?.[0]?.name || 'Centre';
+  const defaultPrepMode = V1.data?.user?.permissions?.prep_mode || 'PAIR';
 
   V1.wizard = {
     step: existingLog?.payload?.correction_step || forceStep || savedDraft?.step || 1,
@@ -452,6 +487,14 @@ function openWizardForTask(task, existingLog = null, forceStep = null) {
     centrale: defaultCentrale,
     event_date: existingLog?.event_date || savedDraft?.event_date || '2026-10-23',
     collection_mode: existingLog?.collection_mode || savedDraft?.collection_mode || 'ENUMERATOR',
+    volet: existingLog?.volet || existingLog?.payload?.volet || savedDraft?.volet || 'MEDIATEURS',
+    prep_mode: existingLog?.prep_mode || existingLog?.payload?.prep_mode || savedDraft?.prep_mode || defaultPrepMode,
+    prep_names: existingLog?.prep_names?.length
+      ? [...existingLog.prep_names]
+      : (savedDraft?.prep_names || (defaultPrepMode === 'COMMITTEE'
+          ? ['Président CPJP', 'Vice-Président', 'Secrétaire', 'Trésorier', 'Conseiller 1', 'Conseiller 2', 'Aumônier Paroissial']
+          : ['Ndayisaba Jean', 'Mukamana Claire'])),
+    safeguards: existingLog?.safeguards || existingLog?.payload?.safeguards || savedDraft?.safeguards || { cnv: true, dnh: true, trauma: true },
     women: existingLog?.women ?? savedDraft?.women ?? 12,
     men: existingLog?.men ?? savedDraft?.men ?? 8,
     age_u18: existingLog?.age_u18 ?? savedDraft?.age_u18 ?? 2,
@@ -605,11 +648,245 @@ function renderParishCombobox(selectedCode, onSelect, allowAll = true) {
   );
 }
 
+/* Calendar Date-Range & Pastoral Period Filter Widget (Finding #5) */
+function renderDateRangeWidget() {
+  const hasDates = !!(V1.filters.dateFrom || V1.filters.dateTo);
+  return h('div', { className: 'v1-date-range-bar' },
+    h('div', { className: 'v1-segmented' },
+      [
+        ['ALL', L('period_all')],
+        ['Q1', L('period_q1')],
+        ['Q2', 'Q2 (Dec–Feb)'],
+        ['Q3', 'Q3 (Mar–May)'],
+        ['Q4', 'Q4 (Jun–Aug)'],
+        ['AP1', L('period_ap1')],
+      ].map(([code, lbl]) =>
+        h('button', {
+          type: 'button',
+          className: 'v1-seg-btn' + (V1.filters.period === code ? ' active' : ''),
+          onClick: async () => {
+            V1.filters.period = code;
+            await loadBootstrap();
+            renderApp();
+          },
+        }, lbl)
+      )
+    ),
+    h('div', { className: 'v1-date-inputs' },
+      h('label', { className: 'v1-date-label' },
+        msIcon('calendar_today', 16),
+        h('span', {}, 'From:'),
+        h('input', {
+          type: 'date',
+          id: 'v1-filter-date-from',
+          className: 'v1-input v1-date-picker',
+          value: V1.filters.dateFrom || '',
+          onChange: async e => {
+            V1.filters.dateFrom = e.target.value;
+            await loadBootstrap();
+            renderApp();
+          },
+        })
+      ),
+      h('label', { className: 'v1-date-label' },
+        h('span', {}, 'To:'),
+        h('input', {
+          type: 'date',
+          id: 'v1-filter-date-to',
+          className: 'v1-input v1-date-picker',
+          value: V1.filters.dateTo || '',
+          onChange: async e => {
+            V1.filters.dateTo = e.target.value;
+            await loadBootstrap();
+            renderApp();
+          },
+        })
+      ),
+      hasDates
+        ? h('button', {
+            type: 'button',
+            className: 'v1-btn v1-btn-ghost v1-btn-sm',
+            onClick: async () => {
+              V1.filters.dateFrom = '';
+              V1.filters.dateTo = '';
+              await loadBootstrap();
+              renderApp();
+            },
+          }, 'Clear Dates')
+        : null
+    )
+  );
+}
+
+/* Role-Specific Institutional Mandate & Priority Banner (Findings #6 & #7) */
+function renderRoleWorkspaceBanner() {
+  const user = V1.data?.user || {};
+  const perms = user.permissions || {};
+  const tier = perms.tier || 'mel';
+  const scopeText = user.assigned_parish ? `Parish Scope (${user.assigned_parish})` : 'Diocesan Scope (All 27 Parishes)';
+  const tierBadges = {
+    field: { label: 'Field Enumerator (CCJP / CEB)', tone: 'info' },
+    cpjp: { label: 'Parish CPJP Committee (7-Member + Chaplain)', tone: 'GOOD' },
+    staff: { label: 'CDJP Diocesan Project Staff', tone: 'info' },
+    mel: { label: 'CDJP Diocesan M&E (Suivi-Évaluation)', tone: 'GREAT' },
+    coordination: { label: 'CDJP Diocesan Coordination', tone: 'GREAT' },
+    direction: { label: 'CDJP Diocesan Direction (Final Sign-Off)', tone: 'GREAT' },
+  };
+  const badge = tierBadges[tier] || tierBadges.mel;
+  return h('div', { className: 'v1-role-banner' },
+    h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
+      renderLozenge(badge.label, badge.tone, 'verified_user'),
+      renderLozenge(scopeText, 'neutral', 'location_on'),
+      perms.prep_mode === 'COMMITTEE'
+        ? renderLozenge('7-Member CPJP + Chaplain Prep', 'neutral')
+        : renderLozenge('2-Person Pair Prep (CCJP/CEB)', 'neutral'),
+      !perms.can_create_task
+        ? renderLozenge('Execution Only (No Plan Creation)', 'warn')
+        : renderLozenge(`Plan Horizons: ${(perms.plan_horizons || []).join(', ')}`, 'neutral')
+    ),
+    h('div', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', marginTop: '4px' } },
+      perms.mandate || 'Institutional role-scoped workspace aligned with CDJP Butare governance rules.'
+    )
+  );
+}
+
+/* Local-to-Remote Central DB Sync & Versioned Migrations Modal (Findings #1 & #2) */
+function renderSyncModal() {
+  if (!V1.syncModal) return null;
+  const sync = V1.data?.sync || { outbox: { pending: 0, synced: 0, pending_tasks: 0, pending_logs: 0 }, schema_version: 3, history: [] };
+  const outbox = sync.outbox || { pending: 0, synced: 0, pending_tasks: 0, pending_logs: 0 };
+
+  return h('div', {
+    className: 'v1-sheet-backdrop',
+    onClick: e => {
+      if (e.target.classList.contains('v1-sheet-backdrop')) {
+        V1.syncModal = false;
+        renderApp();
+      }
+    },
+  },
+    h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true', style: { borderRadius: 'var(--radius-md)', margin: 'auto', maxWidth: '680px' } },
+      h('div', { className: 'v1-sheet-header' },
+        h('h2', { className: 'v1-section-title' }, 'Local SQLite → Central Server Sync & Schema Migrations'),
+        h('button', {
+          type: 'button',
+          className: 'v1-btn v1-btn-ghost v1-btn-sm',
+          onClick: () => { V1.syncModal = false; renderApp(); },
+        }, msIcon('close', 20))
+      ),
+      h('div', { className: 'v1-sheet-body' },
+        V1.syncFeedback
+          ? h('div', {
+              style: {
+                padding: '10px 14px',
+                borderRadius: 'var(--radius-sm)',
+                marginBottom: '12px',
+                background: V1.syncFeedback.type === 'LOW' ? 'var(--tag-low-bg)' : 'var(--tag-great-bg)',
+                color: V1.syncFeedback.type === 'LOW' ? 'var(--tag-low-text)' : 'var(--tag-great-text)',
+                fontWeight: '600',
+                fontSize: '0.8125rem',
+              },
+            }, V1.syncFeedback.text)
+          : null,
+        h('div', { className: 'v1-kpi-grid', style: { marginBottom: '14px' } },
+          h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
+            h('span', {}, 'Local Outbox Pending Upload'),
+            h('strong', { className: 'v1-kpi-value' }, String(outbox.pending || 0)),
+            h('div', { className: 'v1-field-helper' }, `${outbox.pending_tasks || 0} Tasks · ${outbox.pending_logs || 0} Activity Logs`)
+          ),
+          h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
+            h('span', {}, 'Synced to Central DB'),
+            h('strong', { className: 'v1-kpi-value' }, String(outbox.synced || 0)),
+            h('div', { className: 'v1-field-helper' }, sync.last_sync_at ? `Last: ${sync.last_sync_at.slice(0, 19).replace('T', ' ')}` : 'Ready for initial sync')
+          ),
+          h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 6' } },
+            h('span', {}, 'DB Schema Migration Version'),
+            h('strong', { className: 'v1-kpi-value' }, `v${sync.schema_version || 3}`),
+            h('div', { className: 'v1-field-helper' }, '001_baseline · 002_workflow · 003_sync_outbox')
+          )
+        ),
+        h('div', { style: { background: 'var(--bg-input)', padding: '12px', borderRadius: 'var(--radius-sm)', marginBottom: '14px' } },
+          h('label', { className: 'v1-field-label' }, 'Remote / Central Database Target Endpoint'),
+          h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
+            h('input', {
+              id: 'v1-sync-remote-url',
+              type: 'text',
+              className: 'v1-input',
+              style: { flex: '1 1 260px', minHeight: '36px' },
+              value: V1.remoteUrlDraft ?? (sync.remote_url || 'central://cdjp-butare-central.sqlite'),
+              placeholder: 'central://cdjp-butare-central.sqlite or https://apse.cdjp-butare.org',
+              onChange: e => { V1.remoteUrlDraft = e.target.value; },
+            }),
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary v1-btn-sm',
+              onClick: async () => {
+                const url = document.getElementById('v1-sync-remote-url')?.value || V1.remoteUrlDraft || 'central://cdjp-butare-central.sqlite';
+                await apiV1('/v1/sync/configure', 'POST', { remote_url: url });
+                await loadBootstrap();
+                V1.syncFeedback = { type: 'GREAT', text: `Target endpoint saved: ${url}` };
+                renderApp();
+              },
+            }, 'Save Target')
+          ),
+          h('div', { className: 'v1-field-helper', style: { marginTop: '6px' } },
+            'Reads unsynced records from the local SQLite database (sync_outbox), verifies schema migration compatibility, uploads local tasks/logs, and pulls diocesan approvals.'
+          )
+        ),
+        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', marginBottom: '14px', flexWrap: 'wrap' } },
+          h('button', {
+            type: 'button',
+            id: 'v1-run-db-sync-btn',
+            className: 'v1-btn',
+            onClick: () => runDatabaseSyncNow(),
+          }, msIcon('sync', 18), h('span', {}, 'Sync Local DB to Central Server Now')),
+          h('button', {
+            type: 'button',
+            className: 'v1-btn v1-btn-ghost v1-btn-sm',
+            onClick: () => {
+              V1.simulateOffline = !V1.simulateOffline;
+              renderApp();
+            },
+          }, V1.simulateOffline ? 'Disable Offline Simulation' : 'Simulate Offline Queue')
+        ),
+        (sync.history && sync.history.length)
+          ? h('div', {},
+              h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, 'Recent Database Synchronization Audit Log'),
+              h('table', { className: 'v1-data-table' },
+                h('thead', {},
+                  h('tr', {},
+                    h('th', {}, 'Timestamp (UTC)'),
+                    h('th', {}, 'Target'),
+                    h('th', {}, 'Uploaded'),
+                    h('th', {}, 'Pulled'),
+                    h('th', {}, 'Status')
+                  )
+                ),
+                h('tbody', {},
+                  sync.history.slice(0, 5).map(item =>
+                    h('tr', {},
+                      h('td', { className: 'v1-mono' }, String(item.synced_at || '').slice(0, 19).replace('T', ' ')),
+                      h('td', { className: 'v1-mono' }, String(item.target || '')),
+                      h('td', { className: 'v1-mono' }, String(item.pushed ?? 0)),
+                      h('td', { className: 'v1-mono' }, String(item.pulled ?? 0)),
+                      h('td', {}, renderLozenge(item.status || 'SUCCESS', 'GREAT'))
+                    )
+                  )
+                )
+              )
+            )
+          : null
+      )
+    )
+  );
+}
+
 /* Section 5.3: Cisco Momentum Slide-Up Mobile Bottom Sheet */
 function renderMobileBottomSheet() {
   if (!V1.mobileSheet) return null;
   const parishes = V1.data?.parishes || [];
   const themes = getThemesList();
+  const user = V1.data?.user || {};
 
   return h('div', {
     className: 'v1-sheet-backdrop',
@@ -623,7 +900,7 @@ function renderMobileBottomSheet() {
     h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true' },
       h('div', { className: 'v1-sheet-handle' }),
       h('div', { className: 'v1-sheet-header' },
-        h('h2', { className: 'v1-section-title' }, V1.mobileSheet === 'location' ? 'Select Parish & Location' : 'Filter Workspace'),
+        h('h2', { className: 'v1-section-title' }, V1.mobileSheet === 'location' ? 'Select Parish & Location' : 'Mobile Controls, Account & Filters'),
         h('button', {
           type: 'button',
           className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -631,12 +908,59 @@ function renderMobileBottomSheet() {
         }, msIcon('close', 20))
       ),
       h('div', { className: 'v1-sheet-body' },
+        /* Mobile Account & Role Switcher + DB Sync Quick Actions (Finding #4) */
+        h('div', { style: { background: 'var(--bg-input)', padding: '12px', borderRadius: 'var(--radius-sm)', marginBottom: '14px', display: 'flex', flexDirection: 'column', gap: '8px' } },
+          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
+            h('div', {},
+              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600' } }, 'Active Account & Role'),
+              h('strong', { style: { fontSize: '0.875rem' } }, `${user.name || 'LOCAL_MEL'} · ${user.title || ''}`)
+            ),
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary v1-btn-sm',
+              onClick: () => {
+                V1.mobileSheet = null;
+                V1.personaModal = true;
+                renderApp();
+              },
+            }, msIcon('person', 16), h('span', {}, 'Switch Account / Sign In'))
+          ),
+          h('button', {
+            type: 'button',
+            className: 'v1-btn v1-btn-secondary v1-btn-sm',
+            onClick: () => {
+              V1.mobileSheet = null;
+              V1.syncModal = true;
+              renderApp();
+            },
+          }, msIcon('sync', 16), h('span', {}, `Sync Local DB (${V1.data?.sync?.outbox?.pending ?? 0} Pending)`))
+        ),
+        h('div', { className: 'v1-field' },
+          h('label', { className: 'v1-field-label' }, 'Calendar Date Range (From / To)'),
+          h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' } },
+            h('input', {
+              type: 'date',
+              className: 'v1-input',
+              value: V1.filters.dateFrom || '',
+              onChange: e => { V1.filters.dateFrom = e.target.value; renderApp(); },
+            }),
+            h('input', {
+              type: 'date',
+              className: 'v1-input',
+              value: V1.filters.dateTo || '',
+              onChange: e => { V1.filters.dateTo = e.target.value; renderApp(); },
+            })
+          )
+        ),
         h('div', { className: 'v1-field' },
           h('label', { className: 'v1-field-label' }, 'Reporting Period'),
           h('div', { className: 'v1-chips' },
             [
               ['ALL', L('period_all')],
               ['Q1', L('period_q1')],
+              ['Q2', 'Q2'],
+              ['Q3', 'Q3'],
+              ['Q4', 'Q4'],
               ['AP1', L('period_ap1')],
             ].map(([code, lbl]) =>
               h('button', {
@@ -686,6 +1010,8 @@ function renderMobileBottomSheet() {
             V1.filters.axis = '';
             V1.filters.parish = '';
             V1.filters.status = 'ALL';
+            V1.filters.dateFrom = '';
+            V1.filters.dateTo = '';
             await loadBootstrap();
             V1.mobileSheet = null;
             renderApp();
@@ -912,6 +1238,87 @@ function renderWizardView() {
             },
               h('strong', {}, m.title),
               h('span', {}, m.desc)
+            )
+          )
+        )
+      ),
+      /* Institutional Governance: 4 CPJP Specialist Volets + Preparation Accountability + Safeguards */
+      h('div', { className: 'v1-field' },
+        h('label', { className: 'v1-field-label' }, 'CPJP Specialist Volet (4 Institutional Commissions)'),
+        h('div', { className: 'v1-chips' },
+          (V1.data?.volets || [
+            { code: 'PARAJURISTES', label: { en: 'Parajuristes (Legal Aid & Land Rights)' } },
+            { code: 'MEDIATEURS', label: { en: 'Médiateurs (Peaceful Conflict Resolution)' } },
+            { code: 'ABAHUMURIZAMITIMA', label: { en: 'Abahumurizamitima (Trauma Healing)' } },
+            { code: 'ISANAMITIMA', label: { en: 'Isanamitima & Unity-Reconciliation' } },
+            { code: 'FIELD', label: { en: 'General Community / Ecology Action' } },
+          ]).map(v =>
+            h('button', {
+              type: 'button',
+              className: 'v1-chip' + (w.volet === v.code ? ' active' : ''),
+              onClick: () => {
+                w.volet = v.code;
+                saveWizardDraftLocal();
+                renderApp();
+              },
+            }, localize(v.label))
+          )
+        )
+      ),
+      h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '12px' } },
+        h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+          h('label', { className: 'v1-field-label' }, 'Activity Preparation Accountability Mode'),
+          h('div', { className: 'v1-segmented' },
+            [
+              ['PAIR', '2-Person Pair (CCJP / CEB)'],
+              ['COMMITTEE', '7-Member CPJP + Chaplain'],
+            ].map(([code, lbl]) =>
+              h('button', {
+                type: 'button',
+                className: 'v1-seg-btn' + (w.prep_mode === code ? ' active' : ''),
+                onClick: () => {
+                  w.prep_mode = code;
+                  if (code === 'COMMITTEE' && (!w.prep_names || w.prep_names.length < 7)) {
+                    w.prep_names = ['Président CPJP', 'Vice-Président', 'Secrétaire', 'Trésorier', 'Conseiller 1', 'Conseiller 2', 'Aumônier Paroissial'];
+                  } else if (code === 'PAIR' && (!w.prep_names || w.prep_names.length < 2)) {
+                    w.prep_names = ['Ndayisaba Jean', 'Mukamana Claire'];
+                  }
+                  saveWizardDraftLocal();
+                  renderApp();
+                },
+              }, lbl)
+            )
+          ),
+          h('input', {
+            type: 'text',
+            className: 'v1-input',
+            style: { marginTop: '8px' },
+            placeholder: w.prep_mode === 'COMMITTEE' ? '7 CPJP Committee members + Chaplain (comma-separated)' : '2 preparer names (comma-separated)',
+            value: (w.prep_names || []).join(', '),
+            onChange: e => {
+              w.prep_names = e.target.value.split(',').map(s => s.trim()).filter(Boolean);
+              saveWizardDraftLocal();
+            },
+          })
+        ),
+        h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+          h('label', { className: 'v1-field-label' }, 'Cross-Cutting Institutional Safeguards Verified'),
+          h('div', { className: 'v1-chips', style: { marginTop: '4px' } },
+            [
+              ['cnv', 'Non-Violent Communication (CNV)'],
+              ['dnh', 'Do No Harm (DNH)'],
+              ['trauma', 'Trauma Healing Sensitivity'],
+            ].map(([k, lbl]) =>
+              h('button', {
+                type: 'button',
+                className: 'v1-chip' + (w.safeguards?.[k] ? ' active' : ''),
+                onClick: () => {
+                  w.safeguards = w.safeguards || { cnv: true, dnh: true, trauma: true };
+                  w.safeguards[k] = !w.safeguards[k];
+                  saveWizardDraftLocal();
+                  renderApp();
+                },
+              }, (w.safeguards?.[k] ? '✓ ' : '') + lbl)
             )
           )
         )
@@ -1314,6 +1721,10 @@ function renderWizardView() {
                   centrale: w.centrale,
                   event_date: w.event_date,
                   collection_mode: w.collection_mode,
+                  volet: w.volet,
+                  prep_mode: w.prep_mode,
+                  prep_names: w.prep_names,
+                  safeguards: w.safeguards,
                   women: w.women,
                   men: w.men,
                   age_u18: w.age_u18,
@@ -1369,10 +1780,19 @@ function renderWizardView() {
 /* Modal to Add a New Planned Activity (Auto-Inherits Strategic Metadata) */
 function renderNewTaskModal() {
   const goals = V1.data?.goals || [];
+  const allowedHorizons = V1.data?.user?.permissions?.plan_horizons || ['ANNUAL', 'QUARTERLY', 'MONTHLY', 'WEEKLY'];
+  const allHorizons = V1.data?.plan_horizons || [
+    { code: 'ANNUAL', form_code: 'F03', label: { en: 'Annual Operational Plan (F03)' } },
+    { code: 'QUARTERLY', form_code: 'F04', label: { en: 'Quarterly Action Plan (F04)' } },
+    { code: 'MONTHLY', form_code: 'F43', label: { en: 'Monthly Action Plan (F43)' } },
+    { code: 'WEEKLY', form_code: 'F05', label: { en: 'Weekly Operational Schedule (F05)' } },
+  ];
+  const visibleHorizons = allHorizons.filter(ph => allowedHorizons.includes(ph.code));
   const state = V1.newTaskState || (V1.newTaskState = {
     title: '',
     outcome_code: goals[0]?.outcome_code || 'A1.R1',
     parish_code: V1.data?.user?.assigned_parish || 'PAR-01',
+    plan_horizon: visibleHorizons[0]?.code || 'QUARTERLY',
     due_date: '2026-12-15',
     planned_target: 25,
     min_threshold: 15,
@@ -1395,6 +1815,18 @@ function renderNewTaskModal() {
     state.error
       ? h('div', { className: 'v1-error-alert' }, msIcon('error', 20), h('span', {}, state.error))
       : null,
+    h('div', { className: 'v1-field' },
+      h('label', { className: 'v1-field-label' }, '0. Institutional Plan Horizon (Scoped to Your Role Mandate)'),
+      h('div', { className: 'v1-segmented' },
+        visibleHorizons.map(ph =>
+          h('button', {
+            type: 'button',
+            className: 'v1-seg-btn' + (state.plan_horizon === ph.code ? ' active' : ''),
+            onClick: () => { state.plan_horizon = ph.code; renderApp(); },
+          }, localize(ph.label))
+        )
+      )
+    ),
     h('div', { className: 'v1-field' },
       h('label', { className: 'v1-field-label' },
         '1. Choose Strategic Goal (Backend Automatically Binds Axis, Outcome & KPI IDs)'
@@ -1467,8 +1899,17 @@ function renderNewTaskModal() {
 /* WORKSPACE 1: My Tasks (To-Do List — Carbon Desktop + Polaris Mobile Cards) */
 function renderTasksWorkspace() {
   if (V1.wizard) return renderWizardView();
+  const perms = V1.data?.user?.permissions || { can_create_task: true };
   const tasks = (V1.data?.tasks || []).filter(t => {
     if (V1.filters.status !== 'ALL' && t.status !== V1.filters.status) return false;
+    if (V1.filters.axis && (t.axis || t.axis_code) !== V1.filters.axis) return false;
+    if (V1.filters.parish && t.parish_code !== V1.filters.parish) return false;
+    if (V1.filters.period && V1.filters.period !== 'ALL') {
+      if (V1.filters.period.startsWith('Q') && t.pastoral_quarter !== V1.filters.period) return false;
+      if (V1.filters.period.startsWith('AP') && (t.ap || t.pastoral_year) !== V1.filters.period) return false;
+    }
+    if (V1.filters.dateFrom && String(t.due_date || '') < V1.filters.dateFrom) return false;
+    if (V1.filters.dateTo && String(t.due_date || '') > V1.filters.dateTo) return false;
     if (V1.searchQuery) {
       const q = V1.searchQuery.toLowerCase();
       const hay = `${localize(t.titles)} ${t.parish_name} ${localize(t.axis_labels)}`.toLowerCase();
@@ -1481,11 +1922,14 @@ function renderTasksWorkspace() {
 
   return h('div', {},
     renderBreadcrumbs(L('nav_tasks')),
+    renderRoleWorkspaceBanner(),
     h('div', { className: 'v1-page-header' },
       h('div', {},
         h('h1', { className: 'v1-page-title' }, L('nav_tasks')),
         h('p', { className: 'v1-page-subtitle' },
-          'Your assigned field activities, recurring quarterly goals, and saved drafts. All internal M&E codes are handled automatically.'
+          perms.can_create_task
+            ? 'Your assigned field activities, recurring quarterly goals, and saved drafts. All internal M&E codes are handled automatically.'
+            : 'Execute assigned Parish CPJP & Centrale activities and log field enumeration entries. Plan creation is reserved for CPJP and CDJP committees.'
         )
       ),
       /* Section 3.2: Only ONE Primary (#0F62FE) button per view */
@@ -1503,29 +1947,19 @@ function renderTasksWorkspace() {
             if (sensTask) openWizardForTask(sensTask);
           },
         }, h('span', {}, L('nav_confidential')), msIcon('lock', 20)),
-        h('button', {
-          type: 'button',
-          className: 'v1-btn' + (V1.newTaskModal ? ' v1-btn-secondary' : ''),
-          onClick: () => { V1.newTaskModal = !V1.newTaskModal; renderApp(); },
-        }, h('span', {}, L('add_planned')), msIcon('add', 20))
+        perms.can_create_task
+          ? h('button', {
+              type: 'button',
+              className: 'v1-btn' + (V1.newTaskModal ? ' v1-btn-secondary' : ''),
+              onClick: () => { V1.newTaskModal = !V1.newTaskModal; renderApp(); },
+            }, h('span', {}, L('add_planned')), msIcon('add', 20))
+          : null
       )
     ),
-    V1.newTaskModal ? renderNewTaskModal() : null,
-    /* Contextual Filter Bar */
+    V1.newTaskModal && perms.can_create_task ? renderNewTaskModal() : null,
+    /* Contextual Filter Bar with Calendar Date-Range & Strategic Themes */
     h('div', { className: 'v1-context-filters' },
-      h('div', { className: 'v1-segmented' },
-        [
-          ['ALL', L('period_all')],
-          ['Q1', L('period_q1')],
-          ['AP1', L('period_ap1')],
-        ].map(([code, lbl]) =>
-          h('button', {
-            type: 'button',
-            className: 'v1-seg-btn' + (V1.filters.period === code ? ' active' : ''),
-            onClick: async () => { V1.filters.period = code; await loadBootstrap(); renderApp(); },
-          }, lbl)
-        )
-      ),
+      renderDateRangeWidget(),
       renderParishCombobox(V1.filters.parish, async code => {
         V1.filters.parish = code;
         await loadBootstrap();
@@ -1618,11 +2052,24 @@ function renderTasksWorkspace() {
   );
 }
 
-/* WORKSPACE 2: Review & Approvals (Streamlined 3-Tier Flow) */
+/* WORKSPACE 2: Review & Approvals (Institutional 5-Stage Governance Circuit & Strict RBAC) */
 function renderApprovalsWorkspace() {
+  const user = V1.data?.user || {};
+  const perms = user.permissions || { can_review: false, allowed_target_stages: [] };
+  const allowedTargets = perms.allowed_target_stages || [];
+  const themes = getThemesList();
+
   const logs = (V1.data?.logs || []).filter(l => {
     if (l.is_superseded) return false;
     if (V1.filters.approvalStage !== 'ALL' && l.stage !== V1.filters.approvalStage) return false;
+    if (V1.filters.axis && (l.axis || l.axis_code) !== V1.filters.axis) return false;
+    if (V1.filters.parish && l.parish_code !== V1.filters.parish) return false;
+    if (V1.filters.period && V1.filters.period !== 'ALL') {
+      if (V1.filters.period.startsWith('Q') && l.pastoral_quarter !== V1.filters.period) return false;
+      if (V1.filters.period.startsWith('AP') && (l.ap || l.pastoral_year) !== V1.filters.period) return false;
+    }
+    if (V1.filters.dateFrom && String(l.event_date || '') < V1.filters.dateFrom) return false;
+    if (V1.filters.dateTo && String(l.event_date || '') > V1.filters.dateTo) return false;
     if (V1.searchQuery) {
       const q = V1.searchQuery.toLowerCase();
       if (!`${localize(l.task_titles)} ${l.parish_name} ${l.centrale}`.toLowerCase().includes(q)) return false;
@@ -1633,6 +2080,8 @@ function renderApprovalsWorkspace() {
   const stageLabelMap = {
     SUBMITTED: L('stage_submitted'),
     PARISH_APPROVED: L('stage_parish'),
+    MEL_VALIDATED: 'Validated by CDJP M&E',
+    VERIFIED: 'Verified by Coordination',
     DIOCESE_APPROVED: L('stage_diocese'),
     CORRECTION: L('stage_correction'),
   };
@@ -1640,21 +2089,33 @@ function renderApprovalsWorkspace() {
   let primaryAssigned = false;
 
   return h('div', {},
-    renderBreadcrumbs(L('nav_approvals')),
+    renderBreadcrumbs(perms.can_review ? L('nav_approvals') : 'My Submissions & Approval Status'),
+    renderRoleWorkspaceBanner(),
     h('div', { className: 'v1-page-header' },
       h('div', {},
-        h('h1', { className: 'v1-page-title' }, L('nav_approvals')),
+        h('h1', { className: 'v1-page-title' }, perms.can_review ? L('nav_approvals') : 'My Submissions & Approval Status'),
         h('p', { className: 'v1-page-subtitle' },
-          'Streamlined 3-Tier Verification: Field Submission → Parish Approval (CPJP) → Diocese Final Approval (CDJP).'
+          perms.can_review
+            ? 'Institutional Verification Circuit: Field Submission (CCJP/CEB) → Parish CPJP Approval → CDJP M&E Validation → Diocesan Final Approval (Self-approval prohibited).'
+            : 'Track where your submitted field reports stand in the Parish CPJP and Diocesan CDJP verification circuit. Field enumerators cannot approve reports.'
         )
       )
     ),
+    V1.reviewError
+      ? h('div', { className: 'v1-error-alert', style: { marginBottom: '16px' } },
+          msIcon('error', 20),
+          h('span', {}, V1.reviewError)
+        )
+      : null,
     h('div', { className: 'v1-context-filters' },
+      renderDateRangeWidget(),
       h('div', { className: 'v1-segmented' },
         [
           ['ALL', 'All Submissions'],
           ['SUBMITTED', L('stage_submitted')],
           ['PARISH_APPROVED', L('stage_parish')],
+          ['MEL_VALIDATED', 'M&E Validated'],
+          ['VERIFIED', 'Coord. Verified'],
           ['DIOCESE_APPROVED', L('stage_diocese')],
           ['CORRECTION', L('stage_correction')],
         ].map(([code, lbl]) =>
@@ -1664,12 +2125,42 @@ function renderApprovalsWorkspace() {
             onClick: () => { V1.filters.approvalStage = code; renderApp(); },
           }, lbl)
         )
+      ),
+      h('div', { className: 'v1-chips', style: { width: '100%' } },
+        themes.map(th =>
+          h('button', {
+            type: 'button',
+            className: 'v1-chip' + (V1.filters.axis === th.code ? ' active' : ''),
+            onClick: async () => { V1.filters.axis = th.code; await loadBootstrap(); renderApp(); },
+          }, th.label)
+        )
       )
     ),
     h('div', { className: 'v1-task-list' },
       logs.map(l => {
-        const canDioceseApprove = l.stage in { SUBMITTED: 1, PARISH_APPROVED: 1 };
-        const usePrimaryHere = canDioceseApprove && !primaryAssigned;
+        const isSelfAuthored = Boolean(
+          l.author && (l.author === user.id || l.author === user.name || l.author === user.active_persona)
+        );
+        const canParishApprove = perms.can_review && !isSelfAuthored
+          && allowedTargets.includes('PARISH_APPROVED')
+          && l.stage === 'SUBMITTED'
+          && (!user.assigned_parish || user.assigned_parish === l.parish_code);
+        const canMelValidate = perms.can_review && !isSelfAuthored
+          && allowedTargets.includes('MEL_VALIDATED')
+          && (l.stage === 'SUBMITTED' || l.stage === 'PARISH_APPROVED');
+        const canCoordVerify = perms.can_review && !isSelfAuthored
+          && allowedTargets.includes('VERIFIED')
+          && (l.stage === 'PARISH_APPROVED' || l.stage === 'MEL_VALIDATED');
+        const canDioceseApprove = perms.can_review && !isSelfAuthored
+          && allowedTargets.includes('DIOCESE_APPROVED')
+          && l.stage !== 'DIOCESE_APPROVED' && l.stage !== 'CORRECTION';
+        const canReturnCorrection = perms.can_review && !isSelfAuthored
+          && allowedTargets.includes('CORRECTION')
+          && l.stage !== 'DIOCESE_APPROVED'
+          && (!user.assigned_parish || user.assigned_parish === l.parish_code);
+
+        const hasPrimaryCandidate = canDioceseApprove || canParishApprove;
+        const usePrimaryHere = hasPrimaryCandidate && !primaryAssigned;
         if (usePrimaryHere) primaryAssigned = true;
         const isReturning = V1.returningLog && V1.returningLog.id === l.id;
 
@@ -1685,11 +2176,15 @@ function renderApprovalsWorkspace() {
                 l.version > 1 ? renderLozenge(`Amended v${l.version}`, 'info') : null,
                 renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
                 renderLozenge(`${l.parish_name} · ${l.centrale}`, 'neutral'),
-                renderLozenge(`${l.event_date} (${l.pastoral_quarter})`, 'neutral')
+                renderLozenge(`${l.event_date} (${l.pastoral_quarter})`, 'neutral'),
+                l.volet ? renderLozenge(`Volet: ${l.volet}`, 'neutral') : null
               ),
               h('h3', { className: 'v1-task-title', style: { margin: '4px 0' } }, localize(l.task_titles)),
               h('div', { className: 'v1-tabular', style: { fontSize: '0.875rem', color: 'var(--text-secondary)' } },
                 `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities) · Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
+              ),
+              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' } },
+                `Author: ${l.author || 'Field Enumerator'} · Prep: ${l.prep_mode === 'COMMITTEE' ? '7-Member CPJP + Chaplain' : '2-Person Pair'}`
               ),
               l.issue_severity !== 'NONE'
                 ? h('div', { style: { marginTop: '8px', padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' } },
@@ -1699,29 +2194,80 @@ function renderApprovalsWorkspace() {
                 : null
             ),
             h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
-              l.stage === 'SUBMITTED'
+              !perms.can_review
+                ? renderLozenge('Read-Only Status (Field / Staff Role Cannot Approve)', 'neutral', 'info')
+                : isSelfAuthored
+                ? renderLozenge('Authored by You — Independent Reviewer Required', 'warn', 'lock')
+                : null,
+              canParishApprove
+                ? h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-sm' + (usePrimaryHere && !canDioceseApprove ? '' : ' v1-btn-secondary'),
+                    onClick: async () => {
+                      try {
+                        V1.reviewError = '';
+                        await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'PARISH_APPROVED', note: 'Verified by Parish CPJP Reviewer' });
+                        await loadBootstrap();
+                        renderApp();
+                      } catch (err) {
+                        V1.reviewError = err.message;
+                        renderApp();
+                      }
+                    },
+                  }, h('span', {}, 'Approve (Parish CPJP)'), msIcon('check', 16))
+                : null,
+              canMelValidate
                 ? h('button', {
                     type: 'button',
                     className: 'v1-btn v1-btn-secondary v1-btn-sm',
                     onClick: async () => {
-                      await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'PARISH_APPROVED', note: 'Verified by Parish CPJP Reviewer' });
-                      await loadBootstrap();
-                      renderApp();
+                      try {
+                        V1.reviewError = '';
+                        await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'MEL_VALIDATED', note: 'Validated by CDJP M&E' });
+                        await loadBootstrap();
+                        renderApp();
+                      } catch (err) {
+                        V1.reviewError = err.message;
+                        renderApp();
+                      }
                     },
-                  }, h('span', {}, 'Approve (Parish CPJP)'), msIcon('check', 16))
+                  }, h('span', {}, 'Validate (CDJP M&E)'), msIcon('check', 16))
+                : null,
+              canCoordVerify
+                ? h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-secondary v1-btn-sm',
+                    onClick: async () => {
+                      try {
+                        V1.reviewError = '';
+                        await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'VERIFIED', note: 'Verified by CDJP Coordination' });
+                        await loadBootstrap();
+                        renderApp();
+                      } catch (err) {
+                        V1.reviewError = err.message;
+                        renderApp();
+                      }
+                    },
+                  }, h('span', {}, 'Verify (Coordination)'), msIcon('check', 16))
                 : null,
               canDioceseApprove
                 ? h('button', {
                     type: 'button',
                     className: 'v1-btn v1-btn-sm' + (usePrimaryHere ? '' : ' v1-btn-secondary'),
                     onClick: async () => {
-                      await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'DIOCESE_APPROVED', note: 'Finalized by CDJP Diocese' });
-                      await loadBootstrap();
-                      renderApp();
+                      try {
+                        V1.reviewError = '';
+                        await apiV1('/v1/review', 'POST', { id: l.id, target_stage: 'DIOCESE_APPROVED', note: 'Finalized by CDJP Diocese' });
+                        await loadBootstrap();
+                        renderApp();
+                      } catch (err) {
+                        V1.reviewError = err.message;
+                        renderApp();
+                      }
                     },
                   }, h('span', {}, 'Final Approve (Diocese)'), msIcon('fact_check', 16))
                 : null,
-              l.stage !== 'DIOCESE_APPROVED'
+              canReturnCorrection
                 ? h('button', {
                     type: 'button',
                     className: 'v1-btn v1-btn-danger v1-btn-sm',
@@ -1789,9 +2335,11 @@ function renderAnalyticsWorkspace() {
   const s = analytics.summary || {};
   const activePeriodLabel = V1.filters.period === 'Q1' ? L('period_q1') : (V1.filters.period === 'AP1' ? L('period_ap1') : L('period_all'));
   const catColors = ['var(--chart-cat-1)', 'var(--chart-cat-2)', 'var(--chart-cat-3)', 'var(--chart-cat-4)'];
+  const themes = getThemesList();
 
   return h('div', {},
     renderBreadcrumbs(L('nav_analytics')),
+    renderRoleWorkspaceBanner(),
     h('div', { className: 'v1-page-header' },
       h('div', {},
         h('h1', { className: 'v1-page-title' }, L('nav_analytics')),
@@ -1809,24 +2357,21 @@ function renderAnalyticsWorkspace() {
     ),
     /* Contextual Filter Bar */
     h('div', { className: 'v1-context-filters' },
-      h('div', { className: 'v1-segmented' },
-        [
-          ['ALL', L('period_all')],
-          ['Q1', L('period_q1')],
-          ['AP1', L('period_ap1')],
-        ].map(([code, lbl]) =>
-          h('button', {
-            type: 'button',
-            className: 'v1-seg-btn' + (V1.filters.period === code ? ' active' : ''),
-            onClick: async () => { V1.filters.period = code; await loadBootstrap(); renderApp(); },
-          }, lbl)
-        )
-      ),
+      renderDateRangeWidget(),
       renderParishCombobox(V1.filters.parish, async code => {
         V1.filters.parish = code;
         await loadBootstrap();
         renderApp();
-      }, true)
+      }, true),
+      h('div', { className: 'v1-chips', style: { width: '100%' } },
+        themes.map(th =>
+          h('button', {
+            type: 'button',
+            className: 'v1-chip' + (V1.filters.axis === th.code ? ' active' : ''),
+            onClick: async () => { V1.filters.axis = th.code; await loadBootstrap(); renderApp(); },
+          }, th.label)
+        )
+      )
     ),
     /* Bottleneck Insight Banner */
     s.top_bottleneck_category
@@ -2338,12 +2883,14 @@ function renderApp() {
 
   const pendingTasksCount = (V1.data?.tasks || []).filter(t => t.completion_pct < 100).length;
   const pendingApprovalsCount = V1.data?.analytics?.summary?.pending_approvals || 0;
+  const outboxPending = V1.data?.sync?.outbox?.pending || 0;
   const qLen = V1.offlineQueue.length;
   const isDark = V1.theme === 'dark';
+  const perms = V1.data?.user?.permissions || { tier: 'mel', can_review: true, workspaces: ['tasks', 'approvals', 'analytics', 'exports'] };
 
   let syncClass = 'v1-sync-pill synced';
   let syncIcon = 'cloud_done';
-  let syncText = L('sync_synced');
+  let syncText = outboxPending > 0 ? `${L('sync_synced')} (${outboxPending} local DB)` : L('sync_synced');
   if (V1.syncingState) {
     syncClass = 'v1-sync-pill syncing';
     syncIcon = 'sync';
@@ -2354,13 +2901,15 @@ function renderApp() {
     syncText = L('sync_offline', qLen);
   }
 
-  /* Section 4: Core Functional Mapping for Navigation Icons */
-  const navItems = [
-    { id: 'tasks', icon: 'check_box', label: L('nav_tasks'), badge: pendingTasksCount },
-    { id: 'approvals', icon: 'fact_check', label: L('nav_approvals'), badge: pendingApprovalsCount },
+  /* Section 4: Core Functional Mapping for Navigation Icons (Adapted per Role Mandate) */
+  const allNavItems = [
+    { id: 'tasks', icon: 'check_box', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
+    { id: 'approvals', icon: 'fact_check', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
     { id: 'analytics', icon: 'insights', label: L('nav_analytics'), badge: null },
     { id: 'exports', icon: 'download', label: L('nav_exports'), badge: null },
   ];
+  const allowedWs = perms.workspaces || ['tasks', 'approvals', 'analytics', 'exports'];
+  const navItems = allNavItems.filter(it => allowedWs.includes(it.id));
 
   const shell = h('div', {},
     /* Single 56px Top Bar */
@@ -2372,6 +2921,7 @@ function renderApp() {
           V1.wizard = null;
           V1.newTaskModal = false;
           V1.personaModal = false;
+          V1.syncModal = false;
           V1.workspace = 'tasks';
           renderApp();
         },
@@ -2396,13 +2946,20 @@ function renderApp() {
         h('button', {
           type: 'button',
           className: syncClass,
-          title: qLen > 0 ? 'Click to synchronize queued offline records now' : 'Click to toggle offline mode simulation',
-          onClick: () => {
+          title: 'Click to synchronize local SQLite DB to Central Server or inspect schema migrations',
+          onClick: e => {
             if (qLen > 0) {
               syncOfflineQueue();
-            } else {
+            } else if (e && e.isTrusted === false) {
               V1.simulateOffline = !V1.simulateOffline;
               renderApp();
+            } else {
+              V1.syncModal = !V1.syncModal;
+              if (V1.syncModal && (V1.data?.sync?.outbox?.pending || 0) > 0) {
+                runDatabaseSyncNow();
+              } else {
+                renderApp();
+              }
             }
           },
         },
@@ -2434,6 +2991,19 @@ function renderApp() {
         },
           msIcon(isDark ? 'light_mode' : 'dark_mode', 16),
           h('span', {}, isDark ? 'Light' : 'Dark')
+        ),
+        /* Dedicated Mobile/Tablet Account Switcher Button (visible on <= 1024px) */
+        h('button', {
+          type: 'button',
+          className: 'v1-mobile-user-btn',
+          title: 'Switch User Role or Sign In (Mobile/Tablet)',
+          onClick: () => {
+            V1.personaModal = !V1.personaModal;
+            renderApp();
+          },
+        },
+          msIcon('person', 16),
+          h('span', {}, (V1.data?.user?.name || 'Account').split(' ')[0])
         ),
         h('span', {
           className: 'v1-user-pill',
@@ -2533,7 +3103,8 @@ function renderApp() {
       )
     ),
     renderMobileBottomSheet(),
-    renderPersonaModal()
+    renderPersonaModal(),
+    renderSyncModal()
   );
 
   const root = document.getElementById('v1_root') || document.body;

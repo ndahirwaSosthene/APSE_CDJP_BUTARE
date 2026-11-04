@@ -110,10 +110,13 @@ def create_app(data_dir: Optional[Path] = None, port: int = 8765, no_auth: bool 
             ["APSE_COORDINATION", "APSE_DIRECTION"],
             ["/LocalRoot01"],
         )
+        accounts.add("director_diocese", default_pw, ["APSE_DIRECTION"], ["/LocalRoot01"])
+        accounts.add("staff_diocese", default_pw, ["APSE_STAFF"], ["/LocalRoot01"])
         accounts.add("cpjp_gakoma", default_pw, ["APSE_CPJP"], [par01_path])
         accounts.add("cpjp_save", default_pw, ["APSE_CPJP"], [par03_path])
         accounts.add("cpjp_butare", default_pw, ["APSE_CPJP"], [par10_path])
         accounts.add("cpjp_kibeho", default_pw, ["APSE_CPJP"], [par24_path])
+        accounts.add("reporter_gakoma", default_pw, ["APSE_PARISH_REPORTER"], [par01_path])
         accounts.add("ccjp_field", default_pw, ["APSE_CCJP"], [par01_path])
 
     units = local_units()
@@ -195,10 +198,12 @@ def create_app(data_dir: Optional[Path] = None, port: int = 8765, no_auth: bool 
         parish: Optional[str] = None,
         period: Optional[str] = None,
         axis: Optional[str] = None,
+        date_from: Optional[str] = None,
+        date_to: Optional[str] = None,
     ):
         try:
             user = _current_user(request)
-            data = engine.v1_bootstrap(user, parish, period, axis)
+            data = engine.v1_bootstrap(user, parish, period, axis, date_from, date_to)
             return _json_response(200, data)
         except Fault as e:
             return _json_response(e.status, {"error": e.code, "details": e.details})
@@ -324,6 +329,68 @@ def create_app(data_dir: Optional[Path] = None, port: int = 8765, no_auth: bool 
             body = await _check_csrf_and_parse_json(request)
             user = _current_user(request)
             return _json_response(200, engine.v1_import_csv(user, body))
+        except Fault as e:
+            return _json_response(e.status, {"error": e.code, "details": e.details})
+
+    @app.get("/apse-service/v1/system/migrations")
+    @app.get("/api/v1/system/migrations")
+    async def get_v1_migrations():
+        import migrations
+        return _json_response(200, migrations.status(engine.db))
+
+    @app.get("/apse-service/v1/sync/status")
+    @app.get("/api/v1/sync/status")
+    async def get_v1_sync_status(request: Request):
+        try:
+            user = _current_user(request)
+            return _json_response(200, engine.sync_status(user))
+        except Fault as e:
+            return _json_response(e.status, {"error": e.code, "details": e.details})
+
+    @app.post("/apse-service/v1/sync/configure")
+    @app.post("/api/v1/sync/configure")
+    async def post_v1_sync_configure(request: Request):
+        try:
+            body = await _check_csrf_and_parse_json(request)
+            user = _current_user(request)
+            return _json_response(200, engine.sync_configure(user, body))
+        except Fault as e:
+            return _json_response(e.status, {"error": e.code, "details": e.details})
+
+    @app.post("/apse-service/v1/sync/run")
+    @app.post("/api/v1/sync/run")
+    async def post_v1_sync_run(request: Request):
+        try:
+            await _check_csrf_and_parse_json(request)
+            user = _current_user(request)
+            return _json_response(200, engine.sync_run(user))
+        except Fault as e:
+            return _json_response(e.status, {"error": e.code, "details": e.details})
+
+    @app.post("/apse-service/v1/sync/receive")
+    @app.post("/api/v1/sync/receive")
+    async def post_v1_sync_receive(request: Request):
+        try:
+            token = request.headers.get("X-APSE-Sync-Token", "")
+            raw = await request.body()
+            body = json.loads(raw.decode("utf-8")) if raw else {}
+            return _json_response(200, engine.sync_receive(token, body))
+        except Fault as e:
+            return _json_response(e.status, {"error": e.code, "details": e.details})
+
+    @app.get("/apse-service/v1/sync/changes")
+    @app.get("/api/v1/sync/changes")
+    async def get_v1_sync_changes(
+        request: Request,
+        since: int = 0,
+        node: str = "",
+        schema_version: Optional[int] = None,
+    ):
+        try:
+            token = request.headers.get("X-APSE-Sync-Token", "")
+            return _json_response(
+                200, engine.sync_changes(token, since, node, schema_version)
+            )
         except Fault as e:
             return _json_response(e.status, {"error": e.code, "details": e.details})
 

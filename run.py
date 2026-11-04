@@ -39,12 +39,22 @@ def main() -> int:
         default=True,
         help="Start directly in Web GUI mode without CLI passphrase prompt",
     )
+    parser.add_argument(
+        "--migrate-status",
+        action="store_true",
+        help="Print current database schema migration version and exit",
+    )
     args = parser.parse_args()
 
     data_dir = Path(args.data)
     data_dir.mkdir(parents=True, exist_ok=True)
 
     app = create_app(data_dir=data_dir, port=args.port, no_auth=args.no_auth)
+    if args.migrate_status:
+        import json
+        from backend import migrations
+        print(json.dumps(migrations.status(app.state.engine.db), indent=2))
+        return 0
     url = f"http://127.0.0.1:{args.port}/"
     print(f"APSE LOCAL — {url}", flush=True)
 

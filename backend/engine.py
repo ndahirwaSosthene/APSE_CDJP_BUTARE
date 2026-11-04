@@ -91,11 +91,12 @@ from transfers import Transfers
 from collection_forms import CollectionForms
 from capture import Capture
 from v1_redesign import V1Redesign
+from sync_engine import SyncEngine
 
-class Engine(Governance,Transfers,CollectionForms,Capture,V1Redesign):
- def __init__(self,path,key,audit_key):
+class Engine(Governance,Transfers,CollectionForms,Capture,V1Redesign,SyncEngine):
+ def __init__(self,path,key,audit_key,seed_demo=True):
   if len(audit_key)<32:raise ValueError('Audit key must be at least 32 bytes')
-  self.crypto=Fernet(key);self.audit_key=audit_key;self.lock=threading.RLock();self.db=sqlite3.connect(path,check_same_thread=False,isolation_level=None);self.db.row_factory=sqlite3.Row
+  self.db_path=path;self._raw_fernet_key=key;self.crypto=Fernet(key);self.audit_key=audit_key;self.lock=threading.RLock();self.db=sqlite3.connect(path,check_same_thread=False,isolation_level=None);self.db.row_factory=sqlite3.Row
   self.db.executescript('''PRAGMA foreign_keys=ON; PRAGMA journal_mode=WAL; PRAGMA busy_timeout=10000;
 CREATE TABLE IF NOT EXISTS records(id TEXT PRIMARY KEY,form TEXT NOT NULL,unit TEXT NOT NULL,path TEXT NOT NULL,event_date TEXT NOT NULL,author TEXT NOT NULL,state TEXT NOT NULL,revision INTEGER NOT NULL,version INTEGER NOT NULL,parent TEXT,body BLOB NOT NULL,created TEXT NOT NULL,updated TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS history(id INTEGER PRIMARY KEY,record_id TEXT NOT NULL,revision INTEGER NOT NULL,actor TEXT NOT NULL,action TEXT NOT NULL,body BLOB NOT NULL,time TEXT NOT NULL);
@@ -117,7 +118,7 @@ CREATE INDEX IF NOT EXISTS rec_filter ON records(unit,form,state,event_date);
   self.init_capture()
   self.init_collections()
   self.init_governance()
-  self.init_v1()
+  self.init_v1(seed_demo=seed_demo)
  @contextlib.contextmanager
  def tx(self):
   with self.lock:

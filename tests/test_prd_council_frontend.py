@@ -1411,6 +1411,110 @@ async def run_frontend_suite():
                 f"missingPrompt='{ana15_16['missingAlertText'][:45]}...', ready='{ana15_16['readyLozengeText']}', previewTableRendered={ana15_16['previewTableRenderedInDom']}, commit='{ana15_16['commitMessage']}'",
             )
 
+            # 5.8 Revision Plan Verification: DB Sync & Migrations, Axis + Calendar Filter, Mobile Auth, Strict RBAC
+            await cdp.set_viewport(1440, 900, mobile=False)
+            rev2 = await cdp.evaluate("""(async () => {
+                // 1. Open Sync Modal & run Local SQLite -> Central DB Sync
+                V1.syncModal = true;
+                renderApp();
+                await runDatabaseSyncNow();
+                const syncFeedbackText = V1.syncFeedback?.text || '';
+                const pendingAfterSync = V1.data?.sync?.outbox?.pending ?? -1;
+                const schemaVer = V1.data?.sync?.schema_version ?? 0;
+                V1.syncModal = false;
+
+                // 2. Strategic Axis Filtering (A1) & Calendar Date-Range Filtering in My Tasks
+                V1.workspace = 'tasks';
+                V1.filters.axis = 'A1';
+                V1.filters.dateFrom = '2026-10-01';
+                V1.filters.dateTo = '2026-12-31';
+                await loadBootstrap();
+                renderApp();
+                const a1TasksAllMatch = (V1.data.tasks || []).every(t => t.axis === 'A1');
+                const hasDateFromInput = Boolean(document.getElementById('v1-filter-date-from'));
+                const hasDateToInput = Boolean(document.getElementById('v1-filter-date-to'));
+                V1.filters.axis = '';
+                V1.filters.dateFrom = '';
+                V1.filters.dateTo = '';
+
+                // 3. Role-Specific Frontend: Field Enumerator (reporter_gakoma)
+                await apiV1('/v1/persona', 'POST', { persona_key: 'reporter_gakoma' });
+                await loadBootstrap();
+                V1.workspace = 'tasks';
+                renderApp();
+                const fieldHasAddPlanBtn = [...document.querySelectorAll('.v1-header-actions .v1-btn')].some(b => b.textContent.includes('Add Planned'));
+                V1.workspace = 'approvals';
+                renderApp();
+                const fieldApproveBtns = [...document.querySelectorAll('.v1-task-card .v1-btn')].filter(b => b.textContent.includes('Approve') || b.textContent.includes('Validate'));
+
+                // 4. Role-Specific Frontend: Parish CPJP (cpjp_gakoma)
+                await apiV1('/v1/persona', 'POST', { persona_key: 'cpjp_gakoma' });
+                await loadBootstrap();
+                V1.workspace = 'approvals';
+                renderApp();
+                const cpjpHasDioceseApprove = [...document.querySelectorAll('.v1-task-card .v1-btn')].some(b => b.textContent.includes('Final Approve (Diocese)'));
+
+                // Restore mel_diocese
+                await apiV1('/v1/persona', 'POST', { persona_key: 'mel_diocese' });
+                await loadBootstrap();
+                V1.workspace = 'tasks';
+                renderApp();
+
+                return {
+                    syncFeedbackText,
+                    pendingAfterSync,
+                    schemaVer,
+                    a1TasksAllMatch,
+                    hasDateFromInput,
+                    hasDateToInput,
+                    fieldHasAddPlanBtn,
+                    fieldApproveBtnsCount: fieldApproveBtns.length,
+                    cpjpHasDioceseApprove
+                };
+            })()""")
+            rec.record(
+                "TC-REV2-01..04",
+                "Interactive E2E",
+                "Local-to-Central DB Sync (v3 Migrations), Axis + Calendar Date-Range Filter, & Role-Specific RBAC",
+                "Sync complete" in rev2["syncFeedbackText"]
+                and rev2["pendingAfterSync"] == 0
+                and rev2["schemaVer"] == 3
+                and rev2["a1TasksAllMatch"]
+                and rev2["hasDateFromInput"]
+                and rev2["hasDateToInput"]
+                and (not rev2["fieldHasAddPlanBtn"])
+                and rev2["fieldApproveBtnsCount"] == 0
+                and (not rev2["cpjpHasDioceseApprove"]),
+                f"sync='{rev2['syncFeedbackText']}', schema=v{rev2['schemaVer']}, a1Match={rev2['a1TasksAllMatch']}, dates={rev2['hasDateFromInput']}/{rev2['hasDateToInput']}, fieldAddPlan={rev2['fieldHasAddPlanBtn']}, fieldApproveBtns={rev2['fieldApproveBtnsCount']}, cpjpDioceseBtn={rev2['cpjpHasDioceseApprove']}",
+            )
+
+            # 5.9 Mobile Phone Account & Role Switcher on 360x800
+            await cdp.set_viewport(360, 800, mobile=True)
+            mob_auth = await cdp.evaluate("""(() => {
+                renderApp();
+                const mobBtn = document.querySelector('.v1-mobile-user-btn');
+                const mobBtnDisplay = mobBtn ? getComputedStyle(mobBtn).display : 'none';
+                if (mobBtn) mobBtn.click();
+                const modalOpen = Boolean(V1.personaModal && document.getElementById('v1-web-login-user'));
+                V1.personaModal = false;
+                renderApp();
+                return {
+                    mobBtnDisplay,
+                    modalOpen,
+                    scrollWidth: document.documentElement.scrollWidth,
+                    innerWidth: window.innerWidth
+                };
+            })()""")
+            rec.record(
+                "TC-REV2-05",
+                "Mobile Portrait 360x800",
+                "Mobile Topbar Account Switcher Button (.v1-mobile-user-btn) & Web Login Modal on Phone",
+                mob_auth["mobBtnDisplay"] in ("flex", "inline-flex")
+                and mob_auth["modalOpen"]
+                and mob_auth["scrollWidth"] <= mob_auth["innerWidth"],
+                f"mobBtnDisplay={mob_auth['mobBtnDisplay']}, modalOpen={mob_auth['modalOpen']}, scroll={mob_auth['scrollWidth']}/{mob_auth['innerWidth']}",
+            )
+
     finally:
         if chrome_proc:
             chrome_proc.terminate()

@@ -1,6 +1,6 @@
 {
-  "total_checks": 42,
-  "passed": 42,
+  "total_checks": 44,
+  "passed": 44,
   "prd_discrepancies": 0,
   "results": [
     {
@@ -17,7 +17,7 @@
       "title": "16-Column Carbon Grid: 4 KPI Cards in 1 Row (span 4) & 2 Split Panels (span 8)",
       "status": "PASS",
       "passed": true,
-      "details": "KPI tops=[336, 336, 336, 336] widths=[262, 262, 262, 262]px; Panel tops=[491, 491] widths=[549, 549]px; canvasPad=32px"
+      "details": "KPI tops=[556, 556, 556, 556] widths=[262, 262, 262, 262]px; Panel tops=[712, 712] widths=[549, 549]px; canvasPad=32px"
     },
     {
       "test_id": "TC-UI-03",
@@ -41,7 +41,7 @@
       "title": "Carbon Button Height >= 40px, 16px Gap, Max 1 Primary (#0F62FE) CTA per Workspace View",
       "status": "PASS",
       "passed": true,
-      "details": "minBtnHeight=40px, gap=16px, primaryCountPerWorkspace={'tasks': 1, 'approvals': 1, 'analytics': 0, 'exports': 1}"
+      "details": "minBtnHeight=40px, gap=16px, primaryCountPerWorkspace={'tasks': 1, 'approvals': 0, 'analytics': 0, 'exports': 1}"
     },
     {
       "test_id": "TC-UI-06",
@@ -65,7 +65,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[328, 328, 467, 467] (2x2=True), panelTops=[607, 970] widths=[736, 736]px (stacked=True)"
+      "details": "kpiTops=[615, 615, 755, 755] (2x2=True), panelTops=[895, 1258] widths=[736, 736]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -89,7 +89,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[328, 328, 467, 467] (2x2=True), panelTops=[607, 970] widths=[992, 992]px (stacked=True)"
+      "details": "kpiTops=[575, 575, 715, 715] (2x2=True), panelTops=[855, 1218] widths=[992, 992]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[392, 524, 655, 761]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[588, 720, 851, 957]"
     },
     {
       "test_id": "TC-UI-11",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[372, 504, 635, 741]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[568, 700, 831, 937]"
     },
     {
       "test_id": "TC-UI-11",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-24FEAC', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-2B9BE5', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",
@@ -289,7 +289,7 @@
       "title": "Offline Queueing (apse-v1-offline-queue) & Sequential Sync to Central Database",
       "status": "PASS",
       "passed": true,
-      "details": "offlineBtn='Save Offline on Device', waitingPill='Saved on Device (1 waiting for internet)', syncedPill='All Data Synced'"
+      "details": "offlineBtn='Save Offline on Device', waitingPill='Saved on Device (1 waiting for internet)', syncedPill='All Data Synced (11 local DB)'"
     },
     {
       "test_id": "TC-CAP-12..13",
@@ -338,6 +338,22 @@
       "status": "PASS",
       "passed": true,
       "details": "missingPrompt='Column 'Parish_Name' is missing in your file....', ready='All columns matched (1 rows ready)', previewTableRendered=True, commit='\u2713 Imported 1 activity logs into your queue.'"
+    },
+    {
+      "test_id": "TC-REV2-01..04",
+      "viewport": "Interactive E2E",
+      "title": "Local-to-Central DB Sync (v3 Migrations), Axis + Calendar Date-Range Filter, & Role-Specific RBAC",
+      "status": "PASS",
+      "passed": true,
+      "details": "sync='Sync complete \u2713 Uploaded 12 local record(s) to Central DB; downloaded 0 remote update(s). Schema v3.', schema=v3, a1Match=True, dates=True/True, fieldAddPlan=False, fieldApproveBtns=0, cpjpDioceseBtn=False"
+    },
+    {
+      "test_id": "TC-REV2-05",
+      "viewport": "Mobile Portrait 360x800",
+      "title": "Mobile Topbar Account Switcher Button (.v1-mobile-user-btn) & Web Login Modal on Phone",
+      "status": "PASS",
+      "passed": true,
+      "details": "mobBtnDisplay=flex, modalOpen=True, scroll=360/360"
     }
   ],
   "discrepancies": []

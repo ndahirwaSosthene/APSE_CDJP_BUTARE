@@ -1294,7 +1294,7 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
         boot = json.loads(raw)
         self.assertEqual(len(boot['parishes']), 27)
         self.assertEqual(len(boot['goals']), 13)
-        self.assertEqual(len(boot['personas']), 7)
+        self.assertEqual(len(boot['personas']), 9)
 
         # 1b. POST /v1/persona (switch to parish CPJP PAR-01 and back to APSE_MEL)
         st_p1, _, raw_p1 = self._req('POST', '/apse-service/v1/persona', {
@@ -1321,12 +1321,19 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
         created_task = json.loads(raw_task)
         self.assertEqual(created_task['axis'], 'A2')
 
-        # 3. POST /v1/logs
+        # 3. Switch to Field Enumerator (reporter_gakoma) to submit field log
+        self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'reporter_gakoma',
+        }, self._valid_post_headers())
+
         st_log, _, raw_log = self._req('POST', '/apse-service/v1/logs', {
             'task_id': created_task['id'],
             'centrale': 'Kizenga',
             'event_date': '2026-11-15',
             'collection_mode': 'FOCUS_GROUP',
+            'volet': 'MEDIATEURS',
+            'prep_mode': 'PAIR',
+            'prep_names': ['Ndayisaba Jean', 'Mukamana Claire'],
             'women': 12, 'men': 8,
             'age_18_35': 20,
             'sessions_done': 20,
@@ -1337,14 +1344,45 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
         self.assertEqual(submitted_log['total'], 20)
         self.assertEqual(submitted_log['impact_rating'], 'GREAT')
 
-        # 4. POST /v1/review
+        # 4a. Field Enumerator cannot approve logs (403)
+        st_forbid, _, _ = self._req('POST', '/apse-service/v1/review', {
+            'id': submitted_log['id'],
+            'target_stage': 'PARISH_APPROVED',
+            'note': 'Attempted by field enumerator',
+        }, self._valid_post_headers())
+        self.assertEqual(st_forbid, 403)
+
+        # 4b. Switch to Parish CPJP (cpjp_gakoma) to grant PARISH_APPROVED
+        self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'cpjp_gakoma',
+        }, self._valid_post_headers())
         st_rev, _, raw_rev = self._req('POST', '/apse-service/v1/review', {
             'id': submitted_log['id'],
             'target_stage': 'PARISH_APPROVED',
-            'note': 'Verified over HTTP',
+            'note': 'Verified over HTTP by CPJP Gakoma',
         }, self._valid_post_headers())
         self.assertEqual(st_rev, 200)
         self.assertEqual(json.loads(raw_rev)['stage'], 'PARISH_APPROVED')
+
+        # 4c. Parish CPJP cannot grant DIOCESE_APPROVED (403)
+        st_cpjp_dio, _, _ = self._req('POST', '/apse-service/v1/review', {
+            'id': submitted_log['id'],
+            'target_stage': 'DIOCESE_APPROVED',
+            'note': 'Attempted diocese approval by CPJP',
+        }, self._valid_post_headers())
+        self.assertEqual(st_cpjp_dio, 403)
+
+        # 4d. Switch back to Diocesan M&E (mel_diocese) to grant DIOCESE_APPROVED
+        self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'mel_diocese',
+        }, self._valid_post_headers())
+        st_dio, _, raw_dio = self._req('POST', '/apse-service/v1/review', {
+            'id': submitted_log['id'],
+            'target_stage': 'DIOCESE_APPROVED',
+            'note': 'Finalized by CDJP Diocese',
+        }, self._valid_post_headers())
+        self.assertEqual(st_dio, 200)
+        self.assertEqual(json.loads(raw_dio)['stage'], 'DIOCESE_APPROVED')
 
         # 5. GET /v1/export
         st_exp, hdrs_exp, raw_exp = self._req('GET', '/apse-service/v1/export?type=impact_summary&format=csv&preset=dhis2&language=en')
@@ -1359,6 +1397,85 @@ class LiveHTTPLoopbackSecurityAndEndpointsTests(unittest.TestCase):
         }, self._valid_post_headers())
         self.assertEqual(st_imp, 200)
         self.assertEqual(json.loads(raw_imp)['imported'], 1)
+
+    def test_live_http_v2_revision_sync_migrations_rbac_and_filters(self):
+        # 1. Verify schema migrations endpoint (v3)
+        st_mig, _, raw_mig = self._req('GET', '/apse-service/v1/system/migrations')
+        self.assertEqual(st_mig, 200)
+        mig_payload = json.loads(raw_mig)
+        self.assertEqual(mig_payload['current_version'], 3)
+        self.assertEqual(mig_payload['latest_version'], 3)
+        self.assertEqual(len(mig_payload['migrations']), 3)
+
+        # 2. Verify Strategic Axis & Date-Range filtering on /v1/bootstrap
+        st_ax, _, raw_ax = self._req('GET', '/apse-service/v1/bootstrap?axis=A1&date_from=2026-10-01&date_to=2026-12-31')
+        self.assertEqual(st_ax, 200)
+        boot_ax = json.loads(raw_ax)
+        for t in boot_ax['tasks']:
+            self.assertEqual(t['axis'], 'A1')
+            self.assertGreaterEqual(t['due_date'], '2026-10-01')
+            self.assertLessEqual(t['due_date'], '2026-12-31')
+        for l in boot_ax['logs']:
+            self.assertEqual(l['axis'], 'A1')
+
+        # 3. Verify Field Enumerator cannot create planned activities (F03/F04/F43/F05)
+        self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'reporter_gakoma',
+        }, self._valid_post_headers())
+        st_ftask, _, raw_ftask = self._req('POST', '/apse-service/v1/tasks', {
+            'title': 'Unauthorized Field Plan',
+            'outcome_code': 'A1.R1',
+            'parish_code': 'PAR-01',
+            'due_date': '2026-12-15',
+            'planned_target': 15,
+        }, self._valid_post_headers())
+        self.assertEqual(st_ftask, 403)
+        self.assertEqual(json.loads(raw_ftask)['error'], 'planning_cdjp_cpjp_only')
+
+        # 4. Verify Anti-Self-Approval: CPJP Gakoma submits a log and cannot self-approve it
+        self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'cpjp_gakoma',
+        }, self._valid_post_headers())
+        st_self_log, _, raw_self_log = self._req('POST', '/apse-service/v1/logs', {
+            'task_id': 'task-a2-gakoma-01',
+            'centrale': 'Kizenga',
+            'event_date': '2026-11-20',
+            'collection_mode': 'ENUMERATOR',
+            'volet': 'PARAJURISTES',
+            'prep_mode': 'COMMITTEE',
+            'women': 10, 'men': 10,
+            'age_18_35': 20,
+            'sessions_done': 20,
+            'outcome_value': 18,
+        }, self._valid_post_headers())
+        self.assertEqual(st_self_log, 201)
+        self_log = json.loads(raw_self_log)
+
+        st_self_rev, _, raw_self_rev = self._req('POST', '/apse-service/v1/review', {
+            'id': self_log['id'],
+            'target_stage': 'PARISH_APPROVED',
+            'note': 'Attempting self-approval',
+        }, self._valid_post_headers())
+        self.assertEqual(st_self_rev, 403)
+        self.assertEqual(json.loads(raw_self_rev)['error'], 'self_approval_forbidden')
+
+        # Restore default mel_diocese persona
+        self._req('POST', '/apse-service/v1/persona', {
+            'persona_key': 'mel_diocese',
+        }, self._valid_post_headers())
+
+        # 5. Verify Local SQLite Outbox -> Central Server Database Sync (/v1/sync/run)
+        st_sync_pre, _, raw_sync_pre = self._req('GET', '/apse-service/v1/sync/status')
+        self.assertEqual(st_sync_pre, 200)
+        sync_pre = json.loads(raw_sync_pre)
+        self.assertGreater(sync_pre['outbox']['pending'], 0)
+
+        st_sync_run, _, raw_sync_run = self._req('POST', '/apse-service/v1/sync/run', {}, self._valid_post_headers())
+        self.assertEqual(st_sync_run, 200)
+        sync_after = json.loads(raw_sync_run)
+        self.assertEqual(sync_after['outbox']['pending'], 0)
+        self.assertGreater(sync_after['outbox']['synced'], 0)
+        self.assertGreater(sync_after['last_run']['pushed'], 0)
 
 
 if __name__ == '__main__':
