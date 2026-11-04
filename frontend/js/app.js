@@ -744,7 +744,7 @@ function renderRoleWorkspaceBanner() {
         ? renderLozenge('Execution Only (No Plan Creation)', 'warn')
         : renderLozenge(`Plan Horizons: ${(perms.plan_horizons || []).join(', ')}`, 'neutral')
     ),
-    h('div', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', marginTop: '4px' } },
+    h('div', { className: 'v1-role-banner-copy' },
       perms.mandate || 'Institutional role-scoped workspace aligned with CDJP Butare governance rules.'
     )
   );
@@ -913,7 +913,7 @@ function renderMobileBottomSheet() {
           h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px', flexWrap: 'wrap' } },
             h('div', {},
               h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600' } }, 'Active Account & Role'),
-              h('strong', { style: { fontSize: '0.875rem' } }, `${user.name || 'LOCAL_MEL'} · ${user.title || ''}`)
+              h('strong', { style: { fontSize: '0.875rem' } }, user.name ? `${user.name} (${user.role || 'M&E'})` : 'LOCAL_MEL (Diocesan M&E)')
             ),
             h('button', {
               type: 'button',
@@ -2926,8 +2926,8 @@ function renderApp() {
           renderApp();
         },
       },
-        h('span', { className: 'v1-brand-badge' }, 'CDJP BUTARE'),
-        h('span', { className: 'v1-brand-text' }, 'APSE')
+        h('span', { className: 'v1-brand-text' }, 'apse.'),
+        h('span', { className: 'v1-brand-badge' }, 'CDJP BUTARE')
       ),
       h('div', { className: 'v1-search-wrap' },
         h('span', { className: 'v1-search-icon' }, msIcon('search', 20)),

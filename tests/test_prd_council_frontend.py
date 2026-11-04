@@ -293,6 +293,7 @@ async def run_frontend_suite():
             # Switch to Analytics to test TC-UI-02 & TC-UI-03
             await cdp.evaluate("V1.workspace = 'analytics'; renderApp();")
             await asyncio.sleep(0.1)
+            await cdp.screenshot("desktop_analytics_1440x900.png")
 
             ui02 = await cdp.evaluate("""(() => {
                 const kpis = [...document.querySelectorAll('.v1-kpi-grid .v1-kpi-card')];
@@ -388,7 +389,7 @@ async def run_frontend_suite():
                     let primaries = 0;
                     for (const b of btns) {
                         const cs = getComputedStyle(b);
-                        if (cs.backgroundColor === 'rgb(15, 98, 254)') primaries++;
+                        if (cs.backgroundColor === 'rgb(35, 35, 35)') primaries++;
                         if (!b.classList.contains('v1-btn-sm')) {
                             minBtnHeight = Math.min(minBtnHeight, Math.round(b.getBoundingClientRect().height));
                             btnGap = cs.gap;
@@ -404,12 +405,12 @@ async def run_frontend_suite():
             rec.record(
                 "TC-UI-05",
                 "Desktop 1440x900",
-                "Carbon Button Height >= 40px, 16px Gap, Max 1 Primary (#0F62FE) CTA per Workspace View",
+                "Kargul Pill Button Height >= 40px, 16px Gap, Max 1 Primary (#232323) CTA per Workspace View",
                 ui05["minBtnHeight"] >= 40 and ui05["btnGap"] == "16px" and max_primaries <= 1,
                 f"minBtnHeight={ui05['minBtnHeight']}px, gap={ui05['btnGap']}, primaryCountPerWorkspace={ui05['primaryCounts']}",
             )
 
-            # TC-UI-06: Breadcrumbs, Atlassian Lozenges, Tabular Nums, Material Symbols, Zero Overflow
+            # TC-UI-06: Breadcrumbs, Kargul Capsule Lozenges, Tabular Nums, Material Symbols, Zero Overflow
             ui06 = await cdp.evaluate("""(() => {
                 const bc = document.querySelector('nav.v1-breadcrumbs');
                 const h1 = document.querySelector('h1.v1-page-title');
@@ -438,13 +439,14 @@ async def run_frontend_suite():
             rec.record(
                 "TC-UI-06",
                 "Desktop 1440x900",
-                "Carbon Breadcrumbs above H1, Atlassian Lozenges (11px/700/uppercase/3px/0px), tabular-nums, Material Symbols, Zero Overflow",
+                "Breadcrumbs above H1 (32px/700), Kargul Capsule Lozenges (11px/700/uppercase/9999px/0px), tabular-nums, Material Symbols, Zero Overflow",
                 ui06["bcAboveH1"]
-                and ui06["h1FontSize"] == "24px"
+                and ui06["h1FontSize"] == "32px"
+                and ui06["h1Weight"] == "700"
                 and ui06["badgeFontSize"] == "11px"
                 and ui06["badgeWeight"] == "700"
                 and ui06["badgeTransform"] == "uppercase"
-                and ui06["badgeRadius"] == "3px"
+                and ui06["badgeRadius"] == "9999px"
                 and ui06["badgeBorder"] == "0px"
                 and "tabular-nums" in ui06["tabularNums"]
                 and ui06["icon20ViewBox"] == "0 0 24 24"
@@ -774,16 +776,16 @@ async def run_frontend_suite():
             rec.record(
                 "TC-UI-16",
                 "Desktop 1440x900",
-                "4 Surface Themes (light, dark, soft, contrast) Token & Button Contrast Verification",
-                ui16["light"]["bgCanvas"] == "#F4F5F7"
-                and ui16["dark"]["bgCanvas"] == "#1D2125"
+                "4 Surface Themes (light, dark, soft, contrast) Kargul Token & Button Contrast Verification",
+                ui16["light"]["bgCanvas"] == "#EFEFEF"
+                and ui16["dark"]["bgCanvas"] == "#0A0A0A"
                 and ui16["soft"]["bgCanvas"] == "#EAE6DF"
                 and ui16["contrast"]["bgCanvas"] == "#000000"
-                and ui16["dark"]["btnColor"] == "rgb(29, 33, 37)",
+                and ui16["dark"]["btnColor"] == "rgb(23, 23, 23)",
                 f"light={ui16['light']['bgCanvas']}, dark={ui16['dark']['bgCanvas']} (btnText={ui16['dark']['btnColor']}), soft={ui16['soft']['bgCanvas']}, contrast={ui16['contrast']['bgCanvas']}",
             )
 
-            # TC-UI-17: Carbon Form Inputs, Segmented Pills & Filter Chips
+            # TC-UI-17: Form Inputs, Segmented Pills & Derived Kargul Filter Chips
             await cdp.send("Page.bringToFront")
             ui17 = await cdp.evaluate("""(async () => {
                 V1.workspace = 'tasks';
@@ -809,16 +811,16 @@ async def run_frontend_suite():
             rec.record(
                 "TC-UI-17",
                 "Desktop 1440x900",
-                "Carbon Form Input Rest/Focus/Error Borders & 0px Border on Pills/Chips",
-                "1px solid rgb(141, 141, 141)" in ui17["normBorder"]
-                and "rgb(15, 98, 254) 0px 0px 0px 2px inset" in ui17["focusShadow"]
-                and "2px solid rgb(218, 30, 40)" in ui17["errBorder"]
+                "Kargul Form Input Rest/Focus/Error Borders & 0px Border on Pills/Chips",
+                "1px solid rgb(136, 136, 136)" in ui17["normBorder"]
+                and "rgb(35, 35, 35) 0px 0px 0px 2px inset" in ui17["focusShadow"]
+                and "2px solid rgb(228, 0, 20)" in ui17["errBorder"]
                 and ui17["chipBorder"] == "0px"
                 and ui17["segBorder"] == "0px",
                 f"rest='{ui17['normBorder']}', focus='{ui17['focusShadow']}', error='{ui17['errBorder']}', chipBorder={ui17['chipBorder']}, segBorder={ui17['segBorder']}",
             )
 
-            # TC-UI-18: Carbon Chart Header, Horizontal Gridlines & Status Palette
+            # TC-UI-18: Chart Header, Horizontal Gridlines & Status Palette
             await cdp.evaluate("V1.workspace = 'analytics'; renderApp();")
             ui18 = await cdp.evaluate("""(() => {
                 const bc = document.querySelector('.v1-bar-chart');
@@ -838,7 +840,7 @@ async def run_frontend_suite():
             rec.record(
                 "TC-UI-18",
                 "Desktop 1440x900",
-                "Carbon Chart Containers (Title, Active Filter Subtitle, Legend) & Horizontal-Only Gridlines",
+                "Kargul Bento Chart Containers (Title, Active Filter Subtitle, Legend) & Horizontal-Only Gridlines",
                 ui18["headerCount"] == 2
                 and ui18["subtitleCount"] == 2
                 and ui18["legendCount"] == 2
@@ -847,7 +849,7 @@ async def run_frontend_suite():
                 f"headers={ui18['headerCount']}, bgSize={ui18['bgSize']}, bgImage={ui18['bgImage'][:45]}...",
             )
 
-            # TC-UI-19: Atlassian Elevation Scale (Levels 0-3) & Corner Radius Tokens
+            # TC-UI-19: Kargul Borderless Bento Surface Layering & Corner Radius Tokens
             ui19 = await cdp.evaluate("""(() => {
                 const cs = getComputedStyle(document.documentElement);
                 const tblShadow = getComputedStyle(document.querySelector('.v1-data-table')).boxShadow;
@@ -866,14 +868,14 @@ async def run_frontend_suite():
             rec.record(
                 "TC-UI-19",
                 "Desktop 1440x900",
-                "Atlassian Elevation Scale (Levels 0-3) & Corner Radius Tokens (3px/4px/8px/16px)",
-                ui19["rXs"] == "3px"
-                and ui19["rSm"] == "4px"
-                and ui19["rMd"] == "8px"
+                "Kargul Borderless Bento Surface Layering & Corner Radius Tokens (9999px/12px/20px/16px)",
+                ui19["rXs"] == "9999px"
+                and ui19["rSm"] == "12px"
+                and ui19["rMd"] == "20px"
                 and ui19["rSheet"] == "16px 16px 0 0"
                 and ui19["tblShadow"] == "none"
-                and ui19["kpiShadow"] != "none"
-                and ui19["tbShadow"] != "none",
+                and ui19["kpiShadow"] == "none"
+                and ui19["tbShadow"] == "none",
                 f"radii={ui19['rXs']}/{ui19['rSm']}/{ui19['rMd']}/{ui19['rSheet']}, tblShadow={ui19['tblShadow']}",
             )
 
