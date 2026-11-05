@@ -329,6 +329,16 @@ th {
   display: block;
 }
 
+.v1-icon svg [fill="none"],
+.v1-icon svg[fill="none"] {
+  fill: none !important;
+}
+
+.v1-icon svg [stroke="currentColor"],
+.v1-icon svg[stroke="currentColor"] {
+  stroke: currentColor !important;
+}
+
 .v1-icon-16 {
   width: 16px;
   height: 16px;
