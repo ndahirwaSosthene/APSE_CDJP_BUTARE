@@ -1187,6 +1187,199 @@
   /* --------------------------------------------------------------------------
      6. PREPARE / OPEN OFFLINE (Préparer / ouvrir hors ligne)
      -------------------------------------------------------------------------- */
+  
+  /* --------------------------------------------------------------------------
+     UNIFIED OFFLINE HUB (Hub Hors-Ligne & Synchronisation)
+     Combines:
+     1. Coffre-fort chiffré AES-GCM (Stockage local sécurisé)
+     2. File d'attente déconnectée & Synchronisation vers serveur central
+     3. Simulateur réseau déconnecté
+     -------------------------------------------------------------------------- */
+  function renderOfflineHubWorkspace() {
+    const qLen = V1.offlineQueue.length;
+    const outboxPending = V1.data?.sync?.outbox?.pending || 0;
+    const isSimulating = Boolean(V1.simulateOffline);
+
+    return h('div', { className: 'v1-workspace-fade' },
+      h('header', { className: 'v1-page-header' },
+        h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
+          h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
+          h('span', { className: 'v1-breadcrumb-sep' }, '/'),
+          h('span', { className: 'v1-breadcrumb-item' }, 'Résilience Terrain'),
+          h('span', { className: 'v1-breadcrumb-sep' }, '/'),
+          h('span', { className: 'v1-breadcrumb-current' }, L('nav_offline_hub'))
+        ),
+        h('div', { className: 'v1-header-split' },
+          h('div', {},
+            h('h1', { className: 'v1-page-title' }, L('nav_offline_hub')),
+            h('p', { className: 'v1-page-subtitle' },
+              'Centre unifié de gestion hors ligne : chiffrement local AES-256-GCM, contrôle de la file d’attente et synchronisation vers la base centrale.'
+            )
+          ),
+          h('div', { className: 'v1-header-actions' },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn ' + (qLen > 0 ? 'v1-btn-primary' : 'v1-btn-secondary'),
+              onClick: () => {
+                if (qLen > 0) {
+                  V1.syncOfflineQueue();
+                } else if (outboxPending > 0) {
+                  V1.runDatabaseSyncNow();
+                } else {
+                  V091.showToast('Toutes les données sont déjà synchronisées avec le serveur.', 'info');
+                }
+              },
+            },
+              msIcon(qLen > 0 ? 'sync' : 'cloud_done', 18),
+              h('span', {}, qLen > 0 ? `Synchroniser la file (${qLen})` : 'Tout est synchronisé')
+            )
+          )
+        )
+      ),
+
+      /* 2-Column Hub Cards Grid */
+      h('div', { className: 'v1-hub-grid' },
+        /* Card 1: AES-GCM Vault Status */
+        h('div', { className: 'v1-hub-card' },
+          h('div', {},
+            h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' } },
+              h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+                msIcon(V091.vaultUnlocked ? 'lock_open' : 'lock', 24),
+                h('strong', { style: { fontSize: '1.0625rem' } }, 'Coffre-Fort Chiffré AES-GCM')
+              ),
+              h('span', { className: 'v1-badge', style: V091.vaultUnlocked ? { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } : {} },
+                V091.vaultUnlocked ? 'DÉVERROUILLÉ' : 'VERROUILLÉ'
+              )
+            ),
+            h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: '0 0 16px' } },
+              'Chiffrement local des brouillons et dossiers confidentiels avec dérivation de clé PBKDF2 (100 000 itérations SHA-256).'
+            ),
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Phrase secrète du coffre-fort (>= 12 caractères)'),
+              h('input', {
+                type: 'password',
+                className: 'v1-input',
+                placeholder: '••••••••••••••••',
+                value: V091.vaultPassphrase,
+                onInput: e => { V091.vaultPassphrase = e.target.value; },
+              })
+            )
+          ),
+          h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap' } },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary',
+              onClick: () => {
+                if (!V091.vaultPassphrase || V091.vaultPassphrase.length < 12) {
+                  V091.showToast('La phrase secrète doit comporter au moins 12 caractères.', 'error');
+                  return;
+                }
+                apiV1('/offline/vault', 'POST', {
+                  action: V091.vaultUnlocked ? 'lock' : 'unlock',
+                  passphrase: V091.vaultPassphrase,
+                }).then(res => {
+                  V091.vaultUnlocked = res.status === 'unlocked';
+                  V091.showToast(V091.vaultUnlocked ? '✓ Coffre-fort déverrouillé avec succès.' : 'Coffre-fort verrouillé.', 'info');
+                  renderApp();
+                }).catch(err => {
+                  V091.showToast('Erreur coffre-fort : ' + err.message, 'error');
+                });
+              },
+            },
+              msIcon(V091.vaultUnlocked ? 'lock' : 'lock_open', 16),
+              h('span', {}, V091.vaultUnlocked ? 'Verrouiller le coffre-fort' : 'Déverrouiller le coffre-fort')
+            )
+          )
+        ),
+
+        /* Card 2: Queue & Sync Status */
+        h('div', { className: 'v1-hub-card' },
+          h('div', {},
+            h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' } },
+              h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+                msIcon('cloud_sync', 24),
+                h('strong', { style: { fontSize: '1.0625rem' } }, 'Synchronisation Déconnectée')
+              ),
+              h('span', { className: 'v1-badge' }, qLen > 0 ? `${qLen} EN ATTENTE` : 'SYNCHRONISÉ')
+            ),
+            h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: '0 0 16px' } },
+              'Transmission ordonnée des fiches enregistrées hors ligne vers la base centrale avec résolution automatique des conflits.'
+            ),
+            h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px', background: 'var(--bg-input)', padding: '12px', borderRadius: '8px', fontSize: '0.8125rem' } },
+              h('div', { style: { display: 'flex', justifyContent: 'space-between' } },
+                h('span', { style: { color: 'var(--text-secondary)' } }, 'File cache navigateur :'),
+                h('strong', {}, `${qLen} fiche(s)`)
+              ),
+              h('div', { style: { display: 'flex', justifyContent: 'space-between' } },
+                h('span', { style: { color: 'var(--text-secondary)' } }, 'Boîte d’envoi SQLite locale :'),
+                h('strong', {}, `${outboxPending} fiche(s)`)
+              ),
+              h('div', { style: { display: 'flex', justifyContent: 'space-between' } },
+                h('span', { style: { color: 'var(--text-secondary)' } }, 'Schéma actif :'),
+                h('span', { className: 'v1-meta-code-badge' }, 'v3 (Multi-tenant)')
+              )
+            )
+          ),
+          h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap' } },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-primary',
+              onClick: () => {
+                if (qLen > 0) V1.syncOfflineQueue();
+                else V1.runDatabaseSyncNow();
+              },
+            },
+              msIcon('sync', 16),
+              h('span', {}, 'Synchroniser immédiatement')
+            ),
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary',
+              onClick: () => {
+                V1.simulateOffline = !V1.simulateOffline;
+                V091.showToast(V1.simulateOffline ? 'Mode hors-ligne simulé activé.' : 'Mode en ligne rétabli.', 'info');
+                renderApp();
+              },
+            },
+              msIcon(isSimulating ? 'cloud' : 'cloud_off', 16),
+              h('span', {}, isSimulating ? 'Rétablir le réseau' : 'Simuler hors ligne')
+            )
+          )
+        )
+      ),
+
+      /* Queue Items Details Panel */
+      h('div', { className: 'v1-panel', style: { padding: '24px' } },
+        h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' } },
+          h('h2', { style: { fontSize: '1.0625rem', fontWeight: '700' } }, 'Détail des Fiches en Attente de Transmission'),
+          h('span', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } }, `${qLen} élément(s) en mémoire locale`)
+        ),
+        qLen === 0 ?
+          h('div', { style: { textAlign: 'center', padding: '36px 16px', color: 'var(--text-secondary)' } },
+            msIcon('cloud_done', 40),
+            h('p', { style: { fontSize: '0.9375rem', fontWeight: '600', marginTop: '10px' } }, 'Toutes vos données sont à jour.'),
+            h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-muted)' } }, 'Aucun enregistrement en attente dans la file déconnectée.')
+          ) :
+          h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
+            V1.offlineQueue.map((item, qIdx) =>
+              h('div', { key: qIdx, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-input)' } },
+                h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+                  msIcon('description', 20),
+                  h('div', {},
+                    h('strong', { style: { fontSize: '0.875rem' } }, item.task_code || `Tâche #${item.task_id || qIdx + 1}`),
+                    h('p', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                      `Enregistré le ${item.created_at || 'récemment'} · Participants : ${(item.women_count || 0) + (item.men_count || 0)}`
+                    )
+                  )
+                ),
+                h('span', { className: 'v1-badge' }, 'EN ATTENTE')
+              )
+            )
+          )
+      )
+    );
+  }
+
   function renderOfflineVaultWorkspace() {
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
@@ -2732,6 +2925,7 @@
     renderTimesheetsWorkspace,
     renderMelAdminWorkspace,
     renderFileUploadComponent,
+    renderOfflineHubWorkspace,
     renderInAppModal,
     renderInAppToast,
     V091,

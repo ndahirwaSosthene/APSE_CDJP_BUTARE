@@ -17,7 +17,7 @@
       "title": "16-Column Carbon Grid: 4 KPI Cards in 1 Row (span 4) & 2 Split Panels (span 8)",
       "status": "PASS",
       "passed": true,
-      "details": "KPI tops=[633, 633, 633, 633] widths=[265, 265, 265, 265]px; Panel tops=[804, 804] widths=[551, 551]px; canvasPad=32px"
+      "details": "KPI tops=[633, 633, 633, 633] widths=[251, 251, 251, 251]px; Panel tops=[804, 804] widths=[523, 523]px; canvasPad=32px"
     },
     {
       "test_id": "TC-UI-03",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-6E5266', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-C70895', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",

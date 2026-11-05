@@ -2825,3 +2825,403 @@ th {
   gap: 12px;
   flex-shrink: 0;
 }
+
+
+/* ==========================================================================
+   3-COLUMN LAYOUT & RIGHT SIDECAR REFERENCE DRAWER (v0.9.1)
+   ========================================================================== */
+
+/* Left Sidebar Collapse / Expand Transition */
+.v1-sidebar {
+  transition: width 0.22s cubic-bezier(0.16, 1, 0.3, 1), padding 0.2s ease;
+}
+
+.v1-sidebar.collapsed {
+  width: 64px !important;
+  padding: 12px 6px !important;
+}
+
+.v1-sidebar.collapsed .v1-nav-label span:not(.v1-icon),
+.v1-sidebar.collapsed .v1-nav-badge,
+.v1-sidebar.collapsed .v1-nav-divider,
+.v1-sidebar.collapsed .v1-sidebar-lang-wrap,
+.v1-sidebar.collapsed .v1-sidebar-footer,
+.v1-sidebar.collapsed .v1-nav-group-label {
+  display: none !important;
+}
+
+.v1-sidebar.collapsed .v1-nav-item {
+  justify-content: center !important;
+  padding: 12px 0 !important;
+}
+
+.v1-sidebar-toggle-btn {
+  background: transparent;
+  border: 0;
+  color: var(--text-secondary);
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 6px;
+  transition: all 0.15s ease;
+}
+
+.v1-sidebar-toggle-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Right Sidebar: 56px slim icon rail on Desktop */
+.v1-right-sidebar {
+  width: 56px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  padding: 12px 4px;
+  z-index: 40;
+  gap: 6px;
+}
+
+.v1-right-rail-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.18s ease;
+}
+
+.v1-right-rail-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.v1-right-rail-btn.active {
+  background: var(--bg-input);
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+.v1-right-rail-btn.active::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+  background: var(--color-primary);
+}
+
+.v1-right-rail-divider {
+  width: 24px;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 6px 0;
+}
+
+/* Right Sidecar Panel (380px side-by-side reference pane) */
+.v1-right-sidecar {
+  width: 380px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border-subtle);
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  z-index: 45;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.06);
+  animation: v1SlideFromRight 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.v1-sidecar-header {
+  height: 52px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-elevated);
+  flex-shrink: 0;
+}
+
+.v1-sidecar-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.v1-sidecar-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.v1-sidecar-action-btn {
+  background: transparent;
+  border: 0;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.v1-sidecar-action-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.v1-sidecar-body {
+  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.875rem;
+}
+
+/* Offline Hub unified styles */
+.v1-hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.v1-hub-card {
+  background: var(--bg-surface);
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Responsive constraints: Hide right rail & sidecar on tablet and mobile */
+@media (max-width: 1024px) {
+  .v1-right-sidebar,
+  .v1-right-sidecar {
+    display: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   NOTION-STYLE SIDE-PEEK FLOATING OVERLAY DRAWER & RESPONSIVE TABLES
+   ========================================================================== */
+
+/* 1. Notion-Style Floating Side-Peek (Overlays without squishing main canvas) */
+.v1-sidepeek-container {
+  display: block;
+}
+
+.v1-sidepeek-backdrop {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 56px; /* Leaves the 56px right rail visible and interactive */
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 55;
+  animation: v1FadeIn 0.18s ease-out;
+}
+
+.v1-notion-sidepeek {
+  position: fixed;
+  top: 56px;
+  right: 56px;
+  bottom: 0;
+  width: clamp(560px, 55vw, 920px);
+  max-width: calc(100vw - 120px);
+  background: var(--bg-surface);
+  border-left: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+  box-shadow: -14px 0 45px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.15);
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: v1SlideSidePeek 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes v1SlideSidePeek {
+  from { transform: translateX(100%); opacity: 0.8; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.v1-sidepeek-header {
+  height: 52px;
+  padding: 0 18px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-elevated);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.v1-sidepeek-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.v1-sidepeek-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.v1-sidepeek-back-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.v1-sidepeek-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.v1-sidepeek-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.v1-sidepeek-body {
+  padding: 24px;
+  flex: 1;
+  overflow-y: auto;
+  font-size: 0.875rem;
+  background: var(--bg-surface);
+}
+
+/* 2. Responsive, Spacious Data Tables (No Squishing or Illegible Text) */
+.v1-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--bg-surface);
+  margin: var(--space-3) 0 var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.v1-table-responsive table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+  min-width: 680px;
+}
+
+.v1-table-responsive th {
+  padding: 12px 16px;
+  background: var(--bg-elevated);
+  border-bottom: 2px solid var(--border-subtle);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  text-align: left;
+}
+
+.v1-table-responsive td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+  color: var(--text-primary);
+  line-height: 1.45;
+}
+
+.v1-table-responsive tr:last-child td {
+  border-bottom: 0;
+}
+
+.v1-table-responsive tr:hover td {
+  background: var(--bg-hover);
+}
+
+/* 3. Mobile View: Hide Bottom Nav on Mobile Phones (< 768px) */
+@media (max-width: 767px) {
+  .v1-bottom-nav {
+    display: none !important;
+  }
+  .v1-canvas {
+    padding-bottom: 24px !important;
+  }
+  .v1-notion-sidepeek {
+    right: 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    top: 0 !important;
+    z-index: 9999 !important;
+  }
+  .v1-sidepeek-backdrop {
+    display: none !important;
+  }
+}
+
+/* Tablet (768px - 1024px) retains 60px bottom nav for TC-UI-07 */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .v1-bottom-nav {
+    display: grid !important;
+    height: 60px !important;
+  }
+  .v1-canvas {
+    padding-bottom: 88px !important;
+  }
+}

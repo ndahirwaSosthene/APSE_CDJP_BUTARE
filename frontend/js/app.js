@@ -13,6 +13,9 @@ const V1 = {
   workspace: 'tasks', // 'tasks' | 'approvals' | 'analytics' | 'exports'
   searchQuery: '',
   mobileNavOpen: false,
+  leftSidebarCollapsed: false,
+  rightSidecarOpen: false,
+  rightSidecarTab: 'ps_planning',
   filters: {
     period: 'ALL',
     axis: '',
@@ -3144,7 +3147,47 @@ function renderMobileSearchOverlay() {
   );
 }
 
+function renderWorkspaceView(ws) {
+  if (ws === 'tasks') return renderTasksWorkspace();
+  if (ws === 'approvals') return renderApprovalsWorkspace();
+  if (ws === 'analytics') return renderAnalyticsWorkspace();
+  if (ws === 'exports') return renderExportsWorkspace();
+
+  if (window.V091Views) {
+    switch (ws) {
+      case 'my_space': return window.V091Views.renderMySpaceWorkspace();
+      case 'seizure': return window.V091Views.renderSeizureWorkspace();
+      case 'files_validation': return window.V091Views.renderFilesValidationWorkspace();
+      case 'learning': return window.V091Views.renderLearningWorkspace();
+      case 'reports': return window.V091Views.renderReportsWorkspace();
+      case 'offline_hub':
+      case 'offline_vault':
+      case 'offline_sync':
+        return window.V091Views.renderOfflineHubWorkspace ? window.V091Views.renderOfflineHubWorkspace() : window.V091Views.renderOfflineVaultWorkspace();
+      case 'ps_planning': return window.V091Views.renderPSPlanningWorkspace();
+      case 'metadata': return window.V091Views.renderMetadataWorkspace();
+      case 'feedback': return window.V091Views.renderFeedbackWorkspace();
+      case 'projects_ops': return window.V091Views.renderProjectsOpsWorkspace();
+      case 'staff_eval': return window.V091Views.renderStaffEvalWorkspace();
+      case 'create_form': return window.V091Views.renderCreateFormWorkspace();
+      case 'drafts': return window.V091Views.renderDraftsWorkspace();
+      case 'ps_dashboard': return window.V091Views.renderPSDashboardWorkspace();
+      case 'assistant': return window.V091Views.renderAssistantWorkspace();
+      case 'contacts': return window.V091Views.renderContactsWorkspace();
+      case 'data_structure': return window.V091Views.renderDataStructureWorkspace();
+      case 'timesheets': return window.V091Views.renderTimesheetsWorkspace();
+      case 'mel_admin': return window.V091Views.renderMelAdminWorkspace();
+      default: return renderTasksWorkspace();
+    }
+  }
+  return renderTasksWorkspace();
+}
+
 function renderWorkspaceCanvas() {
+  return renderWorkspaceView(V1.workspace);
+}
+/* old canvas */
+function _old_renderWorkspaceCanvas() {
   const ws = V1.workspace;
   if (ws === 'tasks') return renderTasksWorkspace();
   if (ws === 'approvals') return renderApprovalsWorkspace();
@@ -3180,6 +3223,142 @@ function renderWorkspaceCanvas() {
 
 /* Master App Shell Renderer */
 
+
+function renderRightSidecar() {
+  if (!V1.rightSidecarOpen) return null;
+  const tab = V1.rightSidecarTab || 'ps_planning';
+
+  const tabLabels = {
+    ps_planning: { title: 'Planification Stratégique PS (AP1–AP5)', icon: 'view_timeline' },
+    projects_ops: { title: 'Portefeuille Projets & Opérations', icon: 'workspaces' },
+    staff_eval: { title: 'Évaluation des Réalisations Staff', icon: 'workspace_premium' },
+    assistant: { title: 'Assistant & Contrôles Qualité', icon: 'auto_fix_high' },
+    contacts: { title: 'Annuaire Diocésain & Contacts', icon: 'contact_phone' },
+    data_structure: { title: 'Structure & Flux des Données', icon: 'account_tree' },
+    timesheets: { title: 'Feuilles de Temps (F31/F32)', icon: 'more_time' },
+    metadata: { title: 'Référentiels & Métadonnées', icon: 'category' },
+    mel_admin: { title: 'Administration MEL & Sécurité', icon: 'admin_panel_settings' },
+  };
+
+  const meta = tabLabels[tab] || { title: 'Référence', icon: 'info' };
+
+  return h('div', { className: 'v1-sidepeek-container' },
+    /* Soft dimmed backdrop over the canvas (clicking slides it back) */
+    h('div', {
+      className: 'v1-sidepeek-backdrop',
+      onClick: () => {
+        V1.rightSidecarOpen = false;
+        renderApp();
+      }
+    }),
+    /* Notion-Style Floating Side-Peek Overlay Drawer (does not squeeze main canvas) */
+    h('aside', {
+      className: 'v1-notion-sidepeek',
+      role: 'region',
+      'aria-label': 'Notion Side-Peek Reference Panel'
+    },
+      h('div', { className: 'v1-sidepeek-header' },
+        h('div', { className: 'v1-sidepeek-nav' },
+          h('button', {
+            type: 'button',
+            className: 'v1-sidepeek-back-btn',
+            title: 'Faire glisser vers la droite (Masquer sans perdre le travail en cours)',
+            onClick: () => {
+              V1.rightSidecarOpen = false;
+              renderApp();
+            }
+          },
+            msIcon('arrow_forward', 16),
+            h('span', {}, 'Masquer')
+          ),
+          h('div', { className: 'v1-sidepeek-badge' },
+            msIcon(meta.icon, 18),
+            h('strong', {}, meta.title)
+          )
+        ),
+        h('div', { className: 'v1-sidepeek-actions' },
+          h('button', {
+            type: 'button',
+            className: 'v1-btn v1-btn-sm v1-btn-secondary',
+            title: 'Ouvrir en plein écran dans la zone centrale',
+            onClick: () => {
+              V1.workspace = tab;
+              V1.rightSidecarOpen = false;
+              renderApp();
+            }
+          },
+            msIcon('open_in_full', 15),
+            h('span', {}, 'Pleine page')
+          ),
+          h('button', {
+            type: 'button',
+            className: 'v1-modal-close',
+            style: { width: '30px', height: '30px', fontSize: '1.25rem' },
+            title: 'Fermer',
+            onClick: () => {
+              V1.rightSidecarOpen = false;
+              renderApp();
+            }
+          }, '×')
+        )
+      ),
+      h('div', { className: 'v1-sidepeek-body' },
+        renderWorkspaceView(tab)
+      )
+    )
+  );
+}
+
+function renderRightRail() {
+  const rightRailItems = [
+    { id: 'ps_planning', icon: 'view_timeline', title: 'Planification Stratégique PS (AP1–AP5, 5 axes)' },
+    { id: 'projects_ops', icon: 'workspaces', title: 'Projets et Opérations (Portefeuille & KPIs)' },
+    { id: 'staff_eval', icon: 'workspace_premium', title: 'Évaluation des Réalisations (F05/F43/F04/F03)' },
+    { id: 'assistant', icon: 'auto_fix_high', title: 'Assistant et Contrôles (Vérifications & Rédaction)' },
+    { id: 'contacts', icon: 'contact_phone', title: 'Contacts et Annuaire Diocésain' },
+    { id: 'data_structure', icon: 'account_tree', title: 'Structure & Flux des Données (27 paroisses)' },
+    { id: 'timesheets', icon: 'more_time', title: 'Feuilles de Temps (F31/F32)' },
+    { id: 'metadata', icon: 'category', title: 'Référentiels & Métadonnées (18 catégories)' },
+    { id: 'mel_admin', icon: 'admin_panel_settings', title: 'Administration MEL & Audits HMAC' },
+  ];
+
+  return h('aside', { className: 'v1-right-sidebar', 'aria-label': 'Right Reference Rail' },
+    h('button', {
+      type: 'button',
+      className: 'v1-right-rail-btn',
+      style: { background: V1.rightSidecarOpen ? 'var(--bg-hover)' : 'transparent', color: 'var(--color-primary)' },
+      title: V1.rightSidecarOpen ? 'Réduire le panneau de référence' : 'Déplier le panneau de référence (Lecture seule)',
+      onClick: () => {
+        V1.rightSidecarOpen = !V1.rightSidecarOpen;
+        renderApp();
+      }
+    },
+      msIcon(V1.rightSidecarOpen ? 'chevron_right' : 'dock_to_right', 20)
+    ),
+    h('div', { className: 'v1-right-rail-divider' }),
+    rightRailItems.map(item => {
+      const isSelected = V1.rightSidecarOpen && V1.rightSidecarTab === item.id;
+      return h('button', {
+        key: item.id,
+        type: 'button',
+        className: 'v1-right-rail-btn' + (isSelected ? ' active' : ''),
+        title: item.title,
+        onClick: () => {
+          if (V1.rightSidecarOpen && V1.rightSidecarTab === item.id) {
+            V1.rightSidecarOpen = false;
+          } else {
+            V1.rightSidecarOpen = true;
+            V1.rightSidecarTab = item.id;
+          }
+          renderApp();
+        }
+      },
+        msIcon(item.icon, 20)
+      );
+    })
+  );
+}
+
 function renderMobileNavDrawer() {
   if (!V1.mobileNavOpen) return null;
 
@@ -3191,47 +3370,31 @@ function renderMobileNavDrawer() {
 
   const navGroups = [
     {
-      title: 'Espace & Saisie',
+      title: 'Opérations & Saisie (Barre Gauche)',
       items: [
-        { id: 'tasks', icon: 'home', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
-        { id: 'seizure', icon: 'edit_document', label: L('nav_seizure') },
-        { id: 'drafts', icon: 'draft', label: L('nav_drafts') },
-        { id: 'approvals', icon: 'fact_check', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
+        { id: 'tasks', icon: 'task_alt', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
+        { id: 'seizure', icon: 'edit_note', label: L('nav_seizure') },
+        { id: 'drafts', icon: 'pending_actions', label: L('nav_drafts') },
+        { id: 'approvals', icon: 'rule_folder', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
+        { id: 'analytics', icon: 'monitoring', label: L('nav_analytics') },
+        { id: 'exports', icon: 'summarize', label: L('nav_exports') },
+        { id: 'learning', icon: 'tips_and_updates', label: L('nav_learning') },
+        { id: 'create_form', icon: 'post_add', label: L('nav_create_form') },
+        { id: 'offline_hub', icon: 'cloud_sync', label: L('nav_offline_hub'), badge: qLen > 0 ? qLen : null },
+        { id: 'feedback', icon: 'rate_review', label: L('nav_feedback') },
       ]
     },
     {
-      title: 'Planification & Stratégie',
+      title: 'Référence & Gouvernance (Barre Droite)',
       items: [
-        { id: 'ps_planning', icon: 'event_note', label: L('nav_ps_planning') },
-        { id: 'analytics', icon: 'insights', label: L('nav_analytics') },
-        { id: 'projects_ops', icon: 'work', label: L('nav_projects_ops') },
-        { id: 'staff_eval', icon: 'badge', label: L('nav_staff_eval') },
-      ]
-    },
-    {
-      title: 'Rapports & Formulaires',
-      items: [
-        { id: 'exports', icon: 'download', label: L('nav_exports') },
-        { id: 'learning', icon: 'school', label: L('nav_learning') },
-        { id: 'create_form', icon: 'dynamic_form', label: L('nav_create_form') },
-      ]
-    },
-    {
-      title: 'Hors-Ligne & Synchronisation',
-      items: [
-        { id: 'offline_vault', icon: 'lock', label: L('nav_offline_vault') },
-        { id: 'offline_sync', icon: 'sync', label: L('nav_offline_sync'), badge: qLen > 0 ? qLen : null },
-      ]
-    },
-    {
-      title: 'Administration & Organisation',
-      items: [
-        { id: 'assistant', icon: 'assistant', label: L('nav_assistant') },
-        { id: 'feedback', icon: 'chat', label: L('nav_feedback') },
-        { id: 'contacts', icon: 'contacts', label: L('nav_contacts') },
+        { id: 'ps_planning', icon: 'view_timeline', label: L('nav_ps_planning') },
+        { id: 'projects_ops', icon: 'workspaces', label: L('nav_projects_ops') },
+        { id: 'staff_eval', icon: 'workspace_premium', label: L('nav_staff_eval') },
+        { id: 'assistant', icon: 'auto_fix_high', label: L('nav_assistant') },
+        { id: 'contacts', icon: 'contact_phone', label: L('nav_contacts') },
         { id: 'data_structure', icon: 'account_tree', label: L('nav_data_structure') },
-        { id: 'timesheets', icon: 'schedule', label: L('nav_timesheets') },
-        { id: 'metadata', icon: 'tune', label: L('nav_metadata') },
+        { id: 'timesheets', icon: 'more_time', label: L('nav_timesheets') },
+        { id: 'metadata', icon: 'category', label: L('nav_metadata') },
         { id: 'mel_admin', icon: 'admin_panel_settings', label: L('nav_mel_admin') },
       ]
     }
@@ -3361,34 +3524,24 @@ function renderApp() {
 
   /* 4 Primary Navigation Items for Mobile Bottom Navigation (Strictly 4 Tabs for TC-UI-07) */
   const bottomNavItems = [
-    { id: 'tasks', icon: 'check_box', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
-    { id: 'approvals', icon: 'fact_check', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
-    { id: 'analytics', icon: 'insights', label: L('nav_analytics'), badge: null },
-    { id: 'exports', icon: 'download', label: L('nav_exports'), badge: null },
+    { id: 'tasks', icon: 'task_alt', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
+    { id: 'approvals', icon: 'rule_folder', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
+    { id: 'analytics', icon: 'monitoring', label: L('nav_analytics'), badge: null },
+    { id: 'exports', icon: 'summarize', label: L('nav_exports'), badge: null },
   ];
 
-  /* Comprehensive 20 Tabs / Workspaces for Desktop Sidebar Navigation */
-  const allNavItems = [
-    { id: 'tasks', icon: 'home', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount, group: 'Espace & Saisie', alias: 'my_space' },
-    { id: 'seizure', icon: 'edit_document', label: L('nav_seizure'), badge: null, group: 'Espace & Saisie' },
-    { id: 'drafts', icon: 'draft', label: L('nav_drafts'), badge: null, group: 'Espace & Saisie' },
-    { id: 'approvals', icon: 'fact_check', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount, group: 'Espace & Saisie', alias: 'files_validation' },
-    { id: 'ps_planning', icon: 'event_note', label: L('nav_ps_planning'), badge: null, group: 'Planification & Stratégie' },
-    { id: 'analytics', icon: 'insights', label: L('nav_analytics'), badge: null, group: 'Planification & Stratégie', alias: 'ps_dashboard' },
-    { id: 'projects_ops', icon: 'work', label: L('nav_projects_ops'), badge: null, group: 'Planification & Stratégie' },
-    { id: 'staff_eval', icon: 'badge', label: L('nav_staff_eval'), badge: null, group: 'Planification & Stratégie' },
-    { id: 'exports', icon: 'download', label: L('nav_exports'), badge: null, group: 'Rapports & Apprentissage', alias: 'reports' },
-    { id: 'learning', icon: 'school', label: L('nav_learning'), badge: null, group: 'Rapports & Apprentissage' },
-    { id: 'create_form', icon: 'dynamic_form', label: L('nav_create_form'), badge: null, group: 'Rapports & Apprentissage' },
-    { id: 'offline_vault', icon: 'lock', label: L('nav_offline_vault'), badge: null, group: 'Hors ligne & Synchronisation' },
-    { id: 'offline_sync', icon: 'sync', label: L('nav_offline_sync'), badge: qLen > 0 ? qLen : null, group: 'Hors ligne & Synchronisation' },
-    { id: 'assistant', icon: 'assistant', label: L('nav_assistant'), badge: null, group: 'Administration & Organisation' },
-    { id: 'feedback', icon: 'chat', label: L('nav_feedback'), badge: null, group: 'Administration & Organisation' },
-    { id: 'contacts', icon: 'contacts', label: L('nav_contacts'), badge: null, group: 'Administration & Organisation' },
-    { id: 'data_structure', icon: 'account_tree', label: L('nav_data_structure'), badge: null, group: 'Administration & Organisation' },
-    { id: 'timesheets', icon: 'schedule', label: L('nav_timesheets'), badge: null, group: 'Administration & Organisation' },
-    { id: 'metadata', icon: 'tune', label: L('nav_metadata'), badge: null, group: 'Administration & Organisation' },
-    { id: 'mel_admin', icon: 'admin_panel_settings', label: L('nav_mel_admin'), badge: null, group: 'Administration & Organisation' },
+  /* 10 Operational Workspaces for Left Action Sidebar (APSE v0.9.1 3-Column Layout) */
+  const leftNavItems = [
+    { id: 'tasks', icon: 'task_alt', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount, group: 'Espace & Saisie', alias: 'my_space' },
+    { id: 'seizure', icon: 'edit_note', label: L('nav_seizure'), badge: null, group: 'Espace & Saisie' },
+    { id: 'drafts', icon: 'pending_actions', label: L('nav_drafts'), badge: null, group: 'Espace & Saisie' },
+    { id: 'approvals', icon: 'rule_folder', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount, group: 'Espace & Saisie', alias: 'files_validation' },
+    { id: 'analytics', icon: 'monitoring', label: L('nav_analytics'), badge: null, group: 'Planification & Stratégie', alias: 'ps_dashboard' },
+    { id: 'exports', icon: 'summarize', label: L('nav_exports'), badge: null, group: 'Rapports & Apprentissage', alias: 'reports' },
+    { id: 'learning', icon: 'tips_and_updates', label: L('nav_learning'), badge: null, group: 'Rapports & Apprentissage' },
+    { id: 'create_form', icon: 'post_add', label: L('nav_create_form'), badge: null, group: 'Rapports & Apprentissage' },
+    { id: 'offline_hub', icon: 'cloud_sync', label: L('nav_offline_hub'), badge: qLen > 0 ? qLen : null, group: 'Hors ligne & Synchronisation', alias: 'offline_vault' },
+    { id: 'feedback', icon: 'rate_review', label: L('nav_feedback'), badge: null, group: 'Administration & Organisation' },
   ];
 
   const shell = h('div', {},
@@ -3396,17 +3549,13 @@ function renderApp() {
     h('header', { className: 'v1-topbar' },
       h('div', {
         className: 'v1-brand',
-        title: 'Return to My Tasks Home / Open Navigation Menu',
+        title: 'CDJP Butare — Cliquez pour réduire / déplier la barre latérale',
         onClick: () => {
           if (typeof window !== 'undefined' && window.innerWidth <= 1024) {
             V1.mobileNavOpen = !V1.mobileNavOpen;
             renderApp();
           } else {
-            V1.wizard = null;
-            V1.newTaskModal = false;
-            V1.personaModal = false;
-            V1.syncModal = false;
-            V1.workspace = 'tasks';
+            V1.leftSidebarCollapsed = !V1.leftSidebarCollapsed;
             renderApp();
           }
         },
@@ -3514,8 +3663,22 @@ function renderApp() {
     ),
     /* Main Shell: Fixed 240px Left Navigation + Fluid 16-Column Workspace Canvas */
     h('div', { className: 'v1-shell' },
-      h('aside', { className: 'v1-sidebar' },
-        allNavItems.map(item => {
+      h('aside', { className: 'v1-sidebar' + (V1.leftSidebarCollapsed ? ' collapsed' : '') },
+        h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: V1.leftSidebarCollapsed ? 'center' : 'space-between', padding: '0 4px 8px', marginBottom: '4px', borderBottom: '1px solid var(--border-subtle)' } },
+          V1.leftSidebarCollapsed ? null : h('span', { className: 'v1-nav-group-label', style: { padding: 0 } }, 'Opérations'),
+          h('button', {
+            type: 'button',
+            className: 'v1-sidebar-toggle-btn',
+            title: V1.leftSidebarCollapsed ? 'Déplier la barre latérale' : 'Réduire en icônes (mode compact)',
+            onClick: () => {
+              V1.leftSidebarCollapsed = !V1.leftSidebarCollapsed;
+              renderApp();
+            }
+          },
+            msIcon(V1.leftSidebarCollapsed ? 'chevron_right' : 'chevron_left', 18)
+          )
+        ),
+        leftNavItems.map(item => {
           const isActive = V1.workspace === item.id || (item.alias && V1.workspace === item.alias);
           return h('button', {
             type: 'button',
@@ -3593,7 +3756,9 @@ function renderApp() {
       ),
       h('main', { className: 'v1-canvas' },
         renderWorkspaceCanvas()
-      )
+      ),
+      renderRightSidecar(),
+      renderRightRail()
     ),
     /* Mobile 4-Tab Bottom Navigation Bar (24px Material Symbols - Exactly 4 Buttons for TC-UI-07) */
     h('nav', { className: 'v1-bottom-nav', 'aria-label': 'Mobile Workspace Navigation' },
