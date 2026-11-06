@@ -9,5 +9,5 @@ FRONTEND_DIR = ROOT_DIR / "frontend"
 DEFAULT_DB_PATH = DATA_DIR / "apse.sqlite"
 
 DEFAULT_HOST = os.environ.get("APSE_HOST", "0.0.0.0")
-DEFAULT_PORT = int(os.environ.get("APSE_PORT", "8765"))
+DEFAULT_PORT = int(os.environ.get("PORT", os.environ.get("APSE_PORT", "8765")))
 

@@ -616,10 +616,17 @@ th {
   flex-shrink: 0;
   background: var(--bg-canvas);
   border-right: 1px solid var(--border-subtle);
-  padding: var(--space-3) 12px;
+  padding: var(--space-2) 10px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  align-self: flex-start;
+  z-index: 40;
 }
 
 .v1-nav-item {
@@ -627,19 +634,19 @@ th {
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 10px 14px;
+  padding: 7px 12px;
   border: 0;
   border-radius: var(--radius-pill);
   background: transparent;
   color: var(--text-secondary);
   font-family: var(--font-sans);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: -0.008em;
   text-align: left;
   cursor: pointer;
   transition: background-color 180ms, color 180ms, transform 200ms cubic-bezier(0.65, 0.05, 0.36, 1);
-  min-height: 42px;
+  min-height: 36px;
 }
 
 .v1-nav-item:hover {
@@ -683,16 +690,16 @@ th {
 .v1-nav-divider {
   height: 1px;
   background: var(--border-subtle);
-  margin: var(--space-2) var(--space-1);
+  margin: 4px var(--space-1);
 }
 
 .v1-sidebar-footer {
-  margin-top: auto;
-  padding: var(--space-3) var(--space-1) var(--space-1);
-  border-top: 1px solid var(--border-subtle);
+  margin-top: 0;
+  padding: 2px var(--space-1) 4px;
+  border-top: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: 4px;
 }
 
 /* Fluid Main Workspace Canvas (16-Column CSS Grid, 20px gap, 32px outer padding) */
@@ -2242,7 +2249,7 @@ th {
 
 .v1-sidebar-lang-wrap {
   margin-top: auto;
-  padding: 8px 4px;
+  padding: 4px 4px 2px;
   border-top: 1px solid var(--border-subtle);
 }
 
@@ -2747,6 +2754,101 @@ th {
   transform: translateY(-2px);
 }
 
+/* Google Forms Stepper / Section Navigation */
+.gf-stepper-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.gf-stepper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.gf-stepper-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gf-stepper-progress {
+  width: 100%;
+  height: 6px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.gf-stepper-progress-fill {
+  height: 100%;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+  transition: width 0.25s ease;
+}
+
+.gf-step-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.gf-step-chip {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+}
+
+.gf-step-chip:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-strong);
+}
+
+.gf-step-chip.active {
+  background: var(--color-primary);
+  color: var(--color-primary-fg, #fff);
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.gf-step-chip.done {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.gf-step-chip-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.gf-step-chip.active .gf-step-chip-num {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
 /* 5. Fullscreen Mobile Navigation Drawer */
 .v1-mobile-drawer {
   position: fixed;
@@ -2947,21 +3049,52 @@ th {
   margin: 6px 0;
 }
 
-/* Right Sidecar Panel (380px side-by-side reference pane) */
+/* ==========================================================================
+   APSE v0.9.1 3-COLUMN SPLIT VIEW: IN-SHELL RIGHT SIDECAR (READONLY PANELS)
+   ========================================================================== */
+
+.v1-sidecar-peek-wrap {
+  display: contents;
+}
+
+.v1-sidecar-backdrop {
+  position: fixed;
+  top: 56px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(2px);
+  z-index: 998;
+  animation: v1SidecarFadeIn 0.18s ease-out;
+  cursor: pointer;
+}
+
+@keyframes v1SidecarFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 .v1-right-sidecar {
-  width: 380px;
-  flex-shrink: 0;
+  position: fixed;
+  top: 56px;
+  right: 0;
+  bottom: 0;
+  width: clamp(620px, 55vw, 980px);
+  max-width: calc(100vw - 48px);
   display: flex;
   flex-direction: column;
   background: var(--bg-surface);
   border-left: 1px solid var(--border-subtle);
-  position: sticky;
-  top: 56px;
-  height: calc(100vh - 56px);
-  overflow-y: auto;
-  z-index: 45;
-  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.06);
-  animation: v1SlideFromRight 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+  animation: v1SidecarSlideIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes v1SidecarSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
 }
 
 .v1-sidecar-header {
@@ -2973,6 +3106,7 @@ th {
   justify-content: space-between;
   background: var(--bg-elevated);
   flex-shrink: 0;
+  gap: 12px;
 }
 
 .v1-sidecar-title {
@@ -2982,21 +3116,26 @@ th {
   font-size: 0.875rem;
   font-weight: 700;
   color: var(--text-primary);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .v1-sidecar-actions {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  flex-shrink: 0;
 }
 
 .v1-sidecar-action-btn {
   background: transparent;
   border: 0;
   color: var(--text-secondary);
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3010,10 +3149,37 @@ th {
 }
 
 .v1-sidecar-body {
-  padding: 16px;
+  padding: 20px;
   flex: 1;
   overflow-y: auto;
   font-size: 0.875rem;
+  background: var(--bg-surface);
+}
+
+.v1-sidecar-body .v1-panel {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.v1-sidecar-body .v1-kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.v1-sidecar-body .v1-kpi-card {
+  min-width: 150px;
+  padding: 12px 14px;
+}
+
+.v1-sidecar-body .v1-data-table {
+  min-width: 640px;
+  table-layout: auto !important;
+}
+
+.v1-sidecar-body .v1-data-table th,
+.v1-sidecar-body .v1-data-table td {
+  white-space: nowrap;
 }
 
 /* Offline Hub unified styles */
@@ -3042,119 +3208,6 @@ th {
   .v1-right-sidecar {
     display: none !important;
   }
-}
-
-
-/* ==========================================================================
-   NOTION-STYLE SIDE-PEEK FLOATING OVERLAY DRAWER & RESPONSIVE TABLES
-   ========================================================================== */
-
-/* 1. Notion-Style Floating Side-Peek (Overlays without squishing main canvas) */
-.v1-sidepeek-container {
-  display: block;
-}
-
-.v1-sidepeek-backdrop {
-  position: fixed;
-  top: 56px;
-  left: 0;
-  right: 56px; /* Leaves the 56px right rail visible and interactive */
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  z-index: 55;
-  animation: v1FadeIn 0.18s ease-out;
-}
-
-.v1-notion-sidepeek {
-  position: fixed;
-  top: 56px;
-  right: 56px;
-  bottom: 0;
-  width: clamp(560px, 55vw, 920px);
-  max-width: calc(100vw - 120px);
-  background: var(--bg-surface);
-  border-left: 1px solid var(--border-subtle);
-  border-right: 1px solid var(--border-subtle);
-  box-shadow: -14px 0 45px rgba(0, 0, 0, 0.18), 0 0 1px rgba(0, 0, 0, 0.15);
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  animation: v1SlideSidePeek 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes v1SlideSidePeek {
-  from { transform: translateX(100%); opacity: 0.8; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-.v1-sidepeek-header {
-  height: 52px;
-  padding: 0 18px;
-  border-bottom: 1px solid var(--border-subtle);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: var(--bg-elevated);
-  flex-shrink: 0;
-  gap: 12px;
-}
-
-.v1-sidepeek-nav {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.v1-sidepeek-back-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-pill);
-  padding: 4px 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  white-space: nowrap;
-}
-
-.v1-sidepeek-back-btn:hover {
-  background: var(--bg-hover);
-  color: var(--text-primary);
-  border-color: var(--border-strong);
-}
-
-.v1-sidepeek-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.v1-sidepeek-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.v1-sidepeek-body {
-  padding: 24px;
-  flex: 1;
-  overflow-y: auto;
-  font-size: 0.875rem;
-  background: var(--bg-surface);
 }
 
 /* 2. Responsive, Spacious Data Tables (No Squishing or Illegible Text) */

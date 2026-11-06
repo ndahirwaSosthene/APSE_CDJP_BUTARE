@@ -173,6 +173,25 @@ const APSE_ICON_SVGS = {
   open_in_full: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15 3 6 6M9 21 3 15M21 3l-7 7M3 21l7-7"/></g>',
   open_in_new: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></g>',
   dock_to_right: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/></g>',
+  target: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></g>',
+  flag: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></g>',
+  language: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>',
+  globe: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>',
+  payments: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></g>',
+  banknote: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></g>',
+  handshake: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-3-3"/><path d="m18 10 1.3-1.3a1 1 0 0 0 0-1.4l-3-3a1 1 0 0 0-1.4 0L13.6 5.6"/><path d="m2 14 6 6"/><path d="M22 10l-6-6"/><path d="m7 7 4.3 4.3"/><path d="m10 14 1.4 1.4"/></g>',
+  phone: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g>',
+  call: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g>',
+  mail: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>',
+  email: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>',
+  verified_user: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>',
+  shield: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>',
+  group: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>',
+  groups: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>',
+  assignment: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></g>',
+  calendar_month: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
+  attach_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></g>',
+  place: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>',
 };
 
 /* Section 4: Material Symbols Outlined Vector Paths (weight: 400, grade: 0, 24x24 viewBox) */
@@ -297,6 +316,7 @@ const I18N = {
     nav_data_structure: 'Data Structure & Flow',
     nav_timesheets: 'Timesheets',
     nav_mel_admin: 'MEL Administration',
+    nav_offline_hub: 'Offline Hub (Vault & Sync)',
 
   },
   rw: {
@@ -363,6 +383,7 @@ const I18N = {
     nav_data_structure: 'Imiterere n’Ihererekanya',
     nav_timesheets: 'Amakarita y’Amasaha',
     nav_mel_admin: 'Ubuyobozi bwa MEL',
+    nav_offline_hub: 'Icyiciro cyo Hanze (Offline Hub)',
 
   },
   fr: {
@@ -429,6 +450,7 @@ const I18N = {
     nav_data_structure: 'Structure et flux des données',
     nav_timesheets: 'Feuilles de temps',
     nav_mel_admin: 'Administration MEL',
+    nav_offline_hub: 'Hub Hors ligne (Coffre & Synchro)',
 
   },
   sw: {
@@ -495,6 +517,7 @@ const I18N = {
     nav_data_structure: 'Muundo na Mtiririko wa Data',
     nav_timesheets: 'Karatasi za Saa',
     nav_mel_admin: 'Utawala wa MEL',
+    nav_offline_hub: 'Kituo cha Nje ya Mtandao (Offline Hub)',
 
   },
 };
@@ -3375,71 +3398,71 @@ function renderRightSidecar() {
 
   const meta = tabLabels[tab] || { title: 'Référence', icon: 'info' };
 
-  return h('div', { className: 'v1-sidepeek-container' },
-    /* Soft dimmed backdrop over the canvas (clicking slides it back) */
+  return h('div', { className: 'v1-sidecar-peek-wrap' },
+    /* Semi-transparent backdrop overlay to dismiss when clicking outside */
     h('div', {
-      className: 'v1-sidepeek-backdrop',
+      className: 'v1-sidecar-backdrop',
+      title: 'Fermer l\'aperçu latéral (ESC)',
       onClick: () => {
         V1.rightSidecarOpen = false;
         renderApp();
       }
     }),
-    /* Notion-Style Floating Side-Peek Overlay Drawer (does not squeeze main canvas) */
+    /* Floating Side Peek Drawer popping up OVER content just like Notion */
     h('aside', {
-      className: 'v1-notion-sidepeek',
-      role: 'region',
-      'aria-label': 'Notion Side-Peek Reference Panel'
+      className: 'v1-right-sidecar',
+      role: 'dialog',
+      'aria-modal': 'true',
+      'aria-label': meta.title
     },
-      h('div', { className: 'v1-sidepeek-header' },
-        h('div', { className: 'v1-sidepeek-nav' },
-          h('button', {
-            type: 'button',
-            className: 'v1-sidepeek-back-btn',
-            title: 'Faire glisser vers la droite (Masquer sans perdre le travail en cours)',
-            onClick: () => {
-              V1.rightSidecarOpen = false;
-              renderApp();
-            }
-          },
-            msIcon('arrow_forward', 16),
-            h('span', {}, 'Masquer')
-          ),
-          h('div', { className: 'v1-sidepeek-badge' },
-            msIcon(meta.icon, 18),
-            h('strong', {}, meta.title)
-          )
+      h('div', { className: 'v1-sidecar-header' },
+        h('div', { className: 'v1-sidecar-title' },
+          msIcon(meta.icon, 20),
+          h('span', { style: { fontWeight: 700, fontSize: '0.875rem' } }, meta.title)
         ),
-        h('div', { className: 'v1-sidepeek-actions' },
+        h('div', { className: 'v1-sidecar-actions' },
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-sm v1-btn-secondary',
             title: 'Ouvrir en plein écran dans la zone centrale',
+            style: { padding: '4px 10px', fontSize: '0.75rem', height: '28px', gap: '4px' },
             onClick: () => {
               V1.workspace = tab;
               V1.rightSidecarOpen = false;
               renderApp();
             }
           },
-            msIcon('open_in_full', 15),
+            msIcon('open_in_full', 14),
             h('span', {}, 'Pleine page')
           ),
           h('button', {
             type: 'button',
-            className: 'v1-modal-close',
-            style: { width: '30px', height: '30px', fontSize: '1.25rem' },
-            title: 'Fermer',
+            className: 'v1-sidecar-action-btn',
+            title: 'Fermer le panneau latéral (ESC)',
             onClick: () => {
               V1.rightSidecarOpen = false;
               renderApp();
             }
-          }, '×')
+          },
+            msIcon('close', 18)
+          )
         )
       ),
-      h('div', { className: 'v1-sidepeek-body' },
+      h('div', { className: 'v1-sidecar-body' },
         renderWorkspaceView(tab)
       )
     )
   );
+}
+
+if (typeof window !== 'undefined' && !window.__apseSidecarEscBound) {
+  window.__apseSidecarEscBound = true;
+  window.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && window.V1 && window.V1.rightSidecarOpen) {
+      window.V1.rightSidecarOpen = false;
+      if (typeof renderApp === 'function') renderApp();
+    }
+  });
 }
 
 function renderRightRail() {

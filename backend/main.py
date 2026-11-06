@@ -157,6 +157,16 @@ def create_app(
         if host:
             allowed_origins.add("http://" + host)
             allowed_origins.add("https://" + host)
+        forwarded_host = request.headers.get("X-Forwarded-Host", "").split(",")[0].strip()
+        if forwarded_host:
+            allowed_origins.add("http://" + forwarded_host)
+            allowed_origins.add("https://" + forwarded_host)
+        env_origins = os.environ.get("APSE_ALLOWED_ORIGINS", "")
+        if env_origins:
+            for o in env_origins.split(","):
+                clean = o.strip().rstrip("/")
+                if clean:
+                    allowed_origins.add(clean)
         if not origin or origin not in allowed_origins:
             raise Fault(403, "origin_denied")
         if not request.headers.get("Content-Type", "").startswith("application/json"):

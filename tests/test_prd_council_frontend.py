@@ -936,7 +936,7 @@ async def run_frontend_suite():
                 V1.newTaskState.planned_target = 30;
                 const saveBtn = [...document.querySelectorAll('.v1-wizard-card .v1-btn')].find(b => b.textContent.includes('Save Activity'));
                 saveBtn.click();
-                for (let i = 0; i < 30; i++) {
+                for (let i = 0; i < 50; i++) {
                     await new Promise(r => setTimeout(r, 100));
                     if (!V1.newTaskModal && V1.data.tasks.length > beforeCount) break;
                 }

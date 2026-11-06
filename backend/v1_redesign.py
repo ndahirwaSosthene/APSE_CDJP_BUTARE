@@ -898,6 +898,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 'drafts': drafts,
                 'analytics': analytics,
                 'sync': self.sync_status(user),
+                'config': self.configuration(),
             }
 
     def v1_create_task(self, user, body):

@@ -3,12 +3,19 @@
 from __future__ import annotations
 from pathlib import Path
 import argparse
+import os
 import threading
 import webbrowser
 import uvicorn
 
 from backend.config import DATA_DIR, DEFAULT_HOST, DEFAULT_PORT
 from backend.main import create_app
+
+# Default application instance for ASGI servers (Render / Uvicorn: run:app)
+_default_data_dir = Path(os.environ.get("APSE_DATA_DIR", str(DATA_DIR / "runtime_store")))
+_default_data_dir.mkdir(parents=True, exist_ok=True)
+_default_port = int(os.environ.get("PORT", os.environ.get("APSE_PORT", str(DEFAULT_PORT))))
+app = create_app(data_dir=_default_data_dir, port=_default_port, no_auth=True)
 
 
 def main() -> int:
@@ -21,11 +28,14 @@ def main() -> int:
         help="Bind host (0.0.0.0 for LAN/mobile access)",
     )
     parser.add_argument(
-        "--port", type=int, default=DEFAULT_PORT, help="Bind port (default: 8765)"
+        "--port",
+        type=int,
+        default=_default_port,
+        help="Bind port (default: from PORT / APSE_PORT / 8765)",
     )
     parser.add_argument(
         "--data",
-        default=str(DATA_DIR / "runtime_store"),
+        default=str(_default_data_dir),
         help="Data directory for SQLite WAL & Fernet key",
     )
     parser.add_argument(
@@ -49,19 +59,20 @@ def main() -> int:
     data_dir = Path(args.data)
     data_dir.mkdir(parents=True, exist_ok=True)
 
-    app = create_app(data_dir=data_dir, port=args.port, no_auth=args.no_auth)
+    server_app = create_app(data_dir=data_dir, port=args.port, no_auth=args.no_auth)
     if args.migrate_status:
         import json
         from backend import migrations
-        print(json.dumps(migrations.status(app.state.engine.db), indent=2))
+        print(json.dumps(migrations.status(server_app.state.engine.db), indent=2))
         return 0
-    url = f"http://127.0.0.1:{args.port}/"
+    url = f"http://{args.host}:{args.port}/"
     print(f"APSE LOCAL — {url}", flush=True)
 
-    if not args.no_browser:
+    is_cloud = bool(os.environ.get("RENDER") or os.environ.get("PORT") or args.no_browser)
+    if not is_cloud:
         threading.Timer(0.8, lambda: webbrowser.open(url)).start()
 
-    uvicorn.run(app, host=args.host, port=args.port, log_level="warning")
+    uvicorn.run(server_app, host=args.host, port=args.port, log_level="warning")
     return 0
 
 

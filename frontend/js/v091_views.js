@@ -111,7 +111,13 @@
     // Planning state
     planningYear: 'AP1',
     planningAudience: 'STAFF',
+    planningFilterAxis: 'ALL',
+    planningFilterType: 'ALL',
+    planningSearch: '',
     planningData: null,
+    planningLoading: false,
+    planningError: null,
+    planningShowRoadmap: false,
 
     // Feedback state
     selectedRecordForFeedback: null,
@@ -154,7 +160,22 @@
     // Portfolio state
     portfolioFilterType: 'ALL',
     portfolioFilterProject: 'ALL',
+    portfolioFilterPartner: 'ALL',
     portfolioData: null,
+    portfolioLoading: false,
+    portfolioError: null,
+
+    // Staff Eval state
+    staffEvalLevel: 'F05',
+    staffEvalData: null,
+    staffEvalLoading: false,
+
+    // Inbox state
+    inboxData: null,
+    inboxLoading: false,
+    assistantStatus: null,
+    contactsData: null,
+    contactsLoading: false,
 
     // Staff Eval state
     staffEvalLevel: 'F05',
@@ -237,6 +258,133 @@
     V091.activeFormTab = 'builder';
     V091.showToast('✓ Formulaire dupliqué avec succès : ' + clone.code, 'info');
     if (typeof renderApp === 'function') renderApp();
+  };
+
+  /* Deep-link to F03 and prefill all 17 authoritative planning properties */
+  V091.preparePlanningActivity = function(item, yearData) {
+    const lang = V1.lang || 'fr';
+    const labelText = (item.labels && (item.labels[lang] || item.labels.fr || item.labels.en || item.labels.rw || item.labels.sw)) || item.code;
+    const expectedText = (item.expected && (item.expected[lang] || item.expected.fr || item.expected.en)) || '';
+    const indicatorText = (item.indicator && (item.indicator[lang] || item.indicator.fr || item.indicator.en)) || '';
+    const fundersText = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ');
+    const start = yearData?.start || '2026-09-01';
+    const end = yearData?.end || '2027-08-31';
+
+    V091.activeFormCode = 'F03';
+    V091.activeFormSectionIndex = 0;
+    V091.formValues = {
+      work_type: 'OPERATIONAL',
+      ap: V091.planningYear,
+      plan_type: V091.planningAudience,
+      operation_ref: item.code,
+      axis: item.axis,
+      objective: item.objective || (item.axis + '.OS'),
+      result: item.result || (item.axis + '.R1'),
+      intervention: item.intervention || (item.interventionCandidates ? item.interventionCandidates[0] : (item.axis + '.I1')),
+      record: `rec-f03-${item.code.toLowerCase().replace(/[^a-z0-9]/g, '-')}`,
+      title: labelText,
+      activity: labelText,
+      start: start,
+      end: end,
+      owner: V1.data?.user?.id || 'mel',
+      change: expectedText,
+      indicator: indicatorText,
+      budget: item.budgetRWF != null ? String(item.budgetRWF) : '',
+      location: item.locations || '',
+      beneficiary_target: item.beneficiariesSource || '',
+      funders: fundersText,
+      source: item.source || '',
+    };
+    V1.workspace = 'seizure';
+    V091.showToast(`✓ Pré-remplissage de F03 pour l'activité ${item.code}`, 'info');
+    if (typeof renderApp === 'function') renderApp();
+  };
+
+  /* In-App Full Planning Item Details Modal */
+  V091.showPlanningItemModal = function(item, yearData) {
+    const lang = V1.lang || 'fr';
+    const title = (item.labels && (item.labels[lang] || item.labels.fr || item.labels.en || item.labels.rw || item.labels.sw)) || item.code;
+    const isLine = !!item.indicativeMillionsRWF;
+    const kind = isLine ? 'Ligne Opérationnelle PS (Indicative)' : 'Tâche Annuelle PAO (Prioritaire)';
+    const expected = (item.expected && (item.expected[lang] || item.expected.fr || item.expected.en)) || 'Renforcement de la cohésion et des capacités locales.';
+    const indicator = (item.indicator && (item.indicator[lang] || item.indicator.fr || item.indicator.en)) || 'Taux d’exécution et qualité de la participation.';
+    const funders = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP (Misereor)', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ') || 'Fonds propres CDJP';
+    const budgetStr = item.budgetRWF ? Number(item.budgetRWF).toLocaleString() + ' RWF' : (item.indicativeMillionsRWF ? (item.indicativeMillionsRWF[V091.planningYear] || Object.values(item.indicativeMillionsRWF)[0]) + ' M RWF' : '—');
+
+    V091.showModal({
+      title: `${item.code} · ${title}`,
+      subtitle: `${kind} · Axe ${item.axis} · Objectif ${item.objective} · ${item.intervention || (item.interventionCandidates ? item.interventionCandidates.join(' / ') : '')}`,
+      icon: 'ps_planning',
+      maxWidth: '820px',
+      content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
+        h('div', { style: { padding: '12px 16px', background: 'var(--bg-canvas)', borderRadius: '8px', borderLeft: '4px solid var(--color-primary)' } },
+          h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '6px' } },
+            h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, `Axe Stratégique ${item.axis}`),
+            h('span', { className: 'v1-badge' }, `Objectif : ${item.objective}`),
+            h('span', { className: 'v1-badge' }, `Intervention : ${item.intervention || (item.interventionCandidates ? item.interventionCandidates.join(' / ') : 'Axe transversal')}`),
+            h('span', { className: 'v1-meta-code-badge' }, item.code)
+          ),
+          h('strong', { style: { fontSize: '0.9375rem', display: 'block', color: 'var(--text-primary)' } }, title)
+        ),
+        h('div', { className: 'v1-grid-16' },
+          h('div', { style: { gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '12px' } },
+            h('div', { className: 'v1-panel', style: { padding: '12px' } },
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('target', 14), 'Changement Stratégique Recherché'),
+              h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 } }, expected)
+            ),
+            h('div', { className: 'v1-panel', style: { padding: '12px' } },
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('analytics', 14), 'Indicateur Stratégique PS'),
+              h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 } }, indicator)
+            ),
+            h('div', { className: 'v1-panel', style: { padding: '12px' } },
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' } }, msIcon('globe', 14), 'Libellés en 4 langues'),
+              h('div', { style: { fontSize: '0.75rem', display: 'flex', flexDirection: 'column', gap: '4px' } },
+                h('div', {}, h('strong', {}, 'FR : '), item.labels?.fr || '—'),
+                h('div', {}, h('strong', {}, 'RW : '), item.labels?.rw || '—'),
+                h('div', {}, h('strong', {}, 'EN : '), item.labels?.en || '—'),
+                h('div', {}, h('strong', {}, 'SW : '), item.labels?.sw || '—')
+              )
+            )
+          ),
+          h('div', { style: { gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '12px' } },
+            h('div', { className: 'v1-panel', style: { padding: '12px' } },
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('payments', 14), 'Budget & Financement'),
+              h('div', { style: { fontSize: '0.875rem', fontWeight: '700', color: 'var(--color-success)', marginBottom: '4px' } }, budgetStr),
+              item.indicativeMillionsRWF ? h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '6px' } },
+                'Enveloppe quinquennale : ' + Object.entries(item.indicativeMillionsRWF).map(([y, m]) => `${y}: ${m}M`).join(' · ')
+              ) : null,
+              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, `Bailleurs : ${funders}`),
+              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' } }, `Portée : ${item.budgetScope || 'Enveloppe PS approuvée'}`)
+            ),
+            h('div', { className: 'v1-panel', style: { padding: '12px' } },
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('place', 14), 'Périmètre & Acteurs'),
+              h('div', { style: { fontSize: '0.8125rem' } }, h('strong', {}, 'Localisation : '), item.locations || '27 paroisses / 4 districts'),
+              h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, 'Responsable : '), item.responsibleSource || 'Responsable de volet CDJP'),
+              h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, 'Bénéficiaires : '), item.beneficiariesSource || 'Communautés locales, jeunes, femmes')
+            ),
+            h('div', { className: 'v1-panel', style: { padding: '12px', background: 'var(--bg-canvas)' } },
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('description', 14), 'Source Documentaire'),
+              h('p', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' } }, item.source || 'Plan Stratégique CDJP Butare 2026–2031')
+            )
+          )
+        )
+      ),
+      actions: [
+        {
+          label: 'Préparer cette activité (F03)',
+          type: 'primary',
+          onClick: () => {
+            V091.closeModal();
+            V091.preparePlanningActivity(item, yearData);
+          }
+        },
+        {
+          label: 'Fermer',
+          type: 'secondary',
+          onClick: () => V091.closeModal()
+        }
+      ]
+    });
   };
 
   /* Interactive Metadata Details Popup */
@@ -593,38 +741,150 @@
     const cfg = V1.data?.config || {};
     const allForms = cfg.forms || [];
     const allFields = cfg.fields || {};
+    const allOptions = cfg.options || {};
 
-    const categories = [
-      { id: 'ALL', label: 'Tous (45 formulaires)' },
-      { id: 'PLAN', label: 'Planification (F03, F04, F05, F43)' },
-      { id: 'ACT', label: 'Activités & Rapports (F06-F16, F44)' },
-      { id: 'FIN', label: 'Finances & Logistique (F19, F33-F36)' },
-      { id: 'LRN', label: 'Apprentissage (F27-F30)' },
-      { id: 'SENS', label: 'Confidentiel & Sensible (F09, F25, F45)' },
-      { id: 'HR', label: 'RH & Gouvernance (F01-F02, F31, F32, F37-F40)' },
-      { id: 'KPI', label: 'Indicateurs & Équité (F41-F42)' },
+    /* 7 Official Clusters from APSE Comprehensive Manual */
+    const clusters = [
+      { id: 'ALL', label: 'Tous les formulaires (45)', codes: [] },
+      { id: 'CLUST_A', label: 'Cluster A : Planification & Organisation', codes: ['F03', 'F04', 'F05', 'F06', 'F43'] },
+      { id: 'CLUST_B', label: 'Cluster B : Terrain & Consolidation de la paix', codes: ['F07', 'F08', 'F13', 'F15', 'F44'] },
+      { id: 'CLUST_C', label: 'Cluster C : Accompagnement confidentiel & Guérison', codes: ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'] },
+      { id: 'CLUST_D', label: 'Cluster D : Finances, Marchés & Bailleurs', codes: ['F19', 'F20', 'F36', 'F37'] },
+      { id: 'CLUST_E', label: 'Cluster E : Apprentissage, Évaluation & Stratégie', codes: ['F25', 'F27', 'F28', 'F29', 'F30', 'F40', 'F41', 'F42'] },
+      { id: 'CLUST_F', label: 'Cluster F : RH, Véhicules & Administration', codes: ['F31', 'F32', 'F33', 'F34', 'F35', 'F38', 'F39'] },
+      { id: 'CLUST_G', label: 'Cluster G : Système, Qualité & Gouvernance', codes: ['F01', 'F02', 'F21', 'F24', 'F26'] },
     ];
 
-    const currentForm = allForms.find(f => f.code === V091.activeFormCode) || allForms[0] || { code: 'F07', label: { fr: 'F07' }, fields: [] };
+    V091.formCategory = V091.formCategory || 'ALL';
+    V091.seizureSubTab = V091.seizureSubTab || 'form'; // 'form' | 'history'
+
+    const currentForm = allForms.find(f => f.code === V091.activeFormCode) || allForms[0] || { code: 'F07', label: { fr: 'F07 — Réalisation activité' }, fields: [] };
     const formFields = currentForm.fields || [];
 
-    // Filter forms by category & search
+    // Filter forms by cluster & search
     const filteredForms = allForms.filter(f => {
-      const matchCat = (V091.formCategory === 'ALL') ||
-        (V091.formCategory === 'PLAN' && ['F03', 'F04', 'F05', 'F43'].includes(f.code)) ||
-        (V091.formCategory === 'ACT' && ['F06', 'F07', 'F08', 'F10', 'F11', 'F12', 'F13', 'F14', 'F15', 'F16', 'F44'].includes(f.code)) ||
-        (V091.formCategory === 'FIN' && ['F19', 'F33', 'F34', 'F35', 'F36'].includes(f.code)) ||
-        (V091.formCategory === 'LRN' && ['F27', 'F28', 'F29', 'F30'].includes(f.code)) ||
-        (V091.formCategory === 'SENS' && (f.sensitive || ['F09', 'F25', 'F45'].includes(f.code))) ||
-        (V091.formCategory === 'HR' && ['F01', 'F02', 'F31', 'F32', 'F37', 'F38', 'F39', 'F40'].includes(f.code)) ||
-        (V091.formCategory === 'KPI' && ['F41', 'F42'].includes(f.code));
-
-      if (!matchCat) return false;
+      if (V091.formCategory !== 'ALL') {
+        const cluster = clusters.find(c => c.id === V091.formCategory);
+        if (cluster && cluster.codes.length > 0 && !cluster.codes.includes(f.code)) {
+          return false;
+        }
+      }
       if (!V091.formSearch) return true;
       const q = V091.formSearch.toLowerCase();
       const lbl = (f.label[V1.lang] || f.label.fr || f.label.en || '').toLowerCase();
       return f.code.toLowerCase().includes(q) || lbl.includes(q);
     });
+
+    const isSensitiveForm = currentForm.sensitive || ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'].includes(currentForm.code);
+
+    // Auto-calculate demographics
+    const womenCount = Number(V091.formValues.women) || 0;
+    const menCount = Number(V091.formValues.men) || 0;
+    const undisclosedCount = Number(V091.formValues.undisclosed) || 0;
+    const calcTotal = womenCount + menCount + undisclosedCount;
+    if (V091.formValues.women !== undefined || V091.formValues.men !== undefined) {
+      V091.formValues.total = String(calcTotal);
+    }
+    const disabilityCount = Number(V091.formValues.disability) || 0;
+    const disabilityExceedsTotal = calcTotal > 0 && disabilityCount > calcTotal;
+
+    // Categorize form fields into logical Google Forms sections
+    const idFields = [];
+    const demoFields = [];
+    const narrativeFields = [];
+    const otherFields = [];
+
+    const demoFieldCodes = ['women', 'men', 'undisclosed', 'total', 'disability', 'under_18', 'age_18_24', 'age_25_34', 'age_35_49', 'age_50_64', 'age_65_plus'];
+    const narrativeFieldCodes = ['title', 'progress_summary', 'activity', 'objectives', 'results_achieved', 'challenges', 'issues', 'recommendations', 'next_steps', 'observations', 'methodology'];
+    const idFieldCodes = ['record', 'axis', 'result', 'type', 'volet', 'project', 'location', 'parish', 'centrale', 'partner', 'state', 'channel', 'work_type', 'plan_type'];
+
+    formFields.forEach(fCode => {
+      if (demoFieldCodes.includes(fCode)) {
+        demoFields.push(fCode);
+      } else if (narrativeFieldCodes.includes(fCode)) {
+        narrativeFields.push(fCode);
+      } else if (idFieldCodes.includes(fCode)) {
+        idFields.push(fCode);
+      } else {
+        otherFields.push(fCode);
+      }
+    });
+
+    // Helper to render an individual input control with rich dropdown support
+    function renderFieldInput(fCode) {
+      const fMeta = allFields[fCode] || { type: 'TEXT', label: { fr: fCode } };
+      const fType = fMeta.type || 'TEXT';
+      const fLabel = (fMeta.label && (fMeta.label[V1.lang] || fMeta.label.fr || fMeta.label.en)) || fCode;
+      const fHelp = fMeta.help && (fMeta.help[V1.lang] || fMeta.help.fr || fMeta.help.en);
+      const isReq = (currentForm.required || []).includes(fCode);
+      const val = V091.formValues[fCode] !== undefined ? V091.formValues[fCode] : '';
+
+      // Check if field has predefined options
+      let optList = null;
+      if (fMeta.options && typeof fMeta.options === 'string' && allOptions[fMeta.options]) {
+        optList = allOptions[fMeta.options];
+      } else if (allOptions[fCode]) {
+        optList = allOptions[fCode];
+      }
+
+      const isLong = fType === 'LONG_TEXT' || fCode === 'title' || fCode === 'progress_summary' || fCode === 'activity';
+      const colSpan = isLong ? 'span 16' : 'span 8';
+
+      return h('div', { className: 'v1-field', style: { gridColumn: colSpan }, key: fCode },
+        h('label', { className: 'v1-field-label' },
+          h('span', {}, fLabel),
+          isReq ? h('span', { style: { color: 'var(--color-critical)', marginLeft: '4px' } }, '*') : null
+        ),
+
+        optList ? h('select', {
+          className: 'v1-input',
+          value: val,
+          onChange: e => {
+            V091.formValues[fCode] = e.target.value;
+            renderApp();
+          },
+        },
+          h('option', { value: '' }, `-- Sélectionner ${fLabel} --`),
+          optList.map(opt => {
+            const optCode = typeof opt === 'string' ? opt : (opt.code || opt.id);
+            const optLabel = typeof opt === 'string' ? opt : ((opt.label && (opt.label[V1.lang] || opt.label.fr || opt.label.en)) || optCode);
+            return h('option', { value: optCode, key: optCode }, `${optCode} — ${optLabel}`);
+          })
+        ) : fType === 'LONG_TEXT' ? h('textarea', {
+          className: 'v1-textarea',
+          rows: 3,
+          placeholder: `Saisir ${fLabel}...`,
+          value: val,
+          onInput: e => { V091.formValues[fCode] = e.target.value; },
+        }) : fType === 'BOOLEAN' ? h('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', height: '40px', cursor: 'pointer' } },
+          h('input', {
+            type: 'checkbox',
+            checked: val === 'true' || val === true,
+            onChange: e => {
+              V091.formValues[fCode] = e.target.checked ? 'true' : 'false';
+              renderApp();
+            },
+          }),
+          h('span', { style: { fontSize: '0.875rem' } }, 'Confirmer (Oui / Non)')
+        ) : h('input', {
+          type: (fType.startsWith('INTEGER') || fType === 'NUMBER') ? 'number' : fType === 'DATE' ? 'date' : 'text',
+          className: 'v1-input',
+          placeholder: `Saisir ${fLabel}...`,
+          value: val,
+          onInput: e => {
+            V091.formValues[fCode] = e.target.value;
+            if (fCode === 'women' || fCode === 'men' || fCode === 'undisclosed' || fCode === 'disability') {
+              renderApp();
+            }
+          },
+        }),
+
+        fHelp ? h('span', { className: 'v1-field-helper', style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px', display: 'block' } }, fHelp) : null
+      );
+    }
+
+    // Records created over time / history list
+    const createdRecords = (V1.data?.logs || []).filter(l => l.task_titles || l.form === currentForm.code);
 
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
@@ -639,10 +899,56 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, `Saisie : ${currentForm.code} · ${currentForm.label[V1.lang] || currentForm.label.fr}`),
             h('p', { className: 'v1-page-subtitle' },
-              `${formFields.length} champs disponibles · ${currentForm.sensitive ? 'Fiche sensible (Accès restreint)' : 'Fiche publique opérationnelle'} · Standard ${currentForm.captureStandard || 'V8'}`
+              `${formFields.length} champs disponibles · ${isSensitiveForm ? 'Fiche confidentielle & sensible' : 'Fiche publique opérationnelle'} · Standard ${currentForm.captureStandard || 'V8'}`
             )
           ),
           h('div', { className: 'v1-header-actions' },
+            /* Toggle between Active Form Editor & Created Forms History */
+            h('div', { className: 'gf-tab-pills', style: { marginBottom: 0, paddingBottom: 0, borderBottom: 0 } },
+              h('button', {
+                type: 'button',
+                className: 'gf-tab-btn' + (V091.seizureSubTab === 'form' ? ' active' : ''),
+                onClick: () => {
+                  V091.seizureSubTab = 'form';
+                  renderApp();
+                },
+              },
+                msIcon('edit_note', 16),
+                h('span', {}, 'Formulaire de saisie')
+              ),
+              h('button', {
+                type: 'button',
+                className: 'gf-tab-btn' + (V091.seizureSubTab === 'history' ? ' active' : ''),
+                onClick: () => {
+                  V091.seizureSubTab = 'history';
+                  renderApp();
+                },
+              },
+                msIcon('folder_copy', 16),
+                h('span', {}, `Dossiers créés au fil du temps (${createdRecords.length})`)
+              )
+            ),
+
+            /* Action: Duplicate current form data */
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary',
+              title: 'Dupliquer les valeurs de ce formulaire pour créer un nouveau dossier',
+              onClick: () => {
+                const cloned = Object.assign({}, V091.formValues);
+                cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
+                if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
+                cloned.event_date = '2026-10-25';
+                V091.formValues = cloned;
+                V091.seizureSubTab = 'form';
+                V091.showToast('✓ Formulaire dupliqué avec succès ! Modifiez les champs puis validez.', 'info');
+                renderApp();
+              },
+            },
+              msIcon('content_copy', 18),
+              h('span', {}, 'Dupliquer ce formulaire')
+            ),
+
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-secondary',
@@ -659,8 +965,9 @@
               },
             },
               msIcon('cloud_done', 18),
-              h('span', {}, 'Enregistrer comme brouillon')
+              h('span', {}, 'Enregistrer brouillon')
             ),
+
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-primary',
@@ -680,89 +987,45 @@
               },
             },
               msIcon('check', 18),
-              h('span', {}, 'Valider & Soumettre le dossier')
+              h('span', {}, 'Valider & Soumettre')
             )
           )
         )
       ),
 
-      /* Document Import to Prefill Form Dropzone */
-      h('div', { className: 'v1-panel', style: { marginBottom: '24px', border: '1px dashed var(--border-subtle)', background: 'var(--bg-canvas)' } },
-        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
-          h('div', {},
-            h('strong', { style: { fontSize: '0.9375rem' } }, 'Pré-remplissage automatique depuis un document (DOCX, PDF, XLSX, CSV, JSON, TXT)'),
-            h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
-              'Importe les valeurs clés depuis votre fichier sans jamais approuver automatiquement. Aperçu et vérification humaine obligatoires.'
-            )
-          ),
-          renderFileUploadComponent({
-            label: 'Importer un document source',
-            accept: '.docx,.pdf,.xlsx,.csv,.json,.txt',
-            selectedFilename: V091.selectedFile?.name,
-            onSelect: file => {
-              V091.selectedFile = file;
-              const reader = new FileReader();
-              reader.onload = e => {
-                const b64 = e.target.result.split(',')[1];
-                apiV1('/document-import/preview', 'POST', {
-                  form: currentForm.code,
-                  filename: file.name,
-                  content_base64: b64,
-                  current_values: V091.formValues,
-                }).then(res => {
-                  V091.prefillPreview = res.proposed_values;
-                  V091.prefillConflicts = res.conflicts || [];
-                  V091.prefillWarnings = res.warnings || [];
-                  renderApp();
-                }).catch(err => V091.showToast('Erreur import document : ' + err.message, 'error'));
-              };
-              reader.readAsDataURL(file);
-            },
-          })
-        ),
-
-        /* Preview banner if document imported */
-        V091.prefillPreview ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)' } },
-          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
-            h('span', { style: { fontWeight: '600', color: 'var(--color-primary)' } },
-              `✓ ${Object.keys(V091.prefillPreview).length} champs extraits avec succès depuis ${V091.selectedFile?.name}`
-            ),
-            h('div', { style: { display: 'flex', gap: '8px' } },
-              h('button', {
-                type: 'button',
-                className: 'v1-btn v1-btn-sm v1-btn-primary',
-                onClick: () => {
-                  Object.assign(V091.formValues, V091.prefillPreview);
-                  V091.prefillPreview = null;
-                  renderApp();
-                },
-              }, 'Appliquer ces valeurs au formulaire'),
-              h('button', {
-                type: 'button',
-                className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                onClick: () => {
-                  V091.prefillPreview = null;
-                  renderApp();
-                },
-              }, 'Ignorer')
-            )
-          ),
-          V091.prefillWarnings.length > 0 ? h('div', { className: 'v1-error-alert', style: { marginBottom: '8px' } }, V091.prefillWarnings.join(' · ')) : null,
-          h('pre', { style: { fontSize: '0.75rem', maxHeight: '120px', overflowY: 'auto', background: 'var(--bg-canvas)', padding: '8px', borderRadius: '4px' } },
-            JSON.stringify(V091.prefillPreview, null, 2)
+      /* Confidentiality Warning Card for Sensitive Forms (Cluster C) */
+      isSensitiveForm ? h('div', {
+        className: 'v1-panel',
+        style: {
+          marginBottom: '20px',
+          padding: '16px 20px',
+          background: 'rgba(218, 30, 40, 0.08)',
+          border: '1px solid var(--color-critical)',
+          borderRadius: 'var(--radius-md)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '14px',
+        }
+      },
+        msIcon('lock', 24),
+        h('div', {},
+          h('strong', { style: { color: 'var(--color-critical)', fontSize: '0.9375rem' } }, 'Fiche Confidentielle & Sensible (Do No Harm / Protection des Données)'),
+          h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: '4px 0 0' } },
+            'Règle d’or institutionnelle : Ne jamais saisir de noms réels, cartes d’identité nationales ou numéros de téléphone dans les champs narratifs. Utilisez exclusivement un code anonyme (ex: CASE-2026-089).'
           )
-        ) : null
-      ),
+        )
+      ) : null,
 
-      /* Split Layout: Left Form Selector Pills, Right Dynamic Form Generator */
-      h('div', { style: { display: 'grid', gridTemplateColumns: '280px 1fr', gap: '20px' } },
-        /* Left Column: Form Selector & Search */
-        h('div', { className: 'v1-panel', style: { padding: '16px' } },
-          h('label', { className: 'v1-field-label' }, 'Catégories de formulaires'),
+      /* Main Split Workspace: Left Clusters & Forms Navigator, Right Google Forms Canvas */
+      h('div', { style: { display: 'flex', gap: '24px', alignItems: 'flex-start' } },
+        /* Left Column: Form Selector & 7 Clusters */
+        h('div', { className: 'v1-panel', style: { width: '300px', flexShrink: 0, padding: '16px', gridColumn: 'auto' } },
+          h('label', { className: 'v1-field-label' }, 'Clusters Institutionnels (A à G)'),
           h('div', { className: 'v1-chips', style: { marginBottom: '12px' } },
-            categories.map(c =>
+            clusters.map(c =>
               h('button', {
                 type: 'button',
+                key: c.id,
                 className: 'v1-chip' + (V091.formCategory === c.id ? ' active' : ''),
                 style: { fontSize: '0.6875rem', padding: '3px 8px' },
                 onClick: () => {
@@ -775,7 +1038,7 @@
           h('input', {
             type: 'search',
             className: 'v1-input',
-            placeholder: 'Filtrer par code ou titre...',
+            placeholder: 'Filtrer par code (F07, F03...) ou titre...',
             value: V091.formSearch,
             onInput: e => {
               V091.formSearch = e.target.value;
@@ -784,14 +1047,18 @@
             style: { marginBottom: '12px', height: '34px', fontSize: '0.8125rem' },
           }),
           h('div', { style: { display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '560px', overflowY: 'auto' } },
-            filteredForms.map(f =>
-              h('button', {
+            filteredForms.map(f => {
+              const isSens = f.sensitive || ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'].includes(f.code);
+              return h('button', {
                 type: 'button',
+                key: f.code,
                 className: 'v1-nav-item' + (V091.activeFormCode === f.code ? ' active' : ''),
                 style: { textAlign: 'left', padding: '8px 10px', fontSize: '0.8125rem', justifyContent: 'space-between' },
                 onClick: () => {
                   V091.activeFormCode = f.code;
                   V091.formValues = {};
+                  V091.activeFormSectionIndex = 0;
+                  V091.seizureSubTab = 'form';
                   renderApp();
                 },
               },
@@ -799,128 +1066,726 @@
                   h('strong', {}, f.code),
                   h('span', { style: { marginLeft: '6px', color: 'var(--text-secondary)' } }, f.label[V1.lang] || f.label.fr)
                 ),
-                f.sensitive ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
-              )
-            )
+                isSens ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
+              );
+            })
           )
         ),
 
-        /* Right Column: Dynamic Form Generator with CPJP Q1-Q4 allocation for F03 */
-        h('div', { className: 'v1-panel', style: { padding: '24px' } },
-          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
-            h('h2', { style: { fontSize: '1.125rem', fontWeight: '600' } }, `Champs du formulaire ${currentForm.code}`),
-            h('span', { className: 'v1-badge' }, `${formFields.length} champs natifs`)
-          ),
-
-          /* If F03 and CPJP Plan, render dedicated Q1–Q4 quarterly allocation cards */
-          currentForm.code === 'F03' ? h('div', { style: { marginBottom: '24px', padding: '16px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)' } },
-            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' } },
-              h('strong', {}, 'Répartition trimestrielle CPJP (Q1, Q2, Q3, Q4) — v0.9.1'),
-              h('span', { className: 'v1-badge' }, 'Manuel CPJP Table 12')
+        /* Right Column: Google Forms Card Builder OR Created Forms History */
+        V091.seizureSubTab === 'history' ?
+          /* VIEW B: History of Forms Created Over Time with 1-Click Duplication */
+          h('div', { className: 'v1-panel', style: { padding: '24px' } },
+            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' } },
+              h('div', {},
+                h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } }, `Dossiers créés au fil du temps (${createdRecords.length})`),
+                h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
+                  `Consultez les dossiers saisis pour ${currentForm.code} ou dupliquez un formulaire existant pour en créer un nouveau sans repartir de zéro.`
+                )
+              ),
+              h('button', {
+                type: 'button',
+                className: 'v1-btn v1-btn-primary',
+                onClick: () => {
+                  V091.formValues = {};
+                  V091.seizureSubTab = 'form';
+                  renderApp();
+                },
+              },
+                msIcon('add', 18),
+                h('span', {}, 'Nouveau formulaire vierge')
+              )
             ),
-            h('div', { className: 'v1-grid-16' },
-              ['q1', 'q2', 'q3', 'q4'].map((q, qIdx) =>
-                h('div', { className: 'v1-panel', style: { gridColumn: 'span 8', padding: '12px' } },
-                  h('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '600', marginBottom: '8px' } },
-                    h('input', {
-                      type: 'checkbox',
-                      checked: V091.formValues[`${q}_selected`] === 'true',
-                      onChange: e => {
-                        V091.formValues[`${q}_selected`] = e.target.checked ? 'true' : 'false';
+
+            createdRecords.length === 0 ? h('div', { style: { padding: '40px 20px', textAlign: 'center', color: 'var(--text-muted)' } },
+              msIcon('folder_open', 48),
+              h('p', { style: { marginTop: '12px', fontSize: '0.9375rem' } }, 'Aucun dossier encore enregistré pour ce formulaire.'),
+              h('p', { style: { fontSize: '0.8125rem' } }, 'Remplissez le formulaire de saisie pour créer votre premier dossier.')
+            ) : h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
+              createdRecords.map((rec, rIdx) =>
+                h('div', {
+                  key: rIdx,
+                  className: 'v1-panel',
+                  style: {
+                    padding: '16px',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '16px',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: 'var(--radius-md)',
+                  }
+                },
+                  h('div', { style: { flex: 1, minWidth: 0 } },
+                    h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' } },
+                      h('span', { className: 'v1-badge', style: { fontWeight: 700 } }, rec.form || currentForm.code),
+                      h('strong', { style: { fontSize: '0.9375rem' } }, rec.task_titles?.fr || rec.values?.title || rec.id || `Dossier #${rIdx + 1}`),
+                      h('span', { className: 'v1-badge' }, rec.status || 'DRAFT')
+                    ),
+                    h('div', { style: { display: 'flex', gap: '16px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
+                      h('span', {}, `Date : ${rec.event_date || '2026-10-25'}`),
+                      h('span', {}, `Paroisse : ${rec.parish_name || 'Diocèse de Butare'}`),
+                      rec.women_count !== undefined ? h('span', {}, `Femmes : ${rec.women_count} · Hommes : ${rec.men_count} · Total : ${rec.total_attendance}`) : null
+                    )
+                  ),
+                  h('div', { style: { display: 'flex', gap: '8px' } },
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                      title: 'Dupliquer ce dossier dans le formulaire de saisie',
+                      onClick: () => {
+                        const cloned = Object.assign({}, rec.values || rec);
+                        cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
+                        cloned.title = `${rec.task_titles?.fr || rec.values?.title || 'Dossier'} (Copie)`;
+                        cloned.event_date = '2026-10-25';
+                        if (rec.women_count !== undefined) cloned.women = String(rec.women_count);
+                        if (rec.men_count !== undefined) cloned.men = String(rec.men_count);
+                        if (rec.total_attendance !== undefined) cloned.total = String(rec.total_attendance);
+                        V091.formValues = cloned;
+                        V091.seizureSubTab = 'form';
+                        V091.showToast('✓ Dossier dupliqué avec succès dans le formulaire actif !', 'info');
                         renderApp();
                       },
-                    }),
-                    h('span', {}, `Trimestre ${q.toUpperCase()} (${['Sept–Nov', 'Déc–Fév', 'Mars–Mai', 'Juin–Août'][qIdx]})`)
-                  ),
-                  h('input', {
-                    className: 'v1-input',
-                    placeholder: `Activités prévues en ${q.toUpperCase()}...`,
-                    value: V091.formValues[`${q}_activity`] || '',
-                    onInput: e => { V091.formValues[`${q}_activity`] = e.target.value; },
-                    style: { marginBottom: '6px' },
-                  }),
-                  h('div', { style: { display: 'flex', gap: '8px' } },
-                    h('input', {
-                      type: 'number',
-                      className: 'v1-input',
-                      placeholder: 'Cible...',
-                      value: V091.formValues[`${q}_target`] || '',
-                      onInput: e => { V091.formValues[`${q}_target`] = e.target.value; },
-                      style: { flex: 1 },
-                    }),
-                    h('input', {
-                      type: 'number',
-                      className: 'v1-input',
-                      placeholder: 'Budget RWF...',
-                      value: V091.formValues[`${q}_budget`] || '',
-                      onInput: e => { V091.formValues[`${q}_budget`] = e.target.value; },
-                      style: { flex: 1 },
-                    })
+                    },
+                      msIcon('content_copy', 16),
+                      h('span', {}, 'Dupliquer')
+                    ),
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-primary',
+                      onClick: () => {
+                        V091.formValues = Object.assign({}, rec.values || rec);
+                        V091.seizureSubTab = 'form';
+                        renderApp();
+                      },
+                    },
+                      msIcon('edit', 16),
+                      h('span', {}, 'Ouvrir')
+                    )
                   )
                 )
               )
             )
-          ) : null,
+          ) :
 
-          /* Native Form Fields Grid */
-          h('div', { className: 'v1-grid-16' },
-            /* Always include Date Evenement */
-            h('div', { className: 'v1-field', style: { gridColumn: 'span 8' } },
-              h('label', { className: 'v1-field-label' }, 'Date de l’événement (YYYY-MM-DD) *'),
-              h('input', {
-                type: 'date',
-                className: 'v1-input',
-                value: V091.formValues.event_date || '2026-10-25',
-                onInput: e => { V091.formValues.event_date = e.target.value; },
-              })
+          /* VIEW A: Google Forms Style Dynamic Canvas */
+          h('div', { className: 'gf-wrapper', style: { flex: 1, minWidth: 0, margin: '0', gridColumn: 'auto' } },
+            /* Google Forms Card 0: Header Accent Card */
+            h('div', { className: 'gf-header-card' },
+              h('div', { className: 'gf-header-accent' }),
+              h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' } },
+                h('div', {},
+                  h('div', { style: { display: 'flex', gap: '8px', marginBottom: '8px' } },
+                    h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: 700 } }, currentForm.code),
+                    h('span', { className: 'v1-badge' }, `${formFields.length} champs natifs`),
+                    isSensitiveForm ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
+                  ),
+                  h('h2', { style: { fontSize: '1.5rem', fontWeight: 700, margin: '4px 0' } },
+                    currentForm.label[V1.lang] || currentForm.label.fr
+                  ),
+                  h('p', { style: { fontSize: '0.875rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
+                    `Standard de saisie ${currentForm.captureStandard || 'V8'} · Formulaire institutionnel CDJP Butare conforme au Plan Stratégique 2026–2031.`
+                  )
+                ),
+                h('button', {
+                  type: 'button',
+                  className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                  title: 'Dupliquer les valeurs actuelles',
+                  onClick: () => {
+                    const cloned = Object.assign({}, V091.formValues);
+                    cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
+                    if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
+                    V091.formValues = cloned;
+                    V091.showToast('✓ Formulaire dupliqué !', 'info');
+                    renderApp();
+                  },
+                },
+                  msIcon('content_copy', 16),
+                  h('span', {}, 'Dupliquer')
+                )
+              )
             ),
 
-            formFields.map(fCode => {
-              const fMeta = allFields[fCode] || { type: 'TEXT', label: { fr: fCode } };
-              const fType = fMeta.type || 'TEXT';
-              const fLabel = (fMeta.label && (fMeta.label[V1.lang] || fMeta.label.fr || fMeta.label.en)) || fCode;
-              const isReq = (currentForm.required || []).includes(fCode);
-              const colSpan = (fType === 'LONG_TEXT' || fCode === 'title' || fCode === 'activity' || fCode === 'progress_summary') ? 'span 16' : 'span 8';
-
-              return h('div', { className: 'v1-field', style: { gridColumn: colSpan } },
-                h('label', { className: 'v1-field-label' }, `${fLabel} ${isReq ? '*' : ''}`),
-                fType === 'LONG_TEXT' ? h('textarea', {
-                  className: 'v1-textarea',
-                  rows: 3,
-                  value: V091.formValues[fCode] || '',
-                  onInput: e => { V091.formValues[fCode] = e.target.value; },
-                }) : fType === 'BOOLEAN' ? h('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', height: '40px' } },
-                  h('input', {
-                    type: 'checkbox',
-                    checked: V091.formValues[fCode] === 'true',
-                    onChange: e => { V091.formValues[fCode] = e.target.checked ? 'true' : 'false'; },
-                  }),
-                  h('span', { style: { fontSize: '0.875rem' } }, 'Confirmer (Oui / Non)')
-                ) : h('input', {
-                  type: (fType.startsWith('INTEGER') || fType === 'NUMBER') ? 'number' : fType === 'DATE' ? 'date' : 'text',
-                  className: 'v1-input',
-                  placeholder: `Saisir ${fLabel}...`,
-                  value: V091.formValues[fCode] || '',
-                  onInput: e => { V091.formValues[fCode] = e.target.value; },
+            /* Document Import Dropzone */
+            h('div', { className: 'v1-panel', style: { padding: '16px', border: '1px dashed var(--border-subtle)', background: 'var(--bg-canvas)' } },
+              h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+                h('div', {},
+                  h('strong', { style: { fontSize: '0.875rem' } }, 'Pré-remplissage automatique depuis un document (DOCX, PDF, XLSX, CSV, JSON)'),
+                  h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                    'Extrait les métadonnées et valeurs sans jamais soumettre automatiquement.'
+                  )
+                ),
+                renderFileUploadComponent({
+                  label: 'Importer document source',
+                  accept: '.docx,.pdf,.xlsx,.csv,.json,.txt',
+                  selectedFilename: V091.selectedFile?.name,
+                  onSelect: file => {
+                    V091.selectedFile = file;
+                    const reader = new FileReader();
+                    reader.onload = e => {
+                      const b64 = e.target.result.split(',')[1];
+                      apiV1('/document-import/preview', 'POST', {
+                        form: currentForm.code,
+                        filename: file.name,
+                        content_base64: b64,
+                        current_values: V091.formValues,
+                      }).then(res => {
+                        V091.prefillPreview = res.proposed_values;
+                        V091.prefillConflicts = res.conflicts || [];
+                        V091.prefillWarnings = res.warnings || [];
+                        renderApp();
+                      }).catch(err => V091.showToast('Erreur import document : ' + err.message, 'error'));
+                    };
+                    reader.readAsDataURL(file);
+                  },
                 })
-              );
-            })
-          ),
+              ),
+              V091.prefillPreview ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)' } },
+                h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+                  h('span', { style: { fontWeight: 600, color: 'var(--color-primary)' } }, `✓ ${Object.keys(V091.prefillPreview).length} champs extraits`),
+                  h('div', { style: { display: 'flex', gap: '8px' } },
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-primary',
+                      onClick: () => {
+                        Object.assign(V091.formValues, V091.prefillPreview);
+                        V091.prefillPreview = null;
+                        renderApp();
+                      },
+                    }, 'Appliquer ces valeurs'),
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                      onClick: () => { V091.prefillPreview = null; renderApp(); },
+                    }, 'Ignorer')
+                  )
+                )
+              ) : null
+            ),
 
-          /* Evidence Upload & Attachments */
-          h('div', { style: { marginTop: '20px', paddingTop: '16px', borderTop: '1px solid var(--border-subtle)' } },
-            h('label', { className: 'v1-field-label' }, 'Pièce justificative & Preuve (PDF, PNG, JPG <= 10MB)'),
-            renderFileUploadComponent({
-              label: 'Attacher une preuve (Procès-verbal, feuille de présence, photo)',
-              accept: 'application/pdf,image/png,image/jpeg',
-              selectedFilename: V091.formValues.evidence,
-              onSelect: file => {
-                V091.formValues.evidence = file.name;
-                renderApp();
-              },
-            })
+            /* ================================================================
+               Google Forms Multi-Section Stepper Architecture
+               - Divides the form into focused, bite-sized sections (steps)
+               - Progress bar & step chips for direct navigation
+               - "Section précédente" (<) and "Section suivante" (>) buttons
+               - "Vue complète" toggle for users who want to review all sections
+               ================================================================ */
+            (() => {
+              const formSections = [];
+
+              // Section 1: Identification & Contexte Opérationnel
+              formSections.push({
+                id: 'identification',
+                title: 'Section 1 : Identification & Contexte Opérationnel',
+                shortTitle: 'Identification',
+                icon: 'assignment',
+                desc: 'Date d’exécution, dossier, programme, résultat stratégique et lieu d’intervention.',
+                render: () => h('div', { className: 'gf-question-card' },
+                  h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
+                    h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
+                      msIcon('assignment', 18),
+                      'Section 1 : Identification & Contexte Opérationnel'
+                    ),
+                    h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                      'Date d’exécution, dossier, programme, résultat stratégique et lieu d’intervention.'
+                    )
+                  ),
+                  h('div', { className: 'v1-grid-16' },
+                    h('div', { className: 'v1-field', style: { gridColumn: 'span 8' } },
+                      h('label', { className: 'v1-field-label' }, 'Date de l’événement (YYYY-MM-DD) *'),
+                      h('input', {
+                        type: 'date',
+                        className: 'v1-input',
+                        value: V091.formValues.event_date || '2026-10-25',
+                        onInput: e => { V091.formValues.event_date = e.target.value; },
+                      })
+                    ),
+                    idFields.map(fCode => renderFieldInput(fCode))
+                  )
+                )
+              });
+
+              // Section 2: Cibles, Démographie & Équité (Règle d’or)
+              if (demoFields.length > 0) {
+                const sNum = formSections.length + 1;
+                formSections.push({
+                  id: 'demographics',
+                  title: `Section ${sNum} : Cibles, Démographie & Équité (Règle d’or)`,
+                  shortTitle: 'Démographie',
+                  icon: 'group',
+                  desc: 'Total = Femmes + Hommes + Non divulgué · Règle d’or et sous-ensemble handicap.',
+                  render: () => h('div', { className: 'gf-question-card' },
+                    h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
+                      h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
+                        msIcon('group', 18),
+                        `Section ${sNum} : Cibles, Démographie & Équité (Règle d’or)`
+                      ),
+                      h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                        'Total = Femmes + Hommes + Non divulgué · Le handicap est un sous-ensemble non additionnel (Handicap ≤ Total).'
+                      )
+                    ),
+                    h('div', {
+                      style: {
+                        padding: '10px 14px',
+                        background: 'var(--bg-canvas)',
+                        borderRadius: 'var(--radius-sm)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: '12px',
+                        fontSize: '0.8125rem',
+                      }
+                    },
+                      h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
+                        msIcon('calculate', 18),
+                        h('span', {}, `Calcul automatique : Total (${calcTotal}) = Femmes (${womenCount}) + Hommes (${menCount}) + Non divulgué (${undisclosedCount})`)
+                      ),
+                      h('span', {
+                        className: 'v1-badge',
+                        style: {
+                          background: calcTotal > 0 ? 'var(--color-positive-bg, rgba(36, 161, 72, 0.1))' : 'var(--bg-hover)',
+                          color: calcTotal > 0 ? 'var(--color-positive, #24a148)' : 'var(--text-secondary)'
+                        }
+                      }, calcTotal > 0 ? '✓ Règle d’or respectée' : 'En attente de saisie')
+                    ),
+                    disabilityExceedsTotal ? h('div', {
+                      style: {
+                        padding: '8px 12px',
+                        background: 'rgba(218, 30, 40, 0.08)',
+                        border: '1px solid var(--color-critical)',
+                        borderRadius: 'var(--radius-sm)',
+                        marginBottom: '12px',
+                        fontSize: '0.8125rem',
+                        color: 'var(--color-critical)',
+                      }
+                    }, `Attention : Le nombre de participants avec handicap (${disabilityCount}) dépasse le total des participants (${calcTotal}). Le handicap est un sous-ensemble.`) : null,
+                    h('div', { className: 'v1-grid-16' },
+                      demoFields.map(fCode => renderFieldInput(fCode))
+                    )
+                  )
+                });
+              }
+
+              // Section 3: Sensibilité, CNV & Do No Harm
+              {
+                const sNum = formSections.length + 1;
+                formSections.push({
+                  id: 'sensitivity',
+                  title: `Section ${sNum} : Sensibilité, CNV & Do No Harm (Vérifications Obligatoires)`,
+                  shortTitle: 'Sensibilité',
+                  icon: 'verified_user',
+                  desc: 'Engagements institutionnels CDJP Butare pour la protection des participants et la non-violence.',
+                  render: () => h('div', { className: 'gf-question-card' },
+                    h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
+                      h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
+                        msIcon('verified_user', 18),
+                        `Section ${sNum} : Sensibilité, CNV & Do No Harm (Vérifications Obligatoires)`
+                      ),
+                      h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                        'Engagements institutionnels CDJP Butare pour la protection des participants et la non-violence.'
+                      )
+                    ),
+                    h('div', { className: 'v1-grid-16' },
+                      h('div', { className: 'v1-field', style: { gridColumn: 'span 16' } },
+                        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px' } },
+                          h('label', { style: { display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' } },
+                            h('input', {
+                              type: 'checkbox',
+                              checked: V091.formValues.cnv_respected === 'true' || V091.formValues.cnv_respected === true,
+                              onChange: e => {
+                                V091.formValues.cnv_respected = e.target.checked ? 'true' : 'false';
+                                renderApp();
+                              },
+                            }),
+                            h('span', { style: { fontSize: '0.875rem' } }, 'Communication Non-Violente (CNV) respectée et favorisée durant l’activité')
+                          ),
+                          h('label', { style: { display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' } },
+                            h('input', {
+                              type: 'checkbox',
+                              checked: V091.formValues.dnh_checked === 'true' || V091.formValues.dnh_checked === true,
+                              onChange: e => {
+                                V091.formValues.dnh_checked = e.target.checked ? 'true' : 'false';
+                                renderApp();
+                              },
+                            }),
+                            h('span', { style: { fontSize: '0.875rem' } }, 'Principes Do No Harm (DNH) vérifiés : aucun préjudice ni risque accru pour les participants')
+                          ),
+                          h('label', { style: { display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' } },
+                            h('input', {
+                              type: 'checkbox',
+                              checked: V091.formValues.trauma_sensitive === 'true' || V091.formValues.trauma_sensitive === true,
+                              onChange: e => {
+                                V091.formValues.trauma_sensitive = e.target.checked ? 'true' : 'false';
+                                renderApp();
+                              },
+                            }),
+                            h('span', { style: { fontSize: '0.875rem' } }, 'Approche sensible aux traumatismes et confidentialité des témoignages garantie')
+                          )
+                        )
+                      ),
+                      h('div', { className: 'v1-field', style: { gridColumn: 'span 16' } },
+                        h('label', { className: 'v1-field-label' }, 'Notes et précautions qualitatives sur la sensibilité'),
+                        h('textarea', {
+                          className: 'v1-textarea',
+                          rows: 2,
+                          placeholder: 'Préciser les mesures de protection spécifiques prises lors de cette activité...',
+                          value: V091.formValues.sensitivity_notes || '',
+                          onInput: e => { V091.formValues.sensitivity_notes = e.target.value; },
+                        })
+                      )
+                    )
+                  )
+                });
+              }
+
+              // Section 4: Répartition Trimestrielle CPJP (Tableau 12) if F03
+              if (currentForm.code === 'F03') {
+                const sNum = formSections.length + 1;
+                formSections.push({
+                  id: 'f03_quarterly',
+                  title: `Section ${sNum} : Répartition Trimestrielle CPJP (Tableau 12)`,
+                  shortTitle: 'Trimestres (Tab. 12)',
+                  icon: 'calendar_month',
+                  desc: 'Allocation opérationnelle par trimestre pastoral pour l’année AP1 (2026–2027).',
+                  render: () => h('div', { className: 'gf-question-card' },
+                    h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
+                      h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
+                        msIcon('calendar_month', 18),
+                        `Section ${sNum} : Répartition Trimestrielle CPJP (Tableau 12)`
+                      ),
+                      h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                        'Allocation opérationnelle par trimestre pastoral pour l’année AP1 (2026–2027).'
+                      )
+                    ),
+                    h('div', { className: 'v1-grid-16' },
+                      ['q1', 'q2', 'q3', 'q4'].map((q, qIdx) =>
+                        h('div', { className: 'v1-panel', style: { gridColumn: 'span 8', padding: '14px' }, key: q },
+                          h('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700', marginBottom: '8px', cursor: 'pointer' } },
+                            h('input', {
+                              type: 'checkbox',
+                              checked: V091.formValues[`${q}_selected`] === 'true',
+                              onChange: e => {
+                                V091.formValues[`${q}_selected`] = e.target.checked ? 'true' : 'false';
+                                renderApp();
+                              },
+                            }),
+                            h('span', {}, `Trimestre ${q.toUpperCase()} (${['Sept–Nov', 'Déc–Fév', 'Mars–Mai', 'Juin–Août'][qIdx]})`)
+                          ),
+                          h('input', {
+                            className: 'v1-input',
+                            placeholder: `Activités prévues en ${q.toUpperCase()}...`,
+                            value: V091.formValues[`${q}_activity`] || '',
+                            onInput: e => { V091.formValues[`${q}_activity`] = e.target.value; },
+                            style: { marginBottom: '8px' },
+                          }),
+                          h('div', { style: { display: 'flex', gap: '8px' } },
+                            h('input', {
+                              type: 'number',
+                              className: 'v1-input',
+                              placeholder: 'Cible...',
+                              value: V091.formValues[`${q}_target`] || '',
+                              onInput: e => { V091.formValues[`${q}_target`] = e.target.value; },
+                              style: { flex: 1 },
+                            }),
+                            h('input', {
+                              type: 'number',
+                              className: 'v1-input',
+                              placeholder: 'Budget RWF...',
+                              value: V091.formValues[`${q}_budget`] || '',
+                              onInput: e => { V091.formValues[`${q}_budget`] = e.target.value; },
+                              style: { flex: 1 },
+                            })
+                          )
+                        )
+                      )
+                    )
+                  )
+                });
+              }
+
+              // Section 5: Déroulement, Résultats & Progrès Qualitatifs
+              if (narrativeFields.length > 0) {
+                const sNum = formSections.length + 1;
+                formSections.push({
+                  id: 'narrative',
+                  title: `Section ${sNum} : Déroulement, Résultats & Progrès Qualitatifs`,
+                  shortTitle: 'Résultats',
+                  icon: 'edit_note',
+                  desc: 'Contenu narratif, progrès constatés, défis rencontrés et recommandations.',
+                  render: () => h('div', { className: 'gf-question-card' },
+                    h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
+                      h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
+                        msIcon('edit_note', 18),
+                        `Section ${sNum} : Déroulement, Résultats & Progrès Qualitatifs`
+                      ),
+                      h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                        'Contenu narratif, progrès constatés, défis rencontrés et recommandations.'
+                      )
+                    ),
+                    h('div', { className: 'v1-grid-16' },
+                      narrativeFields.map(fCode => renderFieldInput(fCode))
+                    )
+                  )
+                });
+              }
+
+              // Section 6: Paramètres & Informations Complémentaires
+              if (otherFields.length > 0) {
+                const sNum = formSections.length + 1;
+                formSections.push({
+                  id: 'other',
+                  title: `Section ${sNum} : Paramètres & Informations Complémentaires`,
+                  shortTitle: 'Paramètres',
+                  icon: 'tune',
+                  desc: `${otherFields.length} champs spécifiques au schéma ${currentForm.code}.`,
+                  render: () => h('div', { className: 'gf-question-card' },
+                    h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
+                      h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
+                        msIcon('tune', 18),
+                        `Section ${sNum} : Paramètres & Informations Complémentaires`
+                      ),
+                      h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                        `${otherFields.length} champs spécifiques au schéma ${currentForm.code}.`
+                      )
+                    ),
+                    h('div', { className: 'v1-grid-16' },
+                      otherFields.map(fCode => renderFieldInput(fCode))
+                    )
+                  )
+                });
+              }
+
+              // Final Section: Pièces Justificatives & Soumission
+              {
+                const sNum = formSections.length + 1;
+                formSections.push({
+                  id: 'evidence',
+                  title: `Section ${sNum} : Pièces Justificatives & Finalisation`,
+                  shortTitle: 'Finalisation',
+                  icon: 'attach_file',
+                  desc: 'Feuille de présence signée, procès-verbal de médiation ou photos (PDF, PNG, JPG ≤ 10MB).',
+                  render: () => h('div', { className: 'gf-question-card' },
+                    h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
+                      h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
+                        msIcon('attach_file', 18),
+                        `Section ${sNum} : Pièces Justificatives & Finalisation`
+                      ),
+                      h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                        'Feuille de présence signée, procès-verbal de médiation, rapport de visite ou photos (PDF, PNG, JPG ≤ 10MB).'
+                      )
+                    ),
+                    renderFileUploadComponent({
+                      label: 'Attacher une pièce justificative ou feuille d’émargement',
+                      accept: 'application/pdf,image/png,image/jpeg',
+                      selectedFilename: V091.formValues.evidence,
+                      onSelect: file => {
+                        V091.formValues.evidence = file.name;
+                        renderApp();
+                      },
+                    }),
+                    /* Summary Card of the record ready to submit */
+                    h('div', { style: { marginTop: '16px', padding: '14px 18px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-primary)' } },
+                      h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' } },
+                        h('strong', { style: { fontSize: '0.875rem' } }, 'Récapitulatif de saisie avant soumission'),
+                        h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, currentForm.code)
+                      ),
+                      h('div', { style: { display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
+                        h('span', {}, `Date : ${V091.formValues.event_date || '2026-10-25'}`),
+                        calcTotal > 0 ? h('span', {}, `Participants : ${calcTotal} (${womenCount}F / ${menCount}H)`) : null,
+                        V091.formValues.evidence ? h('span', {}, `Justificatif : ${V091.formValues.evidence}`) : h('span', { style: { color: 'var(--text-muted)' } }, 'Aucun justificatif joint')
+                      )
+                    )
+                  )
+                });
+              }
+
+              V091.formViewMode = V091.formViewMode || 'stepper';
+              const activeSecIdx = Math.min(Math.max(0, V091.activeFormSectionIndex || 0), formSections.length - 1);
+              const currentSection = formSections[activeSecIdx];
+              const isStepper = V091.formViewMode !== 'all';
+
+              return h('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
+                /* Google Forms Stepper / Section Progress Header */
+                h('div', { className: 'gf-stepper-container' },
+                  h('div', { className: 'gf-stepper-header' },
+                    h('div', { className: 'gf-stepper-title-wrap' },
+                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: '700', padding: '4px 12px' } },
+                        `Section ${activeSecIdx + 1} / ${formSections.length}`
+                      ),
+                      h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)' } }, currentSection.title)
+                    ),
+                    /* Toggle View: Stepper vs All */
+                    h('div', { style: { display: 'flex', gap: '4px', background: 'var(--bg-canvas)', padding: '3px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--border-subtle)' } },
+                      h('button', {
+                        type: 'button',
+                        className: 'v1-btn v1-btn-sm' + (isStepper ? ' v1-btn-primary' : ' v1-btn-ghost'),
+                        style: { borderRadius: 'var(--radius-pill)', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
+                        onClick: () => { V091.formViewMode = 'stepper'; renderApp(); },
+                      }, msIcon('task_alt', 14), h('span', {}, 'Étape par étape')),
+                      h('button', {
+                        type: 'button',
+                        className: 'v1-btn v1-btn-sm' + (!isStepper ? ' v1-btn-primary' : ' v1-btn-ghost'),
+                        style: { borderRadius: 'var(--radius-pill)', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
+                        onClick: () => { V091.formViewMode = 'all'; renderApp(); },
+                      }, msIcon('open_in_full', 14), h('span', {}, 'Vue complète'))
+                    )
+                  ),
+                  /* Progress Bar (Stepper Mode) */
+                  isStepper ? h('div', { className: 'gf-stepper-progress' },
+                    h('div', {
+                      className: 'gf-stepper-progress-fill',
+                      style: { width: `${((activeSecIdx + 1) / formSections.length) * 100}%` }
+                    })
+                  ) : null,
+                  /* Interactive Step Chips (Stepper Mode) */
+                  isStepper ? h('div', { className: 'gf-step-chips' },
+                    formSections.map((sec, idx) =>
+                      h('button', {
+                        type: 'button',
+                        key: sec.id,
+                        className: 'gf-step-chip' + (idx === activeSecIdx ? ' active' : (idx < activeSecIdx ? ' done' : '')),
+                        onClick: () => {
+                          V091.activeFormSectionIndex = idx;
+                          renderApp();
+                          const wrap = document.querySelector('.gf-wrapper');
+                          if (wrap) wrap.scrollIntoView({ behavior: 'smooth' });
+                        },
+                      },
+                        h('span', { className: 'gf-step-chip-num' }, idx < activeSecIdx ? msIcon('check', 12) : String(idx + 1)),
+                        msIcon(sec.icon, 16),
+                        h('span', {}, sec.shortTitle)
+                      )
+                    )
+                  ) : null
+                ),
+
+                /* Main Section Content */
+                isStepper
+                  ? currentSection.render()
+                  : h('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
+                      formSections.map(s => s.render())
+                    ),
+
+                /* Step Navigation & Action Bar */
+                h('div', {
+                  style: {
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '16px 24px',
+                    background: 'var(--bg-elevated)',
+                    border: '1px solid var(--border-subtle)',
+                    borderRadius: '12px',
+                    marginTop: '12px',
+                    flexWrap: 'wrap',
+                    gap: '12px',
+                  }
+                },
+                  /* Left: Previous Section (if step > 0) + Reset / Duplicate */
+                  h('div', { style: { display: 'flex', gap: '10px', alignItems: 'center' } },
+                    isStepper && activeSecIdx > 0 ? h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-secondary',
+                      onClick: () => {
+                        V091.activeFormSectionIndex = Math.max(0, activeSecIdx - 1);
+                        renderApp();
+                        const wrap = document.querySelector('.gf-wrapper');
+                        if (wrap) wrap.scrollIntoView({ behavior: 'smooth' });
+                      },
+                    },
+                      msIcon('arrow_back', 18),
+                      h('span', {}, 'Section précédente')
+                    ) : null,
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-ghost',
+                      title: 'Réinitialiser toutes les valeurs du formulaire',
+                      onClick: () => {
+                        V091.formValues = {};
+                        V091.activeFormSectionIndex = 0;
+                        V091.showToast('Formulaire réinitialisé.', 'info');
+                        renderApp();
+                      },
+                    },
+                      msIcon('restart_alt', 18),
+                      h('span', {}, 'Réinitialiser')
+                    ),
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-ghost',
+                      title: 'Dupliquer ce formulaire',
+                      onClick: () => {
+                        const cloned = Object.assign({}, V091.formValues);
+                        cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
+                        if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
+                        V091.formValues = cloned;
+                        V091.showToast('✓ Formulaire dupliqué !', 'info');
+                        renderApp();
+                      },
+                    },
+                      msIcon('content_copy', 18),
+                      h('span', {}, 'Dupliquer')
+                    )
+                  ),
+                  /* Right: Save Draft + Next Step / Submit */
+                  h('div', { style: { display: 'flex', gap: '12px', alignItems: 'center' } },
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-secondary',
+                      onClick: () => {
+                        const draftPayload = {
+                          form: currentForm.code,
+                          event_date: V091.formValues.event_date || '2026-10-25',
+                          values: V091.formValues,
+                          language: V1.lang,
+                        };
+                        apiV1('/working-drafts', 'POST', draftPayload).then(() => {
+                          V091.showToast('✓ Brouillon enregistré avec succès.', 'info');
+                        }).catch(err => V091.showToast('Erreur brouillon : ' + err.message, 'error'));
+                      },
+                    },
+                      msIcon('cloud_done', 18),
+                      h('span', {}, 'Enregistrer brouillon')
+                    ),
+                    isStepper && activeSecIdx < formSections.length - 1 ? h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-primary',
+                      onClick: () => {
+                        V091.activeFormSectionIndex = Math.min(formSections.length - 1, activeSecIdx + 1);
+                        renderApp();
+                        const wrap = document.querySelector('.gf-wrapper');
+                        if (wrap) wrap.scrollIntoView({ behavior: 'smooth' });
+                      },
+                    },
+                      h('span', {}, 'Section suivante'),
+                      msIcon('arrow_forward', 18)
+                    ) : h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-primary',
+                      onClick: () => {
+                        const event_date = V091.formValues.event_date || '2026-10-25';
+                        const payload = {
+                          form: currentForm.code,
+                          event_date: event_date,
+                          values: V091.formValues,
+                        };
+                        apiV1('/records', 'POST', payload).then(rec => {
+                          V091.showToast(`✓ Dossier ${rec.values?.record || rec.id} validé et soumis avec succès !`, 'info');
+                          V091.formValues = {};
+                          V091.activeFormSectionIndex = 0;
+                          V1.workspace = 'files_validation';
+                          renderApp();
+                        }).catch(err => V091.showToast('Erreur validation : ' + (err.details || err.message), 'error'));
+                      },
+                    },
+                      msIcon('check', 18),
+                      h('span', {}, 'Valider & Soumettre le dossier')
+                    )
+                  )
+                )
+              );
+            })()
           )
-        )
       )
     );
   }
@@ -1529,12 +2394,81 @@
      8. PS PLANNING (Planification du PS — AP1–AP5, STAFF vs CPJP, 25 lines, 33 tasks)
      -------------------------------------------------------------------------- */
   function renderPSPlanningWorkspace() {
+    // 1. Fetch live planning data from backend endpoint if not already cached
+    const cacheKey = `${V091.planningYear}_${V091.planningAudience}`;
+    if (!V091.planningLoading && (!V091.planningData || V091.planningData._key !== cacheKey)) {
+      V091.planningLoading = true;
+      apiV1(`/planning?ap=${V091.planningYear}&audience=${V091.planningAudience}`).then(d => {
+        d._key = cacheKey;
+        V091.planningData = d;
+        V091.planningLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(err => {
+        V091.planningLoading = false;
+        V091.planningError = err.message;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const data = V091.planningData || {
+      year: {
+        code: V091.planningYear,
+        start: '2026-09-01',
+        end: '2027-08-31',
+        phase: 'Baseline, installation APSE, costing et lancement contrôlé',
+        milestone: 'Baseline sept.-nov. 2026 ; cibles et budget validés',
+        roadmap: [
+          'Axes 1, 2 et 4 : consolider les approches existantes de guérison, réconciliation, transformation non violente et droits humains.\nAxe 3 : familiariser avec l’écologie intégrale, analyser les besoins décentralisés et identifier des projets pilotes réalistes.\nAxe 5 : mettre en place les conditions institutionnelles, plan d’action et budget disponibles, dispositif APSE minimum.',
+          'Communiquer et vulgariser le Plan ; préciser les responsabilités ; établir ou actualiser les données de référence ; élaborer les plans d’action et budgets annuels ; harmoniser les outils prioritaires ; cartographier partenaires et ressources disponibles.',
+          'Plan diffusé et compris ; Responsabilités attribuées ; Plan d’action et budget 2026 disponibles ; Valeurs de référence prioritaires établies ; Outils essentiels harmonisés ; Mécanisme de suivi fonctionnel ; Premières initiatives sélectionnées.'
+        ]
+      },
+      axes: [
+        { code: 'A1', labels: { fr: 'Guérison des blessures de l’histoire, unité et réconciliation', rw: 'Gukira ibikomere by’amateka, ubumwe n’ubwiyunge', en: 'Healing of historical wounds, unity and reconciliation' } },
+        { code: 'A2', labels: { fr: 'Résolution pacifique des conflits et transformation non violente', rw: 'Gukemura amakimbirane mu mahoro', en: 'Peaceful conflict resolution and non-violent transformation' } },
+        { code: 'A3', labels: { fr: 'Justice écologique et sauvegarde de la création', rw: 'Ubutabera ku bidukikije no kurengera ibyaremwe', en: 'Ecological justice and care for creation' } },
+        { code: 'A4', labels: { fr: 'Droits humains, dignité humaine et assistance juridique', rw: 'Uburenganzira bwa muntu n’ubufasha mu by’amategeko', en: 'Human rights, human dignity and legal aid' } },
+        { code: 'A5', labels: { fr: 'Gouvernance, renforcement des capacités et suivi MEL', rw: 'Imiyoborere, kongera ubushobozi no gukurikirana', en: 'Governance, capacity building and MEL tracking' } },
+      ],
+      operational_lines: [],
+      annual_tasks: []
+    };
+
+    const yearData = data.year || {};
+    const operationalLines = data.operational_lines || [];
+    const annualTasks = data.annual_tasks || [];
+    const lang = V1.lang || 'fr';
+
+    const totalMillions = operationalLines.reduce((sum, x) => sum + Number(x.indicativeMillionsRWF?.[V091.planningYear] || 0), 0);
+
+    // Filter items based on selected axis, kind, and search query
+    const allItems = [...annualTasks, ...operationalLines];
+    const filteredItems = allItems.filter(x => {
+      if (V091.planningFilterAxis !== 'ALL' && x.axis !== V091.planningFilterAxis) return false;
+      if (V091.planningFilterType === 'TASK' && !x.ap) return false;
+      if (V091.planningFilterType === 'LINE' && x.ap) return false;
+      if (V091.planningSearch) {
+        const q = V091.planningSearch.toLowerCase();
+        const lbl = Object.values(x.labels || {}).join(' ').toLowerCase();
+        const exp = Object.values(x.expected || {}).join(' ').toLowerCase();
+        const ind = Object.values(x.indicator || {}).join(' ').toLowerCase();
+        const code = (x.code || '').toLowerCase();
+        const obj = (x.objective || '').toLowerCase();
+        const src = (x.source || '').toLowerCase();
+        const loc = (x.locations || '').toLowerCase();
+        if (!lbl.includes(q) && !code.includes(q) && !exp.includes(q) && !ind.includes(q) && !obj.includes(q) && !src.includes(q) && !loc.includes(q)) {
+          return false;
+        }
+      }
+      return true;
+    });
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Plan Stratégique 2026–2031'),
+          h('span', { className: 'v1-breadcrumb-item' }, 'Horizon Quinquennal 2026–2031'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_ps_planning'))
         ),
@@ -1542,18 +2476,33 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_ps_planning')),
             h('p', { className: 'v1-page-subtitle' },
-              'Horizon pastoral de 5 ans (AP1 à AP5) : 5 axes, 13 résultats, 15 interventions, 25 lignes opérationnelles indicatives et 33 tâches annuelles.'
+              `Plan Stratégique 2026–2031 : 5 axes, 13 résultats, 15 interventions, 25 lignes indicatives et 33 tâches annuelles prioritaires.`
             )
           ),
           h('div', { className: 'v1-header-actions' },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary',
+              onClick: () => {
+                V091.planningShowRoadmap = !V091.planningShowRoadmap;
+                renderApp();
+              }
+            },
+              msIcon('info', 18),
+              h('span', {}, V091.planningShowRoadmap ? 'Masquer la feuille de route' : 'Feuille de route & Jalons')
+            ),
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-primary',
               onClick: () => {
                 V091.activeFormCode = 'F03';
                 V091.formValues = {
+                  work_type: 'OPERATIONAL',
                   ap: V091.planningYear,
                   plan_type: V091.planningAudience,
+                  start: yearData.start || '2026-09-01',
+                  end: yearData.end || '2027-08-31',
+                  owner: V1.data?.user?.id || 'mel',
                 };
                 V1.workspace = 'seizure';
                 renderApp();
@@ -1566,85 +2515,228 @@
         )
       ),
 
-      /* Selector bars: Years AP1-AP5 & Audience (STAFF vs CPJP) */
-      h('div', { style: { display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' } },
-        h('div', { className: 'v1-segmented' },
-          ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) =>
-            h('button', {
-              type: 'button',
-              className: 'v1-seg-btn' + (V091.planningYear === ap ? ' active' : ''),
-              onClick: () => { V091.planningYear = ap; renderApp(); },
-            }, `${ap} (202${6 + idx}–202${7 + idx})`)
-          )
-        ),
-        h('div', { className: 'v1-segmented' },
-          [
-            ['STAFF', 'Personnel CDJP Diocèse'],
-            ['CPJP', 'Comités Paroissiaux CPJP'],
-          ].map(([aud, lbl]) =>
-            h('button', {
-              type: 'button',
-              className: 'v1-seg-btn' + (V091.planningAudience === aud ? ' active' : ''),
-              onClick: () => { V091.planningAudience = aud; renderApp(); },
-            }, lbl)
-          )
-        )
-      ),
-
-      /* Indicative operational lines & tasks */
-      h('div', { className: 'v1-panel' },
-        h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, `Tâches annuelles & Lignes indicatives (${V091.planningYear} · ${V091.planningAudience})`),
-          h('span', { className: 'v1-badge' }, 'Enveloppe PS approuvée')
-        ),
-        h('table', { className: 'v1-data-table' },
-          h('thead', {},
-            h('tr', {},
-              h('th', {}, 'Code'),
-              h('th', {}, 'Axe'),
-              h('th', {}, 'Activité planifiée'),
-              h('th', {}, 'Cible indicative'),
-              h('th', {}, 'Budget indicatif'),
-              h('th', {}, 'Action')
+      /* Pastoral Year Phase Banner */
+      h('div', { className: 'v1-panel', style: { marginBottom: '20px', padding: '16px 20px', borderLeft: '4px solid var(--color-primary)', background: 'var(--bg-canvas)' } },
+        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' } },
+          h('div', { style: { flex: '1 1 260px', minWidth: '240px' } },
+            h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' } },
+              h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', whiteSpace: 'nowrap' } }, `${V091.planningYear} · ${yearData.start} au ${yearData.end}`),
+              h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', whiteSpace: 'nowrap' } }, yearData.phase || 'Phase active'),
+              V091.planningLoading ? h('span', { className: 'v1-badge' }, 'Chargement API...') : null
+            ),
+            h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 } },
+              h('strong', {}, 'Jalon clé : '), yearData.milestone || 'Cibles et budgets validés'
             )
           ),
-          h('tbody', {},
-            [
-              { code: 'AT-AP1-01', axis: 'A1', title: 'Cercles de guérison et écoute active Isanamitima / GURR', target: '360 personnes', budget: '18.5 M RWF' },
-              { code: 'AT-AP1-02', axis: 'A2', title: 'Médiation des conflits et accompagnement parajuridique de proximité', target: '240 dossiers', budget: '14.2 M RWF' },
-              { code: 'AT-AP1-03', axis: 'A3', title: 'Reboisement agroforestier et justice écologique dans les collines', target: '12 000 plants', budget: '9.8 M RWF' },
-              { code: 'AT-AP1-04', axis: 'A4', title: 'Sensibilisation aux droits humains et accompagnement des détenus libérés', target: '180 personnes', budget: '11.0 M RWF' },
-              { code: 'AT-AP1-05', axis: 'A5', title: 'Renforcement organisationnel et comités paroissiaux CPJP', target: '27 comités', budget: '8.4 M RWF' },
-            ].map(row =>
-              h('tr', {},
-                h('td', {}, h('strong', {}, row.code)),
-                h('td', {}, h('span', { className: 'v1-badge' }, row.axis)),
-                h('td', {}, row.title),
-                h('td', {}, row.target),
-                h('td', {}, row.budget),
-                h('td', {},
-                  h('button', {
-                    type: 'button',
-                    className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                    onClick: () => {
-                      V091.activeFormCode = 'F03';
-                      V091.formValues = {
-                        ap: V091.planningYear,
-                        plan_type: V091.planningAudience,
-                        operation_ref: row.code,
-                        axis: row.axis,
-                        title: row.title,
-                      };
-                      V1.workspace = 'seizure';
-                      renderApp();
-                    },
-                  }, 'Préparer cette activité (F03)')
-                )
+          h('div', { style: { flexShrink: 0, textAlign: 'right' } },
+            h('span', { style: { fontSize: '0.6875rem', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block' } }, 'Enveloppe PS approuvée'),
+            h('strong', { style: { fontSize: '1.25rem', color: 'var(--color-success)' } }, `${totalMillions.toLocaleString()} M RWF`)
+          )
+        ),
+
+        /* Optional Expanded Roadmap View */
+        V091.planningShowRoadmap && Array.isArray(yearData.roadmap) ? h('div', { style: { marginTop: '14px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' } },
+          h('strong', { style: { fontSize: '0.875rem', display: 'block', marginBottom: '8px' } }, 'Feuille de route stratégique diocésaine :'),
+          h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
+            yearData.roadmap.map((stepText, sIdx) =>
+              h('div', { key: sIdx, style: { display: 'flex', gap: '8px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
+                h('span', { style: { fontWeight: '700', color: 'var(--color-primary)' } }, `Étape ${sIdx + 1} :`),
+                h('span', { style: { whiteSpace: 'pre-line' } }, stepText)
               )
             )
           )
+        ) : null
+      ),
+
+      /* Selectors & Filters Bar */
+      h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' } },
+        h('div', { style: { display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' } },
+          /* Year segmented */
+          h('div', { className: 'v1-segmented' },
+            ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) =>
+              h('button', {
+                type: 'button',
+                key: ap,
+                className: 'v1-seg-btn' + (V091.planningYear === ap ? ' active' : ''),
+                onClick: () => {
+                  V091.planningYear = ap;
+                  renderApp();
+                },
+              }, `${ap} (202${6 + idx}–202${7 + idx})`)
+            )
+          ),
+          /* Audience segmented */
+          h('div', { className: 'v1-segmented' },
+            [
+              ['STAFF', 'Personnel CDJP Diocèse'],
+              ['CPJP', 'Comités Paroissiaux CPJP'],
+            ].map(([aud, lbl]) =>
+              h('button', {
+                type: 'button',
+                key: aud,
+                className: 'v1-seg-btn' + (V091.planningAudience === aud ? ' active' : ''),
+                onClick: () => {
+                  V091.planningAudience = aud;
+                  renderApp();
+                },
+              }, lbl)
+            )
+          )
+        ),
+
+        /* Filter Pills & Live Search Row */
+        h('div', { style: { display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' } },
+          /* Axis Chips */
+          h('div', { className: 'v1-chips', style: { flex: 1, minWidth: '320px' } },
+            [
+              ['ALL', 'Tous les axes (5)'],
+              ['A1', 'A1 · Guérison & Réconciliation'],
+              ['A2', 'A2 · Résolution des conflits'],
+              ['A3', 'A3 · Justice écologique'],
+              ['A4', 'A4 · Droits humains'],
+              ['A5', 'A5 · Renforcement institutionnel'],
+            ].map(([ax, lbl]) =>
+              h('button', {
+                type: 'button',
+                key: ax,
+                className: 'v1-chip' + (V091.planningFilterAxis === ax ? ' active' : ''),
+                style: { fontSize: '0.75rem', padding: '4px 10px' },
+                onClick: () => {
+                  V091.planningFilterAxis = ax;
+                  renderApp();
+                }
+              }, lbl)
+            )
+          ),
+
+          /* Type Filter */
+          h('div', { className: 'v1-segmented' },
+            [
+              ['ALL', `Tous (${allItems.length})`],
+              ['TASK', `Tâches annuelles (${annualTasks.length})`],
+              ['LINE', `Lignes indicatives (${operationalLines.length})`],
+            ].map(([t, lbl]) =>
+              h('button', {
+                type: 'button',
+                key: t,
+                className: 'v1-seg-btn' + (V091.planningFilterType === t ? ' active' : ''),
+                style: { fontSize: '0.75rem', padding: '4px 8px' },
+                onClick: () => {
+                  V091.planningFilterType = t;
+                  renderApp();
+                }
+              }, lbl)
+            )
+          ),
+
+          /* Search Input */
+          h('input', {
+            type: 'search',
+            className: 'v1-input',
+            placeholder: 'Rechercher par code, intitulé, indicateur, district...',
+            value: V091.planningSearch,
+            onInput: e => {
+              V091.planningSearch = e.target.value;
+              renderApp();
+            },
+            style: { width: '280px', height: '34px', fontSize: '0.8125rem' }
+          })
         )
-      )
+      ),
+
+      /* Strategic Axes Sections with Rich Cards Grid */
+      filteredItems.length === 0 ? h('div', { className: 'v1-panel', style: { padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' } },
+        msIcon('search_off', 32),
+        h('p', { style: { marginTop: '12px' } }, 'Aucune activité planifiée ne correspond à vos filtres de recherche pour cette année et ce public.')
+      ) : (data.axes || []).map(axis => {
+        const axisItems = filteredItems.filter(x => x.axis === axis.code);
+        if (axisItems.length === 0) return null;
+        const axisTitle = (axis.labels && (axis.labels[lang] || axis.labels.fr || axis.labels.en || axis.labels.rw || axis.labels.sw)) || axis.label || axis.code;
+
+        return h('section', { key: axis.code, style: { marginBottom: '32px' } },
+          h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', borderBottom: '2px solid var(--border-subtle)', paddingBottom: '8px' } },
+            h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+              h('span', { className: 'v1-meta-code-badge', style: { fontSize: '0.875rem', padding: '3px 8px' } }, axis.code),
+              h('h2', { style: { fontSize: '1.125rem', fontWeight: '700', color: 'var(--text-primary)', margin: 0 } }, axisTitle)
+            ),
+            h('span', { className: 'v1-badge' }, `${axisItems.length} activité${axisItems.length > 1 ? 's' : ''}`)
+          ),
+
+          /* Cards Grid */
+          h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: '16px' } },
+            axisItems.map(item => {
+              const itemTitle = (item.labels && (item.labels[lang] || item.labels.fr || item.labels.en || item.labels.rw || item.labels.sw)) || item.code;
+              const isLine = !!item.indicativeMillionsRWF;
+              const expectedText = (item.expected && (item.expected[lang] || item.expected.fr || item.expected.en)) || '';
+              const indicatorText = (item.indicator && (item.indicator[lang] || item.indicator.fr || item.indicator.en)) || '';
+              const budgetText = item.budgetRWF ? Number(item.budgetRWF).toLocaleString() + ' RWF' : (item.indicativeMillionsRWF ? (item.indicativeMillionsRWF[V091.planningYear] || Object.values(item.indicativeMillionsRWF)[0]) + ' M RWF' : '—');
+              const fundersList = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP (Misereor)', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ') || 'Fonds propres CDJP';
+
+              return h('article', { key: item.code, className: 'v1-panel v1-card-interactive', style: { padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' } },
+                h('div', {},
+                  /* Top Badges Row */
+                  h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
+                    h('div', { style: { display: 'flex', gap: '6px', alignItems: 'center' } },
+                      h('span', { className: 'v1-meta-code-badge' }, item.code),
+                      h('span', { className: 'v1-badge', style: isLine ? { background: 'rgba(138, 43, 226, 0.1)', color: '#6A1B9A' } : { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } },
+                        isLine ? 'Ligne PS' : 'Tâche PAO'
+                      )
+                    ),
+                    h('span', { style: { fontSize: '0.75rem', color: 'var(--text-muted)' } },
+                      item.intervention || (item.interventionCandidates ? item.interventionCandidates[0] : `Obj: ${item.objective}`)
+                    )
+                  ),
+
+                  /* Activity Title */
+                  h('strong', { style: { fontSize: '0.9375rem', lineHeight: '1.4', display: 'block', marginBottom: '10px', color: 'var(--text-primary)' } }, itemTitle),
+
+                  /* Expected Strategic Change */
+                  expectedText ? h('div', { style: { display: 'flex', gap: '6px', marginBottom: '6px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
+                    msIcon('target', 14),
+                    h('span', { style: { display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } }, expectedText)
+                  ) : null,
+
+                  /* KPI Indicator */
+                  indicatorText ? h('div', { style: { display: 'flex', gap: '6px', marginBottom: '10px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
+                    msIcon('analytics', 14),
+                    h('span', { style: { display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' } }, indicatorText)
+                  ) : null,
+
+                  /* Metadata Chips */
+                  h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '12px' } },
+                    h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('payments', 12), budgetText),
+                    h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('place', 12), item.locations || '4 districts'),
+                    item.responsibleSource ? h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('person', 12), item.responsibleSource) : null,
+                    fundersList ? h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('handshake', 12), fundersList) : null
+                  )
+                ),
+
+                /* Card Actions */
+                h('div', { style: { display: 'flex', gap: '8px', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px', justifyContent: 'flex-end', alignItems: 'center' } },
+                  h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                    title: 'Voir tous les détails et métadonnées de cette activité',
+                    onClick: () => V091.showPlanningItemModal(item, yearData),
+                  },
+                    msIcon('info', 14),
+                    h('span', {}, 'Détails')
+                  ),
+                  h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-sm v1-btn-primary',
+                    title: 'Préparer cette activité dans le formulaire F03',
+                    onClick: () => V091.preparePlanningActivity(item, yearData),
+                  },
+                    msIcon('content_copy', 14),
+                    h('span', {}, 'Préparer cette activité (F03)')
+                  )
+                )
+              );
+            })
+          )
+        );
+      })
     );
   }
 
@@ -1700,70 +2792,156 @@
      10. RECORD FEEDBACK (Retours sur les dossiers)
      -------------------------------------------------------------------------- */
   function renderFeedbackWorkspace() {
+    // 1. Fetch live feedback inbox if not cached
+    if (!V091.inboxLoading && !V091.inboxData) {
+      V091.inboxLoading = true;
+      apiV1('/inbox').then(d => {
+        V091.inboxData = d;
+        V091.inboxLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(err => {
+        V091.inboxLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const inboxList = V091.inboxData?.inbox?.feedback || V091.inboxData?.feedback || [];
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Échanges internes'),
+          h('span', { className: 'v1-breadcrumb-item' }, 'Échanges internes & Contrôle'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_feedback'))
         ),
-        h('h1', { className: 'v1-page-title' }, L('nav_feedback'))
+        h('div', { className: 'v1-header-split' },
+          h('div', {},
+            h('h1', { className: 'v1-page-title' }, L('nav_feedback')),
+            h('p', { className: 'v1-page-subtitle' },
+              'Boîte de réception des retours et messages chiffrés par dossier entre auteurs, coordinateurs, comptables et direction.'
+            )
+          )
+        )
       ),
 
-      h('div', { className: 'v1-panel', style: { padding: '24px' } },
-        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '12px' } },
-          'Boîte de réception des retours et messages chiffrés par dossier'
+      /* Compose / Send Feedback Panel */
+      h('div', { className: 'v1-panel', style: { padding: '20px', marginBottom: '24px' } },
+        h('h2', { style: { fontSize: '1rem', fontWeight: '600', marginBottom: '12px' } },
+          'Rédiger une observation ou demande de correction sur un dossier'
         ),
-        h('div', { style: { display: 'flex', gap: '12px', marginBottom: '16px' } },
+        h('div', { style: { display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' } },
+          h('input', {
+            className: 'v1-input',
+            placeholder: 'Référence du dossier (ex. rec-f07-butare-01)...',
+            value: V091.selectedRecordForFeedback || '',
+            onInput: e => { V091.selectedRecordForFeedback = e.target.value; },
+            style: { width: '260px' }
+          }),
           h('select', {
             className: 'v1-select',
-            style: { maxWidth: '240px' },
+            style: { width: '260px' },
             value: V091.feedbackRecipient,
             onChange: e => { V091.feedbackRecipient = e.target.value; },
           },
-            h('option', { value: 'AUTHOR' }, 'Destinataire : Auteur'),
-            h('option', { value: 'VERIFICATION' }, 'Destinataire : Coordinateur'),
-            h('option', { value: 'FINANCE' }, 'Destinataire : Comptable'),
-            h('option', { value: 'MEL' }, 'Destinataire : Responsable MEL'),
-            h('option', { value: 'APPROVAL' }, 'Destinataire : Directeur'),
-            h('option', { value: 'ALL' }, 'Destinataire : Tout le circuit')
-          ),
-          h('input', {
-            className: 'v1-input',
-            placeholder: 'Rédiger une observation confidentielle sur ce dossier...',
+            h('option', { value: 'AUTHOR' }, 'Niveau : Auteur (Enquêteur / CPJP)'),
+            h('option', { value: 'VERIFICATION' }, 'Niveau : Coordinateur opérationnel'),
+            h('option', { value: 'FINANCE' }, 'Niveau : Responsable financier & RH'),
+            h('option', { value: 'MEL' }, 'Niveau : Responsable Suivi & Évaluation'),
+            h('option', { value: 'APPROVAL' }, 'Niveau : Directeur diocésain'),
+            h('option', { value: 'ALL' }, 'Niveau : Tout le circuit d’approbation')
+          )
+        ),
+        h('div', { style: { display: 'flex', gap: '12px' } },
+          h('textarea', {
+            className: 'v1-textarea',
+            rows: 2,
+            placeholder: 'Rédiger une observation confidentielle avec justification précise...',
             value: V091.feedbackText,
             onInput: e => { V091.feedbackText = e.target.value; },
-            style: { flex: 1 },
+            style: { flex: 1 }
           }),
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-primary',
+            style: { alignSelf: 'flex-end', height: '40px' },
             onClick: () => {
-              if (!V091.feedbackText.trim()) return;
+              if (!V091.feedbackText.trim()) {
+                V091.showToast("Veuillez saisir un texte d'observation.", 'error');
+                return;
+              }
+              const rec = V091.selectedRecordForFeedback || 'rec-f44-q1-gakoma';
               apiV1('/feedback', 'POST', {
-                record: 'rec-f44-q1-gakoma',
+                record: rec,
                 text: V091.feedbackText,
                 recipient: V091.feedbackRecipient,
               }).then(() => {
                 V091.showToast('✓ Message interne enregistré avec succès.', 'info');
                 V091.feedbackText = '';
+                V091.inboxData = null; // force reload
                 renderApp();
               }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
             },
-          }, 'Envoyer')
-        ),
-
-        /* Sample feedback message */
-        h('div', { style: { padding: '12px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--color-primary)' } },
-          h('div', { style: { display: 'flex', justifyContent: 'space-between', marginBottom: '4px' } },
-            h('strong', {}, 'Théophile Habimana (MEL) → Auteur'),
-            h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, '2026-10-26 14:30')
-          ),
-          h('p', { style: { fontSize: '0.875rem', margin: 0 } },
-            'Merci au comité CPJP Gakoma pour ce rapport Q1 très complet. Vérifiez la pièce jointe de la centrale Kizenga avant validation MEL.'
+          },
+            msIcon('send', 16),
+            h('span', {}, 'Transmettre')
           )
+        )
+      ),
+
+      /* Inbox Feedbacks List */
+      h('div', { className: 'v1-panel' },
+        h('div', { className: 'v1-chart-header' },
+          h('span', { className: 'v1-chart-title' }, 'Fils de discussion actifs sur les dossiers'),
+          h('span', { className: 'v1-badge' }, `${inboxList.length || 2} échanges récents`)
+        ),
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' } },
+          inboxList.length > 0 ? inboxList.map((f, fIdx) =>
+            h('div', { key: fIdx, style: { padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-primary)' } },
+              h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' } },
+                h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
+                  h('span', { className: 'v1-meta-code-badge' }, f.recordCode || f.record_id || 'Dossier'),
+                  h('strong', { style: { fontSize: '0.875rem' } }, `${f.actor} → ${f.recipient}`)
+                ),
+                h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, f.time ? f.time.slice(0, 16).replace('T', ' ') : 'Récent')
+              ),
+              h('p', { style: { fontSize: '0.8125rem', margin: '0 0 10px', color: 'var(--text-primary)', lineHeight: 1.4 } }, f.body?.text || f.text),
+              h('button', {
+                type: 'button',
+                className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                onClick: () => {
+                  V091.selectedRecordForFeedback = f.recordCode || f.record_id;
+                  renderApp();
+                }
+              }, 'Répondre à ce dossier')
+            )
+          ) : [
+            h('div', { key: 'sample-1', style: { padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-primary)' } },
+              h('div', { style: { display: 'flex', justifyContent: 'space-between', marginBottom: '6px' } },
+                h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
+                  h('span', { className: 'v1-meta-code-badge' }, 'rec-f44-q1-gakoma'),
+                  h('strong', { style: { fontSize: '0.875rem' } }, 'Théophile Habimana (MEL) → Auteur')
+                ),
+                h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, '2026-10-26 14:30')
+              ),
+              h('p', { style: { fontSize: '0.8125rem', margin: 0, color: 'var(--text-primary)' } },
+                'Merci au comité CPJP Gakoma pour ce rapport Q1 très complet. Vérifiez la pièce jointe de la centrale Kizenga avant validation MEL.'
+              )
+            ),
+            h('div', { key: 'sample-2', style: { padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid #1E3A2F' } },
+              h('div', { style: { display: 'flex', justifyContent: 'space-between', marginBottom: '6px' } },
+                h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
+                  h('span', { className: 'v1-meta-code-badge' }, 'rec-f07-butare-01'),
+                  h('strong', { style: { fontSize: '0.875rem' } }, 'Emmanuel Nsabimana (Coordination) → Finance')
+                ),
+                h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, '2026-10-25 10:15')
+              ),
+              h('p', { style: { fontSize: '0.8125rem', margin: 0, color: 'var(--text-primary)' } },
+                'Rapport d’atelier de médiation validé sur le fond. Paiement des indemnités de déplacement autorisé selon barème diocésain.'
+              )
+            )
+          ]
         )
       )
     );
@@ -1773,6 +2951,32 @@
      11. PROJECTS & OPERATIONS (Projets et opérations — EFF-01, EFI-01/02, FIN-01)
      -------------------------------------------------------------------------- */
   function renderProjectsOpsWorkspace() {
+    // 1. Fetch live portfolio data from backend if not cached
+    if (!V091.portfolioLoading && !V091.portfolioData) {
+      V091.portfolioLoading = true;
+      apiV1('/portfolio?start=2026-09-01&end=2031-08-31').then(d => {
+        V091.portfolioData = d;
+        V091.portfolioLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(err => {
+        V091.portfolioLoading = false;
+        V091.portfolioError = err.message;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const portfolio = V091.portfolioData || { groups: [], performance: [], projects: [], partners: [], volets: [] };
+    const perfs = portfolio.performance || [];
+    const groups = portfolio.groups || [];
+
+    // Calculate live aggregated KPIs
+    const effVal = perfs.length ? (perfs.reduce((s, p) => s + (p.effectivenessPercent || 100), 0) / perfs.length).toFixed(1) + '%' : '100.0%';
+    const efi1Val = perfs.length ? Math.round(perfs.reduce((s, p) => s + (p.costPerOutputRWF || 85833), 0) / perfs.length).toLocaleString() + ' RWF' : '85 833 RWF';
+    const efi2Val = perfs.length ? Math.round(perfs.reduce((s, p) => s + (p.plannedCostPerOutputRWF || 95833), 0) / perfs.length).toLocaleString() + ' RWF' : '95 833 RWF';
+    const totBud = groups.reduce((s, g) => s + (g.approvedBudgetRWF || 0), 0);
+    const totSpent = groups.reduce((s, g) => s + (g.spentRWF || 0), 0);
+    const finVal = totBud > 0 ? ((totSpent / totBud) * 100).toFixed(1) + '%' : '89.6%';
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
@@ -1796,28 +3000,28 @@
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-kpi-card' },
           h('span', { className: 'v1-kpi-label' }, 'EFF-01 : Efficacité des produits'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, '100.0%'),
-          h('span', { className: 'v1-kpi-sub' }, '48 réalisés / 48 prévus')
+          h('span', { className: 'v1-kpi-val v1-tabular' }, effVal),
+          h('span', { className: 'v1-kpi-sub' }, `${perfs.length ? perfs.length : 48} outputs validés`)
         ),
         h('div', { className: 'v1-kpi-card' },
           h('span', { className: 'v1-kpi-label' }, 'EFI-01 : Coût réel par produit'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, '85 833 RWF'),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, efi1Val),
           h('span', { className: 'v1-kpi-sub' }, 'Dépenses F19 / Outputs F07')
         ),
         h('div', { className: 'v1-kpi-card' },
           h('span', { className: 'v1-kpi-label' }, 'EFI-02 : Coût unitaire prévu'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, '95 833 RWF'),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, efi2Val),
           h('span', { className: 'v1-kpi-sub' }, 'Budget prévu F03 / Cible F03')
         ),
         h('div', { className: 'v1-kpi-card' },
           h('span', { className: 'v1-kpi-label' }, 'FIN-01 : Exécution budgétaire'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, '89.6%'),
-          h('span', { className: 'v1-kpi-sub' }, '4 120 000 / 4 600 000 RWF')
+          h('span', { className: 'v1-kpi-val v1-tabular' }, finVal),
+          h('span', { className: 'v1-kpi-sub' }, `${totSpent.toLocaleString()} / ${totBud ? totBud.toLocaleString() : '4 600 000'} RWF`)
         )
       ),
 
-      /* Portfolio table */
-      h('div', { className: 'v1-panel' },
+      /* Group Summary Table */
+      h('div', { className: 'v1-panel', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-chart-header' },
           h('span', { className: 'v1-chart-title' }, 'Portefeuille consolidé par type de travail'),
           h('span', { className: 'v1-badge' }, 'Données approuvées')
@@ -1825,34 +3029,87 @@
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Classification'),
-              h('th', {}, 'Projet / Réf'),
-              h('th', {}, 'Partenaires'),
+              h('th', {}, 'Projet / Operational'),
               h('th', {}, 'Plans approuvés'),
+              h('th', {}, 'Activités approuvées'),
               h('th', {}, 'Budget approuvé'),
               h('th', {}, 'Dépenses réelles'),
-              h('th', {}, 'Exécution FIN-01')
+              h('th', {}, 'Partenaires'),
+              h('th', {}, 'Volets CPJP')
             )
           ),
           h('tbody', {},
+            groups.length > 0 ? groups.map((g, gIdx) =>
+              h('tr', { key: gIdx },
+                h('td', {}, h('strong', {}, g.project || 'OPERATIONAL')),
+                h('td', {}, String(g.approvedPlans || 0)),
+                h('td', {}, String(g.approvedActivities || 0)),
+                h('td', {}, Number(g.approvedBudgetRWF || 0).toLocaleString() + ' RWF'),
+                h('td', {}, Number(g.spentRWF || 0).toLocaleString() + ' RWF'),
+                h('td', {}, (g.partners || []).join(', ') || 'Diocèse'),
+                h('td', {}, Object.entries(g.volets || {}).map(([k, v]) => `${k}: ${v}`).join('; ') || 'Tous volets')
+              )
+            ) : [
+              h('tr', { key: 'group-1' },
+                h('td', {}, h('strong', {}, 'PRJ-ISANAMITIMA')),
+                h('td', {}, '1'),
+                h('td', {}, '4'),
+                h('td', {}, '18 500 000 RWF'),
+                h('td', {}, '4 120 000 RWF'),
+                h('td', {}, 'MISEREOR, CARITAS'),
+                h('td', {}, 'Volet 1 (CEA) : 12; Volet 2 (Médiation) : 8')
+              ),
+              h('tr', { key: 'group-2' },
+                h('td', {}, h('strong', {}, 'PLAN-2026-CPJP-GAKOMA')),
+                h('td', {}, '1'),
+                h('td', {}, '1'),
+                h('td', {}, '3 200 000 RWF'),
+                h('td', {}, '800 000 RWF'),
+                h('td', {}, 'DIOCESE_BUTARE'),
+                h('td', {}, 'Volet 3 (Parajuriste) : 6; Volet 4 (Jeunes) : 4')
+              )
+            ]
+          )
+        )
+      ),
+
+      /* Performance Indicator Table */
+      h('div', { className: 'v1-panel' },
+        h('div', { className: 'v1-chart-header' },
+          h('span', { className: 'v1-chart-title' }, 'Indicateurs de performance détaillée par dossier (RBM)'),
+          h('span', { className: 'v1-badge' }, 'Norme RBM V8')
+        ),
+        h('table', { className: 'v1-data-table' },
+          h('thead', {},
             h('tr', {},
-              h('td', {}, h('span', { className: 'v1-chip' }, 'PROJECT')),
-              h('td', {}, 'PRJ-ISANAMITIMA'),
-              h('td', {}, 'MISEREOR, CARITAS'),
-              h('td', {}, '1'),
-              h('td', {}, '18 500 000 RWF'),
-              h('td', {}, '4 120 000 RWF'),
-              h('td', {}, h('strong', {}, '89.6% (Q1)'))
-            ),
-            h('tr', {},
-              h('td', {}, h('span', { className: 'v1-chip' }, 'OPERATIONAL')),
-              h('td', {}, 'PLAN-2026-CPJP-GAKOMA'),
-              h('td', {}, 'DIOCESE_BUTARE'),
-              h('td', {}, '1'),
-              h('td', {}, '3 200 000 RWF'),
-              h('td', {}, '800 000 RWF'),
-              h('td', {}, h('strong', {}, '100.0% (Q1)'))
+              h('th', {}, 'Dossier Plan'),
+              h('th', {}, 'Code Indicateur'),
+              h('th', {}, 'EFF-01 Atteinte %'),
+              h('th', {}, 'EFI-01 Coût réel'),
+              h('th', {}, 'EFI-02 Coût prévu'),
+              h('th', {}, 'FIN-01 Exécution %')
             )
+          ),
+          h('tbody', {},
+            perfs.length > 0 ? perfs.map((p, pIdx) =>
+              h('tr', { key: pIdx },
+                h('td', {}, h('strong', {}, p.record)),
+                h('td', {}, p.indicator),
+                h('td', {}, p.effectivenessPercent != null ? p.effectivenessPercent.toFixed(1) + '%' : 'N/A'),
+                h('td', {}, p.costPerOutputRWF != null ? Math.round(p.costPerOutputRWF).toLocaleString() + ' RWF' : 'N/A'),
+                h('td', {}, p.plannedCostPerOutputRWF != null ? Math.round(p.plannedCostPerOutputRWF).toLocaleString() + ' RWF' : 'N/A'),
+                h('td', {}, p.budgetExecutionPercent != null ? p.budgetExecutionPercent.toFixed(1) + '%' : 'N/A')
+              )
+            ) : [
+              h('tr', { key: 'perf-1' },
+                h('td', {}, h('strong', {}, 'rec-f03-ap1-001')),
+                h('td', {}, 'KPI-A1-R1'),
+                h('td', {}, '100.0%'),
+                h('td', {}, '85 833 RWF'),
+                h('td', {}, '95 833 RWF'),
+                h('td', {}, '89.6%')
+              )
+            ]
           )
         )
       )
@@ -1863,6 +3120,22 @@
      12. EVALUATION OF STAFF ACHIEVEMENTS (Évaluation des réalisations F05/F43/F04/F03)
      -------------------------------------------------------------------------- */
   function renderStaffEvalWorkspace() {
+    // 1. Fetch live staff assignments performance
+    if (!V091.staffEvalLoading && (!V091.staffEvalData || V091.staffEvalData._level !== V091.staffEvalLevel)) {
+      V091.staffEvalLoading = true;
+      apiV1(`/staff-performance?level=${V091.staffEvalLevel}`).then(d => {
+        d._level = V091.staffEvalLevel;
+        V091.staffEvalData = d;
+        V091.staffEvalLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(err => {
+        V091.staffEvalLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const assignments = V091.staffEvalData?.assignments || [];
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
@@ -1892,6 +3165,7 @@
         ].map(([lvl, lbl]) =>
           h('button', {
             type: 'button',
+            key: lvl,
             className: 'v1-seg-btn' + (V091.staffEvalLevel === lvl ? ' active' : ''),
             onClick: () => { V091.staffEvalLevel = lvl; renderApp(); },
           }, lbl)
@@ -1900,31 +3174,61 @@
 
       /* Performance matrix table */
       h('div', { className: 'v1-panel' },
+        h('div', { className: 'v1-chart-header' },
+          h('span', { className: 'v1-chart-title' }, `Assignations et Réalisations (${V091.staffEvalLevel})`),
+          h('span', { className: 'v1-badge' }, `${assignments.length} assignation${assignments.length > 1 ? 's' : ''}`)
+        ),
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Assignation'),
-              h('th', {}, 'Agent responsable'),
+              h('th', {}, 'Responsable (Poste)'),
+              h('th', {}, 'Axe / AP'),
               h('th', {}, 'Activité assignée'),
               h('th', {}, 'Échéance'),
-              h('th', {}, 'Cible prévue'),
-              h('th', {}, 'Outputs réalisés'),
-              h('th', {}, 'Taux d’atteinte %'),
-              h('th', {}, 'Preuves vérifiées')
+              h('th', {}, 'Rapports approuvés'),
+              h('th', {}, 'Preuves vérifiées'),
+              h('th', {}, 'Taux d’atteinte EFF-01')
             )
           ),
           h('tbody', {},
-            h('tr', {},
-              h('td', {}, h('strong', {}, 'rec-f05-w42')),
-              h('td', {}, 'Théophile Habimana (MEL)'),
-              h('td', {}, 'Supervision des groupes Isanamitima à Ste Thérèse'),
-              h('td', {}, '2026-10-18'),
-              h('td', {}, '48'),
-              h('td', {}, '48'),
-              h('td', {}, h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, '100.0%')),
-              h('td', {}, '1 / 1 (100%)')
-            )
+            assignments.length > 0 ? assignments.map((a, aIdx) =>
+              h('tr', { key: aIdx },
+                h('td', {}, h('strong', {}, a.owner)),
+                h('td', {}, [a.axis, a.ap].filter(Boolean).join(' / ') || 'A1 / AP1'),
+                h('td', {}, a.title || 'Activité planifiée'),
+                h('td', {}, a.deadline || '—'),
+                h('td', {}, String(a.approvedReports || 0)),
+                h('td', {}, String(a.evidenceReports || 0)),
+                h('td', {},
+                  h('span', { className: 'v1-badge', style: (a.achievementPercent || 0) >= 90 ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' } : {} },
+                    a.achievementPercent != null ? a.achievementPercent.toFixed(1) + '%' : 'Indisponible'
+                  )
+                )
+              )
+            ) : [
+              h('tr', { key: 'staff-1' },
+                h('td', {}, h('strong', {}, 'Théophile Habimana (MEL)')),
+                h('td', {}, 'A1 / AP1'),
+                h('td', {}, 'Supervision des groupes Isanamitima à Ste Thérèse'),
+                h('td', {}, '2026-10-18'),
+                h('td', {}, '1'),
+                h('td', {}, '1'),
+                h('td', {}, h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, '100.0%'))
+              ),
+              h('tr', { key: 'staff-2' },
+                h('td', {}, h('strong', {}, 'Emmanuel Nsabimana (Coordination)')),
+                h('td', {}, 'A2 / AP1'),
+                h('td', {}, 'Formation des comités de médiation paroissiaux'),
+                h('td', {}, '2026-11-15'),
+                h('td', {}, '1'),
+                h('td', {}, '1'),
+                h('td', {}, h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, '100.0%'))
+              )
+            ]
           )
+        ),
+        h('p', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', padding: '12px 16px', margin: 0, borderTop: '1px solid var(--border-subtle)' } },
+          'Règle institutionnelle : Un seul niveau de planification ; rapports approuvés uniquement. Une donnée absente ne vaut pas zéro.'
         )
       )
     );
@@ -2510,12 +3814,28 @@
      16. ASSISTANT & CONTROLS (Assistant et contrôles qualité)
      -------------------------------------------------------------------------- */
   function renderAssistantWorkspace() {
+    // 1. Fetch assistant status
+    if (!V091.assistantStatusLoading && !V091.assistantStatus) {
+      V091.assistantStatusLoading = true;
+      apiV1('/assistant/status').then(st => {
+        V091.assistantStatus = st;
+        V091.assistantStatusLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(() => {
+        V091.assistantStatus = { configured: false };
+        V091.assistantStatusLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const isAiConfigured = V091.assistantStatus?.configured;
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Assurance Qualité'),
+          h('span', { className: 'v1-breadcrumb-item' }, 'Assurance Qualité & Rédaction'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_assistant'))
         ),
@@ -2527,6 +3847,59 @@
             )
           ),
           h('div', { className: 'v1-header-actions' },
+            h('span', { className: 'v1-badge', style: isAiConfigured ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' } : {} },
+              isAiConfigured ? 'IA Locale Active' : 'Contrôles Déterministes Actifs'
+            )
+          )
+        )
+      ),
+
+      /* Security & Privacy Notice */
+      h('div', { className: 'v1-panel', style: { padding: '12px 16px', marginBottom: '20px', background: 'var(--bg-canvas)', borderLeft: '4px solid var(--color-primary)' } },
+        h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 } },
+          'Confidentialité stricte : Les données sensibles et identifiants de personnes protégées ne sont jamais transmis au modèle d’assistance. Toute suggestion doit faire l’objet d’une relecture humaine avant application.'
+        )
+      ),
+
+      /* Controls Checklist Panel */
+      h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
+        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, 'Contrôles de cohérence & conformité V8'),
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
+          (V091.assistantResults?.checks || [
+            { code: 'REQUIRED_FIELDS', status: 'PASS', title: 'Champs obligatoires du formulaire', detail: 'Vérification de la présence de tous les champs obligatoires selon le catalogue.' },
+            { code: 'PASTORAL_CALENDAR', status: 'PASS', title: 'Calendrier pastoral PS 2026–2031 (AP1–AP5)', detail: 'Vérification des bornes de dates 1 Sept 2026 à 31 Août 2031.' },
+            { code: 'V8_SENSITIVITY_DNH_CNV', status: 'PASS', title: 'Standard V8 : Noms collégiaux & Sensibilité CNV/DNH/Trauma', detail: 'Présence des binômes (2 noms) ou comité (7 noms) et cases Do No Harm / CNV cochées.' },
+            { code: 'GENDER_DISABILITY_MATH', status: 'PASS', title: 'Désagrégation Genre & Handicap', detail: 'Total = Femmes + Hommes + Non déclaré, Handicap <= Total.' },
+            { code: 'PRIVACY_PROTECTION', status: 'PASS', title: 'Protection des données sensibles', detail: 'Aucun identifiant privé de victime dans les fiches partagées.' },
+          ]).map((c, cIdx) =>
+            h('div', { key: cIdx, style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)' } },
+              msIcon(c.status === 'PASS' ? 'check_circle' : 'warning', 20),
+              h('div', {},
+                h('strong', { style: { fontSize: '0.875rem' } }, c.title),
+                h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } }, c.detail)
+              )
+            )
+          )
+        )
+      ),
+
+      /* Writing Assistant Box with Task Selector */
+      h('div', { className: 'v1-panel', style: { padding: '24px' } },
+        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' } },
+          h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', margin: 0 } }, 'Outils d’assistance rédactionnelle'),
+          h('div', { style: { display: 'flex', gap: '10px' } },
+            h('select', {
+              className: 'v1-select',
+              value: V091.assistantTask,
+              onChange: e => { V091.assistantTask = e.target.value; renderApp(); }
+            },
+              h('option', { value: 'controls' }, 'Contrôle structurel du dossier'),
+              h('option', { value: 'grammar' }, 'Correction grammaire & style'),
+              h('option', { value: 'translate' }, 'Traduction multilingue (FR/RW/EN/SW)'),
+              h('option', { value: 'summarise' }, 'Synthèse exécutive & Résumé'),
+              h('option', { value: 'planning' }, 'Cohérence avec le Plan Stratégique'),
+              h('option', { value: 'report' }, 'Structuration de rapport d’activité')
+            ),
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-primary',
@@ -2540,52 +3913,38 @@
                 }).then(res => {
                   V091.assistantResults = res;
                   renderApp();
-                }).catch(err => V091.showToast('Erreur contrôles : ' + err.message, 'error'));
-              },
+                }).catch(err => V091.showToast('Erreur assistant : ' + err.message, 'error'));
+              }
             },
-              msIcon('fact_check', 18),
-              h('span', {}, 'Lancer les contrôles qualité')
+              msIcon('psychology', 18),
+              h('span', {}, 'Analyser & Proposer')
             )
           )
-        )
-      ),
-
-      /* Controls Checklist Panel */
-      h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
-        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, 'Contrôles de cohérence & conformité V8'),
-        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
-          (V091.assistantResults?.checks || [
-            { code: 'REQUIRED_FIELDS', status: 'PASS', title: 'Champs obligatoires du formulaire', detail: 'Vérification de la présence de tous les champs obligatoires.' },
-            { code: 'PASTORAL_CALENDAR', status: 'PASS', title: 'Calendrier pastoral PS 2026–2031 (AP1–AP5)', detail: 'Vérification des bornes de dates 1 Sept 2026 à 31 Août 2031.' },
-            { code: 'V8_SENSITIVITY_DNH_CNV', status: 'PASS', title: 'Standard V8 : Noms collégiaux & Sensibilité CNV/DNH/Trauma', detail: 'Présence des binômes (2 noms) ou comité (7 noms) et cases Do No Harm / CNV cochées.' },
-            { code: 'GENDER_DISABILITY_MATH', status: 'PASS', title: 'Désagrégation Genre & Handicap', detail: 'Total = Femmes + Hommes + Non déclaré, Handicap <= Total.' },
-            { code: 'PRIVACY_PROTECTION', status: 'PASS', title: 'Protection des données sensibles', detail: 'Aucun identifiant privé de victime dans les fiches partagées.' },
-          ]).map(c =>
-            h('div', { style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)' } },
-              msIcon(c.status === 'PASS' ? 'check_circle' : 'warning', 20),
-              h('div', {},
-                h('strong', { style: { fontSize: '0.875rem' } }, c.title),
-                h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } }, c.detail)
-              )
-            )
-          )
-        )
-      ),
-
-      /* Writing Assistant Box */
-      h('div', { className: 'v1-panel', style: { padding: '24px' } },
-        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '12px' } }, 'Assistant de rédaction & Traduction'),
+        ),
         h('textarea', {
           className: 'v1-textarea',
           rows: 4,
-          placeholder: 'Collez ici votre texte pour vérification de grammaire, clarté ou traduction...',
+          placeholder: "Collez ici votre texte pour vérification de grammaire, clarté, traduction ou analyse d'alignement...",
           value: V091.assistantText,
           onInput: e => { V091.assistantText = e.target.value; },
-          style: { marginBottom: '12px' },
+          style: { marginBottom: '14px' },
         }),
-        V091.assistantResults?.suggestion ? h('div', { style: { padding: '12px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)' } },
-          h('strong', {}, 'Suggestion proposée (nécessite validation humaine) :'),
-          h('p', { style: { margin: '8px 0 0', fontStyle: 'italic' } }, V091.assistantResults.suggestion.proposed_text)
+        V091.assistantResults?.suggestion ? h('div', { style: { padding: '16px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-success)' } },
+          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
+            h('strong', { style: { color: 'var(--color-success)' } }, '✓ Proposition générée (Relecture requise) :'),
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-sm v1-btn-primary',
+              onClick: () => {
+                V091.assistantText = V091.assistantResults.suggestion.proposed_text || V091.assistantResults.suggestion;
+                V091.showToast('✓ Proposition appliquée au texte.', 'info');
+                renderApp();
+              }
+            }, 'Appliquer après relecture')
+          ),
+          h('p', { style: { margin: 0, fontSize: '0.875rem', lineHeight: 1.5, color: 'var(--text-primary)' } },
+            V091.assistantResults.suggestion.proposed_text || JSON.stringify(V091.assistantResults.suggestion)
+          )
         ) : null
       )
     );
@@ -2595,34 +3954,68 @@
      17. CONTACTS (Contacts & Annuaires du personnel)
      -------------------------------------------------------------------------- */
   function renderContactsWorkspace() {
+    // 1. Fetch live contacts & structure data
+    if (!V091.contactsLoading && !V091.contactsData) {
+      V091.contactsLoading = true;
+      apiV1('/contacts').then(d => {
+        V091.contactsData = d;
+        V091.contactsLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(err => {
+        V091.contactsLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const contactsList = V091.contactsData?.contacts || [
+      { name: 'Abbé Janvier Nduwayezu', role: 'Directeur CDJP Butare', phone: '+250 788 301 101', email: 'direction.cdjp@diocesebutare.org.rw', office: 'Siège CDJP Cathédrale Huye' },
+      { name: 'Emmanuel Nsabimana', role: 'Coordinateur CDJP', phone: '+250 788 302 202', email: 'coordination.cdjp@diocesebutare.org.rw', office: 'Bureau Coordination Huye' },
+      { name: 'Théophile Habimana', role: 'Chargé APSE MEL & Communication', phone: '+250 788 303 303', email: 'mel.cdjp@diocesebutare.org.rw', office: 'Unité MEL & Communication' },
+      { name: 'Marceline Mukandayisenga', role: 'Comptable / Finance & RH', phone: '+250 788 304 404', email: 'finance.cdjp@diocesebutare.org.rw', office: 'Comptabilité & RH' },
+      { name: 'Ruth Kamanzi', role: 'Assistante Technique / Coopération', phone: '+250 788 305 505', email: 'cooperation.cdjp@diocesebutare.org.rw', office: 'Appui Technique & Partenariats' },
+      { name: 'Emmanuel Uwimana', role: 'Chauffeur & Logistique terrain', phone: '+250 788 306 606', email: 'logistique.cdjp@diocesebutare.org.rw', office: 'Charroi & Logistique missions' },
+    ];
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Annuaire'),
+          h('span', { className: 'v1-breadcrumb-item' }, 'Annuaire Institutionnel'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_contacts'))
         ),
-        h('h1', { className: 'v1-page-title' }, L('nav_contacts'))
+        h('div', { className: 'v1-header-split' },
+          h('div', {},
+            h('h1', { className: 'v1-page-title' }, L('nav_contacts')),
+            h('p', { className: 'v1-page-subtitle' },
+              'Annuaire officiel du personnel diocésain CDJP et coordonnées des canaux de communication d’urgence.'
+            )
+          )
+        )
       ),
 
+      /* Contacts Cards Grid */
       h('div', { className: 'v1-grid-16' },
-        [
-          { name: 'Abbé Janvier Nduwayezu', role: 'Directeur CDJP', phone: '+250 788 301 101', email: 'direction.cdjp@diocesebutare.org.rw', office: 'Siège CDJP Cathédrale Huye' },
-          { name: 'Emmanuel Nsabimana', role: 'Coordinateur CDJP', phone: '+250 788 302 202', email: 'coordination.cdjp@diocesebutare.org.rw', office: 'Bureau Coordination Huye' },
-          { name: 'Théophile Habimana', role: 'Chargé APSE MEL & Communication', phone: '+250 788 303 303', email: 'mel.cdjp@diocesebutare.org.rw', office: 'Unité MEL & Communication' },
-          { name: 'Marceline Mukandayisenga', role: 'Comptable / Finance & RH', phone: '+250 788 304 404', email: 'finance.cdjp@diocesebutare.org.rw', office: 'Comptabilité & RH' },
-          { name: 'Ruth Kamanzi', role: 'Assistante Technique / Coopération', phone: '+250 788 305 505', email: 'cooperation.cdjp@diocesebutare.org.rw', office: 'Appui Technique & Partenariats' },
-          { name: 'Emmanuel Uwimana', role: 'Chauffeur & Logistique terrain', phone: '+250 788 306 606', email: 'logistique.cdjp@diocesebutare.org.rw', office: 'Charroi & Logistique missions' },
-        ].map(c =>
-          h('div', { className: 'v1-panel', style: { gridColumn: 'span 8', padding: '20px' } },
-            h('strong', { style: { fontSize: '1rem', display: 'block' } }, c.name),
-            h('span', { className: 'v1-badge', style: { marginTop: '4px', marginBottom: '12px' } }, c.role),
-            h('div', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '4px' } },
-              h('div', {}, `📞 Téléphone : ${c.phone}`),
-              h('div', {}, `✉️ Email : ${c.email}`),
-              h('div', {}, `📍 Bureau : ${c.office}`)
+        contactsList.map((c, cIdx) =>
+          h('div', { key: cIdx, className: 'v1-panel v1-card-interactive', style: { gridColumn: 'span 8', padding: '20px' } },
+            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' } },
+              h('div', {},
+                h('strong', { style: { fontSize: '1.0625rem', color: 'var(--text-primary)', display: 'block' } }, c.name || c.fullname),
+                h('span', { className: 'v1-badge', style: { marginTop: '4px', marginBottom: '12px' } }, c.role || c.position || 'Poste institutionnel')
+              ),
+              msIcon('contacts', 24)
+            ),
+            h('div', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '6px' } },
+              h('div', {},
+                h('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('phone', 14), h('strong', {}, 'Téléphone : ')),
+                h('a', { href: `tel:${c.phone}`, style: { color: 'var(--color-primary)', textDecoration: 'none' } }, c.phone || 'Non renseigné')
+              ),
+              h('div', {},
+                h('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('mail', 14), h('strong', {}, 'Email : ')),
+                h('a', { href: `mailto:${c.email}`, style: { color: 'var(--color-primary)', textDecoration: 'none' } }, c.email || 'Non renseigné')
+              ),
+              c.office ? h('div', { style: { display: 'flex', alignItems: 'center', gap: '6px' } }, msIcon('place', 14), h('strong', {}, 'Bureau : '), c.office) : null
             )
           )
         )
@@ -2634,38 +4027,72 @@
      18. DATA STRUCTURE & FLOW (Structure et flux des données)
      -------------------------------------------------------------------------- */
   function renderDataStructureWorkspace() {
+    // 1. Fetch live structure
+    if (!V091.contactsLoading && !V091.contactsData) {
+      V091.contactsLoading = true;
+      apiV1('/contacts').then(d => {
+        V091.contactsData = d;
+        V091.contactsLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(err => {
+        V091.contactsLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const struct = V091.contactsData || {};
+    const flowSteps = struct.data_flow_steps || [
+      { step: 1, label: '1. Collecte terrain (CEB & Centrale CCJP)', detail: 'Saisie ou fiche manuelle avec référence (origin_ceb, manual_source_ref, manual_source_date) en binôme (2 noms).' },
+      { step: 2, label: '2. Revue collégiale Paroisse (Comité CPJP)', detail: 'Vérification par le comité CPJP (6 membres + Aumônier = 7 noms) et transmission au système CDJP.' },
+      { step: 3, label: '3. Validation méthodologique (CDJP MEL)', detail: 'Contrôle de complétude, désagrégation genre/âge/handicap, conformité DNH/CNV et pièces justificatives.' },
+      { step: 4, label: '4. Vérification opérationnelle (Coordinateur CDJP)', detail: 'Vérification indépendante de la cohérence avec le plan annuel/trimestriel/mensuel/hebdomadaire.' },
+      { step: 5, label: '5. Approbation finale (Directeur CDJP)', detail: 'Approbation finale indépendante. Seules les données approuvées alimentent les rapports R01–R13 et le tableau de bord PS.' },
+    ];
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Architecture institutionnelle'),
+          h('span', { className: 'v1-breadcrumb-item' }, 'Architecture Institutionnelle'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_data_structure'))
         ),
-        h('h1', { className: 'v1-page-title' }, L('nav_data_structure'))
-      ),
-
-      h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
-        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '12px' } }, 'Circuit de remontée et de validation des données'),
-        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
-          [
-            ['1. CEB (Communauté de Base)', 'Collecte terrain à la source (origin_ceb) avec référence du document manuel.'],
-            ['2. Centrale (CCJP - 101 Centrales)', 'Consolidation au niveau de la Centrale et binôme de préparateurs (2 noms).'],
-            ['3. Paroisse (CPJP - 27 Paroisses)', 'Revue collégiale par le comité paroissial (6 membres + Aumônier = 7 noms).'],
-            ['4. Validation MEL (CDJP)', 'Validation méthodologique, contrôle de cohérence et désagrégation.'],
-            ['5. Vérification Coordinateur & Approbation Directeur', 'Contrôle opérationnel indépendant et approbation finale institutionnelle.'],
-          ].map(([step, desc]) =>
-            h('div', { style: { display: 'flex', gap: '12px', padding: '12px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)' } },
-              h('strong', { style: { minWidth: '260px' } }, step),
-              h('span', { style: { color: 'var(--text-secondary)', fontSize: '0.875rem' } }, desc)
+        h('div', { className: 'v1-header-split' },
+          h('div', {},
+            h('h1', { className: 'v1-page-title' }, L('nav_data_structure')),
+            h('p', { className: 'v1-page-subtitle' },
+              `Architecture à 27 Paroisses (CPJP), 101 Centrales (CCJP), plus de 540 CEB et circuit à 5 étapes de validation.`
             )
           )
         )
       ),
 
-      /* Exports & Data Transfer Links */
-      renderExportsWorkspace()
+      /* Rules of Governance Banner */
+      h('div', { className: 'v1-panel', style: { padding: '16px 20px', marginBottom: '24px', background: 'var(--bg-canvas)', borderLeft: '4px solid var(--color-primary)' } },
+        h('strong', { style: { fontSize: '0.9375rem', display: 'block', marginBottom: '6px' } }, 'Règles de gouvernance & Lignes institutionnelles :'),
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
+          h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Trait plein (solid line) = Hiérarchie d’autorité : '), 'Responsabilité de ligne directe avec autorité d’approbation et de signature légale.'),
+          h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Pointillés (dashed line) = Collaboration technique : '), 'Appui méthodologique et partenarial ; ne confère pas de droit d’approbation institutionnelle.'),
+          h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Collecte manuelle décentralisée : '), 'CEB → Centrale si nécessaire → Paroisse CPJP : collecte sur papier/registre. La CPJP saisit ensuite numériquement dans APSE.')
+        )
+      ),
+
+      /* 5 Data Flow Steps */
+      h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
+        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, 'Circuit officiel de remontée et de validation des données'),
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px' } },
+          flowSteps.map((s, idx) =>
+            h('div', { key: idx, style: { display: 'flex', gap: '14px', padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', alignItems: 'flex-start' } },
+              h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700', padding: '4px 10px', fontSize: '0.8125rem' } }, `Étape ${s.step || idx + 1}`),
+              h('div', {},
+                h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)', display: 'block', marginBottom: '4px' } }, s.label),
+                h('span', { style: { color: 'var(--text-secondary)', fontSize: '0.8125rem', lineHeight: 1.4 } }, s.detail)
+              )
+            )
+          )
+        )
+      )
     );
   }
 
@@ -2903,6 +4330,7 @@
   }
 
   // Export views to root
+  root.V091 = V091;
   root.V091Views = {
     renderMySpaceWorkspace,
     renderSeizureWorkspace,

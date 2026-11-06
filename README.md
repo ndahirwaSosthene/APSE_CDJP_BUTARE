@@ -47,3 +47,10 @@ APSE_CDJP_Butare/
    - Mobile / Tablet on same Wi-Fi: `http://<your-lan-ip>:8765/`
 4. **Web GUI Login & Role Switcher**:
    - Click **Account / Role** in the top bar to sign in via the Web GUI (`mel_admin`, `coord_diocese`, `cpjp_gakoma`, `cpjp_save`, `cpjp_butare`, `cpjp_kibeho`, `ccjp_field`, `ceb_animator` — default demo password: `apse2026`), or use the one-click Role/Parish Persona Switcher.
+
+## Online Deployment (Render.com)
+
+APSE v2 is cloud-ready and can be deployed in minutes on Render:
+- **Render Blueprint**: Connect the repository to automatically deploy via [`render.yaml`](render.yaml).
+- **Docker Support**: Uses the root [`Dockerfile`](Dockerfile) for reproducible containerized deployments.
+- **Full Instructions**: See [`DEPLOYMENT_RENDER.md`](DEPLOYMENT_RENDER.md) for step-by-step setup, free vs persistent disk strategies, and environment variable details.
