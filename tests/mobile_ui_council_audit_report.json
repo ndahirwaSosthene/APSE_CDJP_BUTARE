@@ -1,0 +1,454 @@
+{
+  "seizure_360": {
+    "clusterRailFound": true,
+    "clusterChipsCount": 8,
+    "formSelectFound": true,
+    "formOptionsCount": 45,
+    "badgeRailFound": true,
+    "badgesCount": 45,
+    "formListHidden": true,
+    "navWidth": 328,
+    "contentWidth": 328,
+    "contentNarrowSquished": false,
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "hasHorizontalOverflow": false
+  },
+  "seizure_390": {
+    "scrollWidth": 390,
+    "innerWidth": 390,
+    "hasHorizontalOverflow": false,
+    "contentWidth": 358
+  },
+  "wizard_step1_volets": {
+    "wizardOpened": true,
+    "step": 1,
+    "voletChipsCount": 5,
+    "voletChips": [
+      {
+        "text": "Paralegals (Parajuristes)",
+        "iconName": "gavel",
+        "hasSvg": true,
+        "width": 177.15625,
+        "height": 38,
+        "tapTargetComfortable": true
+      },
+      {
+        "text": "Mediators (Abahuza)",
+        "iconName": "handshake",
+        "hasSvg": true,
+        "width": 180.625,
+        "height": 38,
+        "tapTargetComfortable": true
+      },
+      {
+        "text": "Psychosocial Companions (Abahumurizamitima)",
+        "iconName": "psychology",
+        "hasSvg": true,
+        "width": 296,
+        "height": 48,
+        "tapTargetComfortable": true
+      },
+      {
+        "text": "Healing & Reconciliation (Isanamitima)",
+        "iconName": "healing",
+        "hasSvg": true,
+        "width": 258.390625,
+        "height": 38,
+        "tapTargetComfortable": true
+      },
+      {
+        "text": "General Centrale / CEB Field Work",
+        "iconName": "groups",
+        "hasSvg": true,
+        "width": 232.640625,
+        "height": 38,
+        "tapTargetComfortable": true
+      }
+    ],
+    "step1InputsComfortable": false,
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "hasOverflow": false
+  },
+  "volets_multilingual": {
+    "rw": [
+      "Abafasha mu by'amategeko",
+      "Abahuza",
+      "Abahumurizamitima",
+      "Abafashamyumvire mu isanamitima",
+      "Ibikorwa rusange bya Santarali / CEB"
+    ],
+    "fr": [
+      "Parajuristes",
+      "M\u00e9diateurs",
+      "Abahumurizamitima (accompagnement psychosocial)",
+      "Abafashamyumvire mu isanamitima",
+      "Terrain g\u00e9n\u00e9ral (Centrale / CEB)"
+    ],
+    "en": [
+      "Paralegals (Parajuristes)",
+      "Mediators (Abahuza)",
+      "Psychosocial Companions (Abahumurizamitima)",
+      "Healing & Reconciliation (Isanamitima)",
+      "General Centrale / CEB Field Work"
+    ],
+    "sw": [
+      "Wasaidizi wa Kisheria",
+      "Wapatanishi",
+      "Wafariji wa Kisaikolojia",
+      "Wawezeshaji wa Uponyaji",
+      "Kazi ya Jumla ya Kigango / CEB"
+    ]
+  },
+  "wizard_steps_2_4": {
+    "step2": {
+      "scrollWidth": 360,
+      "innerWidth": 360,
+      "stepBtnsAll44": true,
+      "stepInputsAll44": true
+    },
+    "step3": {
+      "scrollWidth": 360,
+      "innerWidth": 360,
+      "hasIssueFields": true
+    },
+    "step4": {
+      "scrollWidth": 360,
+      "innerWidth": 360,
+      "hasSummary": true
+    }
+  },
+  "create_form_360": {
+    "circleDetails": {
+      ".gf-scale-circle": [
+        {
+          "tag": "SPAN",
+          "width": 30,
+          "height": 30,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "SPAN",
+          "width": 30,
+          "height": 30,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "SPAN",
+          "width": 30,
+          "height": 30,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "SPAN",
+          "width": 30,
+          "height": 30,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "SPAN",
+          "width": 30,
+          "height": 30,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        }
+      ],
+      ".gf-bullet-radio": [
+        {
+          "tag": "DIV",
+          "width": 16,
+          "height": 16,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "DIV",
+          "width": 16,
+          "height": 16,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "DIV",
+          "width": 16,
+          "height": 16,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "DIV",
+          "width": 16,
+          "height": 16,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        }
+      ],
+      ".gf-icon-action-btn": [
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        },
+        {
+          "tag": "BUTTON",
+          "width": 32,
+          "height": 32,
+          "ratio": 1,
+          "aspectRatioCSS": "1 / 1",
+          "borderRadiusCSS": "50%",
+          "isPerfectCircle": true,
+          "isNeverOval": true
+        }
+      ],
+      ".gf-step-chip-num": [],
+      ".v1-modal-close": []
+    },
+    "allCircles1to1": true,
+    "titleInputs": [
+      {
+        "className": "gf-form-title-input",
+        "width": 298,
+        "parentWidth": 324,
+        "fitsWithoutClipping": true
+      },
+      {
+        "className": "gf-q-title-input",
+        "width": 298,
+        "parentWidth": 298,
+        "fitsWithoutClipping": true
+      },
+      {
+        "className": "gf-q-title-input",
+        "width": 298,
+        "parentWidth": 298,
+        "fitsWithoutClipping": true
+      },
+      {
+        "className": "gf-q-title-input",
+        "width": 298,
+        "parentWidth": 298,
+        "fitsWithoutClipping": true
+      },
+      {
+        "className": "gf-q-title-input",
+        "width": 298,
+        "parentWidth": 298,
+        "fitsWithoutClipping": true
+      }
+    ],
+    "titleInputsResponsive": true,
+    "toolbarFound": true,
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "hasOverflow": false
+  },
+  "preview_modal_360": {
+    "modalOpen": true,
+    "closeFound": true,
+    "closeWidth": 34.55999755859375,
+    "closeHeight": 34.55999755859375,
+    "closeIsCircle": true,
+    "closeAspectRatioCSS": "1 / 1",
+    "previewCardsCount": 4,
+    "scrollWidth": 360,
+    "innerWidth": 360,
+    "hasOverflow": false
+  },
+  "core_workspaces": {
+    "Mobile Android": {
+      "tasks": {
+        "scrollWidth": 360,
+        "innerWidth": 360,
+        "hasOverflow": false,
+        "primaryBtnsCount": 9,
+        "btnsTapTargetOk": true
+      },
+      "approvals": {
+        "scrollWidth": 360,
+        "innerWidth": 360,
+        "hasOverflow": false,
+        "primaryBtnsCount": 0,
+        "btnsTapTargetOk": true
+      },
+      "analytics": {
+        "scrollWidth": 360,
+        "innerWidth": 360,
+        "hasOverflow": false,
+        "primaryBtnsCount": 1,
+        "btnsTapTargetOk": true
+      },
+      "exports": {
+        "scrollWidth": 360,
+        "innerWidth": 360,
+        "hasOverflow": false,
+        "primaryBtnsCount": 2,
+        "btnsTapTargetOk": true
+      }
+    },
+    "Mobile iPhone": {
+      "tasks": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "hasOverflow": false,
+        "primaryBtnsCount": 9,
+        "btnsTapTargetOk": true
+      },
+      "approvals": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "hasOverflow": false,
+        "primaryBtnsCount": 0,
+        "btnsTapTargetOk": true
+      },
+      "analytics": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "hasOverflow": false,
+        "primaryBtnsCount": 1,
+        "btnsTapTargetOk": true
+      },
+      "exports": {
+        "scrollWidth": 390,
+        "innerWidth": 390,
+        "hasOverflow": false,
+        "primaryBtnsCount": 2,
+        "btnsTapTargetOk": true
+      }
+    }
+  },
+  "themes": {
+    "light": {
+      "theme": "light",
+      "bodyBg": "rgb(239, 239, 239)",
+      "textPrimary": "#232323",
+      "bgSurface": "#FFFFFF",
+      "colorPrimary": "#232323",
+      "btnBg": null,
+      "btnColor": null
+    },
+    "dark": {
+      "theme": "dark",
+      "bodyBg": "rgb(10, 10, 10)",
+      "textPrimary": "#FAFAFA",
+      "bgSurface": "#171717",
+      "colorPrimary": "#E5E5E5",
+      "btnBg": null,
+      "btnColor": null
+    },
+    "soft": {
+      "theme": "soft",
+      "bodyBg": "rgb(234, 230, 223)",
+      "textPrimary": "#232323",
+      "bgSurface": "#F7F4EB",
+      "colorPrimary": "#232323",
+      "btnBg": null,
+      "btnColor": null
+    },
+    "contrast": {
+      "theme": "contrast",
+      "bodyBg": "rgb(0, 0, 0)",
+      "textPrimary": "#FFFFFF",
+      "bgSurface": "#0D0D0D",
+      "colorPrimary": "#FFEE00",
+      "btnBg": null,
+      "btnColor": null
+    }
+  }
+}

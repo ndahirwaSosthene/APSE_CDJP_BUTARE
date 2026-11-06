@@ -993,6 +993,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 collection_mode = 'ENUMERATOR'
 
             volet = str(body.get('volet') or 'FIELD').upper().strip()
+            volet = {'PARALEGAL': 'PARAJURISTES', 'MEDIATION': 'MEDIATEURS', 'ACTIVE_LISTENING': 'ABAHUMURIZAMITIMA', 'HEALING_FACILITATION': 'ISANAMITIMA'}.get(volet, volet)
             if volet not in rbac.VOLET_CODES:
                 volet = 'FIELD'
             prep_mode = str(body.get('prep_mode') or rbac.prep_mode(self.roles(user)) or 'PAIR').upper().strip()

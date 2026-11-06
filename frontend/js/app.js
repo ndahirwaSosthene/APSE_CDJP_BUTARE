@@ -147,6 +147,7 @@ const APSE_ICON_SVGS = {
   arrow_forward: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m12 5 7 7-7 7M19 12H5"/></g>',
   chevron_right: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 18 6-6-6-6"/></g>',
   chevron_left: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15 18-6-6 6-6"/></g>',
+  expand_more: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m6 9 6 6 6-6"/></g>',
   calendar_today: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g>',
   location_on: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>',
   person: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g>',
@@ -192,6 +193,12 @@ const APSE_ICON_SVGS = {
   calendar_month: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
   attach_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></g>',
   place: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>',
+  gavel: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m14 13-7.5 7.5c-.8.8-2 .8-2.8 0l-1.4-1.4c-.8-.8-.8-2 0-2.8L9.8 8.8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></g>',
+  psychology: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v14"/></g>',
+  favorite: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></g>',
+  healing: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
+  volunteer_activism: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
+  terrain: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/><path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19"/></g>',
 };
 
 /* Section 4: Material Symbols Outlined Vector Paths (weight: 400, grade: 0, 24x24 viewBox) */
@@ -214,6 +221,7 @@ const MATERIAL_SYMBOLS = {
   filter_list: 'M10 18v-2h4v2h-4Zm-4-5v-2h12v2H6ZM3 8V6h18v2H3Z',
   chevron_right: 'M12.6 12 8 7.4 9.4 6l6 6-6 6L8 16.6l4.6-4.6Z',
   chevron_left: 'm14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6L14 18Z',
+  expand_more: 'M12 15.375 6 9.375 7.4 7.975l4.6 4.6 4.6-4.6 1.4 1.4Z',
   arrow_forward: 'm12 20-1.425-1.4 5.6-5.6H4v-2h12.175l-5.6-5.6L12 4l8 8-8 8Z',
   arrow_back: 'm7.825 13 5.6 5.6L12 20l-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825Z',
   add: 'M11 13H5v-2h6V5h2v6h6v2h-6v6h-2v-6Z',
@@ -228,6 +236,14 @@ const MATERIAL_SYMBOLS = {
   description: 'M8 18h8v-2H8v2Zm0-4h8v-2H8v2Zm-2 8q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
   person: 'M12 12q-1.65 0-2.825-1.175T8 8q0-1.65 1.175-2.825T12 4q1.65 0 2.825 1.175T16 8q0 1.65-1.175 2.825T12 12Zm-8 8v-2.8q0-.85.438-1.563T5.6 14.55q1.55-.775 3.15-1.163T12 13q1.65 0 3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20H4Z',
   verified_user: 'm10.6 16.2 5.65-5.65-1.425-1.425-4.225 4.225-2.1-2.1L7.075 12.675 10.6 16.2ZM12 22q-3.475-.875-5.738-3.988T4 11.1V5l8-3 8 3v6.1q0 3.8-2.262 6.913T12 22Z',
+  gavel: 'm5.25 18 12.75-12.75 1.75 1.75L7 19.75Zm-2.1 2.1 1.4-1.4 14.15-14.15q.6-.6 1.4-.6t1.4.6l.05.05q.6.6.6 1.4t-.6 1.4L7.4 21.55q-.6.6-1.4.6t-1.4-.6l-1.45-1.45ZM18.7 11.6l-5.65 5.65 2.85 2.85 5.65-5.65ZM8.85 4.6 6 7.45l2.85 2.85 2.85-2.85Z',
+  handshake: 'M8.7 17.3 3.65 12.25q-.3-.3-.425-.662T3.1 10.8q0-.425.138-.8t.437-.675l4.6-4.6q.3-.3.675-.425T9.75 4.175q.425 0 .8.138t.675.437L13.8 7.35l-1.4 1.4-2.6-2.6-4.6 4.6 4.55 4.55ZM12 21.85l-4.55-4.55 1.4-1.4 3.15 3.15 7.8-7.8-1.4-1.4-3.15 3.15-1.4-1.4 3.85-3.85q.3-.3.675-.425t.8-.125q.425 0 .8.138t.675.437l1.7 1.7q.3.3.438.688t.137.812q0 .425-.137.8t-.438.675L12 21.85Z',
+  psychology: 'M12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
+  healing: 'm17.75 21.15-2.15-2.15 4.25-4.25 2.15 2.15Zm-14.9-14.9 2.15-2.15 4.25 4.25-2.15 2.15Zm14.9 0 2.15 2.15-4.25 4.25-2.15-2.15Zm-14.9 14.9 4.25-4.25 2.15 2.15-4.25 4.25ZM12 15.15 8.85 12 12 8.85 15.15 12ZM7.05 21.85l-4.9-4.9q-.6-.6-.6-1.425t.6-1.425l10.9-10.9q.6-.6 1.425-.6t1.425.6l4.9 4.9q.6.6.6 1.425t-.6 1.425l-10.9 10.9q-.6.6-1.425.6t-1.425-.6Z',
+  groups: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2Zm-7-8q-1.65 0-2.825-1.175T5 9q0-1.65 1.175-2.825T9 5q1.65 0 2.825 1.175T13 9q0 1.65-1.175 2.825T9 13Zm11 8v-1.9q0-.825-.438-1.537T18.4 16.5q1.55.775 2.075 1.638T21 21Zm-3-8q-.425 0-.85-.062t-.85-.213q1.1-.8 1.4-1.925T18 9q0-1.25-.3-2.375T16.3 4.7q.425-.15.85-.225T18 4.4q1.65 0 2.825 1.175T22 8.4q0 1.65-1.175 2.825T18 13Z',
+  favorite: 'm12 21.35-1.45-1.32Q5.4 15.36 2 12.28 0 8.5 0 5.5 0 2.42 2.42 0 4.24 0 5.86 1.05t2.47 2.7q.85-1.65 2.47-2.7T14.5 0Q16.92 0 19.34 2.42t2.42 5.5q0 3.08-3.4 6.16-3.4 3.08-8.55 7.75l-1.45 1.32Z',
+  volunteer_activism: 'M12 21.35-1.45-1.32Q5.4 15.36 2 12.28 0 8.5 0 5.5 0 2.42 2.42 0 4.24 0 5.86 1.05t2.47 2.7q.85-1.65 2.47-2.7T14.5 0Q16.92 0 19.34 2.42t2.42 5.5q0 3.08-3.4 6.16-3.4 3.08-8.55 7.75l-1.45 1.32Z',
+  terrain: 'm8 3 4 8 5-5 5 15H2L8 3z',
 };
 
 function msIcon(name, size = 20) {
@@ -534,6 +550,62 @@ function localize(obj) {
   return obj[V1.lang] || obj.en || obj.rw || obj.fr || Object.values(obj)[0] || '';
 }
 
+const VOLET_FALLBACKS = {
+  PARAJURISTES: { fr: 'Parajuristes', en: 'Paralegals (Legal Aid)', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
+  PARALEGAL: { fr: 'Parajuristes', en: 'Paralegals (Legal Aid)', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
+  MEDIATEURS: { fr: 'Médiateurs', en: 'Mediators (Peaceful Resolution)', rw: 'Abahuza', sw: 'Wapatanishi' },
+  MEDIATION: { fr: 'Médiateurs', en: 'Mediators (Peaceful Resolution)', rw: 'Abahuza', sw: 'Wapatanishi' },
+  ABAHUMURIZAMITIMA: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Companions', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
+  ACTIVE_LISTENING: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Companions', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
+  ISANAMITIMA: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation (Isanamitima)', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
+  HEALING_FACILITATION: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation (Isanamitima)', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
+  FIELD: { fr: 'Terrain général (Centrale / CEB)', en: 'General Field Work', rw: 'Ibikorwa rusange bya Santarali', sw: 'Kazi ya Jumla' },
+};
+
+const VOLET_CANONICAL = {
+  PARAJURISTES: 'PARAJURISTES',
+  PARALEGAL: 'PARAJURISTES',
+  MEDIATEURS: 'MEDIATEURS',
+  MEDIATION: 'MEDIATEURS',
+  ABAHUMURIZAMITIMA: 'ABAHUMURIZAMITIMA',
+  ACTIVE_LISTENING: 'ABAHUMURIZAMITIMA',
+  ISANAMITIMA: 'ISANAMITIMA',
+  HEALING_FACILITATION: 'ISANAMITIMA',
+  FIELD: 'FIELD',
+};
+
+const VOLET_ICONS = {
+  PARAJURISTES: 'gavel',
+  PARALEGAL: 'gavel',
+  MEDIATEURS: 'handshake',
+  MEDIATION: 'handshake',
+  ABAHUMURIZAMITIMA: 'psychology',
+  ACTIVE_LISTENING: 'psychology',
+  ISANAMITIMA: 'healing',
+  HEALING_FACILITATION: 'healing',
+  FIELD: 'groups',
+};
+
+function normalizeVolet(v) {
+  const code = (typeof v === 'string' ? v : (v?.code || v?.id || '')).toUpperCase().trim();
+  const canonicalCode = VOLET_CANONICAL[code] || code || 'FIELD';
+  const iconName = VOLET_ICONS[code] || VOLET_ICONS[canonicalCode] || 'check_box';
+  const rawLabel = typeof v === 'object' && v ? (v.label || v.labels || v.title || v.name) : null;
+  const labelText = (rawLabel ? localize(rawLabel) : '') ||
+    (VOLET_FALLBACKS[code] ? localize(VOLET_FALLBACKS[code]) : '') ||
+    (VOLET_FALLBACKS[canonicalCode] ? localize(VOLET_FALLBACKS[canonicalCode]) : '') ||
+    code ||
+    'Volet';
+  return { code, canonicalCode, iconName, labelText };
+}
+
+if (typeof window !== 'undefined') {
+  window.VOLET_FALLBACKS = VOLET_FALLBACKS;
+  window.VOLET_CANONICAL = VOLET_CANONICAL;
+  window.VOLET_ICONS = VOLET_ICONS;
+  window.normalizeVolet = normalizeVolet;
+}
+
 function getThemesList() {
   return [
     { code: '', label: L('all_themes') },
@@ -731,7 +803,7 @@ function openWizardForTask(task, existingLog = null, forceStep = null) {
     centrale: defaultCentrale,
     event_date: existingLog?.event_date || savedDraft?.event_date || '2026-10-23',
     collection_mode: existingLog?.collection_mode || savedDraft?.collection_mode || 'ENUMERATOR',
-    volet: existingLog?.volet || existingLog?.payload?.volet || savedDraft?.volet || 'MEDIATEURS',
+    volet: VOLET_CANONICAL[String(existingLog?.volet || existingLog?.payload?.volet || savedDraft?.volet || 'MEDIATEURS').toUpperCase()] || 'MEDIATEURS',
     prep_mode: existingLog?.prep_mode || existingLog?.payload?.prep_mode || savedDraft?.prep_mode || defaultPrepMode,
     prep_names: existingLog?.prep_names?.length
       ? [...existingLog.prep_names]
@@ -1490,23 +1562,33 @@ function renderWizardView() {
       h('div', { className: 'v1-field' },
         h('label', { className: 'v1-field-label' }, 'CPJP Specialist Volet (4 Institutional Commissions)'),
         h('div', { className: 'v1-chips' },
-          (V1.data?.volets || [
-            { code: 'PARAJURISTES', label: { en: 'Parajuristes (Legal Aid & Land Rights)' } },
-            { code: 'MEDIATEURS', label: { en: 'Médiateurs (Peaceful Conflict Resolution)' } },
-            { code: 'ABAHUMURIZAMITIMA', label: { en: 'Abahumurizamitima (Trauma Healing)' } },
-            { code: 'ISANAMITIMA', label: { en: 'Isanamitima & Unity-Reconciliation' } },
-            { code: 'FIELD', label: { en: 'General Community / Ecology Action' } },
-          ]).map(v =>
-            h('button', {
+          (Array.isArray(V1.data?.volets) && V1.data.volets.length > 0
+            ? V1.data.volets
+            : [
+                { code: 'PARAJURISTES', labels: VOLET_FALLBACKS.PARAJURISTES },
+                { code: 'MEDIATEURS', labels: VOLET_FALLBACKS.MEDIATEURS },
+                { code: 'ABAHUMURIZAMITIMA', labels: VOLET_FALLBACKS.ABAHUMURIZAMITIMA },
+                { code: 'ISANAMITIMA', labels: VOLET_FALLBACKS.ISANAMITIMA },
+                { code: 'FIELD', labels: VOLET_FALLBACKS.FIELD },
+              ]
+          ).map(v => {
+            const { code, canonicalCode, iconName, labelText } = normalizeVolet(v);
+            const currentVoletNorm = VOLET_CANONICAL[(w.volet || '').toUpperCase()] || (w.volet || '').toUpperCase();
+            const isActive = currentVoletNorm === canonicalCode || (w.volet || '').toUpperCase() === code;
+            return h('button', {
               type: 'button',
-              className: 'v1-chip' + (w.volet === v.code ? ' active' : ''),
+              key: code || canonicalCode,
+              className: 'v1-chip' + (isActive ? ' active' : ''),
               onClick: () => {
-                w.volet = v.code;
+                w.volet = canonicalCode;
                 saveWizardDraftLocal();
                 renderApp();
               },
-            }, localize(v.label))
-          )
+            },
+              msIcon(iconName, 16),
+              h('span', {}, labelText)
+            );
+          })
         )
       ),
       h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '12px' } },
@@ -2438,7 +2520,7 @@ function renderApprovalsWorkspace() {
                 renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
                 renderLozenge(`${l.parish_name} · ${l.centrale}`, 'neutral'),
                 renderLozenge(`${l.event_date} (${l.pastoral_quarter})`, 'neutral'),
-                l.volet ? renderLozenge(`Volet: ${l.volet}`, 'neutral') : null
+                l.volet ? renderLozenge(`Volet: ${normalizeVolet(l.volet).labelText || l.volet}`, 'neutral') : null
               ),
               h('h3', { className: 'v1-task-title', style: { margin: '4px 0' } }, localize(l.task_titles)),
               h('div', { className: 'v1-tabular', style: { fontSize: '0.875rem', color: 'var(--text-secondary)' } },
@@ -2828,25 +2910,35 @@ function renderAnalyticsWorkspace() {
     ),
     (analytics.accordions || []).map((acc, idx) =>
       h('details', { className: 'v1-accordion', open: idx === 0 },
-        h('summary', {},
-          h('div', { style: { flex: 1, minWidth: 0 } },
-            h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' } },
-              h('span', {
-                className: 'v1-legend-swatch',
-                style: { background: catColors[idx % catColors.length] },
-              }),
-              renderLozenge(localize(acc.axis_labels), 'neutral')
+        h('summary', { className: 'v1-accordion-summary' },
+          /* Left / Main Section */
+          h('div', { className: 'v1-accordion-header-left' },
+            h('div', { className: 'v1-accordion-meta-row' },
+              h('div', { className: 'v1-accordion-axis-group' },
+                h('span', {
+                  className: 'v1-legend-swatch',
+                  style: { background: catColors[idx % catColors.length] },
+                }),
+                renderLozenge(localize(acc.axis_labels), 'neutral')
+              ),
+              h('div', { className: 'v1-accordion-mobile-badge' },
+                renderLozenge(L('impact_' + acc.impact_rating), acc.impact_rating)
+              )
             ),
             h('h3', { className: 'v1-accordion-title' }, localize(acc.labels))
           ),
-          h('div', { style: { display: 'flex', alignItems: 'center', gap: '16px' } },
-            h('div', { style: { width: '140px' } },
-              h('div', { className: 'v1-tabular', style: { fontSize: '0.75rem', marginBottom: '4px', color: 'var(--text-secondary)' } }, `Actions: ${acc.completion_pct}%`),
+          /* Right / Metrics Section */
+          h('div', { className: 'v1-accordion-header-right' },
+            h('div', { className: 'v1-accordion-progress-col' },
+              h('div', { className: 'v1-tabular v1-accordion-progress-label' }, `Actions: ${acc.completion_pct}%`),
               h('div', { className: 'v1-progress-bar' },
                 h('div', { className: 'v1-progress-fill', style: { width: `${acc.completion_pct}%` } })
               )
             ),
-            renderLozenge(L('impact_' + acc.impact_rating), acc.impact_rating)
+            h('div', { className: 'v1-accordion-desktop-badge' },
+              renderLozenge(L('impact_' + acc.impact_rating), acc.impact_rating)
+            ),
+            h('span', { className: 'v1-accordion-chevron' }, msIcon('expand_more', 20))
           )
         ),
         h('div', { className: 'v1-accordion-body' },
@@ -2888,16 +2980,18 @@ function renderAnalyticsWorkspace() {
                 },
               },
                 h('div', { className: 'v1-resource-top' },
-                  h('strong', { style: { fontSize: '0.875rem' } }, localize(t.titles)),
-                  renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
+                  h('strong', { className: 'v1-resource-title' }, localize(t.titles)),
+                  h('div', { className: 'v1-resource-badge' },
+                    renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
+                  )
                 ),
                 h('div', { className: 'v1-resource-middle' }, `${t.parish_name} Parish · Oct 2026`),
                 h('div', { className: 'v1-resource-bottom' },
-                  h('div', { style: { flex: 1, display: 'flex', alignItems: 'center', gap: '8px' } },
+                  h('div', { className: 'v1-resource-progress-group' },
                     h('div', { className: 'v1-progress-bar' },
                       h('div', { className: 'v1-progress-fill', style: { width: `${t.completion_pct}%` } })
                     ),
-                    h('span', { className: 'v1-mono', style: { fontSize: '0.75rem' } }, `${t.completed_units}/${t.planned_target} completed`)
+                    h('span', { className: 'v1-mono v1-resource-progress-label' }, `${t.completed_units}/${t.planned_target} completed`)
                   ),
                   msIcon('chevron_right', 20)
                 )
@@ -2905,23 +2999,23 @@ function renderAnalyticsWorkspace() {
             )
           ),
           acc.stories.length || acc.documents.length
-            ? h('div', { style: { marginTop: '14px' } },
+            ? h('div', { className: 'v1-accordion-section', style: { marginTop: '14px' } },
                 h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, '2. Stories of Change & Attached Impact Evidence'),
                 acc.stories.map(st =>
-                  h('p', { style: { margin: '4px 0', fontSize: '0.875rem', fontStyle: 'italic', color: 'var(--text-primary)' } }, `"${st.text}" — ${st.parish} (${st.date})`)
+                  h('p', { className: 'v1-story-quote', style: { margin: '4px 0', fontSize: '0.875rem', fontStyle: 'italic', color: 'var(--text-primary)' } }, `"${st.text}" — ${st.parish} (${st.date})`)
                 ),
-                h('div', { className: 'v1-chips', style: { marginTop: '6px' } },
+                h('div', { className: 'v1-chips v1-evidence-chips', style: { marginTop: '6px' } },
                   acc.documents.map(doc => renderLozenge(`${doc.name} (${doc.parish})`, 'GOOD', 'description'))
                 )
               )
             : null,
           acc.issues.length
-            ? h('div', { style: { marginTop: '14px' } },
+            ? h('div', { className: 'v1-accordion-section', style: { marginTop: '14px' } },
                 h('div', { className: 'v1-field-label', style: { marginBottom: '6px', color: 'var(--tag-warn-text)' } }, '3. Under-Achievement Explanations & Field Issues'),
                 acc.issues.map(iss =>
-                  h('div', { style: { padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' } },
-                    msIcon(iss.severity === 'MAJOR' ? 'error' : 'warning', 16),
-                    h('span', {}, `${iss.parish} (${iss.severity} · ${iss.categories.join(', ')}): ${iss.note}`)
+                  h('div', { className: 'v1-field-issue-card', style: { padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', marginBottom: '6px', display: 'flex', alignItems: 'flex-start', gap: '8px' } },
+                    h('span', { style: { flexShrink: 0, marginTop: '1px' } }, msIcon(iss.severity === 'MAJOR' ? 'error' : 'warning', 16)),
+                    h('span', { style: { wordBreak: 'break-word', overflowWrap: 'anywhere' } }, `${iss.parish} (${iss.severity} · ${iss.categories.join(', ')}): ${iss.note}`)
                   )
                 )
               )
@@ -3381,7 +3475,13 @@ function _old_renderWorkspaceCanvas() {
 
 
 function renderRightSidecar() {
-  if (!V1.rightSidecarOpen) return null;
+  if (!V1.rightSidecarOpen) {
+    V1._sidecarWasOpen = false;
+    return null;
+  }
+  const isFirstOpen = !V1._sidecarWasOpen;
+  V1._sidecarWasOpen = true;
+
   const tab = V1.rightSidecarTab || 'ps_planning';
 
   const tabLabels = {
@@ -3398,29 +3498,43 @@ function renderRightSidecar() {
 
   const meta = tabLabels[tab] || { title: 'Référence', icon: 'info' };
 
-  return h('div', { className: 'v1-sidecar-peek-wrap' },
-    /* Semi-transparent backdrop overlay to dismiss when clicking outside */
+  return h('div', { className: 'v1-sidepeek-container' },
+    /* Soft dimmed backdrop over the canvas (clicking slides it back) */
     h('div', {
-      className: 'v1-sidecar-backdrop',
+      className: 'v1-sidepeek-backdrop',
       title: 'Fermer l\'aperçu latéral (ESC)',
       onClick: () => {
         V1.rightSidecarOpen = false;
         renderApp();
       }
     }),
-    /* Floating Side Peek Drawer popping up OVER content just like Notion */
+    /* Notion-Style Floating Side-Peek Overlay Drawer (does not squeeze main canvas) */
     h('aside', {
-      className: 'v1-right-sidecar',
+      className: 'v1-notion-sidepeek' + (isFirstOpen ? ' v1-slide-enter' : ''),
       role: 'dialog',
       'aria-modal': 'true',
       'aria-label': meta.title
     },
-      h('div', { className: 'v1-sidecar-header' },
-        h('div', { className: 'v1-sidecar-title' },
-          msIcon(meta.icon, 20),
-          h('span', { style: { fontWeight: 700, fontSize: '0.875rem' } }, meta.title)
+      h('div', { className: 'v1-sidepeek-header' },
+        h('div', { className: 'v1-sidepeek-nav' },
+          h('button', {
+            type: 'button',
+            className: 'v1-sidepeek-back-btn',
+            title: 'Faire glisser vers la droite (Masquer sans perdre le travail en cours)',
+            onClick: () => {
+              V1.rightSidecarOpen = false;
+              renderApp();
+            }
+          },
+            msIcon('arrow_forward', 16),
+            h('span', {}, 'Masquer')
+          ),
+          h('div', { className: 'v1-sidepeek-badge' },
+            msIcon(meta.icon, 20),
+            h('strong', {}, meta.title)
+          )
         ),
-        h('div', { className: 'v1-sidecar-actions' },
+        h('div', { className: 'v1-sidepeek-actions' },
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-sm v1-btn-secondary',
@@ -3437,18 +3551,17 @@ function renderRightSidecar() {
           ),
           h('button', {
             type: 'button',
-            className: 'v1-sidecar-action-btn',
+            className: 'v1-modal-close',
+            style: { width: '30px', height: '30px', fontSize: '1.25rem' },
             title: 'Fermer le panneau latéral (ESC)',
             onClick: () => {
               V1.rightSidecarOpen = false;
               renderApp();
             }
-          },
-            msIcon('close', 18)
-          )
+          }, '×')
         )
       ),
-      h('div', { className: 'v1-sidecar-body' },
+      h('div', { className: 'v1-sidepeek-body' },
         renderWorkspaceView(tab)
       )
     )

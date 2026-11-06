@@ -817,7 +817,12 @@
       const fLabel = (fMeta.label && (fMeta.label[V1.lang] || fMeta.label.fr || fMeta.label.en)) || fCode;
       const fHelp = fMeta.help && (fMeta.help[V1.lang] || fMeta.help.fr || fMeta.help.en);
       const isReq = (currentForm.required || []).includes(fCode);
-      const val = V091.formValues[fCode] !== undefined ? V091.formValues[fCode] : '';
+      let val = V091.formValues[fCode] !== undefined ? V091.formValues[fCode] : '';
+      if (fCode === 'volet' && val) {
+        val = (typeof VOLET_CANONICAL !== 'undefined' && VOLET_CANONICAL[String(val).toUpperCase()]) ||
+              (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[String(val).toUpperCase()]) ||
+              val;
+      }
 
       // Check if field has predefined options
       let optList = null;
@@ -825,6 +830,29 @@
         optList = allOptions[fMeta.options];
       } else if (allOptions[fCode]) {
         optList = allOptions[fCode];
+      } else if (fCode === 'volet') {
+        const fallbacks = (typeof window !== 'undefined' && window.VOLET_FALLBACKS) || {
+          PARAJURISTES: { fr: 'Parajuristes', en: 'Paralegals (Legal Aid)', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
+          PARALEGAL: { fr: 'Parajuristes', en: 'Paralegals (Legal Aid)', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
+          MEDIATEURS: { fr: 'Médiateurs', en: 'Mediators (Peaceful Resolution)', rw: 'Abahuza', sw: 'Wapatanishi' },
+          MEDIATION: { fr: 'Médiateurs', en: 'Mediators (Peaceful Resolution)', rw: 'Abahuza', sw: 'Wapatanishi' },
+          ABAHUMURIZAMITIMA: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Companions', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
+          ACTIVE_LISTENING: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Companions', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
+          ISANAMITIMA: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation (Isanamitima)', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
+          HEALING_FACILITATION: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation (Isanamitima)', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
+          FIELD: { fr: 'Terrain général (Centrale / CEB)', en: 'General Field Work', rw: 'Ibikorwa rusange bya Santarali', sw: 'Kazi ya Jumla' },
+        };
+        optList = (cfg.volets && cfg.volets.length > 0)
+          ? cfg.volets
+          : (V1.data?.volets && V1.data.volets.length > 0)
+            ? V1.data.volets
+            : [
+                { code: 'PARAJURISTES', labels: fallbacks.PARAJURISTES },
+                { code: 'MEDIATEURS', labels: fallbacks.MEDIATEURS },
+                { code: 'ABAHUMURIZAMITIMA', labels: fallbacks.ABAHUMURIZAMITIMA },
+                { code: 'ISANAMITIMA', labels: fallbacks.ISANAMITIMA },
+                { code: 'FIELD', labels: fallbacks.FIELD },
+              ];
       }
 
       const isLong = fType === 'LONG_TEXT' || fCode === 'title' || fCode === 'progress_summary' || fCode === 'activity';
@@ -840,14 +868,37 @@
           className: 'v1-input',
           value: val,
           onChange: e => {
-            V091.formValues[fCode] = e.target.value;
+            let nextVal = e.target.value;
+            if (fCode === 'volet' && nextVal) {
+              const canonical = (typeof VOLET_CANONICAL !== 'undefined' && VOLET_CANONICAL[nextVal.toUpperCase()]) ||
+                (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[nextVal.toUpperCase()]);
+              if (canonical) nextVal = canonical;
+            }
+            V091.formValues[fCode] = nextVal;
             renderApp();
           },
         },
           h('option', { value: '' }, `-- Sélectionner ${fLabel} --`),
           optList.map(opt => {
+            if (fCode === 'volet') {
+              if (typeof window !== 'undefined' && typeof window.normalizeVolet === 'function') {
+                const norm = window.normalizeVolet(opt);
+                return h('option', { value: norm.canonicalCode, key: norm.code || norm.canonicalCode }, `${norm.canonicalCode} — ${norm.labelText}`);
+              }
+              const optCode = (typeof opt === 'string' ? opt : (opt.code || opt.id || '')).toUpperCase();
+              const canon = (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[optCode]) || optCode;
+              const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
+              const lang = (typeof V1 !== 'undefined' && V1?.lang) || 'fr';
+              const fallbacks = (typeof window !== 'undefined' && window.VOLET_FALLBACKS) || {};
+              const fbObj = fallbacks[optCode] || fallbacks[canon];
+              const optLabel = (lblObj && (lblObj[lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) ||
+                (fbObj && (fbObj[lang] || fbObj.fr || fbObj.en || fbObj.rw || fbObj.sw || Object.values(fbObj)[0])) ||
+                optCode;
+              return h('option', { value: canon, key: optCode }, `${canon} — ${optLabel}`);
+            }
             const optCode = typeof opt === 'string' ? opt : (opt.code || opt.id);
-            const optLabel = typeof opt === 'string' ? opt : ((opt.label && (opt.label[V1.lang] || opt.label.fr || opt.label.en)) || optCode);
+            const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
+            const optLabel = typeof opt === 'string' ? opt : ((lblObj && (lblObj[V1.lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) || optCode);
             return h('option', { value: optCode, key: optCode }, `${optCode} — ${optLabel}`);
           })
         ) : fType === 'LONG_TEXT' ? h('textarea', {
@@ -887,7 +938,7 @@
     const createdRecords = (V1.data?.logs || []).filter(l => l.task_titles || l.form === currentForm.code);
 
     return h('div', { className: 'v1-workspace-fade' },
-      h('header', { className: 'v1-page-header' },
+      h('header', { className: 'v1-page-header v1-seizure-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
@@ -896,15 +947,15 @@
           h('span', { className: 'v1-breadcrumb-current' }, `${currentForm.code} — ${currentForm.label[V1.lang] || currentForm.label.fr}`)
         ),
         h('div', { className: 'v1-header-split' },
-          h('div', {},
+          h('div', { style: { minWidth: 0 } },
             h('h1', { className: 'v1-page-title' }, `Saisie : ${currentForm.code} · ${currentForm.label[V1.lang] || currentForm.label.fr}`),
             h('p', { className: 'v1-page-subtitle' },
               `${formFields.length} champs disponibles · ${isSensitiveForm ? 'Fiche confidentielle & sensible' : 'Fiche publique opérationnelle'} · Standard ${currentForm.captureStandard || 'V8'}`
             )
           ),
-          h('div', { className: 'v1-header-actions' },
+          h('div', { className: 'v1-header-actions v1-seizure-header-actions' },
             /* Toggle between Active Form Editor & Created Forms History */
-            h('div', { className: 'gf-tab-pills', style: { marginBottom: 0, paddingBottom: 0, borderBottom: 0 } },
+            h('div', { className: 'gf-tab-pills v1-seizure-tabs', style: { marginBottom: 0, paddingBottom: 0, borderBottom: 0 } },
               h('button', {
                 type: 'button',
                 className: 'gf-tab-btn' + (V091.seizureSubTab === 'form' ? ' active' : ''),
@@ -914,7 +965,8 @@
                 },
               },
                 msIcon('edit_note', 16),
-                h('span', {}, 'Formulaire de saisie')
+                h('span', { className: 'v1-tab-text-full' }, 'Formulaire de saisie'),
+                h('span', { className: 'v1-tab-text-short' }, 'Formulaire')
               ),
               h('button', {
                 type: 'button',
@@ -925,7 +977,8 @@
                 },
               },
                 msIcon('folder_copy', 16),
-                h('span', {}, `Dossiers créés au fil du temps (${createdRecords.length})`)
+                h('span', { className: 'v1-tab-text-full' }, `Dossiers créés au fil du temps (${createdRecords.length})`),
+                h('span', { className: 'v1-tab-text-short' }, `Dossiers (${createdRecords.length})`)
               )
             ),
 
@@ -995,7 +1048,7 @@
 
       /* Confidentiality Warning Card for Sensitive Forms (Cluster C) */
       isSensitiveForm ? h('div', {
-        className: 'v1-panel',
+        className: 'v1-panel v1-seizure-confidential-card',
         style: {
           marginBottom: '20px',
           padding: '16px 20px',
@@ -1005,11 +1058,12 @@
           display: 'flex',
           alignItems: 'center',
           gap: '14px',
+          flexWrap: 'wrap',
         }
       },
         msIcon('lock', 24),
-        h('div', {},
-          h('strong', { style: { color: 'var(--color-critical)', fontSize: '0.9375rem' } }, 'Fiche Confidentielle & Sensible (Do No Harm / Protection des Données)'),
+        h('div', { style: { flex: 1, minWidth: '220px' } },
+          h('strong', { style: { color: 'var(--color-critical)', fontSize: '0.9375rem', display: 'block' } }, 'Fiche Confidentielle & Sensible (Do No Harm / Protection des Données)'),
           h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: '4px 0 0' } },
             'Règle d’or institutionnelle : Ne jamais saisir de noms réels, cartes d’identité nationales ou numéros de téléphone dans les champs narratifs. Utilisez exclusivement un code anonyme (ex: CASE-2026-089).'
           )
@@ -1017,11 +1071,11 @@
       ) : null,
 
       /* Main Split Workspace: Left Clusters & Forms Navigator, Right Google Forms Canvas */
-      h('div', { style: { display: 'flex', gap: '24px', alignItems: 'flex-start' } },
+      h('div', { className: 'v1-seizure-split' },
         /* Left Column: Form Selector & 7 Clusters */
-        h('div', { className: 'v1-panel', style: { width: '300px', flexShrink: 0, padding: '16px', gridColumn: 'auto' } },
+        h('div', { className: 'v1-panel v1-seizure-nav', style: { gridColumn: 'auto' } },
           h('label', { className: 'v1-field-label' }, 'Clusters Institutionnels (A à G)'),
-          h('div', { className: 'v1-chips', style: { marginBottom: '12px' } },
+          h('div', { className: 'v1-chips v1-seizure-cluster-rail', style: { marginBottom: '12px' } },
             clusters.map(c =>
               h('button', {
                 type: 'button',
@@ -1037,16 +1091,77 @@
           ),
           h('input', {
             type: 'search',
-            className: 'v1-input',
+            className: 'v1-input v1-seizure-search',
             placeholder: 'Filtrer par code (F07, F03...) ou titre...',
-            value: V091.formSearch,
+            value: V091.formSearch || '',
             onInput: e => {
               V091.formSearch = e.target.value;
               renderApp();
             },
             style: { marginBottom: '12px', height: '34px', fontSize: '0.8125rem' },
           }),
-          h('div', { style: { display: 'flex', flexDirection: 'column', gap: '4px', maxHeight: '560px', overflowY: 'auto' } },
+          /* Mobile/Tablet Prominent Form Picker: Select dropdown & Quick Badge Rail */
+          h('div', { className: 'v1-seizure-mobile-picker' },
+            h('label', { className: 'v1-field-label', style: { marginTop: '4px', marginBottom: '4px' } }, 'Sélectionner un formulaire'),
+            h('select', {
+              className: 'v1-input v1-seizure-form-select',
+              value: V091.activeFormCode,
+              onChange: e => {
+                if (e.target.value) {
+                  V091.activeFormCode = e.target.value;
+                  V091.formValues = {};
+                  V091.activeFormSectionIndex = 0;
+                  V091.seizureSubTab = 'form';
+                  renderApp();
+                }
+              },
+            },
+              clusters.slice(1).map(c => {
+                const clusterForms = allForms.filter(f => c.codes.includes(f.code));
+                if (clusterForms.length === 0) return null;
+                return h('optgroup', { label: c.label, key: c.id },
+                  clusterForms.map(f => {
+                    const isSens = f.sensitive || ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'].includes(f.code);
+                    const lbl = (f.label && (f.label[V1.lang] || f.label.fr || f.label.en)) || f.code;
+                    return h('option', { value: f.code, key: f.code }, `${f.code} — ${lbl}${isSens ? ' [Sensible]' : ''}`);
+                  })
+                );
+              }),
+              (() => {
+                const knownCodes = new Set(clusters.slice(1).flatMap(c => c.codes));
+                const unclustered = allForms.filter(f => !knownCodes.has(f.code));
+                if (unclustered.length === 0) return null;
+                return h('optgroup', { label: 'Autres formulaires', key: 'OTHER' },
+                  unclustered.map(f => {
+                    const lbl = (f.label && (f.label[V1.lang] || f.label.fr || f.label.en)) || f.code;
+                    return h('option', { value: f.code, key: f.code }, `${f.code} — ${lbl}`);
+                  })
+                );
+              })()
+            ),
+            h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '4px 0 2px' } },
+              h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 } }, 'Accès rapide (badges) :'),
+              h('span', { style: { fontSize: '0.6875rem', color: 'var(--text-muted)' } }, `${filteredForms.length} formulaire${filteredForms.length > 1 ? 's' : ''}`)
+            ),
+            h('div', { className: 'v1-seizure-badge-rail' },
+              filteredForms.map(f =>
+                h('button', {
+                  type: 'button',
+                  key: f.code,
+                  className: 'v1-chip' + (V091.activeFormCode === f.code ? ' active' : ''),
+                  onClick: () => {
+                    V091.activeFormCode = f.code;
+                    V091.formValues = {};
+                    V091.activeFormSectionIndex = 0;
+                    V091.seizureSubTab = 'form';
+                    renderApp();
+                  },
+                }, f.code)
+              )
+            )
+          ),
+          /* Desktop Vertical Form List (hidden on <= 1024px) */
+          h('div', { className: 'v1-seizure-form-list' },
             filteredForms.map(f => {
               const isSens = f.sensitive || ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'].includes(f.code);
               return h('button', {
@@ -1073,173 +1188,175 @@
         ),
 
         /* Right Column: Google Forms Card Builder OR Created Forms History */
-        V091.seizureSubTab === 'history' ?
-          /* VIEW B: History of Forms Created Over Time with 1-Click Duplication */
-          h('div', { className: 'v1-panel', style: { padding: '24px' } },
-            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' } },
-              h('div', {},
-                h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } }, `Dossiers créés au fil du temps (${createdRecords.length})`),
-                h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
-                  `Consultez les dossiers saisis pour ${currentForm.code} ou dupliquez un formulaire existant pour en créer un nouveau sans repartir de zéro.`
-                )
-              ),
-              h('button', {
-                type: 'button',
-                className: 'v1-btn v1-btn-primary',
-                onClick: () => {
-                  V091.formValues = {};
-                  V091.seizureSubTab = 'form';
-                  renderApp();
-                },
-              },
-                msIcon('add', 18),
-                h('span', {}, 'Nouveau formulaire vierge')
-              )
-            ),
-
-            createdRecords.length === 0 ? h('div', { style: { padding: '40px 20px', textAlign: 'center', color: 'var(--text-muted)' } },
-              msIcon('folder_open', 48),
-              h('p', { style: { marginTop: '12px', fontSize: '0.9375rem' } }, 'Aucun dossier encore enregistré pour ce formulaire.'),
-              h('p', { style: { fontSize: '0.8125rem' } }, 'Remplissez le formulaire de saisie pour créer votre premier dossier.')
-            ) : h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
-              createdRecords.map((rec, rIdx) =>
-                h('div', {
-                  key: rIdx,
-                  className: 'v1-panel',
-                  style: {
-                    padding: '16px',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    gap: '16px',
-                    border: '1px solid var(--border-subtle)',
-                    borderRadius: 'var(--radius-md)',
-                  }
-                },
-                  h('div', { style: { flex: 1, minWidth: 0 } },
-                    h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' } },
-                      h('span', { className: 'v1-badge', style: { fontWeight: 700 } }, rec.form || currentForm.code),
-                      h('strong', { style: { fontSize: '0.9375rem' } }, rec.task_titles?.fr || rec.values?.title || rec.id || `Dossier #${rIdx + 1}`),
-                      h('span', { className: 'v1-badge' }, rec.status || 'DRAFT')
-                    ),
-                    h('div', { style: { display: 'flex', gap: '16px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-                      h('span', {}, `Date : ${rec.event_date || '2026-10-25'}`),
-                      h('span', {}, `Paroisse : ${rec.parish_name || 'Diocèse de Butare'}`),
-                      rec.women_count !== undefined ? h('span', {}, `Femmes : ${rec.women_count} · Hommes : ${rec.men_count} · Total : ${rec.total_attendance}`) : null
-                    )
-                  ),
-                  h('div', { style: { display: 'flex', gap: '8px' } },
-                    h('button', {
-                      type: 'button',
-                      className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                      title: 'Dupliquer ce dossier dans le formulaire de saisie',
-                      onClick: () => {
-                        const cloned = Object.assign({}, rec.values || rec);
-                        cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
-                        cloned.title = `${rec.task_titles?.fr || rec.values?.title || 'Dossier'} (Copie)`;
-                        cloned.event_date = '2026-10-25';
-                        if (rec.women_count !== undefined) cloned.women = String(rec.women_count);
-                        if (rec.men_count !== undefined) cloned.men = String(rec.men_count);
-                        if (rec.total_attendance !== undefined) cloned.total = String(rec.total_attendance);
-                        V091.formValues = cloned;
-                        V091.seizureSubTab = 'form';
-                        V091.showToast('✓ Dossier dupliqué avec succès dans le formulaire actif !', 'info');
-                        renderApp();
-                      },
-                    },
-                      msIcon('content_copy', 16),
-                      h('span', {}, 'Dupliquer')
-                    ),
-                    h('button', {
-                      type: 'button',
-                      className: 'v1-btn v1-btn-sm v1-btn-primary',
-                      onClick: () => {
-                        V091.formValues = Object.assign({}, rec.values || rec);
-                        V091.seizureSubTab = 'form';
-                        renderApp();
-                      },
-                    },
-                      msIcon('edit', 16),
-                      h('span', {}, 'Ouvrir')
-                    )
-                  )
-                )
-              )
-            )
-          ) :
-
-          /* VIEW A: Google Forms Style Dynamic Canvas */
-          h('div', { className: 'gf-wrapper', style: { flex: 1, minWidth: 0, margin: '0', gridColumn: 'auto' } },
-            /* Google Forms Card 0: Header Accent Card */
-            h('div', { className: 'gf-header-card' },
-              h('div', { className: 'gf-header-accent' }),
-              h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px' } },
-                h('div', {},
-                  h('div', { style: { display: 'flex', gap: '8px', marginBottom: '8px' } },
-                    h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: 700 } }, currentForm.code),
-                    h('span', { className: 'v1-badge' }, `${formFields.length} champs natifs`),
-                    isSensitiveForm ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
-                  ),
-                  h('h2', { style: { fontSize: '1.5rem', fontWeight: 700, margin: '4px 0' } },
-                    currentForm.label[V1.lang] || currentForm.label.fr
-                  ),
-                  h('p', { style: { fontSize: '0.875rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
-                    `Standard de saisie ${currentForm.captureStandard || 'V8'} · Formulaire institutionnel CDJP Butare conforme au Plan Stratégique 2026–2031.`
+        h('div', { className: 'v1-seizure-content' },
+          V091.seizureSubTab === 'history' ?
+            /* VIEW B: History of Forms Created Over Time with 1-Click Duplication */
+            h('div', { className: 'v1-panel v1-seizure-history-view', style: { padding: '24px' } },
+              h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' } },
+                h('div', { style: { flex: 1, minWidth: '220px' } },
+                  h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } }, `Dossiers créés au fil du temps (${createdRecords.length})`),
+                  h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
+                    `Consultez les dossiers saisis pour ${currentForm.code} ou dupliquez un formulaire existant pour en créer un nouveau sans repartir de zéro.`
                   )
                 ),
                 h('button', {
                   type: 'button',
-                  className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                  title: 'Dupliquer les valeurs actuelles',
+                  className: 'v1-btn v1-btn-primary',
                   onClick: () => {
-                    const cloned = Object.assign({}, V091.formValues);
-                    cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
-                    if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
-                    V091.formValues = cloned;
-                    V091.showToast('✓ Formulaire dupliqué !', 'info');
+                    V091.formValues = {};
+                    V091.seizureSubTab = 'form';
                     renderApp();
                   },
                 },
-                  msIcon('content_copy', 16),
-                  h('span', {}, 'Dupliquer')
+                  msIcon('add', 18),
+                  h('span', {}, 'Nouveau formulaire vierge')
+                )
+              ),
+
+              createdRecords.length === 0 ? h('div', { style: { padding: '40px 20px', textAlign: 'center', color: 'var(--text-muted)' } },
+                msIcon('folder_open', 48),
+                h('p', { style: { marginTop: '12px', fontSize: '0.9375rem' } }, 'Aucun dossier encore enregistré pour ce formulaire.'),
+                h('p', { style: { fontSize: '0.8125rem' } }, 'Remplissez le formulaire de saisie pour créer votre premier dossier.')
+              ) : h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
+                createdRecords.map((rec, rIdx) =>
+                  h('div', {
+                    key: rIdx,
+                    className: 'v1-panel v1-seizure-history-card',
+                    style: {
+                      padding: '16px',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '16px',
+                      border: '1px solid var(--border-subtle)',
+                      borderRadius: 'var(--radius-md)',
+                      flexWrap: 'wrap',
+                    }
+                  },
+                    h('div', { style: { flex: 1, minWidth: '240px' } },
+                      h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' } },
+                        h('span', { className: 'v1-badge', style: { fontWeight: 700 } }, rec.form || currentForm.code),
+                        h('strong', { style: { fontSize: '0.9375rem' } }, rec.task_titles?.fr || rec.values?.title || rec.id || `Dossier #${rIdx + 1}`),
+                        h('span', { className: 'v1-badge' }, rec.status || 'DRAFT')
+                      ),
+                      h('div', { style: { display: 'flex', gap: '16px', fontSize: '0.8125rem', color: 'var(--text-secondary)', flexWrap: 'wrap' } },
+                        h('span', {}, `Date : ${rec.event_date || '2026-10-25'}`),
+                        h('span', {}, `Paroisse : ${rec.parish_name || 'Diocèse de Butare'}`),
+                        rec.women_count !== undefined ? h('span', {}, `Femmes : ${rec.women_count} · Hommes : ${rec.men_count} · Total : ${rec.total_attendance}`) : null
+                      )
+                    ),
+                    h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap' } },
+                      h('button', {
+                        type: 'button',
+                        className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                        title: 'Dupliquer ce dossier dans le formulaire de saisie',
+                        onClick: () => {
+                          const cloned = Object.assign({}, rec.values || rec);
+                          cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
+                          cloned.title = `${rec.task_titles?.fr || rec.values?.title || 'Dossier'} (Copie)`;
+                          cloned.event_date = '2026-10-25';
+                          if (rec.women_count !== undefined) cloned.women = String(rec.women_count);
+                          if (rec.men_count !== undefined) cloned.men = String(rec.men_count);
+                          if (rec.total_attendance !== undefined) cloned.total = String(rec.total_attendance);
+                          V091.formValues = cloned;
+                          V091.seizureSubTab = 'form';
+                          V091.showToast('✓ Dossier dupliqué avec succès dans le formulaire actif !', 'info');
+                          renderApp();
+                        },
+                      },
+                        msIcon('content_copy', 16),
+                        h('span', {}, 'Dupliquer')
+                      ),
+                      h('button', {
+                        type: 'button',
+                        className: 'v1-btn v1-btn-sm v1-btn-primary',
+                        onClick: () => {
+                          V091.formValues = Object.assign({}, rec.values || rec);
+                          V091.seizureSubTab = 'form';
+                          renderApp();
+                        },
+                      },
+                        msIcon('edit', 16),
+                        h('span', {}, 'Ouvrir')
+                      )
+                    )
+                  )
                 )
               )
-            ),
+            ) :
 
-            /* Document Import Dropzone */
-            h('div', { className: 'v1-panel', style: { padding: '16px', border: '1px dashed var(--border-subtle)', background: 'var(--bg-canvas)' } },
-              h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
-                h('div', {},
-                  h('strong', { style: { fontSize: '0.875rem' } }, 'Pré-remplissage automatique depuis un document (DOCX, PDF, XLSX, CSV, JSON)'),
-                  h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                    'Extrait les métadonnées et valeurs sans jamais soumettre automatiquement.'
-                  )
-                ),
-                renderFileUploadComponent({
-                  label: 'Importer document source',
-                  accept: '.docx,.pdf,.xlsx,.csv,.json,.txt',
-                  selectedFilename: V091.selectedFile?.name,
-                  onSelect: file => {
-                    V091.selectedFile = file;
-                    const reader = new FileReader();
-                    reader.onload = e => {
-                      const b64 = e.target.result.split(',')[1];
-                      apiV1('/document-import/preview', 'POST', {
-                        form: currentForm.code,
-                        filename: file.name,
-                        content_base64: b64,
-                        current_values: V091.formValues,
-                      }).then(res => {
-                        V091.prefillPreview = res.proposed_values;
-                        V091.prefillConflicts = res.conflicts || [];
-                        V091.prefillWarnings = res.warnings || [];
-                        renderApp();
-                      }).catch(err => V091.showToast('Erreur import document : ' + err.message, 'error'));
-                    };
-                    reader.readAsDataURL(file);
+            /* VIEW A: Google Forms Style Dynamic Canvas */
+            h('div', { className: 'gf-wrapper', style: { margin: '0', gridColumn: 'auto' } },
+              /* Google Forms Card 0: Header Accent Card */
+              h('div', { className: 'gf-header-card' },
+                h('div', { className: 'gf-header-accent' }),
+                h('div', { className: 'gf-header-card-inner', style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', flexWrap: 'wrap' } },
+                  h('div', { style: { flex: 1, minWidth: '220px' } },
+                    h('div', { style: { display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' } },
+                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: 700 } }, currentForm.code),
+                      h('span', { className: 'v1-badge' }, `${formFields.length} champs natifs`),
+                      isSensitiveForm ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
+                    ),
+                    h('h2', { style: { fontSize: '1.5rem', fontWeight: 700, margin: '4px 0', wordBreak: 'break-word' } },
+                      currentForm.label[V1.lang] || currentForm.label.fr
+                    ),
+                    h('p', { style: { fontSize: '0.875rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
+                      `Standard de saisie ${currentForm.captureStandard || 'V8'} · Formulaire institutionnel CDJP Butare conforme au Plan Stratégique 2026–2031.`
+                    )
+                  ),
+                  h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                    title: 'Dupliquer les valeurs actuelles',
+                    onClick: () => {
+                      const cloned = Object.assign({}, V091.formValues);
+                      cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
+                      if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
+                      V091.formValues = cloned;
+                      V091.showToast('✓ Formulaire dupliqué !', 'info');
+                      renderApp();
+                    },
                   },
-                })
+                    msIcon('content_copy', 16),
+                    h('span', {}, 'Dupliquer')
+                  )
+                )
               ),
+
+              /* Document Import Dropzone */
+              h('div', { className: 'v1-panel v1-seizure-dropzone', style: { padding: '16px', border: '1px dashed var(--border-subtle)', background: 'var(--bg-canvas)' } },
+                h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' } },
+                  h('div', { style: { flex: 1, minWidth: '220px' } },
+                    h('strong', { style: { fontSize: '0.875rem', display: 'block' } }, 'Pré-remplissage automatique depuis un document (DOCX, PDF, XLSX, CSV, JSON)'),
+                    h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
+                      'Extrait les métadonnées et valeurs sans jamais soumettre automatiquement.'
+                    )
+                  ),
+                  renderFileUploadComponent({
+                    label: 'Importer document source',
+                    accept: '.docx,.pdf,.xlsx,.csv,.json,.txt',
+                    selectedFilename: V091.selectedFile?.name,
+                    onSelect: file => {
+                      V091.selectedFile = file;
+                      const reader = new FileReader();
+                      reader.onload = e => {
+                        const b64 = e.target.result.split(',')[1];
+                        apiV1('/document-import/preview', 'POST', {
+                          form: currentForm.code,
+                          filename: file.name,
+                          content_base64: b64,
+                          current_values: V091.formValues,
+                        }).then(res => {
+                          V091.prefillPreview = res.proposed_values;
+                          V091.prefillConflicts = res.conflicts || [];
+                          V091.prefillWarnings = res.warnings || [];
+                          renderApp();
+                        }).catch(err => V091.showToast('Erreur import document : ' + err.message, 'error'));
+                      };
+                      reader.readAsDataURL(file);
+                    },
+                  })
+                ),
               V091.prefillPreview ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)' } },
                 h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
                   h('span', { style: { fontWeight: 600, color: 'var(--color-primary)' } }, `✓ ${Object.keys(V091.prefillPreview).length} champs extraits`),
@@ -1459,7 +1576,7 @@
                     ),
                     h('div', { className: 'v1-grid-16' },
                       ['q1', 'q2', 'q3', 'q4'].map((q, qIdx) =>
-                        h('div', { className: 'v1-panel', style: { gridColumn: 'span 8', padding: '14px' }, key: q },
+                        h('div', { className: 'v1-panel v1-quarter-panel', style: { gridColumn: 'span 8', padding: '14px' }, key: q },
                           h('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', fontWeight: '700', marginBottom: '8px', cursor: 'pointer' } },
                             h('input', {
                               type: 'checkbox',
@@ -1668,6 +1785,7 @@
 
                 /* Step Navigation & Action Bar */
                 h('div', {
+                  className: 'gf-stepper-actions-bar',
                   style: {
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -1682,7 +1800,7 @@
                   }
                 },
                   /* Left: Previous Section (if step > 0) + Reset / Duplicate */
-                  h('div', { style: { display: 'flex', gap: '10px', alignItems: 'center' } },
+                  h('div', { className: 'gf-stepper-left-actions', style: { display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap' } },
                     isStepper && activeSecIdx > 0 ? h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-secondary',
@@ -1728,7 +1846,7 @@
                     )
                   ),
                   /* Right: Save Draft + Next Step / Submit */
-                  h('div', { style: { display: 'flex', gap: '12px', alignItems: 'center' } },
+                  h('div', { className: 'gf-stepper-right-actions', style: { display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' } },
                     h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-secondary',
@@ -1786,6 +1904,7 @@
               );
             })()
           )
+        )
       )
     );
   }
@@ -3047,7 +3166,10 @@
                 h('td', {}, Number(g.approvedBudgetRWF || 0).toLocaleString() + ' RWF'),
                 h('td', {}, Number(g.spentRWF || 0).toLocaleString() + ' RWF'),
                 h('td', {}, (g.partners || []).join(', ') || 'Diocèse'),
-                h('td', {}, Object.entries(g.volets || {}).map(([k, v]) => `${k}: ${v}`).join('; ') || 'Tous volets')
+                h('td', {}, Object.entries(g.volets || {}).map(([k, v]) => {
+                  const norm = (typeof window !== 'undefined' && typeof window.normalizeVolet === 'function') ? window.normalizeVolet(k) : null;
+                  return `${norm ? norm.labelText : k}: ${v}`;
+                }).join('; ') || 'Tous volets')
               )
             ) : [
               h('tr', { key: 'group-1' },
@@ -3298,12 +3420,12 @@
 
     return h('div', { className: 'gf-wrapper' },
       /* Top Bar: Action Buttons & Duplication */
-      h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', flexWrap: 'wrap' } },
+      h('div', { className: 'gf-builder-toolbar' },
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
           h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff' } }, form.code),
           h('span', { className: 'v1-badge' }, form.status === 'ACTIVE' ? 'ACTIF' : 'BROUILLON')
         ),
-        h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap' } },
+        h('div', { className: 'gf-builder-toolbar-actions' },
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-sm v1-btn-secondary',
@@ -3368,7 +3490,7 @@
           value: formDesc,
           onInput: e => { form.description = e.target.value; },
         }),
-        h('div', { style: { display: 'flex', gap: '14px', alignItems: 'center', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)', flexWrap: 'wrap' } },
+        h('div', { className: 'gf-header-meta', style: { display: 'flex', gap: '14px', alignItems: 'center', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)', flexWrap: 'wrap' } },
           h('label', { style: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8125rem', cursor: 'pointer' } },
             h('input', {
               type: 'checkbox',
@@ -3457,15 +3579,19 @@
               }, '+ Ajouter une option')
             ) :
           qType === 'SCALE_1_5' ?
-            h('div', { style: { display: 'flex', alignItems: 'center', gap: '16px', padding: '8px 0' } },
-              h('span', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } }, '1 (Faible)'),
-              [1, 2, 3, 4, 5].map(n =>
-                h('span', {
-                  key: n,
-                  style: { width: '32px', height: '32px', borderRadius: '50%', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '600', fontSize: '0.875rem', background: 'var(--bg-input)' }
-                }, String(n))
+            h('div', { className: 'gf-scale-row' },
+              h('div', { className: 'gf-scale-labels' },
+                h('span', { className: 'gf-scale-label gf-scale-label-min' }, q.minLabel ? `1 (${q.minLabel})` : '1 (Faible)'),
+                h('span', { className: 'gf-scale-label gf-scale-label-max' }, q.maxLabel ? `5 (${q.maxLabel})` : '5 (Remarquable)')
               ),
-              h('span', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } }, '5 (Remarquable)')
+              h('div', { className: 'gf-scale-numbers' },
+                [1, 2, 3, 4, 5].map(n =>
+                  h('span', {
+                    key: n,
+                    className: 'gf-scale-circle'
+                  }, String(n))
+                )
+              )
             ) :
           qType === 'FILE' ?
             h('div', { style: { padding: '16px', border: '1px dashed var(--border-strong)', borderRadius: '8px', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8125rem' } },
@@ -3692,18 +3818,18 @@
       subtitle: form.description || 'Voici l\'interface telle qu\'elle sera présentée aux enquêteurs.',
       icon: 'dynamic_form',
       maxWidth: '720px',
-      content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
+      content: h('div', { className: 'gf-preview-container', style: { display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '100%', boxSizing: 'border-box' } },
         (form.questions || []).map((q, idx) =>
-          h('div', { key: idx, style: { padding: '14px', border: '1px solid var(--border-subtle)', borderRadius: '8px', background: 'var(--bg-input)' } },
-            h('label', { style: { fontWeight: '600', fontSize: '0.875rem', display: 'block', marginBottom: '8px' } },
+          h('div', { key: idx, className: 'gf-preview-card', style: { padding: '14px 12px', border: '1px solid var(--border-subtle)', borderRadius: '8px', background: 'var(--bg-input)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden' } },
+            h('label', { style: { fontWeight: '600', fontSize: '0.875rem', display: 'block', marginBottom: '8px', wordBreak: 'break-word', overflowWrap: 'break-word' } },
               `${idx + 1}. ${q.label?.fr || q.label || q.title || 'Question'}`,
               q.required ? h('span', { style: { color: 'var(--color-danger)', marginLeft: '4px' } }, '*') : null
             ),
             q.type === 'RADIO' ?
               h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
                 (q.options || []).map((opt, oIdx) =>
-                  h('label', { key: oIdx, style: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8125rem', cursor: 'pointer' } },
-                    h('input', { type: 'radio', name: 'preview_' + idx }),
+                  h('label', { key: oIdx, style: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8125rem', cursor: 'pointer', wordBreak: 'break-word' } },
+                    h('input', { type: 'radio', name: 'preview_' + idx, style: { flexShrink: 0 } }),
                     h('span', {}, opt)
                   )
                 )
@@ -3711,20 +3837,35 @@
             q.type === 'CHECKBOX' ?
               h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
                 (q.options || []).map((opt, oIdx) =>
-                  h('label', { key: oIdx, style: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8125rem', cursor: 'pointer' } },
-                    h('input', { type: 'checkbox' }),
+                  h('label', { key: oIdx, style: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8125rem', cursor: 'pointer', wordBreak: 'break-word' } },
+                    h('input', { type: 'checkbox', style: { flexShrink: 0 } }),
                     h('span', {}, opt)
                   )
                 )
               ) :
             q.type === 'DROPDOWN' ?
-              h('select', { className: 'v1-select', style: { width: '100%' } },
+              h('select', { className: 'v1-select', style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } },
                 h('option', { value: '' }, '-- Sélectionner une option --'),
                 (q.options || []).map((opt, oIdx) => h('option', { key: oIdx, value: opt }, opt))
               ) :
+            q.type === 'SCALE_1_5' ?
+              h('div', { className: 'gf-scale-row' },
+                h('div', { className: 'gf-scale-labels' },
+                  h('span', { className: 'gf-scale-label gf-scale-label-min' }, q.minLabel ? `1 (${q.minLabel})` : '1 (Faible)'),
+                  h('span', { className: 'gf-scale-label gf-scale-label-max' }, q.maxLabel ? `5 (${q.maxLabel})` : '5 (Remarquable)')
+                ),
+                h('div', { className: 'gf-scale-numbers' },
+                  [1, 2, 3, 4, 5].map(n =>
+                    h('span', {
+                      key: n,
+                      className: 'gf-scale-circle'
+                    }, String(n))
+                  )
+                )
+              ) :
             q.type === 'LONG_TEXT' ?
-              h('textarea', { className: 'v1-textarea', placeholder: 'Saisissez votre réponse ici...', rows: 3 }) :
-              h('input', { className: 'v1-input', type: q.type === 'NUMBER' ? 'number' : (q.type === 'DATE' ? 'date' : 'text'), placeholder: 'Votre réponse...' })
+              h('textarea', { className: 'v1-textarea', placeholder: 'Saisissez votre réponse ici...', rows: 3, style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } }) :
+              h('input', { className: 'v1-input', type: q.type === 'NUMBER' ? 'number' : (q.type === 'DATE' ? 'date' : 'text'), placeholder: 'Votre réponse...', style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } })
           )
         )
       ),
@@ -3732,6 +3873,11 @@
         { label: 'Fermer l\'aperçu', type: 'primary', onClick: () => V091.closeModal() }
       ]
     });
+  }
+
+  V091.renderFormPreviewModal = renderFormPreviewModal;
+  if (typeof window !== 'undefined') {
+    window.renderFormPreviewModal = renderFormPreviewModal;
   }
 
   function renderDraftsWorkspace() {
