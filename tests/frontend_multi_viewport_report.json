@@ -17,7 +17,7 @@
       "title": "16-Column Carbon Grid: 4 KPI Cards in 1 Row (span 4) & 2 Split Panels (span 8)",
       "status": "PASS",
       "passed": true,
-      "details": "KPI tops=[633, 633, 633, 633] widths=[251, 251, 251, 251]px; Panel tops=[804, 804] widths=[523, 523]px; canvasPad=32px"
+      "details": "KPI tops=[625, 625, 625, 625] widths=[251, 251, 251, 251]px; Panel tops=[796, 796] widths=[523, 523]px; canvasPad=32px"
     },
     {
       "test_id": "TC-UI-03",
@@ -65,7 +65,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[696, 696, 848, 848] (2x2=True), panelTops=[1003, 1375] widths=[736, 736]px (stacked=True)"
+      "details": "kpiTops=[688, 688, 840, 840] (2x2=True), panelTops=[995, 1367] widths=[736, 736]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -89,7 +89,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[696, 696, 848, 848] (2x2=True), panelTops=[1003, 1375] widths=[992, 992]px (stacked=True)"
+      "details": "kpiTops=[688, 688, 840, 840] (2x2=True), panelTops=[995, 1367] widths=[992, 992]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[660, 795, 929, 1045]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[715, 850, 984, 1100]"
     },
     {
       "test_id": "TC-UI-11",
@@ -137,7 +137,7 @@
       "title": "Cisco Momentum Progress Header, 2x2 Stepper Bar & Sticky Footer (bottom: 60px)",
       "status": "PASS",
       "passed": true,
-      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[295, 295, 363, 363]), footer=sticky bottom=60px"
+      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[350, 350, 418, 418]), footer=sticky bottom=60px"
     },
     {
       "test_id": "TC-UI-14",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[638, 773, 908, 1023]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[693, 828, 963, 1078]"
     },
     {
       "test_id": "TC-UI-11",
@@ -185,7 +185,7 @@
       "title": "Cisco Momentum Progress Header, 2x2 Stepper Bar & Sticky Footer (bottom: 60px)",
       "status": "PASS",
       "passed": true,
-      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[295, 295, 363, 363]), footer=sticky bottom=60px"
+      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[350, 350, 418, 418]), footer=sticky bottom=60px"
     },
     {
       "test_id": "TC-UI-14",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-C9708F', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-F257C3', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",

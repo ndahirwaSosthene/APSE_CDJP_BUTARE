@@ -2671,34 +2671,38 @@
       h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' } },
         h('div', { style: { display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' } },
           /* Year segmented */
-          h('div', { className: 'v1-segmented' },
-            ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) =>
-              h('button', {
-                type: 'button',
-                key: ap,
-                className: 'v1-seg-btn' + (V091.planningYear === ap ? ' active' : ''),
-                onClick: () => {
-                  V091.planningYear = ap;
-                  renderApp();
-                },
-              }, `${ap} (202${6 + idx}–202${7 + idx})`)
+          h('div', { className: 'v1-segmented-scroll' },
+            h('div', { className: 'v1-segmented' },
+              ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) =>
+                h('button', {
+                  type: 'button',
+                  key: ap,
+                  className: 'v1-seg-btn' + (V091.planningYear === ap ? ' active' : ''),
+                  onClick: () => {
+                    V091.planningYear = ap;
+                    renderApp();
+                  },
+                }, `${ap} (${2026 + idx}–${2027 + idx})`)
+              )
             )
           ),
           /* Audience segmented */
-          h('div', { className: 'v1-segmented' },
-            [
-              ['STAFF', 'Personnel CDJP Diocèse'],
-              ['CPJP', 'Comités Paroissiaux CPJP'],
-            ].map(([aud, lbl]) =>
-              h('button', {
-                type: 'button',
-                key: aud,
-                className: 'v1-seg-btn' + (V091.planningAudience === aud ? ' active' : ''),
-                onClick: () => {
-                  V091.planningAudience = aud;
-                  renderApp();
-                },
-              }, lbl)
+          h('div', { className: 'v1-segmented-scroll' },
+            h('div', { className: 'v1-segmented' },
+              [
+                ['STAFF', 'Personnel CDJP Diocèse'],
+                ['CPJP', 'Comités Paroissiaux CPJP'],
+              ].map(([aud, lbl]) =>
+                h('button', {
+                  type: 'button',
+                  key: aud,
+                  className: 'v1-seg-btn' + (V091.planningAudience === aud ? ' active' : ''),
+                  onClick: () => {
+                    V091.planningAudience = aud;
+                    renderApp();
+                  },
+                }, lbl)
+              )
             )
           )
         ),
@@ -2706,7 +2710,7 @@
         /* Filter Pills & Live Search Row */
         h('div', { style: { display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' } },
           /* Axis Chips */
-          h('div', { className: 'v1-chips', style: { flex: 1, minWidth: '320px' } },
+          h('div', { className: 'v1-chips', style: { flex: '1 1 240px', minWidth: 0 } },
             [
               ['ALL', 'Tous les axes (5)'],
               ['A1', 'A1 · Guérison & Réconciliation'],
@@ -2719,7 +2723,7 @@
                 type: 'button',
                 key: ax,
                 className: 'v1-chip' + (V091.planningFilterAxis === ax ? ' active' : ''),
-                style: { fontSize: '0.75rem', padding: '4px 10px' },
+                style: { padding: '4px 10px' },
                 onClick: () => {
                   V091.planningFilterAxis = ax;
                   renderApp();
@@ -2729,22 +2733,24 @@
           ),
 
           /* Type Filter */
-          h('div', { className: 'v1-segmented' },
-            [
-              ['ALL', `Tous (${allItems.length})`],
-              ['TASK', `Tâches annuelles (${annualTasks.length})`],
-              ['LINE', `Lignes indicatives (${operationalLines.length})`],
-            ].map(([t, lbl]) =>
-              h('button', {
-                type: 'button',
-                key: t,
-                className: 'v1-seg-btn' + (V091.planningFilterType === t ? ' active' : ''),
-                style: { fontSize: '0.75rem', padding: '4px 8px' },
-                onClick: () => {
-                  V091.planningFilterType = t;
-                  renderApp();
-                }
-              }, lbl)
+          h('div', { className: 'v1-segmented-scroll' },
+            h('div', { className: 'v1-segmented' },
+              [
+                ['ALL', `Tous (${allItems.length})`],
+                ['TASK', `Tâches annuelles (${annualTasks.length})`],
+                ['LINE', `Lignes indicatives (${operationalLines.length})`],
+              ].map(([t, lbl]) =>
+                h('button', {
+                  type: 'button',
+                  key: t,
+                  className: 'v1-seg-btn' + (V091.planningFilterType === t ? ' active' : ''),
+                  style: { fontSize: '0.75rem', padding: '4px 8px' },
+                  onClick: () => {
+                    V091.planningFilterType = t;
+                    renderApp();
+                  }
+                }, lbl)
+              )
             )
           ),
 
@@ -2758,7 +2764,7 @@
               V091.planningSearch = e.target.value;
               renderApp();
             },
-            style: { width: '280px', height: '34px', fontSize: '0.8125rem' }
+            style: { flex: '1 1 200px', maxWidth: '100%', height: '34px', fontSize: '0.8125rem', boxSizing: 'border-box' }
           })
         )
       ),
@@ -2782,7 +2788,7 @@
           ),
 
           /* Cards Grid */
-          h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(420px, 1fr))', gap: '16px' } },
+          h('div', { className: 'v1-planning-cards-grid' },
             axisItems.map(item => {
               const itemTitle = (item.labels && (item.labels[lang] || item.labels.fr || item.labels.en || item.labels.rw || item.labels.sw)) || item.code;
               const isLine = !!item.indicativeMillionsRWF;
@@ -2891,8 +2897,8 @@
       h('div', { className: 'v1-grid-16' },
         metaCategories.map(cat =>
           h('div', {
-            className: 'v1-panel v1-card-interactive',
-            style: { gridColumn: 'span 4', padding: '16px', cursor: 'pointer' },
+            className: 'v1-panel v1-card-interactive v1-metadata-card',
+            style: { gridColumn: 'span 8', padding: '16px', cursor: 'pointer' },
             onClick: () => {
               V091.showMetadataDetailsModal(cat);
             },
@@ -2972,39 +2978,41 @@
             h('option', { value: 'ALL' }, 'Niveau : Tout le circuit d’approbation')
           )
         ),
-        h('div', { style: { display: 'flex', gap: '12px' } },
+        h('div', { className: 'v1-feedback-input-box' },
           h('textarea', {
             className: 'v1-textarea',
-            rows: 2,
+            rows: 3,
             placeholder: 'Rédiger une observation confidentielle avec justification précise...',
             value: V091.feedbackText,
             onInput: e => { V091.feedbackText = e.target.value; },
-            style: { flex: 1 }
+            style: { width: '100%', boxSizing: 'border-box' }
           }),
-          h('button', {
-            type: 'button',
-            className: 'v1-btn v1-btn-primary',
-            style: { alignSelf: 'flex-end', height: '40px' },
-            onClick: () => {
-              if (!V091.feedbackText.trim()) {
-                V091.showToast("Veuillez saisir un texte d'observation.", 'error');
-                return;
-              }
-              const rec = V091.selectedRecordForFeedback || 'rec-f44-q1-gakoma';
-              apiV1('/feedback', 'POST', {
-                record: rec,
-                text: V091.feedbackText,
-                recipient: V091.feedbackRecipient,
-              }).then(() => {
-                V091.showToast('✓ Message interne enregistré avec succès.', 'info');
-                V091.feedbackText = '';
-                V091.inboxData = null; // force reload
-                renderApp();
-              }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
+          h('div', { style: { display: 'flex', justifyContent: 'flex-end' } },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-primary',
+              style: { height: '40px' },
+              onClick: () => {
+                if (!V091.feedbackText.trim()) {
+                  V091.showToast("Veuillez saisir un texte d'observation.", 'error');
+                  return;
+                }
+                const rec = V091.selectedRecordForFeedback || 'rec-f44-q1-gakoma';
+                apiV1('/feedback', 'POST', {
+                  record: rec,
+                  text: V091.feedbackText,
+                  recipient: V091.feedbackRecipient,
+                }).then(() => {
+                  V091.showToast('✓ Message interne enregistré avec succès.', 'info');
+                  V091.feedbackText = '';
+                  V091.inboxData = null; // force reload
+                  renderApp();
+                }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
+              },
             },
-          },
-            msIcon('send', 16),
-            h('span', {}, 'Transmettre')
+              msIcon('send', 16),
+              h('span', {}, 'Transmettre')
+            )
           )
         )
       ),
@@ -4031,11 +4039,13 @@
 
       /* Writing Assistant Box with Task Selector */
       h('div', { className: 'v1-panel', style: { padding: '24px' } },
-        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' } },
-          h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', margin: 0 } }, 'Outils d’assistance rédactionnelle'),
-          h('div', { style: { display: 'flex', gap: '10px' } },
+        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', margin: '0 0 16px' } }, 'Outils d’assistance rédactionnelle'),
+        h('div', { className: 'v1-assistant-toolbar', style: { display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' } },
+          h('label', { style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } }, 'Sélectionner l’utilitaire d’assistance :'),
+          h('div', { className: 'v1-assistant-controls' },
             h('select', {
               className: 'v1-select',
+              style: { height: '40px', boxSizing: 'border-box' },
               value: V091.assistantTask,
               onChange: e => { V091.assistantTask = e.target.value; renderApp(); }
             },
@@ -4049,6 +4059,7 @@
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-primary',
+              style: { height: '40px', flexShrink: 0 },
               onClick: () => {
                 apiV1('/assistant', 'POST', {
                   form: V091.assistantForm,
@@ -4144,11 +4155,11 @@
       /* Contacts Cards Grid */
       h('div', { className: 'v1-grid-16' },
         contactsList.map((c, cIdx) =>
-          h('div', { key: cIdx, className: 'v1-panel v1-card-interactive', style: { gridColumn: 'span 8', padding: '20px' } },
+          h('div', { key: cIdx, className: 'v1-panel v1-card-interactive v1-contact-card', style: { gridColumn: 'span 16', padding: '20px' } },
             h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' } },
               h('div', {},
-                h('strong', { style: { fontSize: '1.0625rem', color: 'var(--text-primary)', display: 'block' } }, c.name || c.fullname),
-                h('span', { className: 'v1-badge', style: { marginTop: '4px', marginBottom: '12px' } }, c.role || c.position || 'Poste institutionnel')
+                h('strong', { style: { fontSize: '1.0625rem', color: 'var(--text-primary)', display: 'block' } }, c.full_name || c.name || c.fullname || 'Personnel CDJP'),
+                h('span', { className: 'v1-badge', style: { marginTop: '4px', marginBottom: '12px' } }, c.position_title || c.role || c.position || c.position_code || 'Poste institutionnel')
               ),
               msIcon('contacts', 24)
             ),
@@ -4227,14 +4238,26 @@
       /* 5 Data Flow Steps */
       h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
         h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, 'Circuit officiel de remontée et de validation des données'),
-        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '10px' } },
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
           flowSteps.map((s, idx) =>
-            h('div', { key: idx, style: { display: 'flex', gap: '14px', padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', alignItems: 'flex-start' } },
-              h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700', padding: '4px 10px', fontSize: '0.8125rem' } }, `Étape ${s.step || idx + 1}`),
-              h('div', {},
-                h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)', display: 'block', marginBottom: '4px' } }, s.label),
-                h('span', { style: { color: 'var(--text-secondary)', fontSize: '0.8125rem', lineHeight: 1.4 } }, s.detail)
-              )
+            h('div', {
+              key: idx,
+              className: 'v1-panel',
+              style: {
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px',
+                padding: '16px 20px',
+                background: 'var(--bg-canvas)',
+                borderRadius: 'var(--radius-sm)',
+                borderLeft: '4px solid var(--color-primary)'
+              }
+            },
+              h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
+                h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700', padding: '4px 10px', fontSize: '0.75rem' } }, `Étape ${s.step || idx + 1}`)
+              ),
+              h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)', display: 'block' } }, s.label),
+              h('p', { style: { color: 'var(--text-secondary)', fontSize: '0.8125rem', lineHeight: '1.45', margin: 0 } }, s.detail)
             )
           )
         )

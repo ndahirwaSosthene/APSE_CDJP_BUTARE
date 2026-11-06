@@ -1474,7 +1474,7 @@ function renderWizardView() {
       { code: 'SURVEY', title: 'Survey Distribution / CSV Upload', desc: 'Track distributed vs. returned forms or upload a spreadsheet' },
       { code: 'OBSERVATION', title: 'Field Observation', desc: 'Interactive field checklist and direct site verification notes' },
     ];
-    stepContent = h('div', {},
+    stepContent = h('div', { className: 'v1-wizard-step-content' },
       h('div', { style: { background: 'var(--bg-input)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' } },
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' } },
           renderLozenge(localize(task.axis_labels), 'neutral'),
@@ -1651,7 +1651,7 @@ function renderWizardView() {
       )
     );
   } else if (w.step === 2) {
-    stepContent = h('div', {},
+    stepContent = h('div', { className: 'v1-wizard-step-content' },
       h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } }, 'Participant Counts (Auto-Calculated Total)'),
       h('div', { className: 'v1-number-grid' },
         renderStepperInput('Women Participants', w.women, val => {
@@ -1800,7 +1800,7 @@ function renderWizardView() {
       { code: 'MEDIUM', label: 'Medium', icon: 'warning' },
       { code: 'MAJOR', label: 'Major', icon: 'error' },
     ];
-    stepContent = h('div', {},
+    stepContent = h('div', { className: 'v1-wizard-step-content' },
       h('div', { style: { background: 'var(--bg-input)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '20px' } },
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' } },
           h('div', {},
@@ -1930,7 +1930,7 @@ function renderWizardView() {
     );
   } else if (w.step === 4) {
     const actionPct = Math.min(100, Math.round((Number(w.sessions_done || 0) / Number(task.planned_target || 1)) * 100));
-    stepContent = h('div', {},
+    stepContent = h('div', { className: 'v1-wizard-step-content' },
       h('h2', { className: 'v1-section-title', style: { marginBottom: '14px' } }, 'Quick Summary Before Submitting'),
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '18px' } },
         h('div', { className: 'v1-kpi-card v1-step4-card-5' },
@@ -2020,6 +2020,7 @@ function renderWizardView() {
           )
         : null,
       stepContent,
+      h('div', { className: 'v1-wizard-bottom-clearance', 'aria-hidden': 'true' }),
       /* Section 3.2 & 5.2: Carbon Ghost Back + Single Primary Action Button (Sticky on Mobile) */
       h('div', { className: 'v1-wizard-footer' },
         w.step > 1
@@ -2339,55 +2340,64 @@ function renderTasksWorkspace() {
         const needsFix = t.status === 'NEEDS_CORRECTION';
         const hasLocalDraft = !!localStorage.getItem('apse-v1-draft-' + t.id);
         return h('article', { className: 'v1-task-card' },
-          h('div', { className: 'v1-task-left' },
-            h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')) },
-              isDone ? msIcon('check', 16) : (needsFix ? msIcon('error', 16) : msIcon('assignment', 16))
+          /* 1. Header Row: Title on Left, Badges on Right */
+          h('div', { className: 'v1-task-header-row' },
+            h('div', { className: 'v1-task-title-group' },
+              h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')) },
+                isDone ? msIcon('check', 16) : (needsFix ? msIcon('error', 16) : msIcon('assignment', 16))
+              ),
+              h('h3', { className: 'v1-task-title' }, localize(t.titles))
             ),
-            h('div', { style: { flex: 1, minWidth: 0 } },
-              h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' } },
-                h('h3', { className: 'v1-task-title' }, localize(t.titles)),
-                h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
-                  t.is_sensitive ? renderLozenge('Confidential', 'LOW', 'lock') : null,
-                  hasLocalDraft ? renderLozenge('Saved Draft', 'GOOD', 'description') : null,
-                  renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
-                )
-              ),
-              /* Section 2.2 Neutral Metadata Lozenges for hidden-code labels */
-              h('div', { className: 'v1-task-meta' },
-                renderLozenge(`${t.parish_name} Parish`, 'neutral'),
-                renderLozenge(localize(t.axis_labels), 'neutral'),
-                renderLozenge(t.pastoral_quarter, 'neutral'),
-                h('span', { className: 'v1-tabular' }, `Due ${t.due_date}`),
-                t.frequency > 1 ? h('span', { className: 'v1-tabular' }, `· Quarterly (${t.quarters_completed}/${t.frequency} logged)`) : null
-              ),
-              h('div', { className: 'v1-progress-wrap' },
-                h('div', { className: 'v1-progress-bar' },
-                  h('div', { className: 'v1-progress-fill' + (isDone ? ' great' : ''), style: { width: `${t.completion_pct}%` } })
-                ),
-                h('span', { className: 'v1-progress-stat', style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } },
-                  `${t.completion_pct}% (${t.completed_units}/${t.planned_target} ${t.unit_label})`
-                )
-              )
+            h('div', { className: 'v1-task-status-badges' },
+              t.is_sensitive ? renderLozenge('Confidential', 'LOW', 'lock') : null,
+              hasLocalDraft ? renderLozenge('Saved Draft', 'GOOD', 'description') : null,
+              renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
             )
           ),
-          h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
-            needsFix
-              ? h('button', {
-                  type: 'button',
-                  className: 'v1-btn v1-btn-danger',
-                  onClick: () => openWizardForTask(t, t.latest_log, t.latest_log?.payload?.correction_step || 1),
-                },
-                h('span', {}, L('fix_step', t.latest_log?.payload?.correction_step || 1)),
-                msIcon('arrow_forward', 20)
+
+          /* 2. Dedicated Meta Tag Rail (Parish, Axis, Quarter) */
+          h('div', { className: 'v1-task-tags' },
+            renderLozenge(`${t.parish_name} Parish`, 'neutral'),
+            renderLozenge(localize(t.axis_labels), 'neutral'),
+            renderLozenge(t.pastoral_quarter, 'neutral')
+          ),
+
+          /* 3. Dedicated Schedule & Date Row */
+          h('div', { className: 'v1-task-schedule' },
+            msIcon('calendar_today', 14),
+            h('span', { className: 'v1-tabular' }, `Due ${t.due_date}`),
+            t.frequency > 1 ? h('span', { className: 'v1-tabular' }, ` · Quarterly (${t.quarters_completed}/${t.frequency} logged)`) : null
+          ),
+
+          /* 4. Dedicated Bottom Row: Progress on Left, Action CTA on Right */
+          h('div', { className: 'v1-task-bottom-row' },
+            h('div', { className: 'v1-progress-wrap' },
+              h('div', { className: 'v1-progress-bar' },
+                h('div', { className: 'v1-progress-fill' + (isDone ? ' great' : ''), style: { width: `${t.completion_pct}%` } })
+              ),
+              h('span', { className: 'v1-progress-stat', style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } },
+                `${t.completion_pct}% (${t.completed_units}/${t.planned_target} ${t.unit_label})`
               )
-              : h('button', {
-                  type: 'button',
-                  className: 'v1-btn ' + (isDone ? 'v1-btn-ghost' : 'v1-btn-secondary'),
-                  onClick: () => openWizardForTask(t, t.latest_log),
-                },
-                h('span', {}, isDone ? L('view_summary') : L('log_progress')),
-                msIcon('chevron_right', 20)
-              )
+            ),
+            h('div', { className: 'v1-task-action' },
+              needsFix
+                ? h('button', {
+                    type: 'button',
+                    className: 'v1-btn v1-btn-danger',
+                    onClick: () => openWizardForTask(t, t.latest_log, t.latest_log?.payload?.correction_step || 1),
+                  },
+                  h('span', {}, L('fix_step', t.latest_log?.payload?.correction_step || 1)),
+                  msIcon('arrow_forward', 20)
+                )
+                : h('button', {
+                    type: 'button',
+                    className: 'v1-btn ' + (isDone ? 'v1-btn-ghost' : 'v1-btn-secondary'),
+                    onClick: () => openWizardForTask(t, t.latest_log),
+                  },
+                  h('span', {}, isDone ? L('view_summary') : L('log_progress')),
+                  msIcon('chevron_right', 20)
+                )
+            )
           )
         );
       })
@@ -3249,8 +3259,12 @@ function renderExportsWorkspace() {
 }
 
 
-/* Mobile Search Overlay with Blurred Backdrop & Live Matches */
+/* Mobile Search Overlay replaced by In-Page Mobile Search Strip */
 function renderMobileSearchOverlay() {
+  return null;
+}
+
+function _unused_renderMobileSearchOverlay() {
   if (!V1.mobileSearchOpen) return null;
   const q = (V1.searchQuery || '').toLowerCase().trim();
   const results = [];
@@ -3846,18 +3860,6 @@ function renderApp() {
           },
         })
       ),
-      /* Dedicated Mobile Search Icon Button */
-      h('button', {
-        type: 'button',
-        className: 'v1-mobile-search-btn',
-        title: 'Search / Shakisha',
-        onClick: () => {
-          V1.mobileSearchOpen = true;
-          renderApp();
-        },
-      },
-        msIcon('search', 20)
-      ),
       h('div', { className: 'v1-topbar-right' },
         h('button', {
           type: 'button',
@@ -3928,6 +3930,31 @@ function renderApp() {
             renderApp();
           },
         }, V1.data?.user?.name || 'LOCAL_MEL')
+      )
+    ),
+    /* In-Page Mobile Search Strip (Clean, non-intrusive, stays in the page without competing with topbar elements) */
+    h('div', { className: 'v1-mobile-search-bar' },
+      h('div', { className: 'v1-mobile-search-inner' },
+        h('span', { className: 'v1-search-icon' }, msIcon('search', 18)),
+        h('input', {
+          type: 'search',
+          className: 'v1-search-input v1-mobile-search-input',
+          placeholder: L('search_placeholder'),
+          value: V1.searchQuery,
+          onInput: e => {
+            V1.searchQuery = e.target.value;
+            renderApp();
+          },
+        }),
+        V1.searchQuery ? h('button', {
+          type: 'button',
+          className: 'v1-search-clear-btn',
+          title: 'Clear search',
+          onClick: () => {
+            V1.searchQuery = '';
+            renderApp();
+          }
+        }, msIcon('close', 14)) : null
       )
     ),
     /* Main Shell: Fixed 240px Left Navigation + Fluid 16-Column Workspace Canvas */
