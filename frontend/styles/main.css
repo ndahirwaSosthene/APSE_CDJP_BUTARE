@@ -750,6 +750,98 @@ th {
   box-sizing: border-box;
 }
 
+.v1-contact-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  width: 100%;
+}
+
+.v1-contact-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.v1-contact-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 102px;
+  width: 102px;
+  min-width: 102px;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.v1-contact-label .ms-icon,
+.v1-contact-label svg {
+  flex-shrink: 0;
+  color: var(--text-secondary);
+}
+
+.v1-contact-value {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.v1-contact-phone {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.v1-contact-phone a {
+  color: var(--color-primary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.v1-contact-phone a:hover {
+  text-decoration: underline;
+}
+
+.v1-contact-email {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.v1-contact-email a {
+  display: inline-block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-primary);
+  text-decoration: none;
+  font-size: 0.8125rem;
+}
+
+.v1-contact-email a:hover {
+  text-decoration: underline;
+}
+
+.v1-contact-office {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
 .v1-planning-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -1217,15 +1309,15 @@ th {
 .v1-task-header-row {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
   gap: 12px;
-  flex-wrap: wrap;
+  width: 100%;
 }
 
 .v1-task-title-group {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
-  gap: 12px;
+  gap: 8px;
   flex: 1;
   min-width: 0;
 }
@@ -1267,7 +1359,7 @@ th {
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  flex-shrink: 0;
+  width: 100%;
 }
 
 .v1-task-tags {
@@ -2265,6 +2357,29 @@ details[open] .v1-accordion-chevron {
   }
   .v1-contact-card {
     grid-column: span 16 !important;
+    padding: 14px 16px !important;
+  }
+  .v1-contact-row {
+    gap: 8px !important;
+  }
+  .v1-contact-label {
+    flex: 0 0 92px !important;
+    width: 92px !important;
+    min-width: 92px !important;
+    font-size: 0.75rem !important;
+  }
+  .v1-contact-value {
+    font-size: 0.75rem !important;
+  }
+  .v1-contact-email a {
+    font-size: clamp(0.6875rem, 2.7vw, 0.75rem) !important;
+    letter-spacing: -0.015em;
+  }
+  .v1-task-header-row {
+    gap: 10px;
+  }
+  .v1-task-title-group {
+    gap: 6px;
   }
   .v1-planning-cards-grid {
     grid-template-columns: 1fr !important;

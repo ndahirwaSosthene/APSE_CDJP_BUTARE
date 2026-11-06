@@ -4163,16 +4163,35 @@
               ),
               msIcon('contacts', 24)
             ),
-            h('div', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', display: 'flex', flexDirection: 'column', gap: '6px' } },
-              h('div', {},
-                h('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('phone', 14), h('strong', {}, 'Téléphone : ')),
-                h('a', { href: `tel:${c.phone}`, style: { color: 'var(--color-primary)', textDecoration: 'none' } }, c.phone || 'Non renseigné')
+            /* Contact Details: 2-Column Key/Value Grid with Horizontally Aligned Labels & Values */
+            h('div', { className: 'v1-contact-info-list' },
+              h('div', { className: 'v1-contact-row' },
+                h('div', { className: 'v1-contact-label' },
+                  msIcon('phone', 14),
+                  h('strong', {}, 'Téléphone :')
+                ),
+                h('div', { className: 'v1-contact-value v1-contact-phone' },
+                  h('a', { href: `tel:${c.phone}` }, c.phone || 'Non renseigné')
+                )
               ),
-              h('div', {},
-                h('span', { style: { display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('mail', 14), h('strong', {}, 'Email : ')),
-                h('a', { href: `mailto:${c.email}`, style: { color: 'var(--color-primary)', textDecoration: 'none' } }, c.email || 'Non renseigné')
+              h('div', { className: 'v1-contact-row' },
+                h('div', { className: 'v1-contact-label' },
+                  msIcon('mail', 14),
+                  h('strong', {}, 'Email :')
+                ),
+                h('div', { className: 'v1-contact-value v1-contact-email' },
+                  h('a', { href: `mailto:${c.email}`, title: c.email || '' }, c.email || 'Non renseigné')
+                )
               ),
-              c.office ? h('div', { style: { display: 'flex', alignItems: 'center', gap: '6px' } }, msIcon('place', 14), h('strong', {}, 'Bureau : '), c.office) : null
+              c.office ? h('div', { className: 'v1-contact-row' },
+                h('div', { className: 'v1-contact-label' },
+                  msIcon('place', 14),
+                  h('strong', {}, 'Bureau :')
+                ),
+                h('div', { className: 'v1-contact-value v1-contact-office' },
+                  c.office
+                )
+              ) : null
             )
           )
         )

@@ -2340,18 +2340,18 @@ function renderTasksWorkspace() {
         const needsFix = t.status === 'NEEDS_CORRECTION';
         const hasLocalDraft = !!localStorage.getItem('apse-v1-draft-' + t.id);
         return h('article', { className: 'v1-task-card' },
-          /* 1. Header Row: Title on Left, Badges on Right */
+          /* 1. Header Row: Check Icon on Left, Title + Status Badges Stacked on Right */
           h('div', { className: 'v1-task-header-row' },
-            h('div', { className: 'v1-task-title-group' },
-              h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')) },
-                isDone ? msIcon('check', 16) : (needsFix ? msIcon('error', 16) : msIcon('assignment', 16))
-              ),
-              h('h3', { className: 'v1-task-title' }, localize(t.titles))
+            h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')) },
+              isDone ? msIcon('check', 16) : (needsFix ? msIcon('error', 16) : msIcon('assignment', 16))
             ),
-            h('div', { className: 'v1-task-status-badges' },
-              t.is_sensitive ? renderLozenge('Confidential', 'LOW', 'lock') : null,
-              hasLocalDraft ? renderLozenge('Saved Draft', 'GOOD', 'description') : null,
-              renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
+            h('div', { className: 'v1-task-title-group' },
+              h('h3', { className: 'v1-task-title' }, localize(t.titles)),
+              h('div', { className: 'v1-task-status-badges' },
+                t.is_sensitive ? renderLozenge('Confidential', 'LOW', 'lock') : null,
+                hasLocalDraft ? renderLozenge('Saved Draft', 'GOOD', 'description') : null,
+                renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
+              )
             )
           ),
 
