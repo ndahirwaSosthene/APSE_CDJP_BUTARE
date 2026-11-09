@@ -17,7 +17,7 @@
       "title": "16-Column Carbon Grid: 4 KPI Cards in 1 Row (span 4) & 2 Split Panels (span 8)",
       "status": "PASS",
       "passed": true,
-      "details": "KPI tops=[625, 625, 625, 625] widths=[251, 251, 251, 251]px; Panel tops=[796, 796] widths=[523, 523]px; canvasPad=32px"
+      "details": "KPI tops=[401, 401, 401, 401] widths=[251, 251, 251, 251]px; Panel tops=[572, 572] widths=[523, 523]px; canvasPad=32px"
     },
     {
       "test_id": "TC-UI-03",
@@ -65,7 +65,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[688, 688, 840, 840] (2x2=True), panelTops=[995, 1367] widths=[736, 736]px (stacked=True)"
+      "details": "kpiTops=[470, 470, 622, 622] (2x2=True), panelTops=[777, 1149] widths=[736, 736]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -89,7 +89,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[688, 688, 840, 840] (2x2=True), panelTops=[995, 1367] widths=[992, 992]px (stacked=True)"
+      "details": "kpiTops=[422, 422, 574, 574] (2x2=True), panelTops=[729, 1101] widths=[992, 992]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-A1FFAF', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-0F8046', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",

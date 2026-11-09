@@ -2363,6 +2363,10 @@ async function syncCuRulesToV1Filters() {
       V1.filters.parish = r.operator === 'is' ? (r.value || '') : '';
     } else if (r.field === 'status') {
       V1.filters.status = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
+    } else if (r.field === 'approvalStage') {
+      V1.filters.approvalStage = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
+    } else if (r.field === 'issueCategory') {
+      V1.filters.issueCategory = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
     } else if (r.field === 'period') {
       V1.filters.period = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
     } else if (r.field === 'dueDate' && r.operator === 'is' && r.value) {
@@ -2373,7 +2377,7 @@ async function syncCuRulesToV1Filters() {
   renderApp();
 }
 
-function matchesCuFilterRules(task) {
+function matchesCuFilterRules(item) {
   const rules = (V1.cuFilterRules || []).filter(r =>
     r.operator === 'is_set' || r.operator === 'is_not_set' || (r.value !== '' && r.value !== 'ALL')
   );
@@ -2381,12 +2385,13 @@ function matchesCuFilterRules(task) {
 
   const evalRule = r => {
     let fieldVal = '';
-    if (r.field === 'axis') fieldVal = task.axis || task.axis_code || '';
-    else if (r.field === 'parish') fieldVal = task.parish_code || '';
-    else if (r.field === 'status') fieldVal = task.status || '';
-    else if (r.field === 'period') fieldVal = task.pastoral_quarter || task.ap || '';
-    else if (r.field === 'impact') fieldVal = task.impact_rating || '';
-    else if (r.field === 'dueDate') fieldVal = String(task.due_date || '');
+    if (r.field === 'axis') fieldVal = item.axis || item.axis_code || '';
+    else if (r.field === 'parish') fieldVal = item.parish_code || '';
+    else if (r.field === 'status') fieldVal = item.status || '';
+    else if (r.field === 'approvalStage') fieldVal = item.stage || '';
+    else if (r.field === 'period') fieldVal = item.pastoral_quarter || item.ap || '';
+    else if (r.field === 'impact') fieldVal = item.impact_rating || '';
+    else if (r.field === 'dueDate') fieldVal = String(item.due_date || item.event_date || '');
 
     if (r.operator === 'is_set') return Boolean(fieldVal && fieldVal !== 'PENDING');
     if (r.operator === 'is_not_set') return !fieldVal || fieldVal === 'PENDING';
@@ -2401,18 +2406,22 @@ function matchesCuFilterRules(task) {
   return rules.every(evalRule);
 }
 
-/* ClickUp-Style Multi-Rule Filter Popover (Screenshots 2 & 3) */
-function renderClickUpFilterPopover(themes) {
+/* ClickUp-Style Multi-Rule Filter Popover (Theme-Adaptive, No AI Bar) */
+function renderClickUpFilterPopover(themes, options) {
+  const mode = (options && options.mode) || 'tasks';
   const parishes = V1.data?.parishes || [];
-  const rules = V1.cuFilterRules || (V1.cuFilterRules = [{ id: 'rule-1', field: 'axis', operator: 'is', value: V1.filters.axis || '' }]);
+  const defaultFirstField = mode === 'approvals' ? 'approvalStage' : 'axis';
+  const rules = V1.cuFilterRules || (V1.cuFilterRules = [{ id: 'rule-1', field: defaultFirstField, operator: 'is', value: '' }]);
 
   const fieldDefs = [
+    ...(mode === 'approvals' ? [{ code: 'approvalStage', label: 'Approval Stage' }] : []),
     { code: 'axis', label: 'Tags / Strategic Theme' },
     { code: 'parish', label: 'Parish Location' },
-    { code: 'status', label: 'Status' },
-    { code: 'impact', label: 'Priority / Impact' },
+    ...(mode === 'tasks' ? [{ code: 'status', label: 'Status' }] : []),
+    ...(mode !== 'analytics' ? [{ code: 'impact', label: 'Priority / Impact' }] : []),
+    ...(mode === 'analytics' ? [{ code: 'issueCategory', label: 'Bottleneck Category' }] : []),
     { code: 'period', label: 'Quarter / Period' },
-    { code: 'dueDate', label: 'Due date' },
+    { code: 'dueDate', label: mode === 'approvals' ? 'Event Date' : 'Due date' },
   ];
 
   const operatorDefs = [
@@ -2423,6 +2432,19 @@ function renderClickUpFilterPopover(themes) {
   ];
 
   const getOptionsForField = field => {
+    if (field === 'approvalStage') {
+      return [
+        { value: 'SUBMITTED', label: L('stage_submitted') },
+        { value: 'PARISH_APPROVED', label: L('stage_parish') },
+        { value: 'MEL_VALIDATED', label: 'Validated by CDJP M&E' },
+        { value: 'VERIFIED', label: 'Verified by Coordination' },
+        { value: 'DIOCESE_APPROVED', label: L('stage_diocese') },
+        { value: 'CORRECTION', label: L('stage_correction') },
+      ];
+    }
+    if (field === 'issueCategory') {
+      return (V1.data?.issue_categories || ['Transport', 'Weather', 'Mobilization', 'Materials']).map(c => ({ value: c, label: c }));
+    }
     if (field === 'axis') {
       return themes.filter(t => t.code).map(t => ({ value: t.code, label: t.label }));
     }
@@ -2457,110 +2479,72 @@ function renderClickUpFilterPopover(themes) {
     return [];
   };
 
-  const applyQuickAiFilter = async text => {
-    const q = String(text || '').trim().toLowerCase();
-    if (!q) return;
-    if (q.includes('complete') || q.includes('done')) {
-      V1.filters.status = 'COMPLETED';
-      V1.cuFilterRules = [{ id: 'rule-ai', field: 'status', operator: 'is', value: 'COMPLETED' }];
-    } else if (q.includes('pending')) {
-      V1.filters.status = 'PENDING';
-      V1.cuFilterRules = [{ id: 'rule-ai', field: 'status', operator: 'is', value: 'PENDING' }];
-    } else if (q.includes('q1') || q.includes('quarter 1')) {
-      V1.filters.period = 'Q1';
-      V1.cuFilterRules = [{ id: 'rule-ai', field: 'period', operator: 'is', value: 'Q1' }];
-    } else if (q.includes('human rights') || q.includes('legal') || q.includes('a4')) {
-      V1.filters.axis = 'A4';
-      V1.cuFilterRules = [{ id: 'rule-ai', field: 'axis', operator: 'is', value: 'A4' }];
-    } else if (q.includes('healing') || q.includes('unity') || q.includes('a1')) {
-      V1.filters.axis = 'A1';
-      V1.cuFilterRules = [{ id: 'rule-ai', field: 'axis', operator: 'is', value: 'A1' }];
-    } else {
-      const matchedParish = parishes.find(p => q.includes(p.name.toLowerCase()));
-      if (matchedParish) {
-        V1.filters.parish = matchedParish.code;
-        V1.cuFilterRules = [{ id: 'rule-ai', field: 'parish', operator: 'is', value: matchedParish.code }];
-      } else {
-        V1.searchQuery = text.trim();
-      }
-    }
-    await loadBootstrap();
-    renderApp();
-  };
+  const savedPresets = mode === 'approvals'
+    ? [
+        { label: 'All Submissions', apply: () => { V1.filters.approvalStage = 'ALL'; V1.filters.axis = ''; V1.filters.parish = ''; V1.filters.period = 'ALL'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: '' }]; } },
+        { label: 'Awaiting Parish CPJP', apply: () => { V1.filters.approvalStage = 'SUBMITTED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'SUBMITTED' }]; } },
+        { label: 'Validated by Parish', apply: () => { V1.filters.approvalStage = 'PARISH_APPROVED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'PARISH_APPROVED' }]; } },
+        { label: 'Final Diocese Approved', apply: () => { V1.filters.approvalStage = 'DIOCESE_APPROVED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'DIOCESE_APPROVED' }]; } },
+        { label: 'Returned for Correction', apply: () => { V1.filters.approvalStage = 'CORRECTION'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'CORRECTION' }]; } },
+      ]
+    : [
+        { label: 'All Assigned Tasks', apply: () => { V1.filters.status = 'ALL'; V1.filters.axis = ''; V1.filters.parish = ''; V1.filters.period = 'ALL'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: '' }]; } },
+        { label: 'This Quarter (Q1)', apply: () => { V1.filters.period = 'Q1'; V1.cuFilterRules = [{ id: 'r1', field: 'period', operator: 'is', value: 'Q1' }]; } },
+        { label: 'Human Rights & Legal Aid', apply: () => { V1.filters.axis = 'A4'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A4' }]; } },
+        { label: 'Healing & Reconciliation', apply: () => { V1.filters.axis = 'A1'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A1' }]; } },
+        { label: 'Completed Activities', apply: () => { V1.filters.status = 'COMPLETED'; V1.cuFilterRules = [{ id: 'r1', field: 'status', operator: 'is', value: 'COMPLETED' }]; } },
+      ];
 
   return h('div', {
     className: 'v1-context-filters v1-cu-filter-popover' + (V1.cuFilterPopoverOpen ? ' is-open' : ''),
   },
-    /* Top Header: Filters + Saved filters */
+    /* Top Header: Filters + Saved filters + Close */
     h('div', { className: 'v1-cu-filter-header' },
       h('div', { className: 'v1-cu-filter-title-wrap' },
         h('strong', { className: 'v1-cu-filter-title' }, 'Filters'),
-        h('span', { className: 'v1-cu-filter-info', title: 'Filter tasks by theme, parish, status, or due date' }, msIcon('info', 14))
+        h('span', { className: 'v1-cu-filter-info', title: 'Filter records by theme, parish, status, or date' }, msIcon('info', 14))
       ),
-      h('div', { style: { position: 'relative' } },
+      h('div', { className: 'v1-cu-filter-header-actions' },
+        h('div', { style: { position: 'relative' } },
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-saved-filters-btn',
+            onClick: () => { V1.cuSavedFiltersOpen = !V1.cuSavedFiltersOpen; renderApp(); },
+          },
+            h('span', {}, 'Saved filters'),
+            msIcon('expand_more', 14)
+          ),
+          V1.cuSavedFiltersOpen
+            ? h('div', { className: 'v1-cu-saved-dropdown' },
+                savedPresets.map(preset =>
+                  h('button', {
+                    type: 'button',
+                    className: 'v1-cu-saved-item',
+                    onClick: async () => {
+                      preset.apply();
+                      V1.cuSavedFiltersOpen = false;
+                      await loadBootstrap();
+                      renderApp();
+                    },
+                  }, preset.label)
+                )
+              )
+            : null
+        ),
         h('button', {
           type: 'button',
-          className: 'v1-cu-saved-filters-btn',
-          onClick: () => { V1.cuSavedFiltersOpen = !V1.cuSavedFiltersOpen; renderApp(); },
+          className: 'v1-cu-filter-close-btn v1-cu-ai-close',
+          title: 'Close filter panel',
+          onClick: () => {
+            V1.cuFilterPopoverOpen = false;
+            V1.cuOperatorMenuRowId = null;
+            renderApp();
+          },
         },
-          h('span', {}, 'Saved filters'),
-          msIcon('expand_more', 14)
-        ),
-        V1.cuSavedFiltersOpen
-          ? h('div', { className: 'v1-cu-saved-dropdown' },
-              [
-                { label: 'All Assigned Tasks', apply: () => { V1.filters.status = 'ALL'; V1.filters.axis = ''; V1.filters.parish = ''; V1.filters.period = 'ALL'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: '' }]; } },
-                { label: 'This Quarter (Q1)', apply: () => { V1.filters.period = 'Q1'; V1.cuFilterRules = [{ id: 'r1', field: 'period', operator: 'is', value: 'Q1' }]; } },
-                { label: 'Human Rights & Legal Aid', apply: () => { V1.filters.axis = 'A4'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A4' }]; } },
-                { label: 'Healing & Reconciliation', apply: () => { V1.filters.axis = 'A1'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A1' }]; } },
-                { label: 'Completed Activities', apply: () => { V1.filters.status = 'COMPLETED'; V1.cuFilterRules = [{ id: 'r1', field: 'status', operator: 'is', value: 'COMPLETED' }]; } },
-              ].map(preset =>
-                h('button', {
-                  type: 'button',
-                  className: 'v1-cu-saved-item',
-                  onClick: async () => {
-                    preset.apply();
-                    V1.cuSavedFiltersOpen = false;
-                    await loadBootstrap();
-                    renderApp();
-                  },
-                }, preset.label)
-              )
-            )
-          : null
+          h('span', {}, 'Close'),
+          msIcon('close', 14)
+        )
       )
-    ),
-
-    /* Ask AI / Smart Filter Bar */
-    h('div', { className: 'v1-cu-ai-bar' },
-      h('span', { className: 'v1-cu-ai-sparkle' }, msIcon('sparkle_ai', 16)),
-      h('input', {
-        type: 'text',
-        className: 'v1-cu-ai-input',
-        placeholder: 'Ask AI to build filters (e.g. "Human Rights", "Q1", "Mugombwa")...',
-        value: V1.cuQuickPrompt || '',
-        onChange: e => { V1.cuQuickPrompt = e.target.value; },
-        onKeyDown: e => {
-          if (e.key === 'Enter') {
-            applyQuickAiFilter(e.target.value);
-          }
-        },
-      }),
-      h('button', {
-        type: 'button',
-        className: 'v1-cu-ai-close',
-        onClick: () => {
-          V1.cuFilterPopoverOpen = false;
-          V1.cuOperatorMenuRowId = null;
-          renderApp();
-        },
-      }, 'Close'),
-      h('button', {
-        type: 'button',
-        className: 'v1-cu-ai-send',
-        'aria-label': 'Apply smart filter',
-        onClick: () => applyQuickAiFilter(V1.cuQuickPrompt),
-      }, msIcon('send', 14))
     ),
 
     /* Dynamic Filter Rule Rows (Where / AND + Field + Operator + Value + Delete) */
@@ -2685,6 +2669,8 @@ function renderClickUpFilterPopover(themes) {
                   V1.filters.axis = '';
                   V1.filters.parish = '';
                   V1.filters.status = 'ALL';
+                  V1.filters.approvalStage = 'ALL';
+                  V1.filters.issueCategory = 'ALL';
                   V1.filters.period = 'ALL';
                   await syncCuRulesToV1Filters();
                 },
@@ -2759,11 +2745,12 @@ function renderClickUpFilterPopover(themes) {
           V1.filters.axis = '';
           V1.filters.parish = '';
           V1.filters.status = 'ALL';
+          V1.filters.approvalStage = 'ALL';
+          V1.filters.issueCategory = 'ALL';
           V1.filters.dateFrom = '';
           V1.filters.dateTo = '';
           V1.searchQuery = '';
-          V1.cuQuickPrompt = '';
-          V1.cuFilterRules = [{ id: 'rule-1', field: 'axis', operator: 'is', value: '' }];
+          V1.cuFilterRules = [{ id: 'rule-1', field: defaultFirstField, operator: 'is', value: '' }];
           V1.cuOperatorMenuRowId = null;
           V1.cuDatePickerOpen = false;
           await loadBootstrap();
@@ -3246,6 +3233,7 @@ function renderApprovalsWorkspace() {
     }
     if (V1.filters.dateFrom && String(l.event_date || '') < V1.filters.dateFrom) return false;
     if (V1.filters.dateTo && String(l.event_date || '') > V1.filters.dateTo) return false;
+    if (!matchesCuFilterRules(l)) return false;
     if (V1.searchQuery) {
       const q = V1.searchQuery.toLowerCase();
       if (!`${localize(l.task_titles)} ${l.parish_name} ${l.centrale}`.toLowerCase().includes(q)) return false;
@@ -3262,56 +3250,113 @@ function renderApprovalsWorkspace() {
     CORRECTION: L('stage_correction'),
   };
 
+  const activeFilterCount = [
+    V1.filters.approvalStage !== 'ALL' ? V1.filters.approvalStage : '',
+    V1.filters.axis,
+    V1.filters.parish,
+    V1.filters.period !== 'ALL' ? V1.filters.period : '',
+    V1.filters.dateFrom,
+    V1.filters.dateTo,
+  ].filter(Boolean).length;
+
+  const isDioceseApprovedActive = V1.filters.approvalStage === 'DIOCESE_APPROVED';
+  const isSubmittedActive = V1.filters.approvalStage === 'SUBMITTED';
+
   let primaryAssigned = false;
 
   return h('div', {},
     renderBreadcrumbs(perms.can_review ? L('nav_approvals') : 'My Submissions & Approval Status'),
     renderRoleWorkspaceBanner(),
-    h('div', { className: 'v1-page-header' },
-      h('div', {},
+
+    /* Abstracted Header & Action/Filter Toolbar (Matches My Tasks Figma 9:34468) */
+    h('div', { className: 'v1-tasks-figma-header' },
+      h('div', { className: 'v1-tasks-heading-block' },
         h('h1', { className: 'v1-page-title' }, perms.can_review ? L('nav_approvals') : 'My Submissions & Approval Status'),
         h('p', { className: 'v1-page-subtitle' },
           perms.can_review
             ? 'Institutional Verification Circuit: Field Submission (CCJP/CEB) → Parish CPJP Approval → CDJP M&E Validation → Diocesan Final Approval (Self-approval prohibited).'
             : 'Track where your submitted field reports stand in the Parish CPJP and Diocesan CDJP verification circuit. Field enumerators cannot approve reports.'
         )
+      ),
+      h('div', { className: 'v1-tasks-toolbar-row' },
+        /* Search Box */
+        h('div', { className: 'v1-tasks-search-box' },
+          h('span', { className: 'v1-tasks-search-icon' }, msIcon('search', 20)),
+          h('input', {
+            type: 'search',
+            className: 'v1-tasks-search-input',
+            placeholder: 'Search submissions, parishes, or centrales...',
+            value: V1.searchQuery || '',
+            onInput: e => {
+              V1.searchQuery = e.target.value;
+              const cursorPos = e.target.selectionStart;
+              renderApp();
+              const nextInput = document.querySelector('.v1-tasks-search-input');
+              if (nextInput) {
+                nextInput.focus();
+                try { nextInput.setSelectionRange(cursorPos, cursorPos); } catch (_) {}
+              }
+            },
+          })
+        ),
+        /* Right Action & Filter Pills */
+        h('div', { className: 'v1-header-actions v1-tasks-actions-group' },
+          h('button', {
+            type: 'button',
+            className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
+            onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
+          }, msIcon('iconsax_sort', 18), h('span', {}, 'Filter')),
+
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-pill-filter' + (V1.cuFilterPopoverOpen || activeFilterCount > 0 ? ' active' : ''),
+            onClick: () => {
+              V1.cuFilterPopoverOpen = !V1.cuFilterPopoverOpen;
+              renderApp();
+            },
+          },
+            msIcon('iconsax_sort', 19),
+            h('span', {}, activeFilterCount > 0 ? `Filter (${activeFilterCount})` : 'Filter')
+          ),
+
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-pill-completed' + (isSubmittedActive ? ' active' : ''),
+            onClick: () => {
+              V1.filters.approvalStage = isSubmittedActive ? 'ALL' : 'SUBMITTED';
+              renderApp();
+            },
+          },
+            msIcon('fact_check', 18),
+            h('span', {}, 'Pending Review')
+          ),
+
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-pill-completed' + (isDioceseApprovedActive ? ' active' : ''),
+            onClick: () => {
+              V1.filters.approvalStage = isDioceseApprovedActive ? 'ALL' : 'DIOCESE_APPROVED';
+              renderApp();
+            },
+          },
+            msIcon('iconsax_clipboard_tick', 18),
+            h('span', {}, 'Approved')
+          )
+        )
       )
     ),
+
     V1.reviewError
       ? h('div', { className: 'v1-error-alert', style: { marginBottom: '16px' } },
           msIcon('error', 20),
           h('span', {}, V1.reviewError)
         )
       : null,
-    h('div', { className: 'v1-context-filters' },
-      renderDateRangeWidget(),
-      h('div', { className: 'v1-segmented' },
-        [
-          ['ALL', 'All Submissions'],
-          ['SUBMITTED', L('stage_submitted')],
-          ['PARISH_APPROVED', L('stage_parish')],
-          ['MEL_VALIDATED', 'M&E Validated'],
-          ['VERIFIED', 'Coord. Verified'],
-          ['DIOCESE_APPROVED', L('stage_diocese')],
-          ['CORRECTION', L('stage_correction')],
-        ].map(([code, lbl]) =>
-          h('button', {
-            type: 'button',
-            className: 'v1-seg-btn' + (V1.filters.approvalStage === code ? ' active' : ''),
-            onClick: () => { V1.filters.approvalStage = code; renderApp(); },
-          }, lbl)
-        )
-      ),
-      h('div', { className: 'v1-chips', style: { width: '100%' } },
-        themes.map(th =>
-          h('button', {
-            type: 'button',
-            className: 'v1-chip' + (V1.filters.axis === th.code ? ' active' : ''),
-            onClick: async () => { V1.filters.axis = th.code; await loadBootstrap(); renderApp(); },
-          }, th.label)
-        )
-      )
-    ),
+
+    /* Theme-Adaptive ClickUp Filter Builder Popover for Approvals */
+    renderClickUpFilterPopover(themes, { mode: 'approvals' }),
+
+    /* Redesigned Approval Cards (Matches My Tasks Card Design 9:34582) */
     h('div', { className: 'v1-task-list' },
       logs.map(l => {
         const isSelfAuthored = Boolean(
@@ -3340,36 +3385,59 @@ function renderApprovalsWorkspace() {
         if (usePrimaryHere) primaryAssigned = true;
         const isReturning = V1.returningLog && V1.returningLog.id === l.id;
 
-        return h('article', { className: 'v1-task-card', style: { flexDirection: 'column', alignItems: 'stretch' } },
-          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' } },
-            h('div', { style: { flex: 1, minWidth: 0 } },
-              h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '6px' } },
+        const isFinalApproved = l.stage === 'DIOCESE_APPROVED';
+        const isCorrection = l.stage === 'CORRECTION';
+        const outcomePct = Math.min(100, Math.round(((Number(l.outcome_value) || 0) / Math.max(1, Number(l.target_threshold) || 1)) * 100));
+        const subtitleLine = `${l.pastoral_quarter || 'Q1'}  -  ${String(localize(l.axis_labels) || l.axis || 'FIELD SUBMISSION').toUpperCase()}  -  ${String(l.parish_name || l.parish_code || '').toUpperCase()} PARISH (${String(l.centrale || 'CENTRALE').toUpperCase()})`;
+
+        return h('article', { className: 'v1-task-card' },
+          /* 1. Header Row: 28x28 Circle Icon on Left, Title + Uppercase Subtitle + 5px Badges on Right */
+          h('div', { className: 'v1-task-header-row' },
+            h('div', { className: 'v1-task-check' + (isFinalApproved ? ' done' : (isCorrection ? ' warn' : '')) },
+              isFinalApproved ? msIcon('check', 16) : (isCorrection ? msIcon('error', 16) : msIcon('fact_check', 16))
+            ),
+            h('div', { className: 'v1-task-title-group' },
+              h('h3', { className: 'v1-task-title' }, localize(l.task_titles)),
+              h('div', { className: 'v1-task-subtitle-meta' }, subtitleLine),
+              h('div', { className: 'v1-task-status-badges' },
                 renderLozenge(
                   stageLabelMap[l.stage] || l.stage,
-                  l.stage === 'DIOCESE_APPROVED' ? 'GREAT' : (l.stage === 'CORRECTION' ? 'LOW' : (l.stage === 'SUBMITTED' ? 'warn' : 'GOOD')),
-                  l.stage === 'DIOCESE_APPROVED' ? 'check' : (l.stage === 'CORRECTION' ? 'error' : 'fact_check')
+                  isFinalApproved ? 'GREAT' : (isCorrection ? 'LOW' : (l.stage === 'SUBMITTED' ? 'warn' : 'GOOD')),
+                  isFinalApproved ? 'check' : (isCorrection ? 'error' : 'fact_check')
                 ),
                 l.version > 1 ? renderLozenge(`Amended v${l.version}`, 'info') : null,
                 renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
-                renderLozenge(`${l.parish_name} · ${l.centrale}`, 'neutral'),
-                renderLozenge(`${l.event_date} (${l.pastoral_quarter})`, 'neutral'),
                 l.volet ? renderLozenge(`Volet: ${normalizeVolet(l.volet).labelText || l.volet}`, 'neutral') : null
+              )
+            )
+          ),
+
+          /* 2. Schedule, Disaggregation & Author Row (Indented 40px on Desktop) */
+          h('div', { className: 'v1-task-schedule' },
+            msIcon('calendar_today', 14),
+            h('span', { className: 'v1-tabular' }, `Logged ${l.event_date}`),
+            h('span', { className: 'v1-tabular' }, `· Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities)`),
+            h('span', {}, `· Author: ${l.author || 'Field Enumerator'} (${l.prep_mode === 'COMMITTEE' ? '7-Member CPJP + Chaplain' : '2-Person Pair'})`)
+          ),
+
+          l.issue_severity !== 'NONE'
+            ? h('div', { className: 'v1-task-issue-callout' },
+                msIcon(l.issue_severity === 'MAJOR' ? 'error' : 'warning', 16),
+                h('span', {}, `Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`)
+              )
+            : null,
+
+          /* 3. Bottom Row: 5px Outcome Progress Bar on Left, Review Actions on Right */
+          h('div', { className: 'v1-task-bottom-row' },
+            h('div', { className: 'v1-progress-wrap' },
+              h('div', { className: 'v1-progress-bar' },
+                h('div', { className: 'v1-progress-fill' + (outcomePct >= 100 || isFinalApproved ? ' great' : ''), style: { width: `${outcomePct}%` } })
               ),
-              h('h3', { className: 'v1-task-title', style: { margin: '4px 0' } }, localize(l.task_titles)),
-              h('div', { className: 'v1-tabular', style: { fontSize: '0.875rem', color: 'var(--text-secondary)' } },
-                `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities) · Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
-              ),
-              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '4px' } },
-                `Author: ${l.author || 'Field Enumerator'} · Prep: ${l.prep_mode === 'COMMITTEE' ? '7-Member CPJP + Chaplain' : '2-Person Pair'}`
-              ),
-              l.issue_severity !== 'NONE'
-                ? h('div', { style: { marginTop: '8px', padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '6px' } },
-                    msIcon(l.issue_severity === 'MAJOR' ? 'error' : 'warning', 16),
-                    h('span', {}, `Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`)
-                  )
-                : null
+              h('span', { className: 'v1-progress-stat v1-tabular' },
+                `Outcome Achieved: ${l.outcome_value} (Target: ${l.target_threshold})`
+              )
             ),
-            h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
+            h('div', { className: 'v1-task-action', style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
               !perms.can_review
                 ? renderLozenge('Read-Only Status (Field / Staff Role Cannot Approve)', 'neutral', 'info')
                 : isSelfAuthored
@@ -3512,6 +3580,14 @@ function renderAnalyticsWorkspace() {
   const activePeriodLabel = V1.filters.period === 'Q1' ? L('period_q1') : (V1.filters.period === 'AP1' ? L('period_ap1') : L('period_all'));
   const catColors = ['var(--chart-cat-1)', 'var(--chart-cat-2)', 'var(--chart-cat-3)', 'var(--chart-cat-4)'];
   const themes = getThemesList();
+  const activeFilterCount = [
+    V1.filters.axis,
+    V1.filters.parish,
+    V1.filters.period !== 'ALL' ? V1.filters.period : '',
+    V1.filters.dateFrom,
+    V1.filters.dateTo,
+  ].filter(Boolean).length;
+  const isQ1Active = V1.filters.period === 'Q1';
 
   return h('div', {},
     renderBreadcrumbs(L('nav_analytics')),
@@ -3523,32 +3599,41 @@ function renderAnalyticsWorkspace() {
           'Action Completion vs. Threshold-Based Impact Ratings, Regional Parish Map, and Field Bottleneck Trends.'
         )
       ),
-      h('div', { className: 'v1-header-actions' },
+      h('div', { className: 'v1-header-actions v1-tasks-actions-group' },
         h('button', {
           type: 'button',
           className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
           onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
-        }, h('span', {}, 'Filter'), msIcon('filter_list', 20))
-      )
-    ),
-    /* Contextual Filter Bar */
-    h('div', { className: 'v1-context-filters' },
-      renderDateRangeWidget(),
-      renderParishCombobox(V1.filters.parish, async code => {
-        V1.filters.parish = code;
-        await loadBootstrap();
-        renderApp();
-      }, true),
-      h('div', { className: 'v1-chips', style: { width: '100%' } },
-        themes.map(th =>
-          h('button', {
-            type: 'button',
-            className: 'v1-chip' + (V1.filters.axis === th.code ? ' active' : ''),
-            onClick: async () => { V1.filters.axis = th.code; await loadBootstrap(); renderApp(); },
-          }, th.label)
+        }, msIcon('iconsax_sort', 18), h('span', {}, 'Filter')),
+
+        h('button', {
+          type: 'button',
+          className: 'v1-cu-pill-filter' + (V1.cuFilterPopoverOpen || activeFilterCount > 0 ? ' active' : ''),
+          onClick: () => {
+            V1.cuFilterPopoverOpen = !V1.cuFilterPopoverOpen;
+            renderApp();
+          },
+        },
+          msIcon('iconsax_sort', 19),
+          h('span', {}, activeFilterCount > 0 ? `Filter (${activeFilterCount})` : 'Filter')
+        ),
+
+        h('button', {
+          type: 'button',
+          className: 'v1-cu-pill-completed' + (isQ1Active ? ' active' : ''),
+          onClick: async () => {
+            V1.filters.period = isQ1Active ? 'ALL' : 'Q1';
+            await loadBootstrap();
+            renderApp();
+          },
+        },
+          msIcon('calendar_today', 16),
+          h('span', {}, L('period_q1'))
         )
       )
     ),
+    /* Theme-Adaptive ClickUp Filter Builder Popover for Analytics */
+    renderClickUpFilterPopover(themes, { mode: 'analytics' }),
     /* Bottleneck Insight Banner */
     s.top_bottleneck_category
       ? h('div', { style: { background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', padding: '12px 16px', borderRadius: 'var(--radius-md)', marginBottom: '20px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '8px' } },

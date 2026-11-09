@@ -3889,59 +3889,135 @@
   }
 
   function renderDraftsWorkspace() {
+    const serverDrafts = (V1.data?.drafts || []).filter(d => {
+      if (!V1.searchQuery) return true;
+      const q = V1.searchQuery.toLowerCase();
+      return `${d.form} ${d.payload?.event_date || ''} ${d.payload?.values?.title || ''}`.toLowerCase().includes(q);
+    });
+    const localDraftTasks = (V1.data?.tasks || []).filter(t => !!localStorage.getItem('apse-v1-draft-' + t.id));
+
     return h('div', { className: 'v1-workspace-fade' },
-      h('header', { className: 'v1-page-header' },
-        h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
-          h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
-          h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Travaux en cours'),
-          h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-current' }, L('nav_drafts'))
+      h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
+        h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
+        h('span', { className: 'v1-breadcrumb-sep' }, '/'),
+        h('span', { className: 'v1-breadcrumb-item' }, 'Travaux en cours'),
+        h('span', { className: 'v1-breadcrumb-sep' }, '/'),
+        h('span', { className: 'v1-breadcrumb-current' }, L('nav_drafts'))
+      ),
+      h('div', { className: 'v1-tasks-figma-header' },
+        h('div', { className: 'v1-tasks-heading-block' },
+          h('h1', { className: 'v1-page-title' }, L('nav_drafts')),
+          h('p', { className: 'v1-page-subtitle' },
+            'Brouillons locaux et formulaires en cours de saisie chiffrés sur le serveur.'
+          )
         ),
-        h('h1', { className: 'v1-page-title' }, L('nav_drafts'))
+        h('div', { className: 'v1-tasks-toolbar-row' },
+          h('div', { className: 'v1-tasks-search-box' },
+            h('span', { className: 'v1-tasks-search-icon' }, msIcon('search', 20)),
+            h('input', {
+              type: 'search',
+              className: 'v1-tasks-search-input',
+              placeholder: 'Rechercher un brouillon par formulaire ou date...',
+              value: V1.searchQuery || '',
+              onInput: e => { V1.searchQuery = e.target.value; renderApp(); },
+            })
+          ),
+          h('div', { className: 'v1-header-actions v1-tasks-actions-group' },
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-pill-completed active',
+            },
+              msIcon('iconsax_clipboard_tick', 18),
+              h('span', {}, `${serverDrafts.length + localDraftTasks.length} Brouillons`)
+            )
+          )
+        )
       ),
 
-      h('div', { className: 'v1-panel' },
-        h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, 'Brouillons actifs chiffrés sur le serveur'),
-          h('span', { className: 'v1-badge' }, `${(V1.data?.drafts || []).length} brouillons`)
-        ),
-        (V1.data?.drafts || []).length === 0 ? h('p', { style: { padding: '24px', textAlign: 'center', color: 'var(--text-secondary)' } },
-          'Aucun brouillon en cours. Les formulaires en cours de saisie sont sauvegardés automatiquement ici.'
-        ) : h('table', { className: 'v1-data-table' },
-          h('thead', {},
-            h('tr', {},
-              h('th', {}, 'Formulaire'),
-              h('th', {}, 'Date événement'),
-              h('th', {}, 'Dernière mise à jour'),
-              h('th', {}, 'Révision'),
-              h('th', {}, 'Actions')
-            )
-          ),
-          h('tbody', {},
-            (V1.data?.drafts || []).map(d =>
-              h('tr', {},
-                h('td', {}, h('strong', {}, d.form)),
-                h('td', {}, d.payload?.event_date || 'N/A'),
-                h('td', {}, d.updated ? d.updated.slice(0, 16).replace('T', ' ') : 'N/A'),
-                h('td', {}, `Rev ${d.revision}`),
-                h('td', {},
-                  h('button', {
-                    type: 'button',
-                    className: 'v1-btn v1-btn-sm v1-btn-primary',
-                    onClick: () => {
-                      V091.activeFormCode = d.form;
-                      V091.formValues = d.payload?.values || {};
-                      V1.workspace = 'seizure';
-                      renderApp();
-                    },
-                  }, 'Ouvrir')
+      /* Redesigned Draft Cards (Matches My Tasks Card Design 9:34582) */
+      (serverDrafts.length + localDraftTasks.length) === 0
+        ? h('div', { className: 'v1-panel', style: { padding: '24px', textAlign: 'center', color: 'var(--text-secondary)' } },
+            'Aucun brouillon en cours. Les formulaires en cours de saisie sont sauvegardés automatiquement ici.'
+          )
+        : h('div', { className: 'v1-task-list' },
+            localDraftTasks.map(t => {
+              const subtitleLine = `${t.pastoral_quarter || 'Q1'}  -  ${String(localize(t.axis_labels) || t.axis || '').toUpperCase()}  -  ${String(t.parish_name || t.parish_code || '').toUpperCase()} PARISH`;
+              return h('article', { className: 'v1-task-card' },
+                h('div', { className: 'v1-task-header-row' },
+                  h('div', { className: 'v1-task-check' }, msIcon('description', 16)),
+                  h('div', { className: 'v1-task-title-group' },
+                    h('h3', { className: 'v1-task-title' }, localize(t.titles)),
+                    h('div', { className: 'v1-task-subtitle-meta' }, subtitleLine),
+                    h('div', { className: 'v1-task-status-badges' },
+                      renderLozenge('Saved Draft', 'GOOD', 'description'),
+                      renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
+                    )
+                  )
+                ),
+                h('div', { className: 'v1-task-schedule' },
+                  msIcon('calendar_today', 14),
+                  h('span', { className: 'v1-tabular' }, `Due ${t.due_date} · Local Browser Draft`)
+                ),
+                h('div', { className: 'v1-task-bottom-row' },
+                  h('div', { className: 'v1-progress-wrap' },
+                    h('div', { className: 'v1-progress-bar' },
+                      h('div', { className: 'v1-progress-fill', style: { width: `${t.completion_pct || 25}%` } })
+                    ),
+                    h('span', { className: 'v1-progress-stat' }, 'Draft saved on device')
+                  ),
+                  h('div', { className: 'v1-task-action' },
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-secondary',
+                      onClick: () => {
+                        V1.workspace = 'tasks';
+                        openWizardForTask(t, t.latest_log);
+                      },
+                    }, h('span', {}, 'Resume Draft'), msIcon('chevron_right', 20))
+                  )
+                )
+              );
+            }),
+            serverDrafts.map(d =>
+              h('article', { className: 'v1-task-card' },
+                h('div', { className: 'v1-task-header-row' },
+                  h('div', { className: 'v1-task-check' }, msIcon('edit_note', 16)),
+                  h('div', { className: 'v1-task-title-group' },
+                    h('h3', { className: 'v1-task-title' }, d.payload?.values?.title || `Formulaire ${d.form}`),
+                    h('div', { className: 'v1-task-subtitle-meta' }, `FORM ${d.form}  -  REV ${d.revision || 1}  -  SERVER ENCRYPTED DRAFT`),
+                    h('div', { className: 'v1-task-status-badges' },
+                      renderLozenge('Saved Draft', 'GOOD', 'description'),
+                      renderLozenge(`Rev ${d.revision || 1}`, 'neutral')
+                    )
+                  )
+                ),
+                h('div', { className: 'v1-task-schedule' },
+                  msIcon('calendar_today', 14),
+                  h('span', { className: 'v1-tabular' }, `Event Date: ${d.payload?.event_date || 'N/A'} · Updated: ${d.updated ? d.updated.slice(0, 16).replace('T', ' ') : 'N/A'}`)
+                ),
+                h('div', { className: 'v1-task-bottom-row' },
+                  h('div', { className: 'v1-progress-wrap' },
+                    h('div', { className: 'v1-progress-bar' },
+                      h('div', { className: 'v1-progress-fill', style: { width: '50%' } })
+                    ),
+                    h('span', { className: 'v1-progress-stat' }, `Encrypted draft (${d.form})`)
+                  ),
+                  h('div', { className: 'v1-task-action' },
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-secondary',
+                      onClick: () => {
+                        V091.activeFormCode = d.form;
+                        V091.formValues = d.payload?.values || {};
+                        V1.workspace = 'seizure';
+                        renderApp();
+                      },
+                    }, h('span', {}, 'Ouvrir'), msIcon('chevron_right', 20))
+                  )
                 )
               )
             )
           )
-        )
-      )
     );
   }
 
