@@ -1,7 +1,7 @@
 {
   "total_checks": 44,
-  "passed": 44,
-  "prd_discrepancies": 0,
+  "passed": 43,
+  "prd_discrepancies": 1,
   "results": [
     {
       "test_id": "TC-UI-01",
@@ -17,7 +17,7 @@
       "title": "16-Column Carbon Grid: 4 KPI Cards in 1 Row (span 4) & 2 Split Panels (span 8)",
       "status": "PASS",
       "passed": true,
-      "details": "KPI tops=[401, 401, 401, 401] widths=[251, 251, 251, 251]px; Panel tops=[572, 572] widths=[523, 523]px; canvasPad=32px"
+      "details": "KPI tops=[439, 439, 439, 439] widths=[251, 251, 251, 251]px; Panel tops=[610, 610] widths=[523, 523]px; canvasPad=32px"
     },
     {
       "test_id": "TC-UI-03",
@@ -65,7 +65,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[470, 470, 622, 622] (2x2=True), panelTops=[777, 1149] widths=[736, 736]px (stacked=True)"
+      "details": "kpiTops=[460, 460, 612, 612] (2x2=True), panelTops=[767, 1139] widths=[736, 736]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -89,7 +89,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[422, 422, 574, 574] (2x2=True), panelTops=[729, 1101] widths=[992, 992]px (stacked=True)"
+      "details": "kpiTops=[460, 460, 612, 612] (2x2=True), panelTops=[767, 1139] widths=[992, 992]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[699, 834, 968, 1084]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[689, 824, 958, 1074]"
     },
     {
       "test_id": "TC-UI-11",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[677, 812, 947, 1062]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[667, 802, 937, 1052]"
     },
     {
       "test_id": "TC-UI-11",
@@ -215,9 +215,9 @@
       "test_id": "TC-UI-17",
       "viewport": "Desktop 1440x900",
       "title": "Kargul Form Input Rest/Focus/Error Borders & 0px Border on Pills/Chips",
-      "status": "PASS",
-      "passed": true,
-      "details": "rest='1px solid rgb(136, 136, 136)', focus='rgb(35, 35, 35) 0px 0px 0px 2px inset', error='2px solid rgb(228, 0, 20)', chipBorder=0px, segBorder=0px"
+      "status": "FAIL",
+      "passed": false,
+      "details": "rest='0px none rgb(35, 35, 35)', focus='rgba(0, 0, 0, 0.08) 0px 2px 8px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px', error='2px solid rgb(228, 0, 20)', chipBorder=0px, segBorder=0px"
     },
     {
       "test_id": "TC-UI-18",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-F7AF06', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-DBA299', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",
@@ -356,5 +356,14 @@
       "details": "mobBtnDisplay=flex, modalOpen=True, scroll=360/360"
     }
   ],
-  "discrepancies": []
+  "discrepancies": [
+    {
+      "test_id": "TC-UI-17",
+      "viewport": "Desktop 1440x900",
+      "title": "Kargul Form Input Rest/Focus/Error Borders & 0px Border on Pills/Chips",
+      "status": "FAIL",
+      "passed": false,
+      "details": "rest='0px none rgb(35, 35, 35)', focus='rgba(0, 0, 0, 0.08) 0px 2px 8px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px', error='2px solid rgb(228, 0, 20)', chipBorder=0px, segBorder=0px"
+    }
+  ]
 }

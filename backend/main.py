@@ -1210,6 +1210,19 @@ def create_app(
             headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"},
         )
 
+    @app.get("/assets/{filename}", include_in_schema=False)
+    @app.get("/api/apps/apse/assets/{filename}", include_in_schema=False)
+    async def serve_brand_asset(filename: str):
+        safe_name = Path(filename).name
+        if safe_name not in {"black.png", "white.png", "header_small.png"}:
+            return _json_response(404, {"error": "not_found"})
+        target = frontend_dir / "assets" / safe_name
+        return FileResponse(
+            target,
+            media_type="image/png",
+            headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"},
+        )
+
     @app.get("/core.js", include_in_schema=False)
     async def serve_root_core_js():
         return await serve_js("core.js")

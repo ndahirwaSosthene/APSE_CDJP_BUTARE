@@ -913,6 +913,29 @@ CREATE TABLE IF NOT EXISTS v1_logs(
                 tasks = [t for t in tasks if t['parish_code'] == assigned_parish]
                 raw_logs = [l for l in raw_logs if l['parish_code'] == assigned_parish]
 
+            # Account-level data isolation: built-in seed personas keep the shared demo
+            # dataset, while accounts created through the UI only see records inside their
+            # own scope (their parish for parish roles, plus whatever they authored).
+            account_key = user.get('username') or str(user.get('id', '')).split(':')[-1]
+            custom_keys = {p['key'] for p in self._custom_account_profiles()}
+            if account_key in custom_keys:
+                uid = user.get('id')
+                reviewer = bool(rbac.permissions(user.get('roles', [])).get('can_review'))
+                if is_diocesan:
+                    own_tasks = [t for t in tasks if t.get('created_by') == uid]
+                    tasks = own_tasks
+                    own_task_ids = {t['id'] for t in own_tasks}
+                    raw_logs = [
+                        l for l in raw_logs
+                        if reviewer or l.get('author') == uid or l['task_id'] in own_task_ids
+                    ]
+                else:
+                    tasks = [t for t in tasks if t['parish_code'] == assigned_parish]
+                    raw_logs = [
+                        l for l in raw_logs
+                        if l['parish_code'] == assigned_parish and (reviewer or l.get('author') == uid)
+                    ]
+
             filtered_tasks = list(tasks)
             filtered_logs = list(raw_logs)
             if effective_parish:

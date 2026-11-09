@@ -1370,6 +1370,48 @@ function renderMobileBottomSheet() {
   );
 }
 
+/* Clears every per-account cache so the next render reloads data for the newly active account */
+function resetAccountScopedState() {
+  V1.filters.parish = '';
+  V1.filters.axis = '';
+  V1.filters.status = 'ALL';
+  V1.filters.approvalStage = 'ALL';
+  V1.filters.period = 'ALL';
+  V1.filters.dateFrom = '';
+  V1.filters.dateTo = '';
+  V1.searchQuery = '';
+  V1.cuFilterRules = null;
+  V1.cuFilterPopoverOpen = false;
+  V1.newTaskModal = false;
+  V1.newTaskState = null;
+  V1.wizard = null;
+  V1.rightSidecarOpen = false;
+  const v = window.V091;
+  if (v) {
+    ['melAdminData', 'timesheetData', 'learningRecords', 'inboxData', 'contactsData',
+      'portfolioData', 'staffEvalData', 'planningData', 'assistantResults'].forEach(k => { v[k] = null; });
+    v.openDropdownId = null;
+  }
+}
+window.resetAccountScopedState = resetAccountScopedState;
+
+/* Role-based visibility of workspaces in the left / right navigation */
+function canAccessWorkspace(id) {
+  const perms = V1.data?.user?.permissions || {};
+  const rk = perms.role_key || 'mel';
+  const core = ['tasks', 'approvals', 'analytics', 'exports'];
+  if (core.includes(id)) return (perms.workspaces || core).includes(id);
+  const restricted = {
+    mel_admin: ['mel', 'director'],
+    metadata: ['mel', 'coordinator', 'director'],
+    staff_eval: ['mel', 'coordinator', 'director'],
+    create_form: ['mel', 'coordinator', 'director'],
+    projects_ops: ['mel', 'coordinator', 'director', 'staff'],
+    ps_planning: ['mel', 'coordinator', 'director', 'staff', 'cpjp'],
+  };
+  return !restricted[id] || restricted[id].includes(rk);
+}
+
 /* Web GUI Role & Parish Persona Switcher + Account Creation & Management Modal */
 function renderPersonaModal() {
   if (!V1.personaModal) return null;
@@ -1383,8 +1425,8 @@ function renderPersonaModal() {
       username: '',
       full_name: '',
       password: '',
-      role: 'APSE_STAFF',
-      parish_code: '',
+      role: 'APSE_CPJP',
+      parish_code: 'PAR-03',
       error: '',
       success: '',
     };
@@ -1449,7 +1491,7 @@ function renderPersonaModal() {
               className: 'v1-btn v1-btn-secondary v1-btn-sm',
               onClick: async () => {
                 await apiV1('/v1/auth/logout', 'POST', {});
-                V1.filters.parish = '';
+                resetAccountScopedState();
                 await loadBootstrap();
                 renderApp();
               },
@@ -1499,36 +1541,35 @@ function renderPersonaModal() {
             ),
             h('div', { className: 'v1-field' },
               h('label', { className: 'v1-field-label' }, 'Institutional Role'),
-              h('select', {
-                id: 'v1-create-acc-role',
-                className: 'v1-select',
+              window.V091.renderFigmaDropdown({
+                id: 'acc-role',
                 value: draft.role,
-                onChange: e => {
-                  draft.role = e.target.value;
-                  if (['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(draft.role) && !draft.parish_code) {
-                    draft.parish_code = 'PAR-01';
-                  } else if (!['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(draft.role)) {
+                width: '100%',
+                options: roleOptions.map(r => ({ value: r.code, label: r.label })),
+                onChange: val => {
+                  draft.role = val;
+                  if (['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(val)) {
+                    draft.parish_code = draft.parish_code || 'PAR-03';
+                  } else {
                     draft.parish_code = '';
                   }
-                  renderApp();
                 },
-              },
-                roleOptions.map(r => h('option', { value: r.code, selected: draft.role === r.code }, r.label))
-              )
+              })
             ),
             isParishRole ? h('div', { className: 'v1-field' },
               h('label', { className: 'v1-field-label' }, 'Assigned Parish Scope'),
-              h('select', {
-                id: 'v1-create-acc-parish',
-                className: 'v1-select',
-                value: draft.parish_code || 'PAR-01',
-                onChange: e => { draft.parish_code = e.target.value; },
-              },
-                (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale Butare' }, { code: 'PAR-24', name: 'Kibeho' }]).map(p =>
-                  h('option', { value: p.code, selected: (draft.parish_code || 'PAR-01') === p.code }, `${p.code} — ${p.name}`)
-                )
-              )
-            ) : null
+              window.V091.renderFigmaDropdown({
+                id: 'acc-parish',
+                value: draft.parish_code || 'PAR-03',
+                width: '100%',
+                options: (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale Butare' }, { code: 'PAR-24', name: 'Kibeho' }])
+                  .map(p => ({ value: p.code, label: `${p.code} — ${p.name}` })),
+                onChange: val => { draft.parish_code = val; },
+              })
+            ) : h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Data Scope'),
+              h('div', { className: 'v1-field-helper', style: { marginTop: 0 } }, 'Diocesan role: starts with a clean workspace and sees records it creates or reviews.')
+            )
           ),
           draft.error ? h('div', { className: 'v1-field-error', style: { marginBottom: '8px' } }, draft.error) : null,
           draft.success ? h('div', { style: { color: 'var(--color-success)', fontSize: '0.8125rem', fontWeight: '600', marginBottom: '8px' } }, draft.success) : null,
@@ -1587,7 +1628,7 @@ function renderPersonaModal() {
                     parish_code: isParishRole ? (draft.parish_code || 'PAR-01') : null,
                   });
                   await apiV1('/v1/auth/login', 'POST', { username: uname, password: pass });
-                  V1.filters.parish = '';
+                  resetAccountScopedState();
                   await loadBootstrap();
                   draft.open = false;
                   draft.username = '';
@@ -1641,7 +1682,7 @@ function renderPersonaModal() {
                   const u = document.getElementById('v1-web-login-user')?.value || V1.loginUser || activeKey;
                   const p = document.getElementById('v1-web-login-pass')?.value || V1.loginPass || 'apse2026_butare';
                   await apiV1('/v1/auth/login', 'POST', { username: u, password: p });
-                  V1.filters.parish = '';
+                  resetAccountScopedState();
                   await loadBootstrap();
                   V1.personaModal = false;
                   renderApp();
@@ -1657,35 +1698,34 @@ function renderPersonaModal() {
         h('p', { className: 'v1-page-subtitle', style: { marginBottom: '12px' } },
           'Or click any Diocesan / Parish / Custom account below for instant switching:'
         ),
-        h('div', { className: 'v1-radio-cards', style: { gridTemplateColumns: '1fr', maxHeight: '320px', overflowY: 'auto' } },
+        h('div', { className: 'v1-radio-cards v1-account-cards' },
           personas.map(p =>
             h('div', {
-              style: { display: 'flex', alignItems: 'stretch', gap: '6px' },
-            },
-              h('button', {
-                type: 'button',
-                className: 'v1-radio-card' + (activeKey === p.key ? ' active' : ''),
-                style: { flex: 1 },
-                onClick: async () => {
-                  await apiV1('/v1/persona', 'POST', { persona_key: p.key });
-                  V1.filters.parish = '';
-                  await loadBootstrap();
-                  V1.personaModal = false;
-                  renderApp();
-                },
+              key: p.key,
+              role: 'button',
+              tabIndex: 0,
+              className: 'v1-radio-card v1-account-card' + (activeKey === p.key ? ' active' : ''),
+              onClick: async () => {
+                await apiV1('/v1/persona', 'POST', { persona_key: p.key });
+                resetAccountScopedState();
+                await loadBootstrap();
+                V1.personaModal = false;
+                renderApp();
               },
+            },
+              h('div', { className: 'v1-account-card-main' },
                 h('strong', {}, `${p.name} — ${p.label} (${p.key})`),
                 h('span', {}, `Roles: ${p.roles.join(', ')} · Scope: ${p.parish_code ? p.parish_code : 'All 27 Parishes (Diocesan)'}`)
               ),
               p.is_custom ? h('button', {
                 type: 'button',
-                className: 'v1-btn v1-btn-ghost v1-btn-sm',
+                className: 'v1-account-card-delete',
                 title: `Delete custom account ${p.key}`,
-                style: { color: 'var(--color-danger)', alignSelf: 'center' },
+                'aria-label': `Delete custom account ${p.key}`,
                 onClick: async e => {
                   e.stopPropagation();
                   await apiV1('/v1/accounts', 'POST', { action: 'DELETE_LOCAL_ACCOUNT', username: p.key });
-                  if (window.V091) window.V091.melAdminData = null;
+                  resetAccountScopedState();
                   await loadBootstrap();
                   renderApp();
                 },
@@ -1697,7 +1737,6 @@ function renderPersonaModal() {
     )
   );
 }
-
 /* 4-Step Guided Data Collection Wizard View (Carbon Desktop + Momentum Mobile Focused View) */
 function renderWizardView() {
   const w = V1.wizard;
@@ -2812,17 +2851,17 @@ function renderClickUpFilterPopover(themes, options) {
             h('div', { className: 'v1-cu-rule-controls' },
               /* Field Select */
               h('div', { className: 'v1-cu-select-wrap v1-cu-field-select' },
-                h('select', {
-                  className: 'v1-cu-select',
+                window.V091.renderFigmaDropdown({
+                  id: 'cu-field-' + rule.id,
                   value: rule.field,
-                  onChange: async e => {
-                    rule.field = e.target.value;
+                  width: '100%',
+                  options: fieldDefs.map(fd => ({ value: fd.code, label: fd.label })),
+                  onChange: val => {
+                    rule.field = val;
                     rule.value = '';
-                    await syncCuRulesToV1Filters();
+                    syncCuRulesToV1Filters();
                   },
-                },
-                  fieldDefs.map(fd => h('option', { value: fd.code, selected: rule.field === fd.code ? 'selected' : null }, fd.label))
-                )
+                })
               ),
 
               /* Operator Select with ClickUp Floating Menu (Is, Is not, Is set, Is not set) */
@@ -2874,18 +2913,20 @@ function renderClickUpFilterPopover(themes, options) {
                         h('span', {}, rule.value || V1.filters.dateTo || 'Select date range...')
                       )
                     : h('div', { className: 'v1-cu-select-wrap v1-cu-value-select' },
-                        rule.field === 'axis' ? h('span', { className: 'v1-cu-tag-icon' }, msIcon('tag', 14)) : null,
-                        h('select', {
-                          className: 'v1-cu-select' + (rule.field === 'axis' ? ' has-icon' : ''),
+                        window.V091.renderFigmaDropdown({
+                          id: 'cu-value-' + rule.id,
                           value: rule.value,
-                          onChange: async e => {
-                            rule.value = e.target.value;
-                            await syncCuRulesToV1Filters();
+                          width: '100%',
+                          placeholder: rule.field === 'axis' ? 'Select tags / theme' : 'Select an option',
+                          options: [
+                            { value: '', label: rule.field === 'axis' ? 'Select tags / theme' : 'Select an option' },
+                            ...fieldOptions.map(opt => ({ value: opt.value, label: opt.label })),
+                          ],
+                          onChange: val => {
+                            rule.value = val;
+                            syncCuRulesToV1Filters();
                           },
-                        },
-                          h('option', { value: '' }, rule.field === 'axis' ? 'Select tags / theme' : 'Select an option'),
-                          fieldOptions.map(opt => h('option', { value: opt.value, selected: rule.value === opt.value ? 'selected' : null }, opt.label))
-                        )
+                        })
                       ))
                 : h('div', { className: 'v1-cu-value-placeholder' }, 'Any value'),
 
@@ -3056,12 +3097,30 @@ function renderNewTaskModal() {
     is_sensitive: false,
     error: '',
   });
+  const parishes = V1.data?.parishes || [];
+  const assignedLocked = V1.data?.user && !V1.data.user.is_diocesan;
+
+  /* Strategic axis tabs (derived from the goals catalogue) */
+  const axes = [];
+  goals.forEach(g => { if (!axes.some(a => a.code === g.axis_code)) axes.push({ code: g.axis_code, label: localize(g.axis_labels) }); });
+  const axisFilter = V1.newTaskAxisFilter || 'ALL';
+  const visibleGoals = goals.filter(g => axisFilter === 'ALL' || g.axis_code === axisFilter);
+  const selectedGoal = goals.find(g => g.outcome_code === state.outcome_code);
 
   const showTaskDatePicker = V1.cuDatePickerOpen && V1.cuDatePickerContext === 'new_task';
 
-  return h('div', { className: 'v1-wizard-card', style: { marginBottom: '24px' } },
-    h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
-      h('h2', { className: 'v1-section-title' }, L('add_planned')),
+  return h('div', {
+    className: 'v1-wizard-card v1-newtask-card',
+    style: { marginBottom: '24px' },
+    onClick: () => {
+      if (window.V091 && window.V091.openDropdownId) { window.V091.openDropdownId = null; renderApp(); }
+    },
+  },
+    h('div', { className: 'v1-newtask-head' },
+      h('div', {},
+        h('h2', { className: 'v1-section-title' }, L('add_planned')),
+        h('p', { className: 'v1-field-helper', style: { marginTop: '4px' } }, 'Pick the strategic goal, describe the activity in plain words and set the target. Codes are bound automatically.')
+      ),
       h('button', {
         type: 'button',
         className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -3075,8 +3134,10 @@ function renderNewTaskModal() {
     state.error
       ? h('div', { className: 'v1-error-alert' }, msIcon('error', 20), h('span', {}, state.error))
       : null,
+
+    /* 1. Plan horizon */
     h('div', { className: 'v1-field' },
-      h('label', { className: 'v1-field-label' }, '0. Institutional Plan Horizon (Scoped to Your Role Mandate)'),
+      h('label', { className: 'v1-field-label' }, 'Plan horizon (scoped to your role mandate)'),
       h('div', { className: 'v1-segmented' },
         visibleHorizons.map(ph =>
           h('button', {
@@ -3087,50 +3148,78 @@ function renderNewTaskModal() {
         )
       )
     ),
-    showTaskDatePicker
-      ? h('div', { style: { marginBottom: '16px' } },
-          renderClickUpDatePicker({
-            startDate: state.start_date || '',
-            dueDate: state.due_date || '',
-            onSelectStart: val => { state.start_date = val; },
-            onSelectDue: val => { state.due_date = val; },
-            onClose: () => { V1.cuDatePickerOpen = false; renderApp(); },
-          })
-        )
-      : null,
+
+    /* 2. Strategic goal picker: axis tabs + selectable outcome cards */
     h('div', { className: 'v1-field' },
-      h('label', { className: 'v1-field-label' },
-        '1. Choose Strategic Goal (Backend Automatically Binds Axis, Outcome & KPI IDs)'
-      ),
-      h('div', { className: 'v1-chips' },
-        goals.map(g =>
+      h('label', { className: 'v1-field-label' }, 'Strategic goal'),
+      h('div', { className: 'v1-goal-axis-tabs', role: 'tablist' },
+        [{ code: 'ALL', label: 'All axes' }, ...axes].map(a =>
           h('button', {
             type: 'button',
-            className: 'v1-chip' + (state.outcome_code === g.outcome_code ? ' active' : ''),
-            onClick: () => { state.outcome_code = g.outcome_code; renderApp(); },
-          }, `${localize(g.axis_labels)}: ${localize(g.labels).slice(0, 58)}...`)
+            role: 'tab',
+            className: 'v1-goal-axis-tab' + (axisFilter === a.code ? ' active' : ''),
+            title: a.label,
+            onClick: () => { V1.newTaskAxisFilter = a.code; renderApp(); },
+          }, a.code === 'ALL' ? a.label : a.code)
         )
-      )
+      ),
+      h('div', { className: 'v1-chips v1-goal-list' },
+        visibleGoals.map(g => {
+          const isSel = state.outcome_code === g.outcome_code;
+          return h('button', {
+            type: 'button',
+            key: g.outcome_code,
+            className: 'v1-chip v1-goal-option' + (isSel ? ' active' : ''),
+            'aria-pressed': isSel ? 'true' : 'false',
+            onClick: () => { state.outcome_code = g.outcome_code; renderApp(); },
+          },
+            h('span', { className: 'v1-goal-radio' }, isSel ? msIcon('check', 12) : null),
+            h('span', { className: 'v1-goal-body' },
+              h('span', { className: 'v1-goal-title' }, localize(g.labels)),
+              h('span', { className: 'v1-goal-meta' },
+                h('span', { className: 'v1-goal-code' }, g.outcome_code),
+                h('span', {}, localize(g.axis_labels))
+              )
+            )
+          );
+        })
+      ),
+      selectedGoal
+        ? h('div', { className: 'v1-field-helper' }, `Selected: ${selectedGoal.outcome_code} · axis, intervention and KPI ${selectedGoal.indicator_code} are inherited automatically.`)
+        : null
     ),
+
+    /* 3. Activity title */
     h('div', { className: 'v1-field' },
-      h('label', { className: 'v1-field-label' }, '2. Natural Activity Title (Plain Action Statement)'),
+      h('label', { className: 'v1-field-label' }, 'Activity title'),
       h('input', {
         type: 'text',
         className: 'v1-input',
         placeholder: 'e.g., Train 25 youth mediators in peaceful family dialogue',
         value: state.title,
         onChange: e => { state.title = e.target.value; },
+        onInput: e => { state.title = e.target.value; },
       }),
-      h('div', { className: 'v1-field-helper' }, 'No form codes or strategic IDs needed.')
+      h('div', { className: 'v1-field-helper' }, 'Plain action statement. No form codes or strategic IDs needed.')
     ),
-    h('div', { className: 'v1-number-grid', style: { marginBottom: '16px' } },
+
+    /* 4. Parish + due date */
+    h('div', { className: 'v1-newtask-grid' },
       h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-        h('label', { className: 'v1-field-label' }, 'Assigned Parish'),
-        renderParishCombobox(state.parish_code, code => { if (code) state.parish_code = code; renderApp(); }, false)
+        h('label', { className: 'v1-field-label' }, 'Assigned parish'),
+        assignedLocked
+          ? h('div', { className: 'v1-input v1-static-field' }, (parishes.find(p => p.code === state.parish_code) || {}).name || state.parish_code)
+          : window.V091.renderFigmaDropdown({
+              id: 'newtask-parish',
+              value: state.parish_code,
+              width: '100%',
+              options: parishes.map(p => ({ value: p.code, label: `${p.name} Parish` })),
+              onChange: code => { if (code) state.parish_code = code; },
+            })
       ),
-      h('div', { className: 'v1-field', style: { marginBottom: 0, position: 'relative' } },
-        h('label', { className: 'v1-field-label' }, 'Target Due Date'),
-        h('div', { style: { display: 'flex', gap: '6px', alignItems: 'center' } },
+      h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+        h('label', { className: 'v1-field-label' }, 'Target due date'),
+        h('div', { className: 'v1-date-field' },
           h('input', {
             type: 'date',
             className: 'v1-input',
@@ -3140,8 +3229,9 @@ function renderNewTaskModal() {
           h('button', {
             type: 'button',
             className: 'v1-cu-cal-trigger-btn',
-            title: 'Open ClickUp Calendar & Presets',
-            onClick: () => {
+            title: 'Open calendar & presets',
+            onClick: e => {
+              e.stopPropagation();
               V1.cuDatePickerOpen = !showTaskDatePicker;
               V1.cuDatePickerContext = 'new_task';
               V1.cuDatePickerActiveField = 'due';
@@ -3149,7 +3239,22 @@ function renderNewTaskModal() {
             },
           }, msIcon('calendar_today', 16))
         )
-      ),
+      )
+    ),
+    showTaskDatePicker
+      ? h('div', { style: { margin: '14px 0' } },
+          renderClickUpDatePicker({
+            startDate: state.start_date || '',
+            dueDate: state.due_date || '',
+            onSelectStart: val => { state.start_date = val; },
+            onSelectDue: val => { state.due_date = val; },
+            onClose: () => { V1.cuDatePickerOpen = false; renderApp(); },
+          })
+        )
+      : null,
+
+    /* 5. Targets */
+    h('div', { className: 'v1-number-grid', style: { margin: '16px 0' } },
       renderStepperInput('Planned Target', state.planned_target, v => {
         state.planned_target = v;
         state.min_threshold = Math.max(1, Math.round(v * 0.6));
@@ -3159,7 +3264,13 @@ function renderNewTaskModal() {
       renderStepperInput('Good Impact Threshold (Min)', state.min_threshold, v => { state.min_threshold = v; renderApp(); }, 1),
       renderStepperInput('Great Impact Threshold', state.target_threshold, v => { state.target_threshold = v; renderApp(); }, 1)
     ),
-    h('div', { style: { display: 'flex', justifyContent: 'flex-end', gap: '10px' } },
+
+    h('div', { className: 'v1-newtask-actions' },
+      h('button', {
+        type: 'button',
+        className: 'v1-btn v1-btn-secondary',
+        onClick: () => { V1.newTaskModal = false; V1.cuDatePickerOpen = false; renderApp(); },
+      }, 'Cancel'),
       h('button', {
         type: 'button',
         className: 'v1-btn',
@@ -3172,6 +3283,7 @@ function renderNewTaskModal() {
             V1.newTaskModal = false;
             V1.cuDatePickerOpen = false;
             V1.newTaskState = null;
+            V1.newTaskAxisFilter = 'ALL';
             await loadBootstrap();
             renderApp();
           } catch (err) {
@@ -3183,7 +3295,6 @@ function renderNewTaskModal() {
     )
   );
 }
-
 /* WORKSPACE 1: My Tasks (Figma Node 9:34468 Header/Toolbar + Node 9:34582 Task Cards) */
 function renderTasksWorkspace() {
   if (V1.wizard) return renderWizardView();
@@ -3766,15 +3877,17 @@ function renderApprovalsWorkspace() {
             ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-input)', borderRadius: 'var(--radius-sm)', display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'flex-end' } },
                 h('div', { className: 'v1-field', style: { marginBottom: 0, minWidth: '180px' } },
                   h('label', { className: 'v1-field-label' }, 'Step to Fix'),
-                  h('select', {
-                    className: 'v1-select',
+                  window.V091.renderFigmaDropdown({
+                    id: 'returning-step',
                     value: String(V1.returningLog.step),
-                    onChange: e => { V1.returningLog.step = Number(e.target.value) || 2; },
-                  },
-                    h('option', { value: '1' }, 'Step 1: When & Where'),
-                    h('option', { value: '2' }, 'Step 2: Attendance & Activity'),
-                    h('option', { value: '3' }, 'Step 3: Outcome & Issues')
-                  )
+                    width: '100%',
+                    options: [
+                      { value: '1', label: 'Step 1: When & Where' },
+                      { value: '2', label: 'Step 2: Attendance & Activity' },
+                      { value: '3', label: 'Step 3: Outcome & Issues' },
+                    ],
+                    onChange: val => { V1.returningLog.step = Number(val) || 2; },
+                  })
                 ),
                 h('div', { className: 'v1-field', style: { marginBottom: 0, flex: 1, minWidth: '220px' } },
                   h('label', { className: 'v1-field-label' }, 'Reviewer Note for Field Reporter'),
@@ -4327,10 +4440,16 @@ function renderExportsWorkspace() {
                           msIcon('warning', 20),
                           h('span', {}, m.message)
                         ),
-                        h('select', {
-                          className: 'v1-select',
-                          onChange: async ev => {
-                            V1.csvImportState.mapping[m.key] = ev.target.value;
+                        window.V091.renderFigmaDropdown({
+                          id: 'csv-map-' + m.key,
+                          value: V1.csvImportState.mapping[m.key] || '',
+                          width: '100%',
+                          options: [
+                            { value: '', label: 'Select matching column from your file...' },
+                            ...V1.csvImportState.headers.map(hdr => ({ value: hdr, label: hdr })),
+                          ],
+                          onChange: async val => {
+                            V1.csvImportState.mapping[m.key] = val;
                             const updated = await apiV1('/v1/import', 'POST', {
                               csv_text: V1.csvImportState.csvText,
                               mapping: V1.csvImportState.mapping,
@@ -4339,10 +4458,7 @@ function renderExportsWorkspace() {
                             Object.assign(V1.csvImportState, updated);
                             renderApp();
                           },
-                        },
-                          h('option', { value: '' }, 'Select matching column from your file...'),
-                          V1.csvImportState.headers.map(hdr => h('option', { value: hdr }, hdr))
-                        )
+                        })
                       )
                     )
                   )
@@ -4735,42 +4851,60 @@ if (typeof window !== 'undefined' && !window.__apseSidecarEscBound) {
   });
 }
 
+if (typeof window !== 'undefined' && !window.__apseDropdownOutsideBound) {
+  window.__apseDropdownOutsideBound = true;
+  document.addEventListener('click', e => {
+    const v = window.V091;
+    if (v && v.openDropdownId && !(e.target.closest && e.target.closest('.v1-figma-dropdown-wrap'))) {
+      v.openDropdownId = null;
+      if (typeof renderApp === 'function') renderApp();
+    }
+  });
+}
+
 function renderRightRail() {
   const rightRailItems = [
-    { id: 'ps_planning', icon: 'ps_planning', title: 'Planification Stratégique PS (AP1–AP5, 5 axes)' },
-    { id: 'projects_ops', icon: 'projects_ops', title: 'Projets et Opérations (Portefeuille & KPIs)' },
-    { id: 'staff_eval', icon: 'staff_eval', title: 'Évaluation des Réalisations (F05/F43/F04/F03)' },
-    { id: 'assistant', icon: 'assistant', title: 'Assistant et Contrôles (Vérifications & Rédaction)' },
-    { id: 'contacts', icon: 'contacts', title: 'Contacts et Annuaire Diocésain' },
-    { id: 'data_structure', icon: 'data_structure', title: 'Structure & Flux des Données (27 paroisses)' },
-    { id: 'timesheets', icon: 'timesheets', title: 'Feuilles de Temps (F31/F32)' },
-    { id: 'metadata', icon: 'metadata', title: 'Référentiels & Métadonnées (18 catégories)' },
-    { id: 'mel_admin', icon: 'mel_admin', title: 'Administration MEL & Audits HMAC' },
-  ];
+    { id: 'ps_planning', icon: 'ps_planning', label: L('nav_ps_planning'), title: 'Planification Stratégique PS (AP1–AP5, 5 axes)' },
+    { id: 'projects_ops', icon: 'projects_ops', label: L('nav_projects_ops'), title: 'Projets et Opérations (Portefeuille & KPIs)' },
+    { id: 'staff_eval', icon: 'staff_eval', label: L('nav_staff_eval'), title: 'Évaluation des Réalisations (F05/F43/F04/F03)' },
+    { id: 'assistant', icon: 'assistant', label: L('nav_assistant'), title: 'Assistant et Contrôles (Vérifications & Rédaction)' },
+    { id: 'contacts', icon: 'contacts', label: L('nav_contacts'), title: 'Contacts et Annuaire Diocésain' },
+    { id: 'data_structure', icon: 'data_structure', label: L('nav_data_structure'), title: 'Structure & Flux des Données (27 paroisses)' },
+    { id: 'timesheets', icon: 'timesheets', label: L('nav_timesheets'), title: 'Feuilles de Temps (F31/F32)' },
+    { id: 'metadata', icon: 'metadata', label: L('nav_metadata'), title: 'Référentiels & Métadonnées (18 catégories)' },
+    { id: 'mel_admin', icon: 'mel_admin', label: L('nav_mel_admin'), title: 'Administration MEL & Audits HMAC' },
+  ].filter(item => canAccessWorkspace(item.id));
+  const expanded = Boolean(V1.rightRailExpanded);
 
-  return h('aside', { className: 'v1-right-sidebar', 'aria-label': 'Right Reference Rail' },
+  return h('aside', {
+    className: 'v1-right-sidebar' + (expanded ? ' expanded' : ''),
+    'aria-label': 'Right Reference Rail',
+  },
     h('button', {
       type: 'button',
-      className: 'v1-right-rail-btn',
-      style: { background: V1.rightSidecarOpen ? 'var(--bg-hover)' : 'transparent', color: 'var(--color-primary)' },
-      title: V1.rightSidecarOpen ? 'Réduire le panneau de référence' : 'Déplier le panneau de référence (Lecture seule)',
+      className: 'v1-right-rail-btn v1-right-rail-toggle',
+      title: expanded ? 'Réduire en icônes' : 'Afficher les libellés',
       onClick: () => {
-        V1.rightSidecarOpen = !V1.rightSidecarOpen;
+        V1.rightRailExpanded = !V1.rightRailExpanded;
         renderApp();
       }
     },
-      msIcon(V1.rightSidecarOpen ? 'chevron_right' : 'dock_to_right', 20)
+      msIcon(expanded ? 'chevron_right' : 'chevron_left', 20),
+      expanded ? h('span', { className: 'v1-right-rail-label' }, 'Référence') : null
     ),
     h('div', { className: 'v1-right-rail-divider' }),
     rightRailItems.map(item => {
-      const isSelected = V1.rightSidecarOpen && V1.rightSidecarTab === item.id;
+      const inPopup = V1.rightSidecarOpen && V1.rightSidecarTab === item.id;
+      const inPlainView = V1.workspace === item.id && !V1.wizard;
+      const isSelected = inPopup || inPlainView;
       return h('button', {
         key: item.id,
         type: 'button',
         className: 'v1-right-rail-btn' + (isSelected ? ' active' : ''),
+        'aria-current': isSelected ? 'page' : null,
         title: item.title,
         onClick: () => {
-          if (V1.rightSidecarOpen && V1.rightSidecarTab === item.id) {
+          if (inPopup) {
             V1.rightSidecarOpen = false;
           } else {
             V1.rightSidecarOpen = true;
@@ -4779,12 +4913,12 @@ function renderRightRail() {
           renderApp();
         }
       },
-        msIcon(item.icon, 20)
+        msIcon(item.icon, 20),
+        expanded ? h('span', { className: 'v1-right-rail-label' }, item.label) : null
       );
     })
   );
 }
-
 function renderMobileNavDrawer() {
   if (!V1.mobileNavOpen) return null;
 
@@ -4849,7 +4983,7 @@ function renderMobileNavDrawer() {
       navGroups.map((grp, gIdx) =>
         h('div', { key: gIdx },
           h('div', { className: 'v1-mobile-drawer-group-title' }, grp.title),
-          grp.items.map(it => {
+          grp.items.filter(it => canAccessWorkspace(it.id)).map(it => {
             const isActive = V1.workspace === it.id;
             return h('button', {
               key: it.id,
@@ -4912,7 +5046,8 @@ function renderMobileNavDrawer() {
 function renderApp() {
   document.documentElement.lang = V1.lang;
   document.documentElement.dataset.theme = V1.theme;
-  document.body.className = 'v1-body';
+  document.body.className = 'v1-body' + (V1.rightRailExpanded ? ' rail-expanded' : '');
+  const brandAsset = V1.theme === 'dark' ? 'white.png' : 'black.png';
 
   // Capture active focus and cursor selection range before replacing children
   const activeEl = document.activeElement;
@@ -4968,7 +5103,7 @@ function renderApp() {
     { id: 'create_form', icon: 'create_form', label: L('nav_create_form'), badge: null, group: 'Rapports & Apprentissage' },
     { id: 'offline_hub', icon: 'offline_hub', label: L('nav_offline_hub'), badge: qLen > 0 ? qLen : null, group: 'Hors ligne & Synchronisation', alias: 'offline_vault' },
     { id: 'feedback', icon: 'feedback', label: L('nav_feedback'), badge: null, group: 'Administration & Organisation', alias: 'back_to_file' },
-  ];
+  ].filter(item => canAccessWorkspace(item.id));
 
   const shell = h('div', {},
     /* Single 56px Top Bar */
@@ -4986,8 +5121,11 @@ function renderApp() {
           }
         },
       },
-        h('span', { className: 'v1-brand-text' }, 'apse.'),
-        h('span', { className: 'v1-brand-badge' }, 'CDJP BUTARE')
+        h('img', {
+          className: 'v1-brand-logo v1-brand-text',
+          src: `assets/${brandAsset}`,
+          alt: 'APSE CDJP Butare',
+        })
       ),
       /* Desktop Search Input */
       h('div', { className: 'v1-search-wrap' },

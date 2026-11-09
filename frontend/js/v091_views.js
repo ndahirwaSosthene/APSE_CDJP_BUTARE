@@ -798,6 +798,7 @@
                 const matchPersona = (V1.data?.personas || []).find(p => (p.roles || []).includes(rw.role)) || (V1.data?.staff_accounts || []).find(p => (p.roles || []).includes(rw.role));
                 if (matchPersona) {
                   apiV1('/v1/persona', 'POST', { persona_key: matchPersona.key }).then(() => {
+                    if (window.resetAccountScopedState) window.resetAccountScopedState();
                     loadBootstrap().then(() => renderApp());
                   });
                 }
@@ -1196,43 +1197,25 @@
           /* Mobile/Tablet Prominent Form Picker: Select dropdown & Quick Badge Rail */
           h('div', { className: 'v1-seizure-mobile-picker' },
             h('label', { className: 'v1-field-label', style: { marginTop: '4px', marginBottom: '4px' } }, 'Sélectionner un formulaire'),
-            h('select', {
-              className: 'v1-input v1-seizure-form-select',
+            V091.renderFigmaDropdown({
+              id: 'seizure-form-picker',
               value: V091.activeFormCode,
-              onChange: e => {
-                if (e.target.value) {
-                  V091.activeFormCode = e.target.value;
+              width: '100%',
+              className: 'v1-seizure-form-select',
+              options: allForms.map(f => {
+                const isSens = f.sensitive || ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'].includes(f.code);
+                const lbl = (f.label && (f.label[V1.lang] || f.label.fr || f.label.en)) || f.code;
+                return { value: f.code, label: `${f.code} — ${lbl}${isSens ? ' [Sensible]' : ''}` };
+              }),
+              onChange: code => {
+                if (code) {
+                  V091.activeFormCode = code;
                   V091.formValues = {};
                   V091.activeFormSectionIndex = 0;
                   V091.seizureSubTab = 'form';
-                  renderApp();
                 }
               },
-            },
-              clusters.slice(1).map(c => {
-                const clusterForms = allForms.filter(f => c.codes.includes(f.code));
-                if (clusterForms.length === 0) return null;
-                return h('optgroup', { label: c.label, key: c.id },
-                  clusterForms.map(f => {
-                    const isSens = f.sensitive || ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'].includes(f.code);
-                    const lbl = (f.label && (f.label[V1.lang] || f.label.fr || f.label.en)) || f.code;
-                    return h('option', { value: f.code, key: f.code }, `${f.code} — ${lbl}${isSens ? ' [Sensible]' : ''}`);
-                  })
-                );
-              }),
-              (() => {
-                const knownCodes = new Set(clusters.slice(1).flatMap(c => c.codes));
-                const unclustered = allForms.filter(f => !knownCodes.has(f.code));
-                if (unclustered.length === 0) return null;
-                return h('optgroup', { label: 'Autres formulaires', key: 'OTHER' },
-                  unclustered.map(f => {
-                    const lbl = (f.label && (f.label[V1.lang] || f.label.fr || f.label.en)) || f.code;
-                    return h('option', { value: f.code, key: f.code }, `${f.code} — ${lbl}`);
-                  })
-                );
-              })()
-            ),
-            h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '4px 0 2px' } },
+            }),            h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '4px 0 2px' } },
               h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 } }, 'Accès rapide (badges) :'),
               h('span', { style: { fontSize: '0.6875rem', color: 'var(--text-muted)' } }, `${filteredForms.length} formulaire${filteredForms.length > 1 ? 's' : ''}`)
             ),
@@ -2744,6 +2727,8 @@
       return true;
     });
 
+    const planningActiveFilters = (V091.planningFilterAxis !== 'ALL' ? 1 : 0) + (V091.planningFilterType !== 'ALL' ? 1 : 0);
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
@@ -2829,108 +2814,143 @@
         ) : null
       ),
 
-      /* Selectors & Filters Bar */
-      h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '20px' } },
-        h('div', { style: { display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' } },
-          /* Year segmented */
-          h('div', { className: 'v1-segmented-scroll' },
-            h('div', { className: 'v1-segmented' },
-              ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) =>
-                h('button', {
-                  type: 'button',
-                  key: ap,
-                  className: 'v1-seg-btn' + (V091.planningYear === ap ? ' active' : ''),
-                  onClick: () => {
-                    V091.planningYear = ap;
-                    renderApp();
-                  },
-                }, `${ap} (${2026 + idx}–${2027 + idx})`)
-              )
-            )
+      /* ClickUp-style toolbar: search + Filter pill (popover) + quick type pill */
+      h('div', { className: 'v1-tasks-figma-header', style: { marginBottom: '12px' } },
+        h('div', { className: 'v1-tasks-toolbar-row' },
+          h('div', { className: 'v1-tasks-search-box' },
+            h('span', { className: 'v1-tasks-search-icon' }, msIcon('search', 20)),
+            h('input', {
+              type: 'search',
+              className: 'v1-tasks-search-input',
+              placeholder: 'Rechercher par code, intitulé, indicateur, district...',
+              value: V091.planningSearch,
+              onInput: e => {
+                V091.planningSearch = e.target.value;
+                renderApp();
+              },
+            })
           ),
-          /* Audience segmented */
-          h('div', { className: 'v1-segmented-scroll' },
-            h('div', { className: 'v1-segmented' },
-              [
-                ['STAFF', 'Personnel CDJP Diocèse'],
-                ['CPJP', 'Comités Paroissiaux CPJP'],
-              ].map(([aud, lbl]) =>
-                h('button', {
-                  type: 'button',
-                  key: aud,
-                  className: 'v1-seg-btn' + (V091.planningAudience === aud ? ' active' : ''),
-                  onClick: () => {
-                    V091.planningAudience = aud;
-                    renderApp();
-                  },
-                }, lbl)
-              )
+          h('div', { className: 'v1-header-actions v1-tasks-actions-group' },
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-pill-filter' + (V091.planningFilterOpen || planningActiveFilters > 0 ? ' active' : ''),
+              onClick: e => {
+                e.stopPropagation();
+                V091.planningFilterOpen = !V091.planningFilterOpen;
+                renderApp();
+              },
+            },
+              msIcon('iconsax_sort', 19),
+              h('span', {}, planningActiveFilters > 0 ? `Filtres (${planningActiveFilters})` : 'Filtres')
+            ),
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-pill-completed' + (V091.planningFilterType === 'TASK' ? ' active' : ''),
+              onClick: () => {
+                V091.planningFilterType = V091.planningFilterType === 'TASK' ? 'ALL' : 'TASK';
+                renderApp();
+              },
+            },
+              msIcon('iconsax_clipboard_tick', 18),
+              h('span', {}, 'Tâches annuelles')
             )
           )
-        ),
-
-        /* Filter Pills & Live Search Row */
-        h('div', { style: { display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' } },
-          /* Axis Chips */
-          h('div', { className: 'v1-chips', style: { flex: '1 1 240px', minWidth: 0 } },
-            [
-              ['ALL', 'Tous les axes (5)'],
-              ['A1', 'A1 · Guérison & Réconciliation'],
-              ['A2', 'A2 · Résolution des conflits'],
-              ['A3', 'A3 · Justice écologique'],
-              ['A4', 'A4 · Droits humains'],
-              ['A5', 'A5 · Renforcement institutionnel'],
-            ].map(([ax, lbl]) =>
-              h('button', {
-                type: 'button',
-                key: ax,
-                className: 'v1-chip' + (V091.planningFilterAxis === ax ? ' active' : ''),
-                style: { padding: '4px 10px' },
-                onClick: () => {
-                  V091.planningFilterAxis = ax;
-                  renderApp();
-                }
-              }, lbl)
-            )
-          ),
-
-          /* Type Filter */
-          h('div', { className: 'v1-segmented-scroll' },
-            h('div', { className: 'v1-segmented' },
-              [
-                ['ALL', `Tous (${allItems.length})`],
-                ['TASK', `Tâches annuelles (${annualTasks.length})`],
-                ['LINE', `Lignes indicatives (${operationalLines.length})`],
-              ].map(([t, lbl]) =>
-                h('button', {
-                  type: 'button',
-                  key: t,
-                  className: 'v1-seg-btn' + (V091.planningFilterType === t ? ' active' : ''),
-                  style: { fontSize: '0.75rem', padding: '4px 8px' },
-                  onClick: () => {
-                    V091.planningFilterType = t;
-                    renderApp();
-                  }
-                }, lbl)
-              )
-            )
-          ),
-
-          /* Search Input */
-          h('input', {
-            type: 'search',
-            className: 'v1-input',
-            placeholder: 'Rechercher par code, intitulé, indicateur, district...',
-            value: V091.planningSearch,
-            onInput: e => {
-              V091.planningSearch = e.target.value;
-              renderApp();
-            },
-            style: { flex: '1 1 200px', maxWidth: '100%', height: '34px', fontSize: '0.8125rem', boxSizing: 'border-box' }
-          })
         )
       ),
 
+      /* Filter popover (theme-adaptive, same abstraction as Tasks / Approvals) */
+      h('div', {
+        className: 'v1-context-filters v1-cu-filter-popover' + (V091.planningFilterOpen ? ' is-open' : ''),
+        onClick: e => e.stopPropagation(),
+      },
+        h('div', { className: 'v1-cu-filter-header' },
+          h('div', { className: 'v1-cu-filter-title-wrap' },
+            h('strong', { className: 'v1-cu-filter-title' }, 'Filtres'),
+            h('span', { className: 'v1-cu-filter-info' }, msIcon('info', 14))
+          ),
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-filter-close-btn',
+            onClick: () => { V091.planningFilterOpen = false; renderApp(); },
+          }, h('span', {}, 'Fermer'), msIcon('close', 14))
+        ),
+        h('div', { className: 'v1-ps-filter-grid' },
+          h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+            h('label', { className: 'v1-field-label' }, 'Année pastorale'),
+            V091.renderFigmaDropdown({
+              id: 'ps-year',
+              value: V091.planningYear,
+              width: '100%',
+              options: ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) => ({ value: ap, label: `${ap} (${2026 + idx}–${2027 + idx})` })),
+              onChange: val => { V091.planningYear = val; },
+            })
+          ),
+          h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+            h('label', { className: 'v1-field-label' }, 'Public du plan'),
+            V091.renderFigmaDropdown({
+              id: 'ps-audience',
+              value: V091.planningAudience,
+              width: '100%',
+              options: [
+                { value: 'STAFF', label: 'Personnel CDJP Diocèse' },
+                { value: 'CPJP', label: 'Comités Paroissiaux CPJP' },
+              ],
+              onChange: val => { V091.planningAudience = val; },
+            })
+          ),
+          h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+            h('label', { className: 'v1-field-label' }, 'Axe stratégique'),
+            V091.renderFigmaDropdown({
+              id: 'ps-axis',
+              value: V091.planningFilterAxis,
+              width: '100%',
+              options: [
+                { value: 'ALL', label: 'Tous les axes (5)' },
+                { value: 'A1', label: 'A1 · Guérison & Réconciliation' },
+                { value: 'A2', label: 'A2 · Résolution des conflits' },
+                { value: 'A3', label: 'A3 · Justice écologique' },
+                { value: 'A4', label: 'A4 · Droits humains' },
+                { value: 'A5', label: 'A5 · Renforcement institutionnel' },
+              ],
+              onChange: val => { V091.planningFilterAxis = val; },
+            })
+          ),
+          h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+            h('label', { className: 'v1-field-label' }, 'Type d’élément'),
+            V091.renderFigmaDropdown({
+              id: 'ps-type',
+              value: V091.planningFilterType,
+              width: '100%',
+              options: [
+                { value: 'ALL', label: `Tous (${allItems.length})` },
+                { value: 'TASK', label: `Tâches annuelles (${annualTasks.length})` },
+                { value: 'LINE', label: `Lignes indicatives (${operationalLines.length})` },
+              ],
+              onChange: val => { V091.planningFilterType = val; },
+            })
+          )
+        ),
+        h('div', { className: 'v1-cu-filter-footer' },
+          h('span', { className: 'v1-field-helper', style: { margin: 0 } }, `${filteredItems.length} élément(s) affiché(s)`),
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-clear-all-btn',
+            onClick: () => {
+              V091.planningFilterAxis = 'ALL';
+              V091.planningFilterType = 'ALL';
+              V091.planningSearch = '';
+              renderApp();
+            },
+          }, 'Tout effacer')
+        )
+      ),
+
+      h('div', { className: 'v1-ps-active-chips' },
+        h('span', { className: 'v1-badge' }, `${V091.planningYear} · ${yearData.start || ''} → ${yearData.end || ''}`),
+        h('span', { className: 'v1-badge' }, V091.planningAudience === 'STAFF' ? 'Personnel CDJP Diocèse' : 'Comités Paroissiaux CPJP'),
+        V091.planningFilterAxis !== 'ALL' ? h('span', { className: 'v1-badge' }, `Axe ${V091.planningFilterAxis}`) : null,
+        V091.planningFilterType !== 'ALL' ? h('span', { className: 'v1-badge' }, V091.planningFilterType === 'TASK' ? 'Tâches annuelles' : 'Lignes indicatives') : null
+      ),
       /* Strategic Axes Sections with Rich Cards Grid */
       filteredItems.length === 0 ? h('div', { className: 'v1-panel', style: { padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' } },
         msIcon('search_off', 32),
@@ -4627,14 +4647,16 @@
                     h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' } },
                       h('div', { className: 'v1-field' },
                         h('label', { className: 'v1-field-label' }, 'Type de feuille'),
-                        h('select', {
-                          className: 'v1-select',
+                        V091.renderFigmaDropdown({
+                          id: 'ts-form',
                           value: draft.form,
-                          onChange: e => { draft.form = e.target.value; renderApp(); },
-                        },
-                          h('option', { value: 'F31', selected: draft.form === 'F31' }, 'F31 — Heures d’activité'),
-                          h('option', { value: 'F32', selected: draft.form === 'F32' }, 'F32 — Congé / Absence')
-                        )
+                          width: '100%',
+                          options: [
+                            { value: 'F31', label: 'F31 — Heures d’activité' },
+                            { value: 'F32', label: 'F32 — Congé / Absence' },
+                          ],
+                          onChange: val => { draft.form = val; },
+                        })
                       ),
                       h('div', { className: 'v1-field' },
                         h('label', { className: 'v1-field-label' }, 'Date (Calendrier AP1–AP5)'),
@@ -4659,15 +4681,13 @@
                       ),
                       h('div', { className: 'v1-field' },
                         h('label', { className: 'v1-field-label' }, 'Axe stratégique'),
-                        h('select', {
-                          className: 'v1-select',
+                        V091.renderFigmaDropdown({
+                          id: 'ts-axis',
                           value: draft.axis,
-                          onChange: e => { draft.axis = e.target.value; },
-                        },
-                          ['A1', 'A2', 'A3', 'A4', 'A5'].map(ax =>
-                            h('option', { value: ax, selected: draft.axis === ax }, `Axe ${ax}`)
-                          )
-                        )
+                          width: '100%',
+                          options: ['A1', 'A2', 'A3', 'A4', 'A5'].map(ax => ({ value: ax, label: `Axe ${ax}` })),
+                          onChange: val => { draft.axis = val; },
+                        })
                       )
                     ),
                     h('div', { className: 'v1-field' },
@@ -4863,7 +4883,7 @@
         }
         if (signInAfter) {
           await apiV1('/v1/auth/login', 'POST', { username: uname, password: pass });
-          V1.filters.parish = '';
+          if (window.resetAccountScopedState) window.resetAccountScopedState();
         }
         await loadBootstrap();
         V091.melAdminData = await apiV1('/mel-admin').catch(() => null);
@@ -4937,33 +4957,31 @@
           h('div', { style: { display: 'grid', gridTemplateColumns: isParishRole ? '1fr 1fr' : '1fr', gap: '12px' } },
             h('div', { className: 'v1-field' },
               h('label', { className: 'v1-field-label' }, 'Rôle institutionnel RBAC'),
-              h('select', {
-                className: 'v1-select',
+              V091.renderFigmaDropdown({
+                id: 'mel-acc-role',
                 value: formState.role,
-                onChange: e => {
-                  formState.role = e.target.value;
-                  if (['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(formState.role) && !formState.parish_code) {
-                    formState.parish_code = 'PAR-01';
-                  } else if (!['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(formState.role)) {
+                width: '100%',
+                options: roleOptions.map(r => ({ value: r.code, label: r.label })),
+                onChange: val => {
+                  formState.role = val;
+                  if (['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(val)) {
+                    formState.parish_code = formState.parish_code || 'PAR-03';
+                  } else {
                     formState.parish_code = '';
                   }
-                  renderApp();
                 },
-              },
-                roleOptions.map(r => h('option', { value: r.code, selected: formState.role === r.code }, r.label))
-              )
+              })
             ),
             isParishRole ? h('div', { className: 'v1-field' },
               h('label', { className: 'v1-field-label' }, 'Paroisse assignée (CPJP)'),
-              h('select', {
-                className: 'v1-select',
-                value: formState.parish_code || 'PAR-01',
-                onChange: e => { formState.parish_code = e.target.value; },
-              },
-                (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale' }, { code: 'PAR-24', name: 'Kibeho' }]).map(p =>
-                  h('option', { value: p.code, selected: (formState.parish_code || 'PAR-01') === p.code }, `${p.code} — ${p.name}`)
-                )
-              )
+              V091.renderFigmaDropdown({
+                id: 'mel-acc-parish',
+                value: formState.parish_code || 'PAR-03',
+                width: '100%',
+                options: (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale' }, { code: 'PAR-24', name: 'Kibeho' }])
+                  .map(p => ({ value: p.code, label: `${p.code} — ${p.name}` })),
+                onChange: val => { formState.parish_code = val; },
+              })
             ) : null
           )
         );
@@ -5123,7 +5141,7 @@
                       onClick: async () => {
                         try {
                           await apiV1('/v1/persona', 'POST', { persona_key: acc.username });
-                          V1.filters.parish = '';
+                          if (window.resetAccountScopedState) window.resetAccountScopedState();
                           await loadBootstrap();
                           V091.showToast(`✓ Connecté sur le compte [${acc.username}].`, 'info');
                           renderApp();
