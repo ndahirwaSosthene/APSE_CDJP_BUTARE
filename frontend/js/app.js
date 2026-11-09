@@ -38,12 +38,26 @@ const V1 = {
   personaModal: false,
   returningLog: null, // { id, step: 2, note: '' }
   mobileSheet: null, // null | 'filters' | 'location'
-  exportOptions: {
+    exportOptions: {
     reportType: 'impact_summary',
     format: 'xlsx',
     preset: 'natural',
   },
   csvImportState: null,
+  cuFilterPopoverOpen: false,
+  cuFilterRules: [
+    { id: 'rule-1', field: 'axis', operator: 'is', value: '' },
+  ],
+  cuConjunction: 'AND',
+  cuOperatorMenuRowId: null,
+  cuSavedFiltersOpen: false,
+  cuQuickPrompt: '',
+  cuDatePickerOpen: false,
+  cuDatePickerContext: null, // 'new_task' | 'filter'
+  cuDatePickerActiveField: 'due', // 'start' | 'due'
+  cuCalendarYear: 2026,
+  cuCalendarMonth: 10, // 0-indexed: 10 = November 2026
+  addTaskMenuOpen: false,
 };
 
 /* Section 4: APSE Iconography System (24x24 viewBox)
@@ -199,6 +213,13 @@ const APSE_ICON_SVGS = {
   healing: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
   volunteer_activism: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
   terrain: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/><path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19"/></g>',
+  iconsax_sort: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 7h18"/><path d="M6 12h12"/><path d="M10 17h4"/></g>',
+  iconsax_clipboard_tick: '<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9.31 14.7 1.5 1.5 4-4"/><path d="M10 6h4c2 0 2-1 2-2 0-2-1-2-2-2h-4C9 2 8 2 8 4c0 2 1 2 2 2Z"/><path d="M16 4.02c3.33.18 5 1.41 5 5.98v6c0 4-1 6-6 6H9c-5 0-6-2-6-6v-6c0-4.56 1.67-5.8 5-5.98"/></g>',
+  iconsax_add: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"/><path d="M12 18V6"/></g>',
+  iconsax_arrow_down: '<path fill="currentColor" d="M12 16.8c-.7 0-1.4-.27-1.93-.8L3.55 9.48a.754.754 0 0 1 0-1.06c.29-.29.77-.29 1.06 0l6.52 6.52c.48.48 1.26.48 1.74 0l6.52-6.52c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06L13.93 16c-.53.53-1.23.8-1.93.8Z"/>',
+  sparkle_ai: '<path fill="currentColor" d="M12 2L14.4 7.6L20 10L14.4 12.4L12 18L9.6 12.4L4 10L9.6 7.6L12 2ZM19 15L20.1 17.4L22.5 18.5L20.1 19.6L19 22L17.9 19.6L15.5 18.5L17.9 17.4L19 15ZM5 15L5.9 16.9L7.8 17.8L5.9 18.7L5 20.6L4.1 18.7L2.2 17.8L4.1 16.9L5 15Z"/>',
+  send: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></g>',
+  tag: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></g>',
 };
 
 /* Section 4: Material Symbols Outlined Vector Paths (weight: 400, grade: 0, 24x24 viewBox) */
@@ -2118,7 +2139,676 @@ function renderWizardView() {
   );
 }
 
-/* Modal to Add a New Planned Activity (Auto-Inherits Strategic Metadata) */
+/* ClickUp-Style Interactive Date Picker (Presets Left + Monthly Calendar Right) */
+function renderClickUpDatePicker(opts) {
+  const {
+    startDate = '',
+    dueDate = '',
+    onSelectStart = () => {},
+    onSelectDue = () => {},
+    onClose = null,
+  } = opts || {};
+
+  const activeField = V1.cuDatePickerActiveField || 'due';
+  const baseDateStr = (activeField === 'start' ? startDate : dueDate) || dueDate || '2026-11-07';
+  const parsedBase = new Date(baseDateStr + 'T12:00:00Z');
+  const baseValid = !Number.isNaN(parsedBase.valueOf()) ? parsedBase : new Date('2026-11-07T12:00:00Z');
+
+  if (typeof V1.cuCalendarYear !== 'number' || typeof V1.cuCalendarMonth !== 'number') {
+    V1.cuCalendarYear = baseValid.getUTCFullYear();
+    V1.cuCalendarMonth = baseValid.getUTCMonth();
+  }
+
+  const calYear = V1.cuCalendarYear;
+  const calMonth = V1.cuCalendarMonth;
+
+  const fmtIso = d => d.toISOString().slice(0, 10);
+  const fmtShort = d => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${d.getUTCDate()} ${months[d.getUTCMonth()]}`;
+  };
+  const fmtDay = d => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][d.getUTCDay()];
+  const addDays = (d, n) => {
+    const copy = new Date(d.valueOf());
+    copy.setUTCDate(copy.getUTCDate() + n);
+    return copy;
+  };
+
+  // Reference anchor in Pastoral Year 2026-2027 so chosen dates are always valid APSE dates
+  const refToday = new Date('2026-11-07T12:00:00Z');
+  const presets = [
+    { label: 'Today', sub: fmtDay(refToday), date: fmtIso(refToday) },
+    { label: 'Later', sub: '4:08 pm', date: fmtIso(refToday) },
+    { label: 'Tomorrow', sub: fmtDay(addDays(refToday, 1)), date: fmtIso(addDays(refToday, 1)) },
+    { label: 'Next week', sub: 'Mon', date: fmtIso(addDays(refToday, 2)) },
+    { label: 'Next weekend', sub: fmtShort(addDays(refToday, 7)), date: fmtIso(addDays(refToday, 7)) },
+    { label: '2 weeks', sub: fmtShort(addDays(refToday, 14)), date: fmtIso(addDays(refToday, 14)) },
+    { label: '4 weeks', sub: fmtShort(addDays(refToday, 28)), date: fmtIso(addDays(refToday, 28)) },
+    { label: '8 weeks', sub: fmtShort(addDays(refToday, 56)), date: fmtIso(addDays(refToday, 56)) },
+  ];
+
+  const applyDate = isoStr => {
+    if (activeField === 'start') {
+      onSelectStart(isoStr);
+    } else {
+      onSelectDue(isoStr);
+    }
+    const d = new Date(isoStr + 'T12:00:00Z');
+    if (!Number.isNaN(d.valueOf())) {
+      V1.cuCalendarYear = d.getUTCFullYear();
+      V1.cuCalendarMonth = d.getUTCMonth();
+    }
+    renderApp();
+  };
+
+  const monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December',
+  ];
+  const firstOfMonth = new Date(Date.UTC(calYear, calMonth, 1, 12, 0, 0));
+  const startDow = firstOfMonth.getUTCDay();
+  const gridStart = addDays(firstOfMonth, -startDow);
+  const cells = [];
+  for (let i = 0; i < 42; i++) {
+    const cellDate = addDays(gridStart, i);
+    const iso = fmtIso(cellDate);
+    const inMonth = cellDate.getUTCMonth() === calMonth;
+    const isSelected = iso === (activeField === 'start' ? startDate : dueDate) || iso === dueDate;
+    const isRefToday = iso === fmtIso(refToday);
+    cells.push({
+      day: cellDate.getUTCDate(),
+      iso,
+      inMonth,
+      isSelected,
+      isRefToday,
+    });
+  }
+
+  return h('div', { className: 'v1-cu-datepicker', onClick: e => e.stopPropagation() },
+    h('div', { className: 'v1-cu-dp-top' },
+      h('div', {
+        className: 'v1-cu-dp-field' + (activeField === 'start' ? ' active' : ''),
+        onClick: () => { V1.cuDatePickerActiveField = 'start'; renderApp(); },
+      },
+        msIcon('calendar_today', 16),
+        h('input', {
+          type: 'text',
+          className: 'v1-cu-dp-text-input',
+          placeholder: 'Start date',
+          value: startDate || '',
+          onFocus: () => { V1.cuDatePickerActiveField = 'start'; },
+          onChange: e => { onSelectStart(e.target.value.trim()); renderApp(); },
+        }),
+        startDate
+          ? h('button', {
+              type: 'button',
+              className: 'v1-cu-dp-clear',
+              onClick: e => { e.stopPropagation(); onSelectStart(''); renderApp(); },
+            }, '×')
+          : null
+      ),
+      h('div', {
+        className: 'v1-cu-dp-field' + (activeField === 'due' ? ' active' : ''),
+        onClick: () => { V1.cuDatePickerActiveField = 'due'; renderApp(); },
+      },
+        msIcon('calendar_today', 16),
+        h('input', {
+          type: 'text',
+          className: 'v1-cu-dp-text-input',
+          placeholder: 'Due date',
+          value: dueDate || '',
+          onFocus: () => { V1.cuDatePickerActiveField = 'due'; },
+          onChange: e => { onSelectDue(e.target.value.trim()); renderApp(); },
+        }),
+        dueDate
+          ? h('button', {
+              type: 'button',
+              className: 'v1-cu-dp-clear',
+              onClick: e => { e.stopPropagation(); onSelectDue(''); renderApp(); },
+            }, '×')
+          : null
+      ),
+      onClose
+        ? h('button', {
+            type: 'button',
+            className: 'v1-cu-dp-close-btn',
+            title: 'Close calendar',
+            onClick: onClose,
+          }, msIcon('close', 16))
+        : null
+    ),
+    h('div', { className: 'v1-cu-dp-body' },
+      h('div', { className: 'v1-cu-dp-presets' },
+        presets.map(p =>
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-dp-preset-row' + ((activeField === 'start' ? startDate : dueDate) === p.date ? ' active' : ''),
+            onClick: () => applyDate(p.date),
+          },
+            h('span', { className: 'v1-cu-dp-preset-label' }, p.label),
+            h('span', { className: 'v1-cu-dp-preset-sub' }, p.sub)
+          )
+        )
+      ),
+      h('div', { className: 'v1-cu-dp-calendar' },
+        h('div', { className: 'v1-cu-dp-cal-header' },
+          h('strong', { className: 'v1-cu-dp-month-title' }, `${monthNames[calMonth]} ${calYear}`),
+          h('div', { className: 'v1-cu-dp-cal-nav' },
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-dp-today-btn',
+              onClick: () => {
+                V1.cuCalendarYear = refToday.getUTCFullYear();
+                V1.cuCalendarMonth = refToday.getUTCMonth();
+                applyDate(fmtIso(refToday));
+              },
+            }, 'Today'),
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-dp-nav-arrow',
+              'aria-label': 'Previous month',
+              onClick: () => {
+                if (V1.cuCalendarMonth === 0) {
+                  V1.cuCalendarMonth = 11;
+                  V1.cuCalendarYear -= 1;
+                } else {
+                  V1.cuCalendarMonth -= 1;
+                }
+                renderApp();
+              },
+            }, '⌃'),
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-dp-nav-arrow',
+              'aria-label': 'Next month',
+              onClick: () => {
+                if (V1.cuCalendarMonth === 11) {
+                  V1.cuCalendarMonth = 0;
+                  V1.cuCalendarYear += 1;
+                } else {
+                  V1.cuCalendarMonth += 1;
+                }
+                renderApp();
+              },
+            }, '⌄')
+          )
+        ),
+        h('div', { className: 'v1-cu-dp-weekdays' },
+          ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => h('span', {}, d))
+        ),
+        h('div', { className: 'v1-cu-dp-grid' },
+          cells.map(c =>
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-dp-day'
+                + (!c.inMonth ? ' muted' : '')
+                + (c.isSelected ? ' selected' : '')
+                + (c.isRefToday && !c.isSelected ? ' today' : ''),
+              onClick: () => applyDate(c.iso),
+            }, String(c.day))
+          )
+        )
+      )
+    )
+  );
+}
+
+/* Sync ClickUp Filter Builder Rules to V1.filters */
+async function syncCuRulesToV1Filters() {
+  const rules = V1.cuFilterRules || [];
+  for (const r of rules) {
+    if (r.field === 'axis') {
+      V1.filters.axis = r.operator === 'is' ? (r.value || '') : '';
+    } else if (r.field === 'parish') {
+      V1.filters.parish = r.operator === 'is' ? (r.value || '') : '';
+    } else if (r.field === 'status') {
+      V1.filters.status = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
+    } else if (r.field === 'period') {
+      V1.filters.period = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
+    } else if (r.field === 'dueDate' && r.operator === 'is' && r.value) {
+      V1.filters.dateTo = r.value;
+    }
+  }
+  await loadBootstrap();
+  renderApp();
+}
+
+function matchesCuFilterRules(task) {
+  const rules = (V1.cuFilterRules || []).filter(r =>
+    r.operator === 'is_set' || r.operator === 'is_not_set' || (r.value !== '' && r.value !== 'ALL')
+  );
+  if (!rules.length) return true;
+
+  const evalRule = r => {
+    let fieldVal = '';
+    if (r.field === 'axis') fieldVal = task.axis || task.axis_code || '';
+    else if (r.field === 'parish') fieldVal = task.parish_code || '';
+    else if (r.field === 'status') fieldVal = task.status || '';
+    else if (r.field === 'period') fieldVal = task.pastoral_quarter || task.ap || '';
+    else if (r.field === 'impact') fieldVal = task.impact_rating || '';
+    else if (r.field === 'dueDate') fieldVal = String(task.due_date || '');
+
+    if (r.operator === 'is_set') return Boolean(fieldVal && fieldVal !== 'PENDING');
+    if (r.operator === 'is_not_set') return !fieldVal || fieldVal === 'PENDING';
+    if (r.operator === 'is_not') return fieldVal !== r.value;
+    if (r.field === 'dueDate' && r.operator === 'is') return !r.value || fieldVal <= r.value;
+    return fieldVal === r.value;
+  };
+
+  if (V1.cuConjunction === 'OR') {
+    return rules.some(evalRule);
+  }
+  return rules.every(evalRule);
+}
+
+/* ClickUp-Style Multi-Rule Filter Popover (Screenshots 2 & 3) */
+function renderClickUpFilterPopover(themes) {
+  const parishes = V1.data?.parishes || [];
+  const rules = V1.cuFilterRules || (V1.cuFilterRules = [{ id: 'rule-1', field: 'axis', operator: 'is', value: V1.filters.axis || '' }]);
+
+  const fieldDefs = [
+    { code: 'axis', label: 'Tags / Strategic Theme' },
+    { code: 'parish', label: 'Parish Location' },
+    { code: 'status', label: 'Status' },
+    { code: 'impact', label: 'Priority / Impact' },
+    { code: 'period', label: 'Quarter / Period' },
+    { code: 'dueDate', label: 'Due date' },
+  ];
+
+  const operatorDefs = [
+    { code: 'is', label: 'Is' },
+    { code: 'is_not', label: 'Is not' },
+    { code: 'is_set', label: 'Is set' },
+    { code: 'is_not_set', label: 'Is not set' },
+  ];
+
+  const getOptionsForField = field => {
+    if (field === 'axis') {
+      return themes.filter(t => t.code).map(t => ({ value: t.code, label: t.label }));
+    }
+    if (field === 'parish') {
+      return parishes.map(p => ({ value: p.code, label: `${p.name} Parish` }));
+    }
+    if (field === 'status') {
+      return [
+        { value: 'PENDING', label: L('status_pending') },
+        { value: 'IN_PROGRESS', label: L('status_progress') },
+        { value: 'COMPLETED', label: L('status_done') },
+        { value: 'NEEDS_CORRECTION', label: 'Needs Correction' },
+      ];
+    }
+    if (field === 'impact') {
+      return [
+        { value: 'GREAT', label: L('impact_GREAT') },
+        { value: 'GOOD', label: L('impact_GOOD') },
+        { value: 'LOW', label: L('impact_LOW') },
+        { value: 'PENDING', label: L('impact_PENDING') },
+      ];
+    }
+    if (field === 'period') {
+      return [
+        { value: 'Q1', label: L('period_q1') },
+        { value: 'Q2', label: 'Q2 (Dec–Feb)' },
+        { value: 'Q3', label: 'Q3 (Mar–May)' },
+        { value: 'Q4', label: 'Q4 (Jun–Aug)' },
+        { value: 'AP1', label: L('period_ap1') },
+      ];
+    }
+    return [];
+  };
+
+  const applyQuickAiFilter = async text => {
+    const q = String(text || '').trim().toLowerCase();
+    if (!q) return;
+    if (q.includes('complete') || q.includes('done')) {
+      V1.filters.status = 'COMPLETED';
+      V1.cuFilterRules = [{ id: 'rule-ai', field: 'status', operator: 'is', value: 'COMPLETED' }];
+    } else if (q.includes('pending')) {
+      V1.filters.status = 'PENDING';
+      V1.cuFilterRules = [{ id: 'rule-ai', field: 'status', operator: 'is', value: 'PENDING' }];
+    } else if (q.includes('q1') || q.includes('quarter 1')) {
+      V1.filters.period = 'Q1';
+      V1.cuFilterRules = [{ id: 'rule-ai', field: 'period', operator: 'is', value: 'Q1' }];
+    } else if (q.includes('human rights') || q.includes('legal') || q.includes('a4')) {
+      V1.filters.axis = 'A4';
+      V1.cuFilterRules = [{ id: 'rule-ai', field: 'axis', operator: 'is', value: 'A4' }];
+    } else if (q.includes('healing') || q.includes('unity') || q.includes('a1')) {
+      V1.filters.axis = 'A1';
+      V1.cuFilterRules = [{ id: 'rule-ai', field: 'axis', operator: 'is', value: 'A1' }];
+    } else {
+      const matchedParish = parishes.find(p => q.includes(p.name.toLowerCase()));
+      if (matchedParish) {
+        V1.filters.parish = matchedParish.code;
+        V1.cuFilterRules = [{ id: 'rule-ai', field: 'parish', operator: 'is', value: matchedParish.code }];
+      } else {
+        V1.searchQuery = text.trim();
+      }
+    }
+    await loadBootstrap();
+    renderApp();
+  };
+
+  return h('div', {
+    className: 'v1-context-filters v1-cu-filter-popover' + (V1.cuFilterPopoverOpen ? ' is-open' : ''),
+  },
+    /* Top Header: Filters + Saved filters */
+    h('div', { className: 'v1-cu-filter-header' },
+      h('div', { className: 'v1-cu-filter-title-wrap' },
+        h('strong', { className: 'v1-cu-filter-title' }, 'Filters'),
+        h('span', { className: 'v1-cu-filter-info', title: 'Filter tasks by theme, parish, status, or due date' }, msIcon('info', 14))
+      ),
+      h('div', { style: { position: 'relative' } },
+        h('button', {
+          type: 'button',
+          className: 'v1-cu-saved-filters-btn',
+          onClick: () => { V1.cuSavedFiltersOpen = !V1.cuSavedFiltersOpen; renderApp(); },
+        },
+          h('span', {}, 'Saved filters'),
+          msIcon('expand_more', 14)
+        ),
+        V1.cuSavedFiltersOpen
+          ? h('div', { className: 'v1-cu-saved-dropdown' },
+              [
+                { label: 'All Assigned Tasks', apply: () => { V1.filters.status = 'ALL'; V1.filters.axis = ''; V1.filters.parish = ''; V1.filters.period = 'ALL'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: '' }]; } },
+                { label: 'This Quarter (Q1)', apply: () => { V1.filters.period = 'Q1'; V1.cuFilterRules = [{ id: 'r1', field: 'period', operator: 'is', value: 'Q1' }]; } },
+                { label: 'Human Rights & Legal Aid', apply: () => { V1.filters.axis = 'A4'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A4' }]; } },
+                { label: 'Healing & Reconciliation', apply: () => { V1.filters.axis = 'A1'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A1' }]; } },
+                { label: 'Completed Activities', apply: () => { V1.filters.status = 'COMPLETED'; V1.cuFilterRules = [{ id: 'r1', field: 'status', operator: 'is', value: 'COMPLETED' }]; } },
+              ].map(preset =>
+                h('button', {
+                  type: 'button',
+                  className: 'v1-cu-saved-item',
+                  onClick: async () => {
+                    preset.apply();
+                    V1.cuSavedFiltersOpen = false;
+                    await loadBootstrap();
+                    renderApp();
+                  },
+                }, preset.label)
+              )
+            )
+          : null
+      )
+    ),
+
+    /* Ask AI / Smart Filter Bar */
+    h('div', { className: 'v1-cu-ai-bar' },
+      h('span', { className: 'v1-cu-ai-sparkle' }, msIcon('sparkle_ai', 16)),
+      h('input', {
+        type: 'text',
+        className: 'v1-cu-ai-input',
+        placeholder: 'Ask AI to build filters (e.g. "Human Rights", "Q1", "Mugombwa")...',
+        value: V1.cuQuickPrompt || '',
+        onChange: e => { V1.cuQuickPrompt = e.target.value; },
+        onKeyDown: e => {
+          if (e.key === 'Enter') {
+            applyQuickAiFilter(e.target.value);
+          }
+        },
+      }),
+      h('button', {
+        type: 'button',
+        className: 'v1-cu-ai-close',
+        onClick: () => {
+          V1.cuFilterPopoverOpen = false;
+          V1.cuOperatorMenuRowId = null;
+          renderApp();
+        },
+      }, 'Close'),
+      h('button', {
+        type: 'button',
+        className: 'v1-cu-ai-send',
+        'aria-label': 'Apply smart filter',
+        onClick: () => applyQuickAiFilter(V1.cuQuickPrompt),
+      }, msIcon('send', 14))
+    ),
+
+    /* Dynamic Filter Rule Rows (Where / AND + Field + Operator + Value + Delete) */
+    h('div', { className: 'v1-cu-rules-list' },
+      rules.map((rule, idx) => {
+        const fieldOptions = getOptionsForField(rule.field);
+        const currentOp = operatorDefs.find(o => o.code === rule.operator) || operatorDefs[0];
+        const hideValue = rule.operator === 'is_set' || rule.operator === 'is_not_set';
+        const isOpMenuOpen = V1.cuOperatorMenuRowId === rule.id;
+
+        return h('div', { className: 'v1-cu-rule-outer', key: rule.id },
+          rules.length > 1
+            ? h('div', { className: 'v1-cu-rule-conjunction' },
+                idx === 0
+                  ? h('span', { className: 'v1-cu-where-label' }, 'Where')
+                  : h('button', {
+                      type: 'button',
+                      className: 'v1-cu-and-btn',
+                      onClick: () => {
+                        V1.cuConjunction = V1.cuConjunction === 'AND' ? 'OR' : 'AND';
+                        renderApp();
+                      },
+                    },
+                      h('span', {}, V1.cuConjunction || 'AND'),
+                      msIcon('expand_more', 14)
+                    )
+              )
+            : null,
+          h('div', { className: 'v1-cu-rule-card' },
+            h('div', { className: 'v1-cu-rule-controls' },
+              /* Field Select */
+              h('div', { className: 'v1-cu-select-wrap v1-cu-field-select' },
+                h('select', {
+                  className: 'v1-cu-select',
+                  value: rule.field,
+                  onChange: async e => {
+                    rule.field = e.target.value;
+                    rule.value = '';
+                    await syncCuRulesToV1Filters();
+                  },
+                },
+                  fieldDefs.map(fd => h('option', { value: fd.code, selected: rule.field === fd.code ? 'selected' : null }, fd.label))
+                )
+              ),
+
+              /* Operator Select with ClickUp Floating Menu (Is, Is not, Is set, Is not set) */
+              h('div', { className: 'v1-cu-op-wrap' },
+                h('button', {
+                  type: 'button',
+                  className: 'v1-cu-op-btn',
+                  onClick: () => {
+                    V1.cuOperatorMenuRowId = isOpMenuOpen ? null : rule.id;
+                    renderApp();
+                  },
+                },
+                  h('span', {}, currentOp.label),
+                  msIcon('expand_more', 14)
+                ),
+                isOpMenuOpen
+                  ? h('div', { className: 'v1-cu-op-dropdown' },
+                      operatorDefs.map(op =>
+                        h('button', {
+                          type: 'button',
+                          className: 'v1-cu-op-option' + (rule.operator === op.code ? ' active' : ''),
+                          onClick: async () => {
+                            rule.operator = op.code;
+                            V1.cuOperatorMenuRowId = null;
+                            await syncCuRulesToV1Filters();
+                          },
+                        },
+                          h('span', {}, op.label),
+                          rule.operator === op.code ? msIcon('check', 14) : null
+                        )
+                      )
+                    )
+                  : null
+              ),
+
+              /* Value Selector or Date Trigger */
+              !hideValue
+                ? (rule.field === 'dueDate'
+                    ? h('button', {
+                        type: 'button',
+                        className: 'v1-cu-value-date-btn',
+                        onClick: () => {
+                          V1.cuDatePickerOpen = !(V1.cuDatePickerOpen && V1.cuDatePickerContext === 'filter');
+                          V1.cuDatePickerContext = 'filter';
+                          renderApp();
+                        },
+                      },
+                        msIcon('calendar_today', 14),
+                        h('span', {}, rule.value || V1.filters.dateTo || 'Select date range...')
+                      )
+                    : h('div', { className: 'v1-cu-select-wrap v1-cu-value-select' },
+                        rule.field === 'axis' ? h('span', { className: 'v1-cu-tag-icon' }, msIcon('tag', 14)) : null,
+                        h('select', {
+                          className: 'v1-cu-select' + (rule.field === 'axis' ? ' has-icon' : ''),
+                          value: rule.value,
+                          onChange: async e => {
+                            rule.value = e.target.value;
+                            await syncCuRulesToV1Filters();
+                          },
+                        },
+                          h('option', { value: '' }, rule.field === 'axis' ? 'Select tags / theme' : 'Select an option'),
+                          fieldOptions.map(opt => h('option', { value: opt.value, selected: rule.value === opt.value ? 'selected' : null }, opt.label))
+                        )
+                      ))
+                : h('div', { className: 'v1-cu-value-placeholder' }, 'Any value'),
+
+              /* Delete Rule Trash Icon */
+              h('button', {
+                type: 'button',
+                className: 'v1-cu-rule-delete',
+                'aria-label': 'Remove filter rule',
+                onClick: async () => {
+                  if (rules.length <= 1) {
+                    rules[0].value = '';
+                    rules[0].operator = 'is';
+                  } else {
+                    V1.cuFilterRules = rules.filter(r => r.id !== rule.id);
+                  }
+                  V1.filters.axis = '';
+                  V1.filters.parish = '';
+                  V1.filters.status = 'ALL';
+                  V1.filters.period = 'ALL';
+                  await syncCuRulesToV1Filters();
+                },
+              }, msIcon('delete', 16))
+            ),
+            h('button', {
+              type: 'button',
+              className: 'v1-cu-nested-btn',
+              onClick: () => {
+                const nextFields = ['parish', 'status', 'dueDate', 'period', 'impact'];
+                const used = new Set(V1.cuFilterRules.map(r => r.field));
+                const nextField = nextFields.find(f => !used.has(f)) || 'status';
+                V1.cuFilterRules.push({
+                  id: 'rule-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5),
+                  field: nextField,
+                  operator: 'is',
+                  value: '',
+                });
+                renderApp();
+              },
+            }, 'Add nested filter')
+          )
+        );
+      })
+    ),
+
+    /* Inline ClickUp Calendar Picker when Due Date filter is clicked */
+    V1.cuDatePickerOpen && V1.cuDatePickerContext === 'filter'
+      ? renderClickUpDatePicker({
+          startDate: V1.filters.dateFrom || '',
+          dueDate: V1.filters.dateTo || '',
+          onSelectStart: async val => {
+            V1.filters.dateFrom = val;
+            await loadBootstrap();
+          },
+          onSelectDue: async val => {
+            V1.filters.dateTo = val;
+            const dueRule = (V1.cuFilterRules || []).find(r => r.field === 'dueDate');
+            if (dueRule) dueRule.value = val;
+            await loadBootstrap();
+          },
+          onClose: () => {
+            V1.cuDatePickerOpen = false;
+            renderApp();
+          },
+        })
+      : null,
+
+    /* Bottom Footer: + Add filter & Clear all */
+    h('div', { className: 'v1-cu-filter-footer' },
+      h('button', {
+        type: 'button',
+        className: 'v1-cu-add-filter-btn',
+        onClick: () => {
+          const nextFields = ['parish', 'dueDate', 'status', 'period', 'impact', 'axis'];
+          const used = new Set(V1.cuFilterRules.map(r => r.field));
+          const nextField = nextFields.find(f => !used.has(f)) || 'status';
+          V1.cuFilterRules.push({
+            id: 'rule-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5),
+            field: nextField,
+            operator: 'is',
+            value: '',
+          });
+          renderApp();
+        },
+      }, '+ Add filter'),
+      h('button', {
+        type: 'button',
+        className: 'v1-cu-clear-all-btn',
+        onClick: async () => {
+          V1.filters.period = 'ALL';
+          V1.filters.axis = '';
+          V1.filters.parish = '';
+          V1.filters.status = 'ALL';
+          V1.filters.dateFrom = '';
+          V1.filters.dateTo = '';
+          V1.searchQuery = '';
+          V1.cuQuickPrompt = '';
+          V1.cuFilterRules = [{ id: 'rule-1', field: 'axis', operator: 'is', value: '' }];
+          V1.cuOperatorMenuRowId = null;
+          V1.cuDatePickerOpen = false;
+          await loadBootstrap();
+          renderApp();
+        },
+      }, 'Clear all')
+    ),
+
+    /* Quick Theme Chips & Date Range Strip (Preserves 1-Click Theme/Date Access & Council Test Selectors) */
+    h('div', { className: 'v1-cu-quick-chips-section' },
+      renderDateRangeWidget(),
+      h('div', { className: 'v1-segmented', style: { marginTop: '8px' } },
+        [
+          ['ALL', L('status_all')],
+          ['PENDING', L('status_pending')],
+          ['IN_PROGRESS', L('status_progress')],
+          ['COMPLETED', L('status_done')],
+        ].map(([code, lbl]) =>
+          h('button', {
+            type: 'button',
+            className: 'v1-seg-btn' + (V1.filters.status === code ? ' active' : ''),
+            onClick: () => { V1.filters.status = code; renderApp(); },
+          }, lbl)
+        )
+      ),
+      h('div', { className: 'v1-chips', style: { width: '100%', marginTop: '8px' } },
+        themes.map(th =>
+          h('button', {
+            type: 'button',
+            className: 'v1-chip' + (V1.filters.axis === th.code ? ' active' : ''),
+            onClick: async () => {
+              V1.filters.axis = th.code;
+              const axisRule = (V1.cuFilterRules || []).find(r => r.field === 'axis');
+              if (axisRule) axisRule.value = th.code;
+              await loadBootstrap();
+              renderApp();
+            },
+          }, th.label)
+        )
+      )
+    )
+  );
+}
+
+/* Modal to Add a New Planned Activity (Auto-Inherits Strategic Metadata + ClickUp Date Picker) */
 function renderNewTaskModal() {
   const goals = V1.data?.goals || [];
   const allowedHorizons = V1.data?.user?.permissions?.plan_horizons || ['ANNUAL', 'QUARTERLY', 'MONTHLY', 'WEEKLY'];
@@ -2134,6 +2824,7 @@ function renderNewTaskModal() {
     outcome_code: goals[0]?.outcome_code || 'A1.R1',
     parish_code: V1.data?.user?.assigned_parish || 'PAR-01',
     plan_horizon: visibleHorizons[0]?.code || 'QUARTERLY',
+    start_date: '2026-11-07',
     due_date: '2026-12-15',
     planned_target: 25,
     min_threshold: 15,
@@ -2144,13 +2835,19 @@ function renderNewTaskModal() {
     error: '',
   });
 
+  const showTaskDatePicker = V1.cuDatePickerOpen && V1.cuDatePickerContext === 'new_task';
+
   return h('div', { className: 'v1-wizard-card', style: { marginBottom: '24px' } },
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
       h('h2', { className: 'v1-section-title' }, L('add_planned')),
       h('button', {
         type: 'button',
         className: 'v1-btn v1-btn-ghost v1-btn-sm',
-        onClick: () => { V1.newTaskModal = false; renderApp(); },
+        onClick: () => {
+          V1.newTaskModal = false;
+          V1.cuDatePickerOpen = false;
+          renderApp();
+        },
       }, h('span', {}, 'Cancel'), msIcon('close', 16))
     ),
     state.error
@@ -2164,10 +2861,21 @@ function renderNewTaskModal() {
             type: 'button',
             className: 'v1-seg-btn' + (state.plan_horizon === ph.code ? ' active' : ''),
             onClick: () => { state.plan_horizon = ph.code; renderApp(); },
-          }, localize(ph.label))
+          }, localize(ph.labels || ph.label) || ph.code)
         )
       )
     ),
+    showTaskDatePicker
+      ? h('div', { style: { marginBottom: '16px' } },
+          renderClickUpDatePicker({
+            startDate: state.start_date || '',
+            dueDate: state.due_date || '',
+            onSelectStart: val => { state.start_date = val; },
+            onSelectDue: val => { state.due_date = val; },
+            onClose: () => { V1.cuDatePickerOpen = false; renderApp(); },
+          })
+        )
+      : null,
     h('div', { className: 'v1-field' },
       h('label', { className: 'v1-field-label' },
         '1. Choose Strategic Goal (Backend Automatically Binds Axis, Outcome & KPI IDs)'
@@ -2198,14 +2906,27 @@ function renderNewTaskModal() {
         h('label', { className: 'v1-field-label' }, 'Assigned Parish'),
         renderParishCombobox(state.parish_code, code => { if (code) state.parish_code = code; renderApp(); }, false)
       ),
-      h('div', { className: 'v1-field', style: { marginBottom: 0 } },
+      h('div', { className: 'v1-field', style: { marginBottom: 0, position: 'relative' } },
         h('label', { className: 'v1-field-label' }, 'Target Due Date'),
-        h('input', {
-          type: 'date',
-          className: 'v1-input',
-          value: state.due_date,
-          onChange: e => { state.due_date = e.target.value; },
-        })
+        h('div', { style: { display: 'flex', gap: '6px', alignItems: 'center' } },
+          h('input', {
+            type: 'date',
+            className: 'v1-input',
+            value: state.due_date,
+            onChange: e => { state.due_date = e.target.value; },
+          }),
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-cal-trigger-btn',
+            title: 'Open ClickUp Calendar & Presets',
+            onClick: () => {
+              V1.cuDatePickerOpen = !showTaskDatePicker;
+              V1.cuDatePickerContext = 'new_task';
+              V1.cuDatePickerActiveField = 'due';
+              renderApp();
+            },
+          }, msIcon('calendar_today', 16))
+        )
       ),
       renderStepperInput('Planned Target', state.planned_target, v => {
         state.planned_target = v;
@@ -2227,6 +2948,7 @@ function renderNewTaskModal() {
               V1.data.tasks.unshift(res);
             }
             V1.newTaskModal = false;
+            V1.cuDatePickerOpen = false;
             V1.newTaskState = null;
             await loadBootstrap();
             renderApp();
@@ -2240,7 +2962,7 @@ function renderNewTaskModal() {
   );
 }
 
-/* WORKSPACE 1: My Tasks (To-Do List — Carbon Desktop + Polaris Mobile Cards) */
+/* WORKSPACE 1: My Tasks (Figma Node 9:34468 Header/Toolbar + Node 9:34582 Task Cards) */
 function renderTasksWorkspace() {
   if (V1.wizard) return renderWizardView();
   const perms = V1.data?.user?.permissions || { can_create_task: true };
@@ -2254,100 +2976,205 @@ function renderTasksWorkspace() {
     }
     if (V1.filters.dateFrom && String(t.due_date || '') < V1.filters.dateFrom) return false;
     if (V1.filters.dateTo && String(t.due_date || '') > V1.filters.dateTo) return false;
+    if (!matchesCuFilterRules(t)) return false;
     if (V1.searchQuery) {
       const q = V1.searchQuery.toLowerCase();
-      const hay = `${localize(t.titles)} ${t.parish_name} ${localize(t.axis_labels)}`.toLowerCase();
+      const hay = `${localize(t.titles)} ${t.parish_name} ${localize(t.axis_labels)} ${t.pastoral_quarter}`.toLowerCase();
       if (!hay.includes(q)) return false;
     }
     return true;
   });
 
   const themes = getThemesList();
+  const activeFilterCount = [
+    V1.filters.axis,
+    V1.filters.parish,
+    V1.filters.period !== 'ALL' ? V1.filters.period : '',
+    V1.filters.dateFrom,
+    V1.filters.dateTo,
+    ...(V1.cuFilterRules || []).filter(r => r.operator !== 'is' || (r.value && r.field === 'impact')).map(r => r.id),
+  ].filter(Boolean).length;
+
+  const isCompletedFilterActive = V1.filters.status === 'COMPLETED';
 
   return h('div', {},
     renderBreadcrumbs(L('nav_tasks')),
     renderRoleWorkspaceBanner(),
-    h('div', { className: 'v1-page-header' },
-      h('div', {},
-        h('h1', { className: 'v1-page-title' }, L('nav_tasks')),
-        h('p', { className: 'v1-page-subtitle' },
+
+    /* Figma Node 9:34468 — My Tasks Header + ClickUp Action/Search Bar */
+    h('div', { className: 'v1-tasks-figma-header', 'data-node-id': '9:34468' },
+      h('div', { className: 'v1-tasks-heading-block', 'data-node-id': '10:62' },
+        h('h1', { className: 'v1-page-title', 'data-node-id': '10:64' }, L('nav_tasks')),
+        h('p', { className: 'v1-page-subtitle', 'data-node-id': '10:66' },
           perms.can_create_task
             ? 'Your assigned field activities, recurring quarterly goals, and saved drafts. All internal M&E codes are handled automatically.'
             : 'Execute assigned Parish CPJP & Centrale activities and log field enumeration entries. Plan creation is reserved for CPJP and CDJP committees.'
         )
       ),
-      /* Section 3.2: Only ONE Primary (#0F62FE) button per view */
-      h('div', { className: 'v1-header-actions' },
-        h('button', {
-          type: 'button',
-          className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
-          onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
-        }, h('span', {}, 'Filter'), msIcon('filter_list', 20)),
-        h('button', {
-          type: 'button',
-          className: 'v1-btn v1-btn-danger',
-          onClick: () => {
-            const sensTask = (V1.data?.tasks || []).find(t => t.is_sensitive) || V1.data?.tasks?.[0];
-            if (sensTask) openWizardForTask(sensTask);
+
+      /* Bottom Toolbar Row: Search Input on Left (11:69) + 3 Action Pills on Right (10:68) */
+      h('div', { className: 'v1-tasks-toolbar-row' },
+        /* Search Box (data-node-id="11:69") */
+        h('div', { className: 'v1-tasks-search-box', 'data-node-id': '11:69' },
+          h('span', { className: 'v1-tasks-search-icon', 'data-node-id': '11:76' },
+            msIcon('search', 20)
+          ),
+          h('input', {
+            type: 'search',
+            className: 'v1-tasks-search-input',
+            'data-node-id': '11:70',
+            placeholder: L('search_placeholder'),
+            value: V1.searchQuery || '',
+            onInput: e => {
+              V1.searchQuery = e.target.value;
+              const cursorPos = e.target.selectionStart;
+              renderApp();
+              const nextInput = document.querySelector('.v1-tasks-search-input');
+              if (nextInput) {
+                nextInput.focus();
+                try { nextInput.setSelectionRange(cursorPos, cursorPos); } catch (_) {}
+              }
+            },
+          })
+        ),
+
+        /* Right Action Pills (data-node-id="10:68") */
+        h('div', { className: 'v1-header-actions v1-tasks-actions-group', 'data-node-id': '10:68' },
+          /* Mobile Bottom-Sheet Filter Trigger (< 768px) */
+          h('button', {
+            type: 'button',
+            className: 'v1-btn v1-btn-secondary v1-mobile-filter-trigger',
+            onClick: () => { V1.mobileSheet = 'filters'; renderApp(); },
+          }, msIcon('iconsax_sort', 18), h('span', {}, 'Filter')),
+
+          /* 1. Filter Pill (data-node-id="10:2") */
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-pill-filter' + (V1.cuFilterPopoverOpen || activeFilterCount > 0 ? ' active' : ''),
+            'data-node-id': '10:2',
+            onClick: () => {
+              V1.cuFilterPopoverOpen = !V1.cuFilterPopoverOpen;
+              V1.addTaskMenuOpen = false;
+              renderApp();
+            },
           },
-        }, h('span', {}, L('nav_confidential')), msIcon('lock', 20)),
-        perms.can_create_task
-          ? h('button', {
+            msIcon('iconsax_sort', 19),
+            h('span', {}, activeFilterCount > 0 ? `Filter (${activeFilterCount})` : 'Filter')
+          ),
+
+          /* 2. Completed Pill (data-node-id="10:46") */
+          h('button', {
+            type: 'button',
+            className: 'v1-cu-pill-completed' + (isCompletedFilterActive ? ' active' : ''),
+            'data-node-id': '10:46',
+            onClick: () => {
+              V1.filters.status = isCompletedFilterActive ? 'ALL' : 'COMPLETED';
+              renderApp();
+            },
+          },
+            msIcon('iconsax_clipboard_tick', 18),
+            h('span', {}, 'Completed')
+          ),
+
+          /* 3. Add task Split Pill (data-node-id="10:54") */
+          perms.can_create_task
+            ? h('div', { className: 'v1-cu-split-add-wrap', 'data-node-id': '10:54' },
+                h('button', {
+                  type: 'button',
+                  className: 'v1-cu-split-add-main',
+                  'data-node-id': '10:55',
+                  onClick: () => {
+                    V1.newTaskModal = !V1.newTaskModal;
+                    V1.addTaskMenuOpen = false;
+                    renderApp();
+                  },
+                },
+                  msIcon('iconsax_add', 18),
+                  h('span', {}, 'Add task')
+                ),
+                h('button', {
+                  type: 'button',
+                  className: 'v1-cu-split-add-chevron',
+                  'data-node-id': '11:177',
+                  'aria-label': 'More task creation options',
+                  onClick: e => {
+                    e.stopPropagation();
+                    V1.addTaskMenuOpen = !V1.addTaskMenuOpen;
+                    V1.cuFilterPopoverOpen = false;
+                    renderApp();
+                  },
+                },
+                  msIcon('iconsax_arrow_down', 19)
+                )
+              )
+            : null,
+
+          /* Split-Button Dropdown Menu (Also houses Confidential Case trigger for TC-GOV-09) */
+          h('div', {
+            className: 'v1-cu-add-dropdown' + (V1.addTaskMenuOpen ? ' is-open' : ''),
+          },
+            perms.can_create_task
+              ? h('button', {
+                  type: 'button',
+                  className: 'v1-btn v1-btn-sm v1-cu-dropdown-primary',
+                  onClick: () => {
+                    V1.newTaskModal = true;
+                    V1.addTaskMenuOpen = false;
+                    renderApp();
+                  },
+                }, msIcon('add', 16), h('span', {}, L('add_planned')))
+              : null,
+            perms.can_create_task
+              ? h('button', {
+                  type: 'button',
+                  className: 'v1-cu-dropdown-item',
+                  onClick: () => {
+                    V1.newTaskModal = true;
+                    V1.cuDatePickerOpen = true;
+                    V1.cuDatePickerContext = 'new_task';
+                    V1.addTaskMenuOpen = false;
+                    renderApp();
+                  },
+                }, msIcon('calendar_today', 16), h('span', {}, 'Schedule Task with Calendar'))
+              : null,
+            h('button', {
               type: 'button',
-              className: 'v1-btn' + (V1.newTaskModal ? ' v1-btn-secondary' : ''),
-              onClick: () => { V1.newTaskModal = !V1.newTaskModal; renderApp(); },
-            }, h('span', {}, L('add_planned')), msIcon('add', 20))
-          : null
+              className: 'v1-btn v1-btn-danger v1-btn-sm v1-cu-confidential-item',
+              onClick: () => {
+                V1.addTaskMenuOpen = false;
+                const sensTask = (V1.data?.tasks || []).find(t => t.is_sensitive) || V1.data?.tasks?.[0];
+                if (sensTask) openWizardForTask(sensTask);
+              },
+            }, msIcon('lock', 16), h('span', {}, L('nav_confidential')))
+          )
+        )
       )
     ),
+
+    /* ClickUp Filter Builder Popover (Opens when Filter button is clicked) */
+    renderClickUpFilterPopover(themes),
+
+    /* Add Planned Activity Modal (Opens when + Add task is clicked) */
     V1.newTaskModal && perms.can_create_task ? renderNewTaskModal() : null,
-    /* Contextual Filter Bar with Calendar Date-Range & Strategic Themes */
-    h('div', { className: 'v1-context-filters' },
-      renderDateRangeWidget(),
-      renderParishCombobox(V1.filters.parish, async code => {
-        V1.filters.parish = code;
-        await loadBootstrap();
-        renderApp();
-      }, true),
-      h('div', { className: 'v1-segmented' },
-        [
-          ['ALL', L('status_all')],
-          ['PENDING', L('status_pending')],
-          ['IN_PROGRESS', L('status_progress')],
-          ['COMPLETED', L('status_done')],
-        ].map(([code, lbl]) =>
-          h('button', {
-            type: 'button',
-            className: 'v1-seg-btn' + (V1.filters.status === code ? ' active' : ''),
-            onClick: () => { V1.filters.status = code; renderApp(); },
-          }, lbl)
-        )
-      ),
-      h('div', { className: 'v1-chips', style: { width: '100%' } },
-        themes.map(th =>
-          h('button', {
-            type: 'button',
-            className: 'v1-chip' + (V1.filters.axis === th.code ? ' active' : ''),
-            onClick: async () => { V1.filters.axis = th.code; await loadBootstrap(); renderApp(); },
-          }, th.label)
-        )
-      )
-    ),
-    /* Task Cards List (Atlassian Lozenges + Carbon Secondary Action Buttons) */
+
+    /* Figma Node 9:34582 — Task Cards List */
     h('div', { className: 'v1-task-list' },
       tasks.map(t => {
         const isDone = t.completion_pct >= 100;
         const needsFix = t.status === 'NEEDS_CORRECTION';
         const hasLocalDraft = !!localStorage.getItem('apse-v1-draft-' + t.id);
-        return h('article', { className: 'v1-task-card' },
-          /* 1. Header Row: Check Icon on Left, Title + Status Badges Stacked on Right */
-          h('div', { className: 'v1-task-header-row' },
-            h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')) },
+        const subtitleLine = `${t.pastoral_quarter || 'Q1'}  -  ${String(localize(t.axis_labels) || t.axis || '').toUpperCase()}  -  ${String(t.parish_name || t.parish_code || '').toUpperCase()} PARISH`;
+
+        return h('article', { className: 'v1-task-card', 'data-node-id': '9:34582' },
+          /* 1. Header Row: 28x28 Circle Icon on Left, Title + Uppercase Subtitle + 5px Badges on Right */
+          h('div', { className: 'v1-task-header-row', 'data-node-id': '9:34583' },
+            h('div', { className: 'v1-task-check' + (isDone ? ' done' : (needsFix ? ' warn' : '')), 'data-node-id': '9:34585' },
               isDone ? msIcon('check', 16) : (needsFix ? msIcon('error', 16) : msIcon('assignment', 16))
             ),
-            h('div', { className: 'v1-task-title-group' },
-              h('h3', { className: 'v1-task-title' }, localize(t.titles)),
-              h('div', { className: 'v1-task-status-badges' },
+            h('div', { className: 'v1-task-title-group', 'data-node-id': '9:34592' },
+              h('h3', { className: 'v1-task-title', 'data-node-id': '9:34593' }, localize(t.titles)),
+              h('div', { className: 'v1-task-subtitle-meta', 'data-node-id': '11:174' }, subtitleLine),
+              h('div', { className: 'v1-task-status-badges', 'data-node-id': '9:34594' },
                 t.is_sensitive ? renderLozenge('Confidential', 'LOW', 'lock') : null,
                 hasLocalDraft ? renderLozenge('Saved Draft', 'GOOD', 'description') : null,
                 renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
@@ -2355,31 +3182,26 @@ function renderTasksWorkspace() {
             )
           ),
 
-          /* 2. Dedicated Meta Tag Rail (Parish, Axis, Quarter) */
-          h('div', { className: 'v1-task-tags' },
-            renderLozenge(`${t.parish_name} Parish`, 'neutral'),
-            renderLozenge(localize(t.axis_labels), 'neutral'),
-            renderLozenge(t.pastoral_quarter, 'neutral')
-          ),
-
-          /* 3. Dedicated Schedule & Date Row */
-          h('div', { className: 'v1-task-schedule' },
+          /* 2. Schedule & Date Row (Indented 40px on Desktop) */
+          h('div', { className: 'v1-task-schedule', 'data-node-id': '9:34616' },
             msIcon('calendar_today', 14),
-            h('span', { className: 'v1-tabular' }, `Due ${t.due_date}`),
-            t.frequency > 1 ? h('span', { className: 'v1-tabular' }, ` · Quarterly (${t.quarters_completed}/${t.frequency} logged)`) : null
+            h('span', { className: 'v1-tabular', 'data-node-id': '9:34623' }, `Due ${t.due_date}`),
+            t.frequency > 1
+              ? h('span', { className: 'v1-tabular', 'data-node-id': '9:34625' }, `· Quarterly (${t.quarters_completed}/${t.frequency} logged)`)
+              : null
           ),
 
-          /* 4. Dedicated Bottom Row: Progress on Left, Action CTA on Right */
-          h('div', { className: 'v1-task-bottom-row' },
-            h('div', { className: 'v1-progress-wrap' },
-              h('div', { className: 'v1-progress-bar' },
+          /* 3. Bottom Row: 5px Progress Bar on Left, Log Progress CTA on Right */
+          h('div', { className: 'v1-task-bottom-row', 'data-node-id': '9:34627' },
+            h('div', { className: 'v1-progress-wrap', 'data-node-id': '9:34628' },
+              h('div', { className: 'v1-progress-bar', 'data-node-id': '9:34629' },
                 h('div', { className: 'v1-progress-fill' + (isDone ? ' great' : ''), style: { width: `${t.completion_pct}%` } })
               ),
-              h('span', { className: 'v1-progress-stat', style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } },
+              h('span', { className: 'v1-progress-stat', 'data-node-id': '9:34631' },
                 `${t.completion_pct}% (${t.completed_units}/${t.planned_target} ${t.unit_label})`
               )
             ),
-            h('div', { className: 'v1-task-action' },
+            h('div', { className: 'v1-task-action', 'data-node-id': '9:34632' },
               needsFix
                 ? h('button', {
                     type: 'button',
@@ -2392,6 +3214,7 @@ function renderTasksWorkspace() {
                 : h('button', {
                     type: 'button',
                     className: 'v1-btn ' + (isDone ? 'v1-btn-ghost' : 'v1-btn-secondary'),
+                    'data-node-id': '9:34633',
                     onClick: () => openWizardForTask(t, t.latest_log),
                   },
                   h('span', {}, isDone ? L('view_summary') : L('log_progress')),

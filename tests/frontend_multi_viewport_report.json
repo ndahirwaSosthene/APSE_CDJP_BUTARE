@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[715, 850, 984, 1100]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[699, 834, 968, 1084]"
     },
     {
       "test_id": "TC-UI-11",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[693, 828, 963, 1078]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[677, 812, 947, 1062]"
     },
     {
       "test_id": "TC-UI-11",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-1D6FDA', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-A1FFAF', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",
