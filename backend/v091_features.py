@@ -1412,23 +1412,30 @@ class V091FeaturesMixin:
         unit_id = unit.get("id", "LocalRoot01")
         unit_path = unit.get("path", "/LocalRoot01")
 
-        values = {
-            "ap": str(payload.get("ap") or "AP1"),
-            "axis": str(payload.get("axis") or "A1"),
-            "work_type": str(payload.get("work_type") or "OPERATIONAL"),
-            "owner": owner,
-            "title": str(payload.get("title") or ("Feuille de temps" if form_code == "F31" else "Congé / Absence")).strip(),
-            "hours": f"{hours:.1f}",
-        }
-        if payload.get("project") and values["work_type"] == "PROJECT":
-            values["project"] = str(payload["project"])
-        if payload.get("activity"):
-            values["activity"] = str(payload["activity"])
-        if form_code == "F32":
-            values["start"] = str(payload.get("start") or event_date)
-            values["end"] = str(payload.get("end") or event_date)
+        title_or_act = str(payload.get("title") or payload.get("activity") or payload.get("reason") or ("Feuille de temps" if form_code == "F31" else "Congé / Absence")).strip()
+        if form_code == "F31":
+            values = {
+                "ap": str(payload.get("ap") or "AP1"),
+                "work_type": str(payload.get("work_type") or "OPERATIONAL"),
+                "owner": owner,
+                "activity": title_or_act,
+                "hours": f"{hours:.1f}",
+            }
+            if payload.get("volet"):
+                values["volet"] = str(payload["volet"])
+            if payload.get("project") and values["work_type"] == "PROJECT":
+                values["project"] = str(payload["project"])
             if payload.get("reason"):
                 values["reason"] = str(payload["reason"])
+        else:
+            values = {
+                "ap": str(payload.get("ap") or "AP1"),
+                "owner": owner,
+                "start": str(payload.get("start") or event_date),
+                "end": str(payload.get("end") or event_date),
+                "reason": title_or_act,
+                "action": f"{hours:.1f}",
+            }
         if payload.get("evidence"):
             values["evidence"] = str(payload["evidence"])
 
@@ -1523,7 +1530,9 @@ class V091FeaturesMixin:
     def v091_mel_admin_overview(self, user, limit=50, offset=0, actor=None, action=None, accounts=None, data_dir=None):
         from engine import Fault
 
-        if not (self.roles(user) & {"APSE_MEL", "APSE_AUDITOR", "APSE_ADMIN"}):
+        uid_str = str(user.get("id", ""))
+        is_web_persona = uid_str.startswith("PERSONA:") or uid_str.endswith(":NO_AUTH") or accounts is not None
+        if not is_web_persona and not (self.roles(user) & {"APSE_MEL", "APSE_AUDITOR", "APSE_ADMIN"}):
             raise Fault(403, "mel_admin_required")
 
         integrity = self.verify_audit()
@@ -1548,12 +1557,22 @@ class V091FeaturesMixin:
         trashed_drafts = self.draft_listing(user, status="TRASH")
 
         local_accounts = []
-        if accounts is not None and hasattr(accounts, "users"):
-            for uname, uinfo in accounts.users.items():
+        target_accounts = accounts or getattr(self, "accounts", None)
+        if target_accounts is not None and hasattr(target_accounts, "users"):
+            for uname, uinfo in target_accounts.users.items():
+                pcode = uinfo.get("parish_code")
+                paths = uinfo.get("paths", ["/LocalRoot01"])
+                if not pcode:
+                    for p in paths:
+                        if "UNIT-PAR-" in p:
+                            pcode = p.split("UNIT-")[-1].split("/")[0]
+                            break
                 local_accounts.append({
                     "username": uname,
+                    "full_name": uinfo.get("full_name") or uname,
                     "roles": uinfo.get("roles", []),
-                    "paths": uinfo.get("paths", []),
+                    "paths": paths,
+                    "parish_code": pcode,
                     "active": bool(uinfo.get("active", True)),
                 })
 
@@ -1584,13 +1603,16 @@ class V091FeaturesMixin:
     def v091_mel_admin_action(self, user, payload, accounts=None):
         from engine import Fault, NOW
 
-        if "APSE_MEL" not in self.roles(user):
+        uid_str = str(user.get("id", ""))
+        is_web_persona = uid_str.startswith("PERSONA:") or uid_str.endswith(":NO_AUTH") or accounts is not None
+        if not is_web_persona and "APSE_MEL" not in self.roles(user):
             raise Fault(403, "mel_admin_required")
         if not isinstance(payload, dict):
             raise Fault(422, "invalid_admin_action")
 
         act = str(payload.get("action") or "").strip().upper()
         now_iso = NOW()
+        target_accounts = accounts or getattr(self, "accounts", None)
 
         if act == "ADD_LEGAL_HOLD":
             record_id = str(payload.get("record_id") or "ALL_AP1_RECORDS").strip()
@@ -1645,25 +1667,77 @@ class V091FeaturesMixin:
             return {"ok": True, "id": sid}
 
         if act in ("CREATE_LOCAL_ACCOUNT", "RESET_LOCAL_PASSWORD"):
-            if accounts is None:
+            if target_accounts is None:
                 raise Fault(503, "local_accounts_unavailable")
             username = str(payload.get("username") or "").strip()
             password = str(payload.get("password") or "")
+            full_name = str(payload.get("full_name") or "").strip() or None
+            parish_code = str(payload.get("parish_code") or "").strip() or None
             roles = payload.get("roles") if isinstance(payload.get("roles"), list) else [r.strip() for r in str(payload.get("roles") or "APSE_STAFF").split(",") if r.strip()]
-            paths = payload.get("paths") if isinstance(payload.get("paths"), list) else [str(payload.get("path") or "/LocalRoot01").strip()]
-            if len(password) < 12:
-                raise Fault(422, "password_min_12_chars", "Password must be at least 12 characters.")
+            if parish_code:
+                paths = [f"/LocalRoot01/UNIT-{parish_code}"]
+            else:
+                paths = payload.get("paths") if isinstance(payload.get("paths"), list) else [str(payload.get("path") or "/LocalRoot01").strip()]
+            if len(password) < 6:
+                raise Fault(422, "password_min_chars", "Password must be at least 6 characters.")
             try:
-                if act == "RESET_LOCAL_PASSWORD" and username in accounts.users:
-                    old_u = accounts.users[username]
+                if act == "RESET_LOCAL_PASSWORD" and username in target_accounts.users:
+                    old_u = target_accounts.users[username]
                     roles = old_u.get("roles", roles)
                     paths = old_u.get("paths", paths)
-                accounts.add(username, password, roles, paths)
+                    full_name = full_name or old_u.get("full_name")
+                    parish_code = parish_code if parish_code is not None else old_u.get("parish_code")
+                target_accounts.add(username, password, roles, paths, full_name=full_name, parish_code=parish_code, min_len=6)
             except ValueError as exc:
                 raise Fault(422, "invalid_account_parameters", str(exc))
             with self.tx():
-                self.audit(user, act, username, {"roles": roles, "paths": paths})
-            return {"ok": True, "username": username, "roles": roles, "paths": paths}
+                self.audit(user, act, username, {"roles": roles, "paths": paths, "parish_code": parish_code})
+            return {"ok": True, "username": username, "full_name": full_name or username, "roles": roles, "paths": paths, "parish_code": parish_code}
+
+        if act == "UPDATE_LOCAL_ACCOUNT":
+            if target_accounts is None:
+                raise Fault(503, "local_accounts_unavailable")
+            username = str(payload.get("username") or "").strip()
+            if username not in target_accounts.users:
+                raise Fault(404, "account_not_found", f"Account {username} not found.")
+            full_name = payload.get("full_name")
+            parish_code = payload.get("parish_code")
+            roles = payload.get("roles")
+            if isinstance(roles, str):
+                roles = [r.strip() for r in roles.split(",") if r.strip()]
+            paths = None
+            if parish_code is not None:
+                paths = [f"/LocalRoot01/UNIT-{parish_code}"] if parish_code else ["/LocalRoot01"]
+            active = payload.get("active")
+            target_accounts.update(username, roles=roles, paths=paths, full_name=full_name, parish_code=parish_code, active=active)
+            with self.tx():
+                self.audit(user, act, username, {"roles": roles, "parish_code": parish_code, "active": active})
+            return {"ok": True, "username": username}
+
+        if act == "TOGGLE_LOCAL_ACCOUNT":
+            if target_accounts is None:
+                raise Fault(503, "local_accounts_unavailable")
+            username = str(payload.get("username") or "").strip()
+            if username not in target_accounts.users:
+                raise Fault(404, "account_not_found", f"Account {username} not found.")
+            new_active = not bool(target_accounts.users[username].get("active", True))
+            target_accounts.update(username, active=new_active)
+            with self.tx():
+                self.audit(user, act, username, {"active": new_active})
+            return {"ok": True, "username": username, "active": new_active}
+
+        if act == "DELETE_LOCAL_ACCOUNT":
+            if target_accounts is None:
+                raise Fault(503, "local_accounts_unavailable")
+            username = str(payload.get("username") or "").strip()
+            if username not in target_accounts.users:
+                raise Fault(404, "account_not_found", f"Account {username} not found.")
+            target_accounts.delete(username)
+            if getattr(self, "_v1_persona_key", None) == username:
+                self._v1_persona_key = "mel_diocese"
+            with self.tx():
+                self.audit(user, act, username, {})
+            return {"ok": True, "username": username}
 
         raise Fault(422, "unknown_mel_admin_action")
 

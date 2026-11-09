@@ -755,7 +755,8 @@ async function loadBootstrap() {
   try {
     V1.data = await apiV1('/v1/bootstrap?' + q.toString());
     const allowedWorkspaces = V1.data?.user?.permissions?.workspaces || ['tasks', 'approvals', 'analytics', 'exports'];
-    if (!allowedWorkspaces.includes(V1.workspace)) {
+    const coreWorkspaces = ['tasks', 'approvals', 'analytics', 'exports'];
+    if (coreWorkspaces.includes(V1.workspace) && !allowedWorkspaces.includes(V1.workspace)) {
       V1.workspace = V1.data?.user?.permissions?.default_workspace || allowedWorkspaces[0] || 'tasks';
     }
     localStorage.setItem('apse-v1-snapshot', JSON.stringify(V1.data));
@@ -1369,11 +1370,37 @@ function renderMobileBottomSheet() {
   );
 }
 
-/* Web GUI Role & Parish Persona Switcher Modal (Replaces CLI Account Management) */
+/* Web GUI Role & Parish Persona Switcher + Account Creation & Management Modal */
 function renderPersonaModal() {
   if (!V1.personaModal) return null;
   const personas = V1.data?.personas || [];
+  const parishes = V1.data?.parishes || [];
   const activeKey = V1.data?.user?.active_persona || 'mel_diocese';
+  const currentUser = V1.data?.user || {};
+  if (!V1.newAccountDraft) {
+    V1.newAccountDraft = {
+      open: false,
+      username: '',
+      full_name: '',
+      password: '',
+      role: 'APSE_STAFF',
+      parish_code: '',
+      error: '',
+      success: '',
+    };
+  }
+  const draft = V1.newAccountDraft;
+  const roleOptions = [
+    { code: 'APSE_MEL', label: 'MEL Officer (Diocesan Admin & M&E)' },
+    { code: 'APSE_DIRECTION', label: 'Diocesan Director (Final Approval)' },
+    { code: 'APSE_COORDINATION', label: 'Diocesan Coordinator (Operational Verification)' },
+    { code: 'APSE_FINANCE', label: 'Finance & HR Officer (CDJP)' },
+    { code: 'APSE_STAFF', label: 'CDJP Technical Staff (Diocesan)' },
+    { code: 'APSE_CPJP', label: 'CPJP Parish Committee (Parish Review & Planning)' },
+    { code: 'APSE_PARISH_REPORTER', label: 'Parish Reporter (Parish Field Entry)' },
+    { code: 'APSE_CCJP', label: 'CCJP Centrale / CEB Field Collector' },
+  ];
+  const isParishRole = ['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(draft.role);
 
   return h('div', {
     className: 'v1-sheet-backdrop',
@@ -1384,9 +1411,9 @@ function renderPersonaModal() {
       }
     },
   },
-    h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true', style: { borderRadius: 'var(--radius-md)', margin: 'auto' } },
+    h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true', style: { borderRadius: 'var(--radius-md)', margin: 'auto', maxWidth: '640px', width: '95%' } },
       h('div', { className: 'v1-sheet-header' },
-        h('h2', { className: 'v1-section-title' }, 'Switch Active User Role & Parish Scope (Web GUI)'),
+        h('h2', { className: 'v1-section-title' }, 'Account Management, Sign-In & Role Switcher'),
         h('button', {
           type: 'button',
           className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -1394,6 +1421,194 @@ function renderPersonaModal() {
         }, msIcon('close', 20))
       ),
       h('div', { className: 'v1-sheet-body' },
+        /* Current Active Account Banner */
+        h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap', background: 'var(--bg-canvas)', border: '1px solid var(--border-subtle)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '12px' } },
+          h('div', {},
+            h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, 'Currently Active Account'),
+            h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)' } }, `${currentUser.name || 'LOCAL_MEL'} (${currentUser.username || activeKey})`),
+            h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' } },
+              `Roles: ${(currentUser.roles || ['APSE_MEL']).join(', ')} · Scope: ${currentUser.is_diocesan ? 'All 27 Parishes (Diocesan)' : (currentUser.assigned_parish || 'PAR-01')}`
+            )
+          ),
+          h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-sm ' + (draft.open ? 'v1-btn-secondary' : 'v1-btn-primary'),
+              onClick: () => {
+                draft.open = !draft.open;
+                draft.error = '';
+                draft.success = '';
+                renderApp();
+              },
+            },
+              msIcon('person_add', 16),
+              h('span', {}, draft.open ? 'Hide Create Account' : '+ Create Account')
+            ),
+            (currentUser.authenticated || activeKey !== 'mel_diocese') ? h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary v1-btn-sm',
+              onClick: async () => {
+                await apiV1('/v1/auth/logout', 'POST', {});
+                V1.filters.parish = '';
+                await loadBootstrap();
+                renderApp();
+              },
+            }, 'Sign Out') : null
+          )
+        ),
+
+        /* Create New Account Form (Collapsible) */
+        draft.open ? h('div', { style: { background: 'var(--bg-input)', border: '1px solid var(--border-subtle)', padding: '14px', borderRadius: 'var(--radius-sm)', marginBottom: '14px' } },
+          h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' } },
+            h('strong', { style: { fontSize: '0.875rem', color: 'var(--text-primary)' } }, 'Create New Local Account'),
+            h('span', { className: 'v1-badge' }, 'PBKDF2-HMAC-SHA256 Encrypted')
+          ),
+          h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px', marginBottom: '10px' } },
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Username (3–60 chars)'),
+              h('input', {
+                id: 'v1-create-acc-username',
+                type: 'text',
+                className: 'v1-input',
+                placeholder: 'e.g. jean_butare',
+                value: draft.username,
+                onInput: e => { draft.username = e.target.value; },
+              })
+            ),
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Full Name / Display Label'),
+              h('input', {
+                id: 'v1-create-acc-fullname',
+                type: 'text',
+                className: 'v1-input',
+                placeholder: 'e.g. Jean Bosco Nkurunziza',
+                value: draft.full_name,
+                onInput: e => { draft.full_name = e.target.value; },
+              })
+            ),
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Password (min 6 chars)'),
+              h('input', {
+                id: 'v1-create-acc-password',
+                type: 'password',
+                className: 'v1-input',
+                placeholder: 'Minimum 6 characters...',
+                value: draft.password,
+                onInput: e => { draft.password = e.target.value; },
+              })
+            ),
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Institutional Role'),
+              h('select', {
+                id: 'v1-create-acc-role',
+                className: 'v1-select',
+                value: draft.role,
+                onChange: e => {
+                  draft.role = e.target.value;
+                  if (['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(draft.role) && !draft.parish_code) {
+                    draft.parish_code = 'PAR-01';
+                  } else if (!['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(draft.role)) {
+                    draft.parish_code = '';
+                  }
+                  renderApp();
+                },
+              },
+                roleOptions.map(r => h('option', { value: r.code, selected: draft.role === r.code }, r.label))
+              )
+            ),
+            isParishRole ? h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Assigned Parish Scope'),
+              h('select', {
+                id: 'v1-create-acc-parish',
+                className: 'v1-select',
+                value: draft.parish_code || 'PAR-01',
+                onChange: e => { draft.parish_code = e.target.value; },
+              },
+                (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale Butare' }, { code: 'PAR-24', name: 'Kibeho' }]).map(p =>
+                  h('option', { value: p.code, selected: (draft.parish_code || 'PAR-01') === p.code }, `${p.code} — ${p.name}`)
+                )
+              )
+            ) : null
+          ),
+          draft.error ? h('div', { className: 'v1-field-error', style: { marginBottom: '8px' } }, draft.error) : null,
+          draft.success ? h('div', { style: { color: 'var(--color-success)', fontSize: '0.8125rem', fontWeight: '600', marginBottom: '8px' } }, draft.success) : null,
+          h('div', { style: { display: 'flex', gap: '8px', justifyContent: 'flex-end', flexWrap: 'wrap' } },
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-secondary v1-btn-sm',
+              onClick: async () => {
+                try {
+                  draft.error = '';
+                  draft.success = '';
+                  const uname = (document.getElementById('v1-create-acc-username')?.value ?? draft.username).trim();
+                  const fname = (document.getElementById('v1-create-acc-fullname')?.value ?? draft.full_name).trim();
+                  const pass = document.getElementById('v1-create-acc-password')?.value ?? draft.password;
+                  if (!uname || uname.length < 3) throw new Error('Username must be at least 3 characters (letters, numbers, ., _, -).');
+                  if (!pass || pass.length < 6) throw new Error('Password must be at least 6 characters.');
+                  await apiV1('/v1/accounts', 'POST', {
+                    action: 'CREATE_LOCAL_ACCOUNT',
+                    username: uname,
+                    full_name: fname || uname,
+                    password: pass,
+                    roles: [draft.role],
+                    parish_code: isParishRole ? (draft.parish_code || 'PAR-01') : null,
+                  });
+                  draft.success = `✓ Account "${uname}" created! You can now sign in or click it below.`;
+                  draft.username = '';
+                  draft.full_name = '';
+                  draft.password = '';
+                  if (window.V091) window.V091.melAdminData = null;
+                  await loadBootstrap();
+                  renderApp();
+                } catch (err) {
+                  draft.error = err.message || 'Could not create account.';
+                  renderApp();
+                }
+              },
+            }, 'Create Account Only'),
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-primary v1-btn-sm',
+              onClick: async () => {
+                try {
+                  draft.error = '';
+                  draft.success = '';
+                  const uname = (document.getElementById('v1-create-acc-username')?.value ?? draft.username).trim();
+                  const fname = (document.getElementById('v1-create-acc-fullname')?.value ?? draft.full_name).trim();
+                  const pass = document.getElementById('v1-create-acc-password')?.value ?? draft.password;
+                  if (!uname || uname.length < 3) throw new Error('Username must be at least 3 characters (letters, numbers, ., _, -).');
+                  if (!pass || pass.length < 6) throw new Error('Password must be at least 6 characters.');
+                  await apiV1('/v1/accounts', 'POST', {
+                    action: 'CREATE_LOCAL_ACCOUNT',
+                    username: uname,
+                    full_name: fname || uname,
+                    password: pass,
+                    roles: [draft.role],
+                    parish_code: isParishRole ? (draft.parish_code || 'PAR-01') : null,
+                  });
+                  await apiV1('/v1/auth/login', 'POST', { username: uname, password: pass });
+                  V1.filters.parish = '';
+                  await loadBootstrap();
+                  draft.open = false;
+                  draft.username = '';
+                  draft.full_name = '';
+                  draft.password = '';
+                  V1.personaModal = false;
+                  if (window.V091) {
+                    window.V091.melAdminData = null;
+                    if (window.V091.showToast) window.V091.showToast(`✓ Account "${uname}" created and signed in!`, 'info');
+                  }
+                  renderApp();
+                } catch (err) {
+                  draft.error = err.message || 'Could not create account.';
+                  renderApp();
+                }
+              },
+            }, 'Create & Sign In Now')
+          )
+        ) : null,
+
+        /* Web GUI Account Sign-In (Password Auth) */
         h('div', { style: { background: 'var(--bg-input)', padding: '12px', borderRadius: 'var(--radius-sm)', marginBottom: '14px' } },
           h('strong', { style: { display: 'block', marginBottom: '6px', fontSize: '0.8125rem' } }, 'Web GUI Account Sign-In (Password Auth)'),
           h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
@@ -1403,7 +1618,8 @@ function renderPersonaModal() {
               className: 'v1-input',
               style: { flex: '1 1 140px', minHeight: '36px' },
               placeholder: 'Username (e.g. mel_diocese, cpjp_gakoma)',
-              value: V1.loginUser || activeKey,
+              value: V1.loginUser !== undefined ? V1.loginUser : activeKey,
+              onInput: e => { V1.loginUser = e.target.value; },
               onChange: e => { V1.loginUser = e.target.value; }
             }),
             h('input', {
@@ -1413,11 +1629,12 @@ function renderPersonaModal() {
               style: { flex: '1 1 140px', minHeight: '36px' },
               placeholder: 'Password (apse2026_butare)',
               value: V1.loginPass || '',
+              onInput: e => { V1.loginPass = e.target.value; },
               onChange: e => { V1.loginPass = e.target.value; }
             }),
             h('button', {
               type: 'button',
-              className: 'v1-btn v1-btn-sm',
+              className: 'v1-btn v1-btn-sm v1-btn-primary',
               onClick: async () => {
                 try {
                   V1.loginError = '';
@@ -1425,8 +1642,8 @@ function renderPersonaModal() {
                   const p = document.getElementById('v1-web-login-pass')?.value || V1.loginPass || 'apse2026_butare';
                   await apiV1('/v1/auth/login', 'POST', { username: u, password: p });
                   V1.filters.parish = '';
-                  V1.personaModal = false;
                   await loadBootstrap();
+                  V1.personaModal = false;
                   renderApp();
                 } catch (err) {
                   V1.loginError = err.message || 'Invalid credentials';
@@ -1438,23 +1655,41 @@ function renderPersonaModal() {
           V1.loginError ? h('div', { className: 'v1-field-error', style: { marginTop: '6px' } }, V1.loginError) : null
         ),
         h('p', { className: 'v1-page-subtitle', style: { marginBottom: '12px' } },
-          'Or click any Diocesan / Parish role below for instant one-click role switching (no CLI required):'
+          'Or click any Diocesan / Parish / Custom account below for instant switching:'
         ),
-        h('div', { className: 'v1-radio-cards', style: { gridTemplateColumns: '1fr' } },
+        h('div', { className: 'v1-radio-cards', style: { gridTemplateColumns: '1fr', maxHeight: '320px', overflowY: 'auto' } },
           personas.map(p =>
-            h('button', {
-              type: 'button',
-              className: 'v1-radio-card' + (activeKey === p.key ? ' active' : ''),
-              onClick: async () => {
-                await apiV1('/v1/persona', 'POST', { persona_key: p.key });
-                V1.filters.parish = '';
-                V1.personaModal = false;
-                await loadBootstrap();
-                renderApp();
-              },
+            h('div', {
+              style: { display: 'flex', alignItems: 'stretch', gap: '6px' },
             },
-              h('strong', {}, `${p.name} — ${p.label}`),
-              h('span', {}, `Roles: ${p.roles.join(', ')} · Scope: ${p.parish_code ? p.parish_code : 'All 27 Parishes (Diocesan)'}`)
+              h('button', {
+                type: 'button',
+                className: 'v1-radio-card' + (activeKey === p.key ? ' active' : ''),
+                style: { flex: 1 },
+                onClick: async () => {
+                  await apiV1('/v1/persona', 'POST', { persona_key: p.key });
+                  V1.filters.parish = '';
+                  await loadBootstrap();
+                  V1.personaModal = false;
+                  renderApp();
+                },
+              },
+                h('strong', {}, `${p.name} — ${p.label} (${p.key})`),
+                h('span', {}, `Roles: ${p.roles.join(', ')} · Scope: ${p.parish_code ? p.parish_code : 'All 27 Parishes (Diocesan)'}`)
+              ),
+              p.is_custom ? h('button', {
+                type: 'button',
+                className: 'v1-btn v1-btn-ghost v1-btn-sm',
+                title: `Delete custom account ${p.key}`,
+                style: { color: 'var(--color-danger)', alignSelf: 'center' },
+                onClick: async e => {
+                  e.stopPropagation();
+                  await apiV1('/v1/accounts', 'POST', { action: 'DELETE_LOCAL_ACCOUNT', username: p.key });
+                  if (window.V091) window.V091.melAdminData = null;
+                  await loadBootstrap();
+                  renderApp();
+                },
+              }, msIcon('delete', 18)) : null
             )
           )
         )

@@ -15,7 +15,7 @@ from backend.main import create_app
 _default_data_dir = Path(os.environ.get("APSE_DATA_DIR", str(DATA_DIR / "runtime_store")))
 _default_data_dir.mkdir(parents=True, exist_ok=True)
 _default_port = int(os.environ.get("PORT", os.environ.get("APSE_PORT", str(DEFAULT_PORT))))
-app = create_app(data_dir=_default_data_dir, port=_default_port, no_auth=True)
+app = create_app(data_dir=_default_data_dir, port=_default_port, no_auth=True) if __name__ != "__main__" else None
 
 
 def main() -> int:

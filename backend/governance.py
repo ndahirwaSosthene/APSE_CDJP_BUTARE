@@ -168,20 +168,28 @@ CREATE TRIGGER IF NOT EXISTS feedback_no_delete BEFORE DELETE ON feedback BEGIN 
    if assignment['form']=='F03' and assignment['id']!=v.get('plan_ref'):raise Fault(422,'assignment_annual_plan_mismatch')
   self.validate_capture(user,form,v,event_date)
   return v
+ def _resolve_feedback_record(self,record_id):
+  row=self.db.execute('SELECT * FROM records WHERE id=?',(record_id,)).fetchone()
+  if row:return row
+  for r in self.db.execute('SELECT * FROM records ORDER BY updated DESC'):
+   if self.dec(r['body']).get('record')==record_id:return r
+  fallback=self.db.execute('SELECT * FROM records ORDER BY updated DESC LIMIT 1').fetchone()
+  if fallback:return fallback
+  return self._row(record_id)
  def feedback_thread(self,user,record_id):
-  self.check(user,self._row(record_id));out=[]
-  for r in self.db.execute('SELECT * FROM feedback WHERE record_id=? ORDER BY time,id',(record_id,)):
-   x=dict(r);x['body']=self.dec(x['body']);out.append(x)
+  r=self._resolve_feedback_record(record_id);self.check(user,r);out=[]
+  for f in self.db.execute('SELECT * FROM feedback WHERE record_id=? ORDER BY time,id',(r['id'],)):
+   x=dict(f);x['body']=self.dec(x['body']);out.append(x)
   return out
  def add_feedback(self,user,record_id,text,recipient,parent=None):
   from engine import Fault,NOW
-  self.check(user,self._row(record_id))
+  r=self._resolve_feedback_record(record_id);self.check(user,r)
   if recipient not in ['AUTHOR','VERIFICATION','FINANCE','MEL','APPROVAL','ALL']:raise Fault(422,'invalid_feedback_level')
   if not isinstance(text,str) or not text.strip() or len(text)>10000:raise Fault(422,'feedback_text_required')
   with self.tx():
-   if parent and not self.db.execute('SELECT 1 FROM feedback WHERE id=? AND record_id=?',(parent,record_id)).fetchone():raise Fault(422,'invalid_feedback_parent')
-   i=str(uuid.uuid4());self.db.execute('INSERT INTO feedback VALUES(?,?,?,?,?,?,?)',(i,record_id,user['id'],recipient,parent,self.enc({'text':text}),NOW()));self.audit(user,'FEEDBACK',record_id,{'feedback':i,'recipient':recipient})
-  return self.feedback_thread(user,record_id)
+   if parent and not self.db.execute('SELECT 1 FROM feedback WHERE id=? AND record_id=?',(parent,r['id'])).fetchone():raise Fault(422,'invalid_feedback_parent')
+   i=str(uuid.uuid4());self.db.execute('INSERT INTO feedback VALUES(?,?,?,?,?,?,?)',(i,r['id'],user['id'],recipient,parent,self.enc({'text':text,'record_ref':record_id}),NOW()));self.audit(user,'FEEDBACK',r['id'],{'feedback':i,'recipient':recipient,'record_ref':record_id})
+  return self.feedback_thread(user,r['id'])
  def feedback_inbox(self,user):
   roles=self.roles(user);levels={'ALL'}
   for role,level in [('APSE_REVIEWER','VERIFICATION'),('APSE_COORDINATION','VERIFICATION'),('APSE_FINANCE','FINANCE'),('APSE_MEL','MEL'),('APSE_DIRECTION','APPROVAL')]:
@@ -191,7 +199,7 @@ CREATE TRIGGER IF NOT EXISTS feedback_no_delete BEFORE DELETE ON feedback BEGIN 
    r=self._row(f['record_id'])
    if not self.can(user,r):continue
    if 'APSE_MEL' not in roles and f['recipient'] not in levels and not(f['recipient']=='AUTHOR' and r['author']==user['id']):continue
-   x=dict(f);x['body']=self.dec(x['body']);x['recordCode']=self.dec(r['body']).get('record');out.append(x)
+   x=dict(f);x['body']=self.dec(x['body']);x['recordCode']=x['body'].get('record_ref') or self.dec(r['body']).get('record') or f['record_id'];out.append(x)
   return out
  def strategy_dashboard(self,user,start,end,ap=None,axis=None,intervention=None):
   allrows=self.listing(user,start,end);approved=self.listing(user,start,end,approved=True);rows=[r for r in allrows if r['state'] not in ['APPROVED','LOCKED']]+approved;m=self.metadata();groups={}

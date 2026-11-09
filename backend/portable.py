@@ -24,9 +24,27 @@ def unlock(folder,password,create=False):
  except InvalidToken:raise ValueError('Wrong master passphrase')
 class Accounts:
  def __init__(self,folder,key):self.path=Path(folder)/'accounts.enc';self.crypto=Fernet(key.encode());self.users=json.loads(self.crypto.decrypt(self.path.read_bytes()))if self.path.exists()else {}
- def add(self,name,password,roles,paths):
-  if not re.fullmatch('[A-Za-z0-9_.-]{3,60}',name)or len(password)<12:raise ValueError('Username: 3–60 letters/numbers/._-; password: at least 12 characters')
-  salt=secrets.token_bytes(16);self.users[name]=dict(salt=base64.b64encode(salt).decode(),hash=derive(password,salt).decode(),roles=roles,paths=paths,revision=secrets.token_hex(8),active=True);atomic(self.path,self.crypto.encrypt(json.dumps(self.users).encode()))
+ def save(self):atomic(self.path,self.crypto.encrypt(json.dumps(self.users).encode()))
+ def add(self,name,password,roles,paths,full_name=None,parish_code=None,min_len=12,save=True):
+  if not re.fullmatch('[A-Za-z0-9_.-]{3,60}',name)or len(password)<min_len:raise ValueError(f'Username: 3–60 letters/numbers/._-; password: at least {min_len} characters')
+  existing=self.users.get(name,{});salt=secrets.token_bytes(16)
+  entry=dict(salt=base64.b64encode(salt).decode(),hash=derive(password,salt).decode(),roles=list(roles),paths=list(paths),revision=secrets.token_hex(8),active=True)
+  if full_name or existing.get('full_name'):entry['full_name']=str(full_name or existing.get('full_name')).strip()
+  if parish_code is not None or existing.get('parish_code'):entry['parish_code']=parish_code if parish_code is not None else existing.get('parish_code')
+  self.users[name]=entry
+  if save:self.save()
+ def update(self,name,roles=None,paths=None,full_name=None,parish_code=None,active=None):
+  if name not in self.users:raise ValueError('Account not found')
+  u=self.users[name]
+  if roles is not None:u['roles']=list(roles)
+  if paths is not None:u['paths']=list(paths)
+  if full_name is not None:u['full_name']=str(full_name).strip()
+  if parish_code is not None:u['parish_code']=parish_code or None
+  if active is not None:u['active']=bool(active);u['revision']=secrets.token_hex(8)
+  self.save()
+ def delete(self,name):
+  if name not in self.users:raise ValueError('Account not found')
+  self.users.pop(name,None);self.save()
  def verify(self,name,password):
   # Fixed-cost derivation also for an unknown username.
   u=self.users.get(name,{});salt=base64.b64decode(u.get('salt','AAAAAAAAAAAAAAAAAAAAAA=='));value=derive(password,salt).decode();return bool(u.get('active')and hmac.compare_digest(value,u.get('hash','')))
@@ -39,16 +57,29 @@ def local_units():
 class LocalSession:
  def __init__(self,accounts,units,instance='LOCAL',no_auth=False):self.instance=instance;self.accounts=accounts;self.units=units;self.sessions={};self.failures={};self.no_auth=no_auth
  def identity(self,headers):
+  cookie=http.cookies.SimpleCookie()
+  try:cookie.load(headers.get('Cookie')or headers.get('cookie')or'')
+  except Exception:pass
+  token=cookie['apse_local'].value if 'apse_local'in cookie else '';s=self.sessions.get(token)if token else None;u=self.accounts.users.get(s['name'],{})if s else {}
+  if s and s['expires']>=time.time()and u.get('active')and s['revision']==u.get('revision'):
+   paths=u.get('paths')or['/LocalRoot01'];pcode=u.get('parish_code')
+   matched_units=[x for x in self.units if (pcode and x.get('sourceCode')==pcode)or any(x['path']==p or x['path'].startswith(p+'/')for p in paths)]
+   if not matched_units and pcode:
+    uid=f'UNIT-{pcode}';matched_units=[dict(id=uid,name=f'Paroisse {pcode}',path=f'/LocalRoot01/{uid}',kind='CPJP',sourceCode=pcode)]
+   return dict(id=self.instance+':'+s['name'],name=u.get('full_name')or s['name'],username=s['name'],roles=u['roles'],paths=paths,parish_code=pcode,units=matched_units or self.units,authenticated=True,mode='LOCAL_PORTABLE')
   if self.no_auth:return dict(id=self.instance+':NO_AUTH',name='LOCAL_MEL',roles=['APSE_MEL'],paths=['/LocalRoot01'],units=self.units,mode='LOCAL_PORTABLE')
   from engine import Fault
-  cookie=http.cookies.SimpleCookie();cookie.load(headers.get('Cookie',''));token=cookie['apse_local'].value if 'apse_local'in cookie else '';s=self.sessions.get(token);u=self.accounts.users.get(s['name'],{})if s else {}
-  if not s or s['expires']<time.time()or not u.get('active')or s['revision']!=u.get('revision'):raise Fault(401,'local_login_required')
-  paths=u['paths'];return dict(id=self.instance+':'+s['name'],name=s['name'],roles=u['roles'],paths=paths,units=[x for x in self.units if any(x['path']==p or x['path'].startswith(p+'/')for p in paths)],mode='LOCAL_PORTABLE')
+  raise Fault(401,'local_login_required')
  def login(self,name,password):
   now=time.time();old=self.failures.get(name,[]);old=[x for x in old if now-x<60]
   if len(old)>=5:return None,429
   if not self.accounts.verify(name,password):self.failures[name]=old+[now];return None,401
   self.failures.pop(name,None);token=secrets.token_urlsafe(40);self.sessions[token]=dict(name=name,revision=self.accounts.users[name]['revision'],expires=now+8*3600);return token,200
+ def logout(self,headers):
+  cookie=http.cookies.SimpleCookie()
+  try:cookie.load(headers.get('Cookie')or headers.get('cookie')or'')
+  except Exception:pass
+  if 'apse_local'in cookie:self.sessions.pop(cookie['apse_local'].value,None)
 
 def main():
  import server

@@ -236,6 +236,96 @@
     if (typeof renderApp === 'function') renderApp();
   };
 
+  /* --------------------------------------------------------------------------
+     FIGMA / CLICKUP-STYLE CUSTOM DROPDOWN COMPONENT (Node 18:77 + Add Task Menu)
+     Renders the rounded #F5F5F5 trigger ("Prefix | Selected Label ⌄") and opens
+     a floating theme-adaptive popover menu (.v1-cu-add-dropdown) on click.
+     -------------------------------------------------------------------------- */
+  V091.openDropdownId = null;
+
+  V091.renderFigmaDropdown = function({ id, prefix, value, options = [], placeholder = 'Sélectionner...', width, className = '', onChange }) {
+    const isOpen = V091.openDropdownId === id;
+    const selectedOpt = options.find(o => String(o.value) === String(value));
+    const displayLabel = selectedOpt ? selectedOpt.label : (options[0] && value === undefined ? options[0].label : placeholder);
+
+    return h('div', {
+      className: ('v1-figma-dropdown-wrap ' + className).trim(),
+      style: width ? { width } : undefined,
+    },
+      /* Hidden native select for programmatic test compatibility */
+      h('select', {
+        className: 'v1-select v1-figma-native-sync',
+        'aria-hidden': 'true',
+        tabIndex: -1,
+        value: value !== undefined ? String(value) : '',
+        onChange: e => {
+          if (typeof onChange === 'function') onChange(e.target.value);
+          if (typeof renderApp === 'function') renderApp();
+        },
+      },
+        options.map(o => h('option', {
+          key: String(o.value),
+          value: String(o.value),
+          selected: String(o.value) === String(value) ? 'selected' : null,
+        }, o.label))
+      ),
+
+      /* Custom Trigger Button (Figma Node 18:77) */
+      h('button', {
+        type: 'button',
+        className: 'v1-figma-dropdown-trigger' + (isOpen ? ' is-open' : ''),
+        'aria-haspopup': 'listbox',
+        'aria-expanded': isOpen ? 'true' : 'false',
+        onClick: e => {
+          e.stopPropagation();
+          V091.openDropdownId = isOpen ? null : id;
+          if (typeof renderApp === 'function') renderApp();
+        },
+      },
+        prefix ? h('span', { className: 'v1-figma-dropdown-prefix' }, prefix) : null,
+        h('span', { className: 'v1-figma-dropdown-value' }, displayLabel),
+        h('span', { className: 'v1-figma-dropdown-caret' },
+          h('img', {
+            src: 'assets/figma/iconsax-arrow-down4.svg',
+            width: '19',
+            height: '19',
+            alt: '',
+            className: 'v1-figma-caret-img',
+          })
+        )
+      ),
+
+      /* Floating Menu (Matches New Add Task Button Dropdown .v1-cu-add-dropdown) */
+      isOpen ? h('div', {
+        className: 'v1-cu-add-dropdown v1-figma-dropdown-menu is-open',
+        role: 'listbox',
+        onClick: e => e.stopPropagation(),
+      },
+        options.map(o => {
+          const isSelected = String(o.value) === String(value);
+          return h('button', {
+            type: 'button',
+            key: String(o.value),
+            role: 'option',
+            'aria-selected': isSelected ? 'true' : 'false',
+            className: 'v1-cu-dropdown-item v1-figma-dropdown-item' + (isSelected ? ' active' : ''),
+            onClick: () => {
+              V091.openDropdownId = null;
+              if (typeof onChange === 'function') onChange(o.value);
+              if (typeof renderApp === 'function') renderApp();
+            },
+          },
+            h('span', { className: 'v1-figma-item-text' }, o.label),
+            isSelected ? msIcon('check', 16) : null
+          );
+        })
+      ) : null
+    );
+  };
+  if (typeof window !== 'undefined') {
+    window.renderFigmaDropdown = V091.renderFigmaDropdown;
+  }
+
   /* Duplicate Form action */
   V091.duplicateForm = function(formId) {
     const orig = V091.formsList.find(f => f.id === formId || f.code === formId);
@@ -317,7 +407,7 @@
       icon: 'ps_planning',
       maxWidth: '820px',
       content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
-        h('div', { style: { padding: '12px 16px', background: 'var(--bg-canvas)', borderRadius: '8px', borderLeft: '4px solid var(--color-primary)' } },
+        h('div', { style: { padding: '12px 16px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
           h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '6px' } },
             h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, `Axe Stratégique ${item.axis}`),
             h('span', { className: 'v1-badge' }, `Objectif : ${item.objective}`),
@@ -553,7 +643,7 @@
           }, '×')
         ),
         h('div', { className: 'v1-modal-body' },
-          V091.modal.content
+          typeof V091.modal.content === 'function' ? V091.modal.content() : V091.modal.content
         ),
         h('footer', { className: 'v1-modal-footer' },
           (V091.modal.actions || []).map((act, aIdx) =>
@@ -864,44 +954,47 @@
           isReq ? h('span', { style: { color: 'var(--color-critical)', marginLeft: '4px' } }, '*') : null
         ),
 
-        optList ? h('select', {
-          className: 'v1-input',
+        optList ? V091.renderFigmaDropdown({
+          id: 'seizure-field-' + fCode,
           value: val,
-          onChange: e => {
-            let nextVal = e.target.value;
-            if (fCode === 'volet' && nextVal) {
-              const canonical = (typeof VOLET_CANONICAL !== 'undefined' && VOLET_CANONICAL[nextVal.toUpperCase()]) ||
-                (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[nextVal.toUpperCase()]);
-              if (canonical) nextVal = canonical;
+          placeholder: `-- Sélectionner ${fLabel} --`,
+          width: '100%',
+          options: [
+            { value: '', label: `-- Sélectionner ${fLabel} --` },
+            ...optList.map(opt => {
+              if (fCode === 'volet') {
+                if (typeof window !== 'undefined' && typeof window.normalizeVolet === 'function') {
+                  const norm = window.normalizeVolet(opt);
+                  return { value: norm.canonicalCode, label: `${norm.canonicalCode} — ${norm.labelText}` };
+                }
+                const optCode = (typeof opt === 'string' ? opt : (opt.code || opt.id || '')).toUpperCase();
+                const canon = (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[optCode]) || optCode;
+                const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
+                const lang = (typeof V1 !== 'undefined' && V1?.lang) || 'fr';
+                const fallbacks = (typeof window !== 'undefined' && window.VOLET_FALLBACKS) || {};
+                const fbObj = fallbacks[optCode] || fallbacks[canon];
+                const optLabel = (lblObj && (lblObj[lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) ||
+                  (fbObj && (fbObj[lang] || fbObj.fr || fbObj.en || fbObj.rw || fbObj.sw || Object.values(fbObj)[0])) ||
+                  optCode;
+                return { value: canon, label: `${canon} — ${optLabel}` };
+              }
+              const optCode = typeof opt === 'string' ? opt : (opt.code || opt.id);
+              const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
+              const optLabel = typeof opt === 'string' ? opt : ((lblObj && (lblObj[V1.lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) || optCode);
+              return { value: optCode, label: `${optCode} — ${optLabel}` };
+            }),
+          ],
+          onChange: nextVal => {
+            let resolvedVal = nextVal;
+            if (fCode === 'volet' && resolvedVal) {
+              const canonical = (typeof VOLET_CANONICAL !== 'undefined' && VOLET_CANONICAL[resolvedVal.toUpperCase()]) ||
+                (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[resolvedVal.toUpperCase()]);
+              if (canonical) resolvedVal = canonical;
             }
-            V091.formValues[fCode] = nextVal;
+            V091.formValues[fCode] = resolvedVal;
             renderApp();
           },
-        },
-          h('option', { value: '' }, `-- Sélectionner ${fLabel} --`),
-          optList.map(opt => {
-            if (fCode === 'volet') {
-              if (typeof window !== 'undefined' && typeof window.normalizeVolet === 'function') {
-                const norm = window.normalizeVolet(opt);
-                return h('option', { value: norm.canonicalCode, key: norm.code || norm.canonicalCode }, `${norm.canonicalCode} — ${norm.labelText}`);
-              }
-              const optCode = (typeof opt === 'string' ? opt : (opt.code || opt.id || '')).toUpperCase();
-              const canon = (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[optCode]) || optCode;
-              const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
-              const lang = (typeof V1 !== 'undefined' && V1?.lang) || 'fr';
-              const fallbacks = (typeof window !== 'undefined' && window.VOLET_FALLBACKS) || {};
-              const fbObj = fallbacks[optCode] || fallbacks[canon];
-              const optLabel = (lblObj && (lblObj[lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) ||
-                (fbObj && (fbObj[lang] || fbObj.fr || fbObj.en || fbObj.rw || fbObj.sw || Object.values(fbObj)[0])) ||
-                optCode;
-              return h('option', { value: canon, key: optCode }, `${canon} — ${optLabel}`);
-            }
-            const optCode = typeof opt === 'string' ? opt : (opt.code || opt.id);
-            const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
-            const optLabel = typeof opt === 'string' ? opt : ((lblObj && (lblObj[V1.lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) || optCode);
-            return h('option', { value: optCode, key: optCode }, `${optCode} — ${optLabel}`);
-          })
-        ) : fType === 'LONG_TEXT' ? h('textarea', {
+        }) : fType === 'LONG_TEXT' ? h('textarea', {
           className: 'v1-textarea',
           rows: 3,
           placeholder: `Saisir ${fLabel}...`,
@@ -1701,7 +1794,7 @@
                       },
                     }),
                     /* Summary Card of the record ready to submit */
-                    h('div', { style: { marginTop: '16px', padding: '14px 18px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-primary)' } },
+                    h('div', { style: { marginTop: '16px', padding: '14px 18px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
                       h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' } },
                         h('strong', { style: { fontSize: '0.875rem' } }, 'Récapitulatif de saisie avant soumission'),
                         h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, currentForm.code)
@@ -1939,12 +2032,84 @@
      4. LEARNING & ADAPTATION (Apprentissage F27, F28, F29, F30)
      -------------------------------------------------------------------------- */
   function renderLearningWorkspace() {
+    if (!V091.learningLoading && !V091.learningRecords) {
+      V091.learningLoading = true;
+      apiV1('/records?start=2026-09-01&end=2031-08-31&approved=false').then(d => {
+        const recs = (d.records || []).filter(r => ['F27', 'F28', 'F29', 'F30'].includes(r.form));
+        V091.learningRecords = recs;
+        V091.learningLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(() => {
+        V091.learningRecords = [];
+        V091.learningLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
     const subTabs = [
+      { id: 'ALL', label: 'Tous (F27–F30)', form: 'F29' },
       { id: 'f27', label: 'F27 Questions d’apprentissage', form: 'F27' },
       { id: 'f28', label: 'F28 Revues après action (AAR)', form: 'F28' },
       { id: 'f29', label: 'F29 Leçons validées', form: 'F29' },
       { id: 'f30', label: 'F30 Applications & Adaptations', form: 'F30' },
     ];
+
+    const fallbackItems = [
+      {
+        form: 'F27',
+        code: 'LRN-F27-2026-01',
+        title: 'Quels facteurs favorisent la durabilité des ententes foncières après médiation ?',
+        lesson: 'Question inscrite à l’agenda d’apprentissage AP1 (Axe A2 — Médiation communautaire).',
+        owner: 'LOCAL:mel.theophile · 2026-11-30',
+        effect: 'En cours d’investigation terrain',
+      },
+      {
+        form: 'F28',
+        code: 'LRN-F28-2026-01',
+        title: 'Revue après action (AAR) — Campagne Justice & Paix Q1 à Gakoma',
+        lesson: 'Implication précoce des chefs de CEB réduit de moitié les absences aux séances.',
+        owner: 'LOCAL:cpjp.test · 2026-10-28',
+        effect: 'Capitalisé vers F29',
+      },
+      {
+        form: 'F29',
+        code: 'LRN-F29-2026-01',
+        title: 'Articulation CEB → CCJP → CPJP pour le suivi post-médiation',
+        lesson: 'Associer systématiquement le responsable CEB (origin_ceb) au suivi à 30 et 90 jours.',
+        owner: 'LOCAL:mel.theophile',
+        effect: '92% des accords durent avec suivi CEB contre 64% sans suivi.',
+      },
+      {
+        form: 'F30',
+        code: 'LRN-F30-2026-01',
+        title: 'Mise en œuvre de la fiche de suivi CEB dans les 27 paroisses',
+        lesson: 'Décision : SCALE — Déploiement généralisé aux comités CPJP.',
+        owner: 'LOCAL:coordination.emmanuel · 2026-12-15',
+        effect: 'Vérifié par Directeur',
+      },
+    ];
+
+    const liveItems = (V091.learningRecords || []).map(r => {
+      const v = r.values || {};
+      return {
+        form: r.form,
+        code: v.record || r.id,
+        title: v.title || v.question || v.finding || `Dossier ${r.form}`,
+        lesson: v.lesson || v.action || v.adaptation || v.recommendation || v.decision || 'Capitalisation enregistrée',
+        owner: `${v.owner || r.author || 'LOCAL:mel.theophile'}${v.deadline ? ' · ' + v.deadline : ''}`,
+        effect: v.verified_effect || v.effect || r.state || 'Validé',
+      };
+    });
+
+    const combined = [...liveItems];
+    for (const fb of fallbackItems) {
+      if (!combined.some(x => x.code === fb.code)) combined.push(fb);
+    }
+
+    const activeTabObj = subTabs.find(t => t.id === V091.learningSubTab) || subTabs[0];
+    const filteredRows = activeTabObj.id === 'ALL'
+      ? combined
+      : combined.filter(r => r.form.toLowerCase() === activeTabObj.id.toLowerCase());
 
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
@@ -1967,7 +2132,7 @@
               type: 'button',
               className: 'v1-btn v1-btn-primary',
               onClick: () => {
-                V091.activeFormCode = (subTabs.find(t => t.id === V091.learningSubTab) || {}).form || 'F29';
+                V091.activeFormCode = activeTabObj.form || 'F29';
                 V1.workspace = 'seizure';
                 renderApp();
               },
@@ -2008,39 +2173,36 @@
             )
           ),
           h('tbody', {},
-            h('tr', {},
-              h('td', {}, h('span', { className: 'v1-badge' }, 'F29')),
-              h('td', {}, 'LRN-F29-2026-01'),
-              h('td', {}, 'Articulation CEB → CCJP → CPJP pour le suivi post-médiation'),
-              h('td', {}, 'Associer systématiquement le responsable CEB (origin_ceb) au suivi à 30 et 90 jours.'),
-              h('td', {}, 'LOCAL:mel.theophile'),
-              h('td', {}, '92% des accords durent avec suivi CEB contre 64% sans suivi.'),
-              h('td', {},
-                h('button', {
-                  type: 'button',
-                  className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                  onClick: () => {
-                    V091.activeFormCode = 'F30';
-                    V091.formValues = {
-                      lesson_ref: 'LRN-F29-2026-01',
-                      title: 'Application de la leçon : Intégration du suivi CEB à 30 jours',
-                      decision: 'SCALE',
-                    };
-                    V1.workspace = 'seizure';
-                    renderApp();
-                  },
-                }, 'Appliquer cette leçon (F30)')
-              )
-            ),
-            h('tr', {},
-              h('td', {}, h('span', { className: 'v1-badge' }, 'F30')),
-              h('td', {}, 'LRN-F30-2026-01'),
-              h('td', {}, 'Mise en œuvre de la fiche de suivi CEB dans les 27 paroisses'),
-              h('td', {}, 'Décision : SCALE — Déploiement généralisé aux comités CPJP.'),
-              h('td', {}, 'LOCAL:coordination.emmanuel · 2026-12-15'),
-              h('td', {}, h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, 'Vérifié par Directeur')),
-              h('td', {},
-                h('span', { className: 'v1-chip' }, 'Clôturé & vérifié')
+            filteredRows.map((row, idx) =>
+              h('tr', { key: row.code || idx },
+                h('td', {}, h('span', { className: 'v1-badge' }, row.form)),
+                h('td', {}, row.code),
+                h('td', {}, row.title),
+                h('td', {}, row.lesson),
+                h('td', {}, row.owner),
+                h('td', {},
+                  row.form === 'F30'
+                    ? h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, row.effect)
+                    : row.effect
+                ),
+                h('td', {},
+                  row.form !== 'F30'
+                    ? h('button', {
+                        type: 'button',
+                        className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                        onClick: () => {
+                          V091.activeFormCode = 'F30';
+                          V091.formValues = {
+                            lesson_ref: row.code,
+                            title: `Application de la leçon : ${row.title}`,
+                            decision: 'SCALE',
+                          };
+                          V1.workspace = 'seizure';
+                          renderApp();
+                        },
+                      }, 'Appliquer cette leçon (F30)')
+                    : h('span', { className: 'v1-chip' }, 'Clôturé & vérifié')
+                )
               )
             )
           )
@@ -2635,7 +2797,7 @@
       ),
 
       /* Pastoral Year Phase Banner */
-      h('div', { className: 'v1-panel', style: { marginBottom: '20px', padding: '16px 20px', borderLeft: '4px solid var(--color-primary)', background: 'var(--bg-canvas)' } },
+      h('div', { className: 'v1-panel', style: { marginBottom: '20px', padding: '16px 20px', borderRadius: '12px', background: 'var(--bg-canvas)' } },
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' } },
           h('div', { style: { flex: '1 1 260px', minWidth: '240px' } },
             h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' } },
@@ -2914,7 +3076,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     10. RECORD FEEDBACK (Retours sur les dossiers)
+     10. RECORD FEEDBACK (Retours sur les dossiers — Figma Node 18:49)
      -------------------------------------------------------------------------- */
   function renderFeedbackWorkspace() {
     // 1. Fetch live feedback inbox if not cached
@@ -2931,9 +3093,25 @@
     }
 
     const inboxList = V091.inboxData?.inbox?.feedback || V091.inboxData?.feedback || [];
+    const recipientOptions = [
+      { value: 'AUTHOR', label: 'Auteur (Enquêteur / CPJP)' },
+      { value: 'VERIFICATION', label: 'Coordinateur opérationnel' },
+      { value: 'FINANCE', label: 'Responsable financier & RH' },
+      { value: 'MEL', label: 'Responsable Suivi & Évaluation' },
+      { value: 'APPROVAL', label: 'Directeur diocésain' },
+      { value: 'ALL', label: 'Tout le circuit d’approbation' },
+    ];
 
-    return h('div', { className: 'v1-workspace-fade' },
-      h('header', { className: 'v1-page-header' },
+    return h('div', {
+      className: 'v1-workspace-fade v1-feedback-workspace',
+      onClick: () => {
+        if (V091.openDropdownId) {
+          V091.openDropdownId = null;
+          if (typeof renderApp === 'function') renderApp();
+        }
+      },
+    },
+      h('header', { className: 'v1-page-header v1-feedback-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
@@ -2942,7 +3120,7 @@
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_feedback'))
         ),
         h('div', { className: 'v1-header-split' },
-          h('div', {},
+          h('div', { className: 'v1-feedback-heading-wrap' },
             h('h1', { className: 'v1-page-title' }, L('nav_feedback')),
             h('p', { className: 'v1-page-subtitle' },
               'Boîte de réception des retours et messages chiffrés par dossier entre auteurs, coordinateurs, comptables et direction.'
@@ -2951,47 +3129,40 @@
         )
       ),
 
-      /* Compose / Send Feedback Panel */
-      h('div', { className: 'v1-panel', style: { padding: '20px', marginBottom: '24px' } },
-        h('h2', { style: { fontSize: '1rem', fontWeight: '600', marginBottom: '12px' } },
+      /* Compose / Send Feedback Panel (Figma Node 18:70) */
+      h('div', { className: 'v1-panel v1-feedback-compose-card' },
+        h('h2', { className: 'v1-feedback-compose-title' },
           'Rédiger une observation ou demande de correction sur un dossier'
         ),
-        h('div', { style: { display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '12px' } },
+        h('div', { className: 'v1-feedback-controls-row' },
           h('input', {
-            className: 'v1-input',
+            className: 'v1-input v1-feedback-ref-input',
             placeholder: 'Référence du dossier (ex. rec-f07-butare-01)...',
             value: V091.selectedRecordForFeedback || '',
             onInput: e => { V091.selectedRecordForFeedback = e.target.value; },
-            style: { width: '260px' }
           }),
-          h('select', {
-            className: 'v1-select',
-            style: { width: '260px' },
-            value: V091.feedbackRecipient,
-            onChange: e => { V091.feedbackRecipient = e.target.value; },
-          },
-            h('option', { value: 'AUTHOR' }, 'Niveau : Auteur (Enquêteur / CPJP)'),
-            h('option', { value: 'VERIFICATION' }, 'Niveau : Coordinateur opérationnel'),
-            h('option', { value: 'FINANCE' }, 'Niveau : Responsable financier & RH'),
-            h('option', { value: 'MEL' }, 'Niveau : Responsable Suivi & Évaluation'),
-            h('option', { value: 'APPROVAL' }, 'Niveau : Directeur diocésain'),
-            h('option', { value: 'ALL' }, 'Niveau : Tout le circuit d’approbation')
-          )
+          V091.renderFigmaDropdown({
+            id: 'feedback-recipient',
+            prefix: 'Niveau',
+            value: V091.feedbackRecipient || 'AUTHOR',
+            options: recipientOptions,
+            width: '296px',
+            className: 'v1-feedback-recipient-dropdown',
+            onChange: nextVal => { V091.feedbackRecipient = nextVal; },
+          })
         ),
         h('div', { className: 'v1-feedback-input-box' },
           h('textarea', {
-            className: 'v1-textarea',
+            className: 'v1-textarea v1-feedback-textarea',
             rows: 3,
             placeholder: 'Rédiger une observation confidentielle avec justification précise...',
             value: V091.feedbackText,
             onInput: e => { V091.feedbackText = e.target.value; },
-            style: { width: '100%', boxSizing: 'border-box' }
           }),
-          h('div', { style: { display: 'flex', justifyContent: 'flex-end' } },
+          h('div', { className: 'v1-feedback-submit-row' },
             h('button', {
               type: 'button',
-              className: 'v1-btn v1-btn-primary',
-              style: { height: '40px' },
+              className: 'v1-btn v1-btn-primary v1-feedback-send-btn',
               onClick: () => {
                 if (!V091.feedbackText.trim()) {
                   V091.showToast("Veuillez saisir un texte d'observation.", 'error');
@@ -3010,61 +3181,68 @@
                 }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
               },
             },
-              msIcon('send', 16),
+              h('span', { className: 'v1-feedback-send-icon-wrap' },
+                h('img', {
+                  src: 'assets/figma/send-icon-group.svg',
+                  width: '14.6667',
+                  height: '14.6667',
+                  alt: '',
+                  className: 'v1-figma-send-img',
+                })
+              ),
               h('span', {}, 'Transmettre')
             )
           )
         )
       ),
 
-      /* Inbox Feedbacks List */
-      h('div', { className: 'v1-panel' },
-        h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, 'Fils de discussion actifs sur les dossiers'),
-          h('span', { className: 'v1-badge' }, `${inboxList.length || 2} échanges récents`)
+      /* Inbox Feedbacks List (Figma Node 18:93) */
+      h('div', { className: 'v1-panel v1-feedback-threads-card' },
+        h('div', { className: 'v1-feedback-threads-header' },
+          h('span', { className: 'v1-feedback-threads-title' }, 'Fils de discussion actifs sur les dossiers'),
+          h('span', { className: 'v1-feedback-count-badge' }, `${inboxList.length || 2} échanges récents`)
         ),
-        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px', padding: '16px' } },
+        h('div', { className: 'v1-feedback-threads-list' },
           inboxList.length > 0 ? inboxList.map((f, fIdx) =>
-            h('div', { key: fIdx, style: { padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-primary)' } },
-              h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' } },
-                h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
-                  h('span', { className: 'v1-meta-code-badge' }, f.recordCode || f.record_id || 'Dossier'),
-                  h('strong', { style: { fontSize: '0.875rem' } }, `${f.actor} → ${f.recipient}`)
-                ),
-                h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, f.time ? f.time.slice(0, 16).replace('T', ' ') : 'Récent')
+            h('div', {
+              key: fIdx,
+              className: 'v1-feedback-thread-card',
+              onClick: () => {
+                V091.selectedRecordForFeedback = f.recordCode || f.record_id;
+                renderApp();
+              },
+            },
+              h('div', { className: 'v1-feedback-thread-top' },
+                h('strong', { className: 'v1-feedback-thread-actor' }, `${f.actor} → ${f.recipient}`),
+                h('div', { className: 'v1-feedback-thread-meta' },
+                  h('span', { className: 'v1-feedback-code-pill' }, f.recordCode || f.record_id || 'Dossier'),
+                  h('span', { className: 'v1-feedback-thread-time' }, f.time ? f.time.slice(0, 16).replace('T', ' ') : 'Récent')
+                )
               ),
-              h('p', { style: { fontSize: '0.8125rem', margin: '0 0 10px', color: 'var(--text-primary)', lineHeight: 1.4 } }, f.body?.text || f.text),
-              h('button', {
-                type: 'button',
-                className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                onClick: () => {
-                  V091.selectedRecordForFeedback = f.recordCode || f.record_id;
-                  renderApp();
-                }
-              }, 'Répondre à ce dossier')
+              h('p', { className: 'v1-feedback-thread-body' }, f.body?.text || f.text)
             )
           ) : [
-            h('div', { key: 'sample-1', style: { padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-primary)' } },
-              h('div', { style: { display: 'flex', justifyContent: 'space-between', marginBottom: '6px' } },
-                h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
-                  h('span', { className: 'v1-meta-code-badge' }, 'rec-f44-q1-gakoma'),
-                  h('strong', { style: { fontSize: '0.875rem' } }, 'Théophile Habimana (MEL) → Auteur')
-                ),
-                h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, '2026-10-26 14:30')
+            h('div', { key: 'sample-1', className: 'v1-feedback-thread-card' },
+              h('div', { className: 'v1-feedback-thread-top' },
+                h('strong', { className: 'v1-feedback-thread-actor' }, 'Théophile Habimana (MEL) → Auteur'),
+                h('div', { className: 'v1-feedback-thread-meta' },
+                  h('span', { className: 'v1-feedback-code-pill' }, 'rec-f44-q1-gakoma'),
+                  h('span', { className: 'v1-feedback-thread-time' }, '2026-10-26 14:30')
+                )
               ),
-              h('p', { style: { fontSize: '0.8125rem', margin: 0, color: 'var(--text-primary)' } },
+              h('p', { className: 'v1-feedback-thread-body' },
                 'Merci au comité CPJP Gakoma pour ce rapport Q1 très complet. Vérifiez la pièce jointe de la centrale Kizenga avant validation MEL.'
               )
             ),
-            h('div', { key: 'sample-2', style: { padding: '14px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid #1E3A2F' } },
-              h('div', { style: { display: 'flex', justifyContent: 'space-between', marginBottom: '6px' } },
-                h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
-                  h('span', { className: 'v1-meta-code-badge' }, 'rec-f07-butare-01'),
-                  h('strong', { style: { fontSize: '0.875rem' } }, 'Emmanuel Nsabimana (Coordination) → Finance')
-                ),
-                h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, '2026-10-25 10:15')
+            h('div', { key: 'sample-2', className: 'v1-feedback-thread-card' },
+              h('div', { className: 'v1-feedback-thread-top' },
+                h('strong', { className: 'v1-feedback-thread-actor' }, 'Emmanuel Nsabimana (Coordination) → Finance'),
+                h('div', { className: 'v1-feedback-thread-meta' },
+                  h('span', { className: 'v1-feedback-code-pill' }, 'rec-f07-butare-01'),
+                  h('span', { className: 'v1-feedback-thread-time' }, '2026-10-25 10:15')
+                )
               ),
-              h('p', { style: { fontSize: '0.8125rem', margin: 0, color: 'var(--text-primary)' } },
+              h('p', { className: 'v1-feedback-thread-body' },
                 'Rapport d’atelier de médiation validé sur le fond. Paiement des indemnités de déplacement autorisé selon barème diocésain.'
               )
             )
@@ -3530,27 +3708,30 @@
                 else q.label = e.target.value;
               },
             }),
-            h('select', {
-              className: 'gf-q-type-select',
+            V091.renderFigmaDropdown({
+              id: 'gf-qtype-' + qIdx,
+              prefix: 'Type',
               value: qType,
-              onChange: e => {
-                q.type = e.target.value;
+              width: '230px',
+              options: [
+                { value: 'TEXT', label: 'Texte court' },
+                { value: 'LONG_TEXT', label: 'Paragraphe' },
+                { value: 'RADIO', label: 'Choix multiple' },
+                { value: 'CHECKBOX', label: 'Cases à cocher' },
+                { value: 'DROPDOWN', label: 'Liste déroulante' },
+                { value: 'SCALE_1_5', label: 'Échelle linéaire (1 à 5)' },
+                { value: 'NUMBER', label: 'Nombre' },
+                { value: 'DATE', label: 'Date' },
+                { value: 'FILE', label: 'Importation de document' },
+              ],
+              onChange: nextType => {
+                q.type = nextType;
                 if (['RADIO', 'CHECKBOX', 'DROPDOWN'].includes(q.type) && (!q.options || !q.options.length)) {
                   q.options = ['Option 1', 'Option 2', 'Option 3'];
                 }
                 renderApp();
               },
-            },
-              h('option', { value: 'TEXT' }, 'Texte court'),
-              h('option', { value: 'LONG_TEXT' }, 'Paragraphe'),
-              h('option', { value: 'RADIO' }, 'Choix multiple'),
-              h('option', { value: 'CHECKBOX' }, 'Cases à cocher'),
-              h('option', { value: 'DROPDOWN' }, 'Liste déroulante'),
-              h('option', { value: 'SCALE_1_5' }, 'Échelle linéaire (1 à 5)'),
-              h('option', { value: 'NUMBER' }, 'Nombre'),
-              h('option', { value: 'DATE' }, 'Date'),
-              h('option', { value: 'FILE' }, 'Importation de document')
-            )
+            })
           ),
 
           /* Body: Options for choice types or scale */
@@ -4085,7 +4266,7 @@
       ),
 
       /* Security & Privacy Notice */
-      h('div', { className: 'v1-panel', style: { padding: '12px 16px', marginBottom: '20px', background: 'var(--bg-canvas)', borderLeft: '4px solid var(--color-primary)' } },
+      h('div', { className: 'v1-panel', style: { padding: '14px 18px', marginBottom: '20px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
         h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 } },
           'Confidentialité stricte : Les données sensibles et identifiants de personnes protégées ne sont jamais transmis au modèle d’assistance. Toute suggestion doit faire l’objet d’une relecture humaine avant application.'
         )
@@ -4102,7 +4283,7 @@
             { code: 'GENDER_DISABILITY_MATH', status: 'PASS', title: 'Désagrégation Genre & Handicap', detail: 'Total = Femmes + Hommes + Non déclaré, Handicap <= Total.' },
             { code: 'PRIVACY_PROTECTION', status: 'PASS', title: 'Protection des données sensibles', detail: 'Aucun identifiant privé de victime dans les fiches partagées.' },
           ]).map((c, cIdx) =>
-            h('div', { key: cIdx, style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)' } },
+            h('div', { key: cIdx, style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
               msIcon(c.status === 'PASS' ? 'check_circle' : 'warning', 20),
               h('div', {},
                 h('strong', { style: { fontSize: '0.875rem' } }, c.title),
@@ -4119,19 +4300,21 @@
         h('div', { className: 'v1-assistant-toolbar', style: { display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' } },
           h('label', { style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } }, 'Sélectionner l’utilitaire d’assistance :'),
           h('div', { className: 'v1-assistant-controls' },
-            h('select', {
-              className: 'v1-select',
-              style: { height: '40px', boxSizing: 'border-box' },
-              value: V091.assistantTask,
-              onChange: e => { V091.assistantTask = e.target.value; renderApp(); }
-            },
-              h('option', { value: 'controls' }, 'Contrôle structurel du dossier'),
-              h('option', { value: 'grammar' }, 'Correction grammaire & style'),
-              h('option', { value: 'translate' }, 'Traduction multilingue (FR/RW/EN/SW)'),
-              h('option', { value: 'summarise' }, 'Synthèse exécutive & Résumé'),
-              h('option', { value: 'planning' }, 'Cohérence avec le Plan Stratégique'),
-              h('option', { value: 'report' }, 'Structuration de rapport d’activité')
-            ),
+            V091.renderFigmaDropdown({
+              id: 'assistant-task',
+              prefix: 'Utilitaire',
+              value: V091.assistantTask || 'controls',
+              width: '340px',
+              options: [
+                { value: 'controls', label: 'Contrôle structurel du dossier' },
+                { value: 'grammar', label: 'Correction grammaire & style' },
+                { value: 'translate', label: 'Traduction multilingue (FR/RW/EN/SW)' },
+                { value: 'summarise', label: 'Synthèse exécutive & Résumé' },
+                { value: 'planning', label: 'Cohérence avec le Plan Stratégique' },
+                { value: 'report', label: 'Structuration de rapport d’activité' },
+              ],
+              onChange: nextTask => { V091.assistantTask = nextTask; renderApp(); },
+            }),
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-primary',
@@ -4162,7 +4345,7 @@
           onInput: e => { V091.assistantText = e.target.value; },
           style: { marginBottom: '14px' },
         }),
-        V091.assistantResults?.suggestion ? h('div', { style: { padding: '16px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', borderLeft: '4px solid var(--color-success)' } },
+        V091.assistantResults?.suggestion ? h('div', { style: { padding: '16px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
           h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
             h('strong', { style: { color: 'var(--color-success)' } }, '✓ Proposition générée (Relecture requise) :'),
             h('button', {
@@ -4321,7 +4504,7 @@
       ),
 
       /* Rules of Governance Banner */
-      h('div', { className: 'v1-panel', style: { padding: '16px 20px', marginBottom: '24px', background: 'var(--bg-canvas)', borderLeft: '4px solid var(--color-primary)' } },
+      h('div', { className: 'v1-panel', style: { padding: '16px 20px', marginBottom: '24px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
         h('strong', { style: { fontSize: '0.9375rem', display: 'block', marginBottom: '6px' } }, 'Règles de gouvernance & Lignes institutionnelles :'),
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
           h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Trait plein (solid line) = Hiérarchie d’autorité : '), 'Responsabilité de ligne directe avec autorité d’approbation et de signature légale.'),
@@ -4344,8 +4527,7 @@
                 gap: '8px',
                 padding: '16px 20px',
                 background: 'var(--bg-canvas)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: '4px solid var(--color-primary)'
+                borderRadius: '12px',
               }
             },
               h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
@@ -4364,6 +4546,50 @@
      19. TIMESHEETS (Feuilles de temps F31 / F32)
      -------------------------------------------------------------------------- */
   function renderTimesheetsWorkspace() {
+    const cacheKey = V091.timesheetIncludeDrafts ? 'drafts_1' : 'drafts_0';
+    if (!V091.timesheetLoading && (!V091.timesheetData || V091.timesheetData._cacheKey !== cacheKey)) {
+      V091.timesheetLoading = true;
+      apiV1('/timesheets?include_drafts=' + (V091.timesheetIncludeDrafts ? 'true' : 'false')).then(d => {
+        d._cacheKey = cacheKey;
+        V091.timesheetData = d;
+        V091.timesheetLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(() => {
+        V091.timesheetData = { _cacheKey: cacheKey, entries: [], summary: null };
+        V091.timesheetLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const fallbackRows = [
+      { date: '2026-10-21', form: 'F31', agent: 'Théophile Habimana', axis: 'A1 / PRJ-ISANAMITIMA', title: 'Vérification qualité CPJP Butare & formation parajuristes', hours: '08.0', state: 'APPROVED' },
+      { date: '2026-10-22', form: 'F31', agent: 'Emmanuel Nsabimana', axis: 'A2 / OPERATIONAL', title: 'Supervision commission diocésaine et revue F04', hours: '07.5', state: 'APPROVED' },
+      { date: '2026-10-23', form: 'F31', agent: 'Marceline Mukandayisenga', axis: 'A5 / OPERATIONAL', title: 'Rapprochement comptable F19 et clôture Q1', hours: '08.0', state: 'APPROVED' },
+      { date: '2026-10-25', form: 'F32', agent: 'Emmanuel Uwimana', axis: 'A5 / OPERATIONAL', title: 'Congé annuel récupérateur missions terrain', hours: '16.0', state: 'APPROVED' },
+    ];
+
+    const liveEntries = (V091.timesheetData?.entries || []).map(r => {
+      const v = r.values || {};
+      const hNum = parseFloat(v.hours || v.action || 0);
+      const rawOwner = String(v.owner || r.author || '');
+      const cleanAgent = (V1.data?.user?.id === rawOwner && V1.data?.user?.name)
+        ? V1.data.user.name
+        : (rawOwner.includes(':') ? rawOwner.split(':').pop() : (rawOwner || V1.data?.user?.name || 'Agent CDJP'));
+      return {
+        id: r.id,
+        date: r.event_date || '2026-10-25',
+        form: r.form || 'F31',
+        agent: cleanAgent,
+        axis: `${v.axis || 'A1'} / ${v.project || v.work_type || 'OPERATIONAL'}`,
+        title: v.title || v.activity || v.reason || 'Activité enregistrée',
+        hours: Number.isFinite(hNum) ? hNum.toFixed(1).padStart(4, '0') : '08.0',
+        state: r.state || 'DRAFT',
+      };
+    });
+
+    const displayRows = liveEntries.length > 0 ? liveEntries : fallbackRows;
+    const summary = V091.timesheetData?.summary;
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
@@ -4385,8 +4611,110 @@
               type: 'button',
               className: 'v1-btn v1-btn-primary',
               onClick: () => {
-                V091.timesheetLogModal = true;
-                renderApp();
+                const draft = {
+                  form: 'F31',
+                  event_date: '2026-10-26',
+                  hours: '8.0',
+                  axis: 'A1',
+                  work_type: 'OPERATIONAL',
+                  title: '',
+                };
+                V091.showModal({
+                  title: 'Enregistrer mes heures (F31 / F32)',
+                  subtitle: 'Saisie des heures d’activité (F31, max 24h/jour) ou de congé (F32).',
+                  icon: 'more_time',
+                  content: () => h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
+                    h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' } },
+                      h('div', { className: 'v1-field' },
+                        h('label', { className: 'v1-field-label' }, 'Type de feuille'),
+                        h('select', {
+                          className: 'v1-select',
+                          value: draft.form,
+                          onChange: e => { draft.form = e.target.value; renderApp(); },
+                        },
+                          h('option', { value: 'F31', selected: draft.form === 'F31' }, 'F31 — Heures d’activité'),
+                          h('option', { value: 'F32', selected: draft.form === 'F32' }, 'F32 — Congé / Absence')
+                        )
+                      ),
+                      h('div', { className: 'v1-field' },
+                        h('label', { className: 'v1-field-label' }, 'Date (Calendrier AP1–AP5)'),
+                        h('input', {
+                          type: 'date',
+                          className: 'v1-input',
+                          value: draft.event_date,
+                          onInput: e => { draft.event_date = e.target.value; },
+                        })
+                      ),
+                      h('div', { className: 'v1-field' },
+                        h('label', { className: 'v1-field-label' }, 'Heures (0.5 à 24.0 h)'),
+                        h('input', {
+                          type: 'number',
+                          step: '0.5',
+                          min: '0.5',
+                          max: '24',
+                          className: 'v1-input',
+                          value: draft.hours,
+                          onInput: e => { draft.hours = e.target.value; },
+                        })
+                      ),
+                      h('div', { className: 'v1-field' },
+                        h('label', { className: 'v1-field-label' }, 'Axe stratégique'),
+                        h('select', {
+                          className: 'v1-select',
+                          value: draft.axis,
+                          onChange: e => { draft.axis = e.target.value; },
+                        },
+                          ['A1', 'A2', 'A3', 'A4', 'A5'].map(ax =>
+                            h('option', { value: ax, selected: draft.axis === ax }, `Axe ${ax}`)
+                          )
+                        )
+                      )
+                    ),
+                    h('div', { className: 'v1-field' },
+                      h('label', { className: 'v1-field-label' }, 'Activité réalisée / Motif'),
+                      h('input', {
+                        type: 'text',
+                        className: 'v1-input',
+                        placeholder: 'Ex. Supervision terrain et vérification des fiches CPJP...',
+                        value: draft.title,
+                        onInput: e => { draft.title = e.target.value; },
+                      })
+                    )
+                  ),
+                  actions: [
+                    { label: 'Annuler', type: 'secondary', onClick: () => V091.closeModal() },
+                    {
+                      label: 'Enregistrer dans SQLite',
+                      type: 'primary',
+                      onClick: () => {
+                        if (!draft.title.trim()) {
+                          V091.showToast('Veuillez décrire l’activité réalisée.', 'error');
+                          return;
+                        }
+                        apiV1('/timesheets', 'POST', {
+                          form: draft.form,
+                          event_date: draft.event_date,
+                          hours: parseFloat(draft.hours || '8'),
+                          axis: draft.axis,
+                          work_type: draft.work_type,
+                          title: draft.title.trim(),
+                        }).then(async () => {
+                          V091.timesheetIncludeDrafts = true;
+                          const d = await apiV1('/timesheets?include_drafts=true').catch(() => null);
+                          if (d) {
+                            d._cacheKey = 'drafts_1';
+                            V091.timesheetData = d;
+                          } else {
+                            V091.timesheetData = null;
+                          }
+                          V091.closeModal();
+                          V091.showToast('✓ Feuille de temps enregistrée avec succès.', 'info');
+                          renderApp();
+                        }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
+                      }
+                    }
+                  ]
+                });
               },
             },
               msIcon('add', 18),
@@ -4406,6 +4734,24 @@
         )
       ),
 
+      summary ? h('div', { className: 'v1-kpi-grid', style: { marginBottom: '20px' } },
+        h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
+          h('span', { className: 'v1-kpi-label' }, 'Total Heures F31'),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, `${Number(summary.total_hours || 0).toFixed(1)} h`),
+          h('span', { className: 'v1-kpi-sub' }, `${summary.count || displayRows.length} entrées`)
+        ),
+        h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
+          h('span', { className: 'v1-kpi-label' }, 'Heures Approuvées'),
+          h('span', { className: 'v1-kpi-val v1-tabular', style: { color: 'var(--color-success)' } }, `${Number(summary.approved_hours || 0).toFixed(1)} h`),
+          h('span', { className: 'v1-kpi-sub' }, `Brouillons : ${Number(summary.draft_hours || 0).toFixed(1)} h`)
+        ),
+        h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
+          h('span', { className: 'v1-kpi-label' }, 'Congés & Absences (F32)'),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, `${Number(summary.leave_hours || 0).toFixed(1)} h`),
+          h('span', { className: 'v1-kpi-sub' }, `Max journalier : ${Number(summary.max_daily_hours || 8).toFixed(1)} h / 24.0 h`)
+        )
+      ) : null,
+
       /* Filter strip */
       h('div', { style: { display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '20px' } },
         h('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '0.875rem' } },
@@ -4414,6 +4760,7 @@
             checked: V091.timesheetIncludeDrafts,
             onChange: e => {
               V091.timesheetIncludeDrafts = e.target.checked;
+              V091.timesheetData = null;
               renderApp();
             },
           }),
@@ -4436,20 +4783,20 @@
             )
           ),
           h('tbody', {},
-            [
-              { date: '2026-10-21', form: 'F31', agent: 'Théophile Habimana', axis: 'A1 / PRJ-ISANAMITIMA', title: 'Vérification qualité CPJP Butare & formation parajuristes', hours: '08.0', state: 'APPROVED' },
-              { date: '2026-10-22', form: 'F31', agent: 'Emmanuel Nsabimana', axis: 'A2 / OPERATIONAL', title: 'Supervision commission diocésaine et revue F04', hours: '07.5', state: 'APPROVED' },
-              { date: '2026-10-23', form: 'F31', agent: 'Marceline Mukandayisenga', axis: 'A5 / OPERATIONAL', title: 'Rapprochement comptable F19 et clôture Q1', hours: '08.0', state: 'APPROVED' },
-              { date: '2026-10-25', form: 'F32', agent: 'Emmanuel Uwimana', axis: 'A5 / OPERATIONAL', title: 'Congé annuel récupérateur missions terrain', hours: '16.0', state: 'APPROVED' },
-            ].map(r =>
-              h('tr', {},
+            displayRows.map((r, rIdx) =>
+              h('tr', { key: r.id || rIdx },
                 h('td', {}, r.date),
                 h('td', {}, h('span', { className: 'v1-badge' }, r.form)),
                 h('td', {}, r.agent),
                 h('td', {}, r.axis),
                 h('td', {}, r.title),
                 h('td', {}, h('strong', { className: 'v1-tabular' }, r.hours + ' h')),
-                h('td', {}, h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, r.state))
+                h('td', {}, h('span', {
+                  className: 'v1-badge',
+                  style: r.state === 'APPROVED'
+                    ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' }
+                    : { background: 'var(--bg-input)', color: 'var(--text-secondary)' }
+                }, r.state))
               )
             )
           )
@@ -4461,7 +4808,221 @@
   /* --------------------------------------------------------------------------
      20. MEL ADMINISTRATION (Administration MEL — Audit, Holds >=365d, Accounts)
      -------------------------------------------------------------------------- */
+  function openMelCreateAccountModal(existingAccount = null) {
+    const parishes = V1.data?.parishes || [];
+    const roleOptions = [
+      { code: 'APSE_MEL', label: 'APSE_MEL — Chargé MEL & Administration' },
+      { code: 'APSE_DIRECTION', label: 'APSE_DIRECTION — Directeur Diocésain CDJP' },
+      { code: 'APSE_COORDINATION', label: 'APSE_COORDINATION — Coordinateur Opérationnel' },
+      { code: 'APSE_FINANCE', label: 'APSE_FINANCE — Comptable / Finance & RH' },
+      { code: 'APSE_STAFF', label: 'APSE_STAFF — Personnel Technique Diocésain' },
+      { code: 'APSE_CPJP', label: 'APSE_CPJP — Comité Paroissial Justice & Paix' },
+      { code: 'APSE_PARISH_REPORTER', label: 'APSE_PARISH_REPORTER — Rapporteur Paroissial' },
+      { code: 'APSE_CCJP', label: 'APSE_CCJP — Collecteur Centrale / CEB' },
+    ];
+    const formState = {
+      username: existingAccount ? existingAccount.username : '',
+      full_name: existingAccount ? (existingAccount.full_name || existingAccount.username) : '',
+      password: '',
+      role: existingAccount && existingAccount.roles && existingAccount.roles[0] ? existingAccount.roles[0] : 'APSE_STAFF',
+      parish_code: existingAccount ? (existingAccount.parish_code || '') : '',
+    };
+
+    const submitCreate = async (signInAfter = false) => {
+      const uname = (document.getElementById('mel-acc-username')?.value ?? formState.username).trim();
+      const fname = (document.getElementById('mel-acc-fullname')?.value ?? formState.full_name).trim();
+      const pass = document.getElementById('mel-acc-password')?.value ?? formState.password;
+      const isParish = ['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(formState.role);
+      const pcode = isParish ? (formState.parish_code || 'PAR-01') : null;
+
+      if (!uname || uname.length < 3) {
+        V091.showToast('L’identifiant doit comporter entre 3 et 60 caractères (lettres, chiffres, ., _, -).', 'error');
+        return;
+      }
+      if (!pass || pass.length < 6) {
+        V091.showToast('Le mot de passe doit comporter au moins 6 caractères.', 'error');
+        return;
+      }
+      try {
+        await apiV1('/mel-admin/action', 'POST', {
+          action: existingAccount ? 'RESET_LOCAL_PASSWORD' : 'CREATE_LOCAL_ACCOUNT',
+          username: uname,
+          full_name: fname || uname,
+          password: pass,
+          roles: [formState.role],
+          parish_code: pcode,
+        });
+        if (existingAccount) {
+          await apiV1('/mel-admin/action', 'POST', {
+            action: 'UPDATE_LOCAL_ACCOUNT',
+            username: uname,
+            full_name: fname || uname,
+            roles: [formState.role],
+            parish_code: pcode || '',
+          });
+        }
+        if (signInAfter) {
+          await apiV1('/v1/auth/login', 'POST', { username: uname, password: pass });
+          V1.filters.parish = '';
+        }
+        await loadBootstrap();
+        V091.melAdminData = await apiV1('/mel-admin').catch(() => null);
+        V091.closeModal();
+        V091.showToast(
+          signInAfter
+            ? `✓ Compte [${uname}] créé et connecté !`
+            : `✓ Compte local [${uname}] enregistré avec succès.`,
+          'info'
+        );
+        renderApp();
+      } catch (err) {
+        V091.showToast('Erreur : ' + err.message, 'error');
+      }
+    };
+
+    V091.showModal({
+      title: existingAccount ? `Modifier / Réinitialiser [${existingAccount.username}]` : 'Créer un compte utilisateur local',
+      subtitle: 'Création et gestion des identifiants locaux chiffrés (PBKDF2-HMAC-SHA256) avec rôle et périmètre paroissial.',
+      icon: 'person_add',
+      content: () => {
+        const isParishRole = ['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(formState.role);
+        return h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
+          h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' } },
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Identifiant (3–60 caractères)'),
+              h('input', {
+                id: 'mel-acc-username',
+                className: 'v1-input',
+                placeholder: 'ex: save_reporter_01',
+                disabled: Boolean(existingAccount),
+                value: formState.username,
+                onInput: e => { formState.username = e.target.value; },
+              })
+            ),
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Nom complet / Intitulé'),
+              h('input', {
+                id: 'mel-acc-fullname',
+                className: 'v1-input',
+                placeholder: 'ex: Jean Bosco (CPJP Save)',
+                value: formState.full_name,
+                onInput: e => { formState.full_name = e.target.value; },
+              })
+            )
+          ),
+          h('div', { className: 'v1-field' },
+            h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+              h('label', { className: 'v1-field-label' }, 'Mot de passe (6 caractères minimum, 12+ recommandé)'),
+              h('button', {
+                type: 'button',
+                className: 'v1-btn v1-btn-ghost v1-btn-sm',
+                style: { fontSize: '0.75rem', padding: '2px 8px' },
+                onClick: () => {
+                  formState.password = 'apse2026_butare';
+                  const el = document.getElementById('mel-acc-password');
+                  if (el) el.value = formState.password;
+                  renderApp();
+                },
+              }, 'Utiliser mot de passe standard (apse2026_butare)')
+            ),
+            h('input', {
+              id: 'mel-acc-password',
+              className: 'v1-input',
+              type: 'password',
+              placeholder: 'Saisir le mot de passe...',
+              value: formState.password,
+              onInput: e => { formState.password = e.target.value; },
+            })
+          ),
+          h('div', { style: { display: 'grid', gridTemplateColumns: isParishRole ? '1fr 1fr' : '1fr', gap: '12px' } },
+            h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Rôle institutionnel RBAC'),
+              h('select', {
+                className: 'v1-select',
+                value: formState.role,
+                onChange: e => {
+                  formState.role = e.target.value;
+                  if (['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(formState.role) && !formState.parish_code) {
+                    formState.parish_code = 'PAR-01';
+                  } else if (!['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(formState.role)) {
+                    formState.parish_code = '';
+                  }
+                  renderApp();
+                },
+              },
+                roleOptions.map(r => h('option', { value: r.code, selected: formState.role === r.code }, r.label))
+              )
+            ),
+            isParishRole ? h('div', { className: 'v1-field' },
+              h('label', { className: 'v1-field-label' }, 'Paroisse assignée (CPJP)'),
+              h('select', {
+                className: 'v1-select',
+                value: formState.parish_code || 'PAR-01',
+                onChange: e => { formState.parish_code = e.target.value; },
+              },
+                (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale' }, { code: 'PAR-24', name: 'Kibeho' }]).map(p =>
+                  h('option', { value: p.code, selected: (formState.parish_code || 'PAR-01') === p.code }, `${p.code} — ${p.name}`)
+                )
+              )
+            ) : null
+          )
+        );
+      },
+      actions: [
+        { label: 'Annuler', type: 'secondary', onClick: () => V091.closeModal() },
+        { label: existingAccount ? 'Enregistrer' : 'Créer le compte', type: 'secondary', onClick: () => submitCreate(false) },
+        { label: existingAccount ? 'Enregistrer & Se connecter' : 'Créer & Se connecter', type: 'primary', onClick: () => submitCreate(true) },
+      ],
+    });
+  }
+
   function renderMelAdminWorkspace() {
+    if (!V091.melAdminLoading && !V091.melAdminData) {
+      V091.melAdminLoading = true;
+      const q = [];
+      if (V091.auditFilterActor) q.push('actor=' + encodeURIComponent(V091.auditFilterActor));
+      if (V091.auditFilterAction) q.push('action=' + encodeURIComponent(V091.auditFilterAction));
+      apiV1('/mel-admin' + (q.length ? '?' + q.join('&') : '')).then(d => {
+        V091.melAdminData = d;
+        V091.melAdminLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      }).catch(() => {
+        V091.melAdminData = { local_accounts: [], audit_logs: [], integrity: { ok: true } };
+        V091.melAdminLoading = false;
+        if (typeof renderApp === 'function') renderApp();
+      });
+    }
+
+    const adminData = V091.melAdminData || {};
+    const localAccounts = adminData.local_accounts || [];
+    const auditLogs = (adminData.audit_logs && adminData.audit_logs.length > 0)
+      ? adminData.audit_logs.map(r => ({
+          seq: r.seq,
+          time: (r.time || '').slice(0, 19).replace('T', ' '),
+          actor: r.actor,
+          action: r.action,
+          obj: r.object_id,
+          mac: (r.mac || '').slice(0, 14) + '...',
+        }))
+      : [
+          { seq: 104, time: '2026-10-26 15:42:10', actor: 'LOCAL:mel.theophile', action: 'METADATA_CHANGE', obj: 'forms/F44', mac: '8f7a93c4e...' },
+          { seq: 103, time: '2026-10-26 14:30:00', actor: 'LOCAL:mel.theophile', action: 'FEEDBACK', obj: 'rec-f44-q1-gakoma', mac: '3c1e82b7f...' },
+          { seq: 102, time: '2026-10-26 11:20:15', actor: 'LOCAL:direction.janvier', action: 'APPROVED', obj: 'rec-f03-cdjp-a1', mac: '5a4d92e10...' },
+          { seq: 101, time: '2026-10-26 09:15:00', actor: 'LOCAL:coordination.emmanuel', action: 'VERIFIED', obj: 'rec-f07-butare-01', mac: '7e2b14f8a...' },
+        ];
+    const activeAccountsCount = localAccounts.filter(a => a.active).length || localAccounts.length || 17;
+    const currentActiveKey = V1.data?.user?.username || V1.data?.user?.active_persona || 'mel_diocese';
+    const customKeys = new Set((V1.data?.custom_accounts || []).map(c => c.key));
+    const sortedAccounts = [...localAccounts].sort((a, b) => {
+      const aCurr = a.username === currentActiveKey ? 0 : 1;
+      const bCurr = b.username === currentActiveKey ? 0 : 1;
+      if (aCurr !== bCurr) return aCurr - bCurr;
+      const aCust = customKeys.has(a.username) ? 0 : 1;
+      const bCust = customKeys.has(b.username) ? 0 : 1;
+      if (aCust !== bCust) return aCust - bCust;
+      return 0;
+    });
+
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
@@ -4481,52 +5042,19 @@
           h('div', { className: 'v1-header-actions' },
             h('button', {
               type: 'button',
-              className: 'v1-btn v1-btn-primary',
+              className: 'v1-btn v1-btn-secondary',
               onClick: () => {
-                let uname = '';
-                let pass = '';
-                V091.showModal({
-                  title: 'Créer un compte local hors ligne',
-                  subtitle: 'Génération d’identifiants sécurisés pour saisie déconnectée (12 car. min).',
-                  icon: 'person_add',
-                  content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
-                    h('div', { className: 'v1-field' },
-                      h('label', { className: 'v1-field-label' }, 'Identifiant (3–60 caractères)'),
-                      h('input', { className: 'v1-input', placeholder: 'ex: save_reporter_01', onInput: e => { uname = e.target.value; } })
-                    ),
-                    h('div', { className: 'v1-field' },
-                      h('label', { className: 'v1-field-label' }, 'Mot de passe (12 caractères minimum)'),
-                      h('input', { className: 'v1-input', type: 'password', placeholder: '••••••••••••', onInput: e => { pass = e.target.value; } })
-                    )
-                  ),
-                  actions: [
-                    { label: 'Annuler', type: 'secondary', onClick: () => V091.closeModal() },
-                    {
-                      label: 'Créer le compte',
-                      type: 'primary',
-                      onClick: () => {
-                        if (!uname || uname.length < 3) {
-                          V091.showToast('L’identifiant doit comporter au moins 3 caractères.', 'error');
-                          return;
-                        }
-                        if (!pass || pass.length < 12) {
-                          V091.showToast('Le mot de passe doit comporter au moins 12 caractères.', 'error');
-                          return;
-                        }
-                        apiV1('/mel-admin/action', 'POST', {
-                          action: 'CREATE_LOCAL_ACCOUNT',
-                          username: uname,
-                          password: pass,
-                          roles: ['APSE_STAFF'],
-                        }).then(() => {
-                          V091.closeModal();
-                          V091.showToast(`✓ Compte local [${uname}] créé avec succès.`, 'info');
-                        }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
-                      }
-                    }
-                  ]
-                });
+                V091.melAdminData = null;
+                renderApp();
               },
+            },
+              msIcon('sync', 18),
+              h('span', {}, 'Rafraîchir')
+            ),
+            h('button', {
+              type: 'button',
+              className: 'v1-btn v1-btn-primary',
+              onClick: () => openMelCreateAccountModal(null),
             },
               msIcon('add', 18),
               h('span', {}, 'Créer un compte local')
@@ -4537,20 +5065,120 @@
 
       /* 3 Metric cards */
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '24px' } },
-        h('div', { className: 'v1-kpi-card' },
+        h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
           h('span', { className: 'v1-kpi-label' }, 'Intégrité de la chaîne d’audit'),
           h('span', { className: 'v1-kpi-val', style: { color: 'var(--color-success)' } }, '✓ VÉRIFIÉE'),
-          h('span', { className: 'v1-kpi-sub' }, 'Chaîne HMAC append-only inviolable')
+          h('span', { className: 'v1-kpi-sub' }, `Chaîne HMAC append-only (${auditLogs.length} événements récents)`)
         ),
-        h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'Rétention minimale légale'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, '365 jours'),
-          h('span', { className: 'v1-kpi-sub' }, 'Aucune purge automatique')
+        h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
+          h('span', { className: 'v1-kpi-label' }, 'Comptes locaux enregistrés'),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, `${activeAccountsCount} actifs`),
+          h('span', { className: 'v1-kpi-sub' }, `Compte actif : ${V1.data?.user?.name || currentActiveKey}`)
         ),
-        h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'Délai restauration corbeille'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, '≥ 90 jours'),
-          h('span', { className: 'v1-kpi-sub' }, 'Restauration autorisée pour MEL')
+        h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
+          h('span', { className: 'v1-kpi-label' }, 'Conservation & Corbeille'),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, '≥ 365j / ≥ 90j'),
+          h('span', { className: 'v1-kpi-sub' }, 'Aucune purge automatique · Restauration MEL')
+        )
+      ),
+
+      /* Local Accounts Management Table */
+      h('div', { className: 'v1-panel', style: { marginBottom: '24px' } },
+        h('div', { className: 'v1-chart-header' },
+          h('span', { className: 'v1-chart-title' }, `Comptes utilisateurs locaux (${localAccounts.length})`),
+          h('span', { className: 'v1-badge' }, 'PBKDF2-HMAC-SHA256 · accounts.enc')
+        ),
+        h('table', { className: 'v1-data-table' },
+          h('thead', {},
+            h('tr', {},
+              h('th', {}, 'Identifiant'),
+              h('th', {}, 'Nom complet'),
+              h('th', {}, 'Rôles RBAC'),
+              h('th', {}, 'Périmètre / Paroisse'),
+              h('th', {}, 'Statut'),
+              h('th', {}, 'Actions de gestion')
+            )
+          ),
+          h('tbody', {},
+            sortedAccounts.map(acc => {
+              const isCurrent = currentActiveKey === acc.username;
+              return h('tr', { key: acc.username },
+                h('td', {}, h('strong', { style: { fontFamily: 'var(--font-mono)', fontSize: '0.8125rem' } }, acc.username)),
+                h('td', {}, acc.full_name || acc.username),
+                h('td', {}, (acc.roles || []).map(r => h('span', { key: r, className: 'v1-badge', style: { marginRight: '4px' } }, r))),
+                h('td', {}, acc.parish_code ? `Paroisse ${acc.parish_code}` : 'Diocèse (27 Paroisses)'),
+                h('td', {},
+                  h('span', {
+                    className: 'v1-badge',
+                    style: acc.active
+                      ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' }
+                      : { background: 'var(--color-danger-bg)', color: 'var(--color-danger)' },
+                  }, isCurrent ? 'CONNECTÉ' : (acc.active ? 'ACTIF' : 'DÉSACTIVÉ'))
+                ),
+                h('td', {},
+                  h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
+                    acc.active && !isCurrent ? h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-primary',
+                      onClick: async () => {
+                        try {
+                          await apiV1('/v1/persona', 'POST', { persona_key: acc.username });
+                          V1.filters.parish = '';
+                          await loadBootstrap();
+                          V091.showToast(`✓ Connecté sur le compte [${acc.username}].`, 'info');
+                          renderApp();
+                        } catch (err) {
+                          V091.showToast('Erreur : ' + err.message, 'error');
+                        }
+                      },
+                    }, 'Activer session') : null,
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                      onClick: () => openMelCreateAccountModal(acc),
+                    }, 'Modifier / MDP'),
+                    h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-secondary',
+                      onClick: async () => {
+                        try {
+                          await apiV1('/mel-admin/action', 'POST', {
+                            action: 'TOGGLE_LOCAL_ACCOUNT',
+                            username: acc.username,
+                          });
+                          V091.melAdminData = null;
+                          await loadBootstrap();
+                          V091.showToast(`✓ Statut du compte [${acc.username}] mis à jour.`, 'info');
+                          renderApp();
+                        } catch (err) {
+                          V091.showToast('Erreur : ' + err.message, 'error');
+                        }
+                      },
+                    }, acc.active ? 'Désactiver' : 'Réactiver'),
+                    acc.username !== 'mel_diocese' ? h('button', {
+                      type: 'button',
+                      className: 'v1-btn v1-btn-sm v1-btn-ghost',
+                      style: { color: 'var(--color-danger)' },
+                      onClick: async () => {
+                        try {
+                          await apiV1('/mel-admin/action', 'POST', {
+                            action: 'DELETE_LOCAL_ACCOUNT',
+                            username: acc.username,
+                          });
+                          V091.melAdminData = null;
+                          await loadBootstrap();
+                          V091.showToast(`✓ Compte [${acc.username}] supprimé.`, 'info');
+                          renderApp();
+                        } catch (err) {
+                          V091.showToast('Erreur : ' + err.message, 'error');
+                        }
+                      },
+                    }, 'Supprimer') : null
+                  )
+                )
+              );
+            })
+          )
         )
       ),
 
@@ -4572,13 +5200,8 @@
             )
           ),
           h('tbody', {},
-            [
-              { seq: 104, time: '2026-10-26 15:42:10', actor: 'LOCAL:mel.theophile', action: 'METADATA_CHANGE', obj: 'forms/F44', mac: '8f7a93c4e...' },
-              { seq: 103, time: '2026-10-26 14:30:00', actor: 'LOCAL:mel.theophile', action: 'FEEDBACK', obj: 'rec-f44-q1-gakoma', mac: '3c1e82b7f...' },
-              { seq: 102, time: '2026-10-26 11:20:15', actor: 'LOCAL:direction.janvier', action: 'APPROVED', obj: 'rec-f03-cdjp-a1', mac: '5a4d92e10...' },
-              { seq: 101, time: '2026-10-26 09:15:00', actor: 'LOCAL:coordination.emmanuel', action: 'VERIFIED', obj: 'rec-f07-butare-01', mac: '7e2b14f8a...' },
-            ].map(r =>
-              h('tr', {},
+            auditLogs.map(r =>
+              h('tr', { key: r.seq },
                 h('td', {}, String(r.seq)),
                 h('td', {}, r.time),
                 h('td', {}, r.actor),

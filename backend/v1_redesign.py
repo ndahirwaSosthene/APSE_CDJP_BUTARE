@@ -253,16 +253,80 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             self._seed_v1_if_empty()
         self.init_sync()
 
+    def _custom_account_profiles(self):
+        accounts = getattr(self, 'accounts', None)
+        if not accounts or not hasattr(accounts, 'users'):
+            return []
+        builtin_keys = {p['key'] for p in (PERSONA_PROFILES + STAFF_TEST_PROFILES)} | {'ccjp_field', 'auditor', 'auditor_cdjp'}
+        out = []
+        for uname, uinfo in accounts.users.items():
+            if uname in builtin_keys:
+                continue
+            roles = list(uinfo.get('roles') or ['APSE_STAFF'])
+            paths = list(uinfo.get('paths') or ['/LocalRoot01'])
+            pcode = uinfo.get('parish_code')
+            if not pcode:
+                for p in paths:
+                    if 'UNIT-PAR-' in p:
+                        pcode = p.split('UNIT-')[-1].split('/')[0]
+                        break
+            out.append({
+                'key': uname,
+                'name': uinfo.get('full_name') or uname,
+                'label': f"Local Account ({', '.join(roles)})",
+                'roles': roles,
+                'parish_code': pcode,
+                'paths': paths,
+                'active': bool(uinfo.get('active', True)),
+                'is_custom': True,
+            })
+        return out
+
+    def _all_v1_profiles(self):
+        return list(PERSONA_PROFILES) + list(STAFF_TEST_PROFILES) + self._custom_account_profiles()
+
     def _resolve_v1_user(self, user):
+        if user.get('authenticated'):
+            uname = user.get('username') or str(user.get('id', '')).split(':')[-1]
+            prof = next((p for p in self._all_v1_profiles() if p['key'] == uname), None)
+            pcode = user.get('parish_code') or (prof.get('parish_code') if prof else None)
+            display_name = (prof.get('name') if prof else None) or user.get('name') or uname
+            roles = list(user.get('roles') or (prof.get('roles') if prof else ['APSE_STAFF']))
+            if pcode:
+                uid = f'UNIT-{pcode}'
+                return {
+                    'id': user['id'],
+                    'name': display_name,
+                    'username': uname,
+                    'roles': roles,
+                    'paths': [f'/LocalRoot01/{uid}'],
+                    'units': [{
+                        'id': uid,
+                        'name': f'Paroisse {pcode}',
+                        'path': f'/LocalRoot01/{uid}',
+                        'kind': 'CPJP',
+                        'sourceCode': pcode,
+                    }],
+                    'authenticated': True,
+                }
+            return {
+                'id': user['id'],
+                'name': display_name,
+                'username': uname,
+                'roles': roles,
+                'paths': ['/LocalRoot01'],
+                'units': user.get('units', [{'id': 'LocalRoot01', 'name': 'CDJP BUTARE', 'path': '/LocalRoot01', 'kind': 'CDJP'}]),
+                'authenticated': True,
+            }
         persona_key = getattr(self, '_v1_persona_key', 'mel_diocese')
         if not persona_key or persona_key == 'mel_diocese':
             return user
         if not str(user.get('id', '')).endswith(':NO_AUTH'):
             return user
-        prof = next((p for p in (PERSONA_PROFILES + STAFF_TEST_PROFILES) if p['key'] == persona_key), None)
+        prof = next((p for p in self._all_v1_profiles() if p['key'] == persona_key), None)
         if not prof:
             return user
-        if not prof['parish_code']:
+        if not prof.get('parish_code'):
             return {
                 'id': f"PERSONA:{prof['key']}",
                 'name': prof['name'],
@@ -289,7 +353,7 @@ CREATE TABLE IF NOT EXISTS v1_logs(
     def v1_set_persona(self, user, body):
         from engine import Fault
         key = str(body.get('persona_key', '')).strip()
-        prof = next((p for p in (PERSONA_PROFILES + STAFF_TEST_PROFILES) if p['key'] == key), None)
+        prof = next((p for p in self._all_v1_profiles() if p['key'] == key and p.get('active', True)), None)
         if not prof:
             raise Fault(422, 'plain_error', 'Choose a valid user role profile.')
         self._v1_persona_key = key
@@ -877,17 +941,23 @@ CREATE TABLE IF NOT EXISTS v1_logs(
             drafts = self.draft_listing(user, 'ACTIVE')
             analytics = self._compute_v1_analytics(tasks, raw_logs, parishes, effective_parish, period_filter, axis_filter, date_from, date_to)
             perms = rbac.permissions(user.get('roles', []))
+            custom_profs = self._custom_account_profiles()
+            active_persona = user.get('username') if user.get('authenticated') else getattr(self, '_v1_persona_key', 'mel_diocese')
             return {
                 'user': {
                     'id': user['id'],
                     'name': user.get('name', 'Local User'),
+                    'username': user.get('username') or active_persona,
                     'roles': user.get('roles', []),
                     'is_diocesan': is_diocesan,
                     'assigned_parish': assigned_parish,
-                    'active_persona': getattr(self, '_v1_persona_key', 'mel_diocese'),
+                    'active_persona': active_persona,
+                    'authenticated': bool(user.get('authenticated')),
                     'permissions': perms,
                 },
-                'personas': PERSONA_PROFILES, 'staff_accounts': STAFF_TEST_PROFILES,
+                'personas': list(PERSONA_PROFILES) + [p for p in custom_profs if p.get('active', True)],
+                'staff_accounts': STAFF_TEST_PROFILES,
+                'custom_accounts': custom_profs,
                 'volets': rbac.VOLETS,
                 'plan_horizons': rbac.PLAN_HORIZONS,
                 'parishes': parishes,

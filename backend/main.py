@@ -100,36 +100,40 @@ def create_app(
         "/LocalRoot01",
     )
     default_pw = "apse2026_butare"
-    if not accounts.path.exists() or not accounts.users:
-        accounts.add("mel_diocese", default_pw, ["APSE_MEL"], ["/LocalRoot01"])
-        accounts.add(
-            "coord_diocese",
-            default_pw,
-            ["APSE_COORDINATION", "APSE_DIRECTION"],
-            ["/LocalRoot01"],
-        )
-        accounts.add("director_diocese", default_pw, ["APSE_DIRECTION"], ["/LocalRoot01"])
-        accounts.add("staff_diocese", default_pw, ["APSE_STAFF"], ["/LocalRoot01"])
-        accounts.add("cpjp_gakoma", default_pw, ["APSE_CPJP"], [par01_path])
-        accounts.add("cpjp_save", default_pw, ["APSE_CPJP"], [par03_path])
-        accounts.add("cpjp_butare", default_pw, ["APSE_CPJP"], [par10_path])
-        accounts.add("cpjp_kibeho", default_pw, ["APSE_CPJP"], [par24_path])
-        accounts.add("reporter_gakoma", default_pw, ["APSE_PARISH_REPORTER"], [par01_path])
-        accounts.add("ccjp_field", default_pw, ["APSE_CCJP"], [par01_path])
+    default_accounts = [
+        ("mel_diocese", default_pw, ["APSE_MEL"], ["/LocalRoot01"], "MEL Officer (Diocese)", None),
+        ("coord_diocese", default_pw, ["APSE_COORDINATION", "APSE_DIRECTION"], ["/LocalRoot01"], "Diocesan Coordinator", None),
+        ("director_diocese", default_pw, ["APSE_DIRECTION"], ["/LocalRoot01"], "Diocesan Director", None),
+        ("staff_diocese", default_pw, ["APSE_STAFF"], ["/LocalRoot01"], "CDJP Technical Staff", None),
+        ("cpjp_gakoma", default_pw, ["APSE_CPJP"], [par01_path], "CPJP Committee (Gakoma)", "PAR-01"),
+        ("cpjp_save", default_pw, ["APSE_CPJP"], [par03_path], "CPJP Committee (Save)", "PAR-03"),
+        ("cpjp_butare", default_pw, ["APSE_CPJP"], [par10_path], "CPJP Committee (Cathédrale)", "PAR-10"),
+        ("cpjp_kibeho", default_pw, ["APSE_CPJP"], [par24_path], "CPJP Committee (Kibeho)", "PAR-24"),
+        ("reporter_gakoma", default_pw, ["APSE_PARISH_REPORTER"], [par01_path], "Parish Reporter (Gakoma)", "PAR-01"),
+        ("ccjp_field", default_pw, ["APSE_CCJP"], [par01_path], "CCJP Centrale / CEB Field", "PAR-01"),
+    ]
+    added_seed_accounts = False
+    for uname, upass, uroles, upaths, ufullname, upcode in default_accounts:
+        if uname not in accounts.users:
+            accounts.add(uname, upass, uroles, upaths, full_name=ufullname, parish_code=upcode, save=False)
+            added_seed_accounts = True
 
     # Ensure the 7 v0.9.0 / v0.9.1 offline test credentials from APSE_v090_TEST_Credentials_PRIVATE.md exist
     v090_accounts = [
-        ("mel.theophile", "Apse90#Mel!4826", ["APSE_MEL", "APSE_COMMUNICATION", "APSE_STAFF"], ["/LocalRoot01"]),
-        ("direction.janvier", "Apse90#Dir!7391", ["APSE_DIRECTION"], ["/LocalRoot01"]),
-        ("coordination.emmanuel", "Apse90#Coord!6154", ["APSE_COORDINATION", "APSE_REVIEWER", "APSE_STAFF"], ["/LocalRoot01"]),
-        ("finance.marceline", "Apse90#Fin!2947", ["APSE_FINANCE", "APSE_HR", "APSE_STAFF"], ["/LocalRoot01"]),
-        ("cooperation.ruth", "Apse90#Tech!8302", ["APSE_STAFF", "APSE_REVIEWER"], ["/LocalRoot01"]),
-        ("driver.emmanuel", "Apse90#Drv!5419", ["APSE_STAFF"], ["/LocalRoot01"]),
-        ("cpjp.test", "Apse90#Cpjp!6738", ["APSE_CPJP", "APSE_PARISH_REPORTER", "APSE_CCJP", "APSE_CEB"], [par01_path]),
+        ("mel.theophile", "Apse90#Mel!4826", ["APSE_MEL", "APSE_COMMUNICATION", "APSE_STAFF"], ["/LocalRoot01"], "Théophile Habimana (MEL)", None),
+        ("direction.janvier", "Apse90#Dir!7391", ["APSE_DIRECTION"], ["/LocalRoot01"], "Abbé Janvier Nduwayezu (Directeur)", None),
+        ("coordination.emmanuel", "Apse90#Coord!6154", ["APSE_COORDINATION", "APSE_REVIEWER", "APSE_STAFF"], ["/LocalRoot01"], "Emmanuel Nsabimana (Coordinateur)", None),
+        ("finance.marceline", "Apse90#Fin!2947", ["APSE_FINANCE", "APSE_HR", "APSE_STAFF"], ["/LocalRoot01"], "Marceline Mukandayisenga (Finance/RH)", None),
+        ("cooperation.ruth", "Apse90#Tech!8302", ["APSE_STAFF", "APSE_REVIEWER"], ["/LocalRoot01"], "Ruth Kamanzi (Coopération)", None),
+        ("driver.emmanuel", "Apse90#Drv!5419", ["APSE_STAFF"], ["/LocalRoot01"], "Emmanuel Uwimana (Logistique)", None),
+        ("cpjp.test", "Apse90#Cpjp!6738", ["APSE_CPJP", "APSE_PARISH_REPORTER", "APSE_CCJP", "APSE_CEB"], [par01_path], "Comité CPJP Test (Gakoma)", "PAR-01"),
     ]
-    for uname, upass, uroles, upaths in v090_accounts:
+    for uname, upass, uroles, upaths, ufullname, upcode in v090_accounts:
         if uname not in accounts.users:
-            accounts.add(uname, upass, uroles, upaths)
+            accounts.add(uname, upass, uroles, upaths, full_name=ufullname, parish_code=upcode, save=False)
+            added_seed_accounts = True
+    if added_seed_accounts:
+        accounts.save()
 
     units = local_units()
     instance_id = hashlib.sha256(keys["encryption"].encode("utf-8")).hexdigest()[:12]
@@ -139,6 +143,7 @@ def create_app(
         keys["encryption"].encode("utf-8"),
         keys["audit"].encode("utf-8"),
     )
+    engine.accounts = accounts
 
     app = FastAPI(title="CDJP Butare APSE Service", version="0.9.1")
     app.state.engine = engine
@@ -184,11 +189,12 @@ def create_app(
 
     def _current_user(request: Request) -> Dict[str, Any]:
         u = sessions.identity(dict(request.headers))
-        u["units"] = [
-            x
-            for x in units
-            if any(x["path"] == p or x["path"].startswith(p + "/") for p in u["paths"])
-        ]
+        if not u.get("authenticated"):
+            u["units"] = [
+                x
+                for x in units
+                if any(x["path"] == p or x["path"].startswith(p + "/") for p in u["paths"])
+            ]
         return engine._resolve_v1_user(u)
 
     def _resolve_unit(user: Dict[str, Any], unit_id: Optional[str] = None):
@@ -236,11 +242,12 @@ def create_app(
     ):
         try:
             user = sessions.identity(dict(request.headers))
-            user["units"] = [
-                x
-                for x in units
-                if any(x["path"] == p or x["path"].startswith(p + "/") for p in u_paths(user))
-            ]
+            if not user.get("authenticated"):
+                user["units"] = [
+                    x
+                    for x in units
+                    if any(x["path"] == p or x["path"].startswith(p + "/") for p in u_paths(user))
+                ]
             data = engine.v1_bootstrap(user, parish, period, axis, date_from, date_to)
             return _json_response(200, data)
         except Fault as e:
@@ -254,8 +261,12 @@ def create_app(
     async def post_v1_persona(request: Request):
         try:
             body = await _check_csrf_and_parse_json(request)
+            sessions.logout(dict(request.headers))
             user = _current_user(request)
-            return _json_response(200, engine.v1_set_persona(user, body))
+            res = engine.v1_set_persona(user, body)
+            resp = _json_response(200, res)
+            resp.delete_cookie("apse_local", path="/")
+            return resp
         except Fault as e:
             return _json_response(e.status, {"error": e.code, "details": e.details})
 
@@ -280,9 +291,10 @@ def create_app(
                         else "Invalid username or password",
                     },
                 )
-            user = _current_user(request)
+            engine._v1_persona_key = name
             persona_result = None
             try:
+                user = _current_user(request)
                 persona_result = engine.v1_set_persona(user, {"persona_key": name})
             except Exception:
                 pass
@@ -309,10 +321,40 @@ def create_app(
     @app.post("/apse-service/v1/auth/logout")
     @app.post("/api/v1/auth/logout")
     @app.post("/local/logout")
-    async def post_web_logout():
+    async def post_web_logout(request: Request):
+        sessions.logout(dict(request.headers))
+        engine._v1_persona_key = "mel_diocese"
         resp = _json_response(200, {"ok": True})
         resp.delete_cookie("apse_local", path="/")
         return resp
+
+    @app.get("/apse-service/v1/accounts")
+    @app.get("/api/v1/accounts")
+    async def get_v1_accounts(request: Request):
+        try:
+            user = _current_user(request)
+            overview = engine.v091_mel_admin_overview(
+                user, limit=25, offset=0, accounts=accounts, data_dir=app.state.data_dir
+            )
+            return _json_response(200, {
+                "accounts": overview.get("local_accounts", []),
+                "personas": engine._all_v1_profiles(),
+            })
+        except Fault as e:
+            return _json_response(e.status, {"error": e.code, "details": e.details})
+
+    @app.post("/apse-service/v1/accounts")
+    @app.post("/api/v1/accounts")
+    async def post_v1_accounts(request: Request):
+        try:
+            body = await _check_csrf_and_parse_json(request)
+            user = _current_user(request)
+            if not body.get("action"):
+                body["action"] = "CREATE_LOCAL_ACCOUNT"
+            res = engine.v091_mel_admin_action(user, body, accounts=accounts)
+            return _json_response(200, res)
+        except Fault as e:
+            return _json_response(e.status, {"error": e.code, "details": e.details})
 
     @app.post("/apse-service/v1/tasks")
     @app.post("/api/v1/tasks")
@@ -1129,7 +1171,9 @@ def create_app(
         return RedirectResponse(url="/api/apps/apse/operations.html", status_code=303)
 
     @app.get("/index.html", include_in_schema=False)
+    @app.get("/operations", include_in_schema=False)
     @app.get("/operations.html", include_in_schema=False)
+    @app.get("/api/apps/apse/operations", include_in_schema=False)
     @app.get("/api/apps/apse/operations.html", include_in_schema=False)
     async def serve_html():
         return FileResponse(
@@ -1151,6 +1195,37 @@ def create_app(
             media_type="text/css; charset=utf-8",
             headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"},
         )
+
+    @app.get("/assets/figma/{filename}", include_in_schema=False)
+    @app.get("/api/apps/apse/assets/figma/{filename}", include_in_schema=False)
+    async def serve_figma_asset(filename: str):
+        safe_name = Path(filename).name
+        target = frontend_dir / "assets" / "figma" / safe_name
+        if not target.exists():
+            return _json_response(404, {"error": "not_found"})
+        media_type = "image/svg+xml; charset=utf-8" if safe_name.endswith(".svg") else "image/png"
+        return FileResponse(
+            target,
+            media_type=media_type,
+            headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"},
+        )
+
+    @app.get("/core.js", include_in_schema=False)
+    async def serve_root_core_js():
+        return await serve_js("core.js")
+
+    @app.get("/vault.js", include_in_schema=False)
+    async def serve_root_vault_js():
+        return await serve_js("vault.js")
+
+    @app.get("/v091_views.js", include_in_schema=False)
+    async def serve_root_v091_js():
+        return await serve_js("v091_views.js")
+
+    @app.get("/v1.js", include_in_schema=False)
+    @app.get("/app.js", include_in_schema=False)
+    async def serve_root_v1_js():
+        return await serve_js("v1.js")
 
     @app.get("/js/{filename}", include_in_schema=False)
     @app.get("/api/apps/apse/{filename}", include_in_schema=False)
