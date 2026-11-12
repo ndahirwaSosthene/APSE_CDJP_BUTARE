@@ -1,0 +1,151 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "system": "ibm-carbon-v11",
+    "application": "APSE CDJP Butare",
+    "version": "2.0.0",
+    "generatedBy": "ultimate-ui-design"
+  },
+  "color": {
+    "light": {
+      "surface": {
+        "background": { "$value": "#F4F4F4", "$type": "color", "$description": "Carbon Gray 10 canvas background" },
+        "layer-01": { "$value": "#FFFFFF", "$type": "color", "$description": "Carbon Gray 10 primary card/panel surface" },
+        "field-01": { "$value": "#F4F4F4", "$type": "color", "$description": "Carbon input field background" },
+        "hover-01": { "$value": "#E8E8E8", "$type": "color", "$description": "Carbon Gray 10 row/button hover" },
+        "shell-header": { "$value": "#161616", "$type": "color", "$description": "Carbon UI Shell permanent dark topbar" },
+        "shell-surface": { "$value": "#262626", "$type": "color", "$description": "Carbon UI Shell search & utility surface" }
+      },
+      "text": {
+        "primary": { "$value": "#161616", "$type": "color" },
+        "secondary": { "$value": "#525252", "$type": "color" },
+        "muted": { "$value": "#6F6F6F", "$type": "color" },
+        "on-color": { "$value": "#FFFFFF", "$type": "color" }
+      },
+      "border": {
+        "subtle-01": { "$value": "#E0E0E0", "$type": "color" },
+        "strong-01": { "$value": "#8D8D8D", "$type": "color" },
+        "focus-inset": { "$value": "#FFFFFF", "$type": "color" }
+      },
+      "brand": {
+        "primary": { "$value": "#0F62FE", "$type": "color", "$description": "Carbon Blue 60 interactive primary" },
+        "primary-hover": { "$value": "#0353E9", "$type": "color" },
+        "primary-active": { "$value": "#002D9C", "$type": "color" },
+        "primary-subtle": { "$value": "#EDF5FF", "$type": "color" },
+        "secondary": { "$value": "#393939", "$type": "color", "$description": "Carbon Gray 80 secondary CTA" },
+        "secondary-hover": { "$value": "#4C4C4C", "$type": "color" },
+        "link-primary": { "$value": "#0F62FE", "$type": "color" }
+      },
+      "status": {
+        "success-bg": { "$value": "#DEFBE6", "$type": "color" },
+        "success-text": { "$value": "#0E6027", "$type": "color" },
+        "info-bg": { "$value": "#EDF5FF", "$type": "color" },
+        "info-text": { "$value": "#0043CE", "$type": "color" },
+        "warning-bg": { "$value": "#FCF4D6", "$type": "color" },
+        "warning-text": { "$value": "#684E00", "$type": "color" },
+        "danger": { "$value": "#DA1E28", "$type": "color" },
+        "danger-bg": { "$value": "#FFF1F1", "$type": "color" },
+        "danger-text": { "$value": "#A2191F", "$type": "color" },
+        "purple-bg": { "$value": "#F6F2FF", "$type": "color" },
+        "purple-text": { "$value": "#6929C4", "$type": "color" },
+        "tag-gray-bg": { "$value": "#E0E0E0", "$type": "color", "$description": "Carbon Gray 20 selectable tag background" },
+        "tag-gray-hover": { "$value": "#CACACA", "$type": "color" },
+        "tag-gray-text": { "$value": "#161616", "$type": "color" },
+        "tag-selected-bg": { "$value": "#161616", "$type": "color", "$description": "Carbon high-contrast inverse selected tag" },
+        "tag-selected-text": { "$value": "#FFFFFF", "$type": "color" }
+      }
+    },
+    "dark": {
+      "surface": {
+        "background": { "$value": "#161616", "$type": "color", "$description": "Carbon Gray 100 canvas background" },
+        "layer-01": { "$value": "#262626", "$type": "color", "$description": "Carbon Gray 100 primary layer surface" },
+        "field-01": { "$value": "#393939", "$type": "color", "$description": "Carbon Gray 100 input field surface" },
+        "hover-01": { "$value": "#353535", "$type": "color" },
+        "shell-header": { "$value": "#161616", "$type": "color" }
+      },
+      "text": {
+        "primary": { "$value": "#F4F4F4", "$type": "color" },
+        "secondary": { "$value": "#C6C6C6", "$type": "color" },
+        "muted": { "$value": "#A8A8A8", "$type": "color" },
+        "on-color": { "$value": "#FFFFFF", "$type": "color" }
+      },
+      "border": {
+        "subtle-01": { "$value": "#393939", "$type": "color" },
+        "strong-01": { "$value": "#6F6F6F", "$type": "color" },
+        "focus-inset": { "$value": "#161616", "$type": "color" }
+      },
+      "brand": {
+        "primary": { "$value": "#0F62FE", "$type": "color" },
+        "primary-hover": { "$value": "#0353E9", "$type": "color" },
+        "primary-active": { "$value": "#002D9C", "$type": "color" },
+        "secondary": { "$value": "#6F6F6F", "$type": "color" },
+        "link-primary": { "$value": "#78A9FF", "$type": "color" }
+      },
+      "status": {
+        "success-bg": { "$value": "#0E6027", "$type": "color" },
+        "success-text": { "$value": "#A7F0BA", "$type": "color" },
+        "info-bg": { "$value": "#002D9C", "$type": "color" },
+        "info-text": { "$value": "#D0E2FF", "$type": "color" },
+        "warning-bg": { "$value": "#4A3800", "$type": "color" },
+        "warning-text": { "$value": "#F1C21B", "$type": "color" },
+        "danger": { "$value": "#DA1E28", "$type": "color" },
+        "danger-bg": { "$value": "#750E13", "$type": "color" },
+        "danger-text": { "$value": "#FFD7D9", "$type": "color" },
+        "purple-bg": { "$value": "#491D8B", "$type": "color" },
+        "purple-text": { "$value": "#E8DAFF", "$type": "color" },
+        "tag-gray-bg": { "$value": "#393939", "$type": "color" },
+        "tag-gray-hover": { "$value": "#4C4C4C", "$type": "color" },
+        "tag-gray-text": { "$value": "#F4F4F4", "$type": "color" },
+        "tag-selected-bg": { "$value": "#F4F4F4", "$type": "color" },
+        "tag-selected-text": { "$value": "#161616", "$type": "color" }
+      }
+    },
+    "charts": {
+      "cat-1": { "$value": "#6929C4", "$type": "color" },
+      "cat-2": { "$value": "#1192E8", "$type": "color" },
+      "cat-3": { "$value": "#005D5D", "$type": "color" },
+      "cat-4": { "$value": "#9F1853", "$type": "color" },
+      "cat-5": { "$value": "#FA4D56", "$type": "color" },
+      "status-great": { "$value": "#24A148", "$type": "color" },
+      "status-good": { "$value": "#0F62FE", "$type": "color" },
+      "status-minor": { "$value": "#F1C21B", "$type": "color" },
+      "status-medium": { "$value": "#FF832B", "$type": "color" },
+      "status-major": { "$value": "#DA1E28", "$type": "color" }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+      "mono": { "$value": "IBM Plex Mono", "$type": "fontFamily" }
+    },
+    "fontSize": {
+      "label-01": { "$value": "12px", "$type": "dimension" },
+      "body-compact-01": { "$value": "14px", "$type": "dimension" },
+      "heading-02": { "$value": "16px", "$type": "dimension" },
+      "heading-04": { "$value": "28px", "$type": "dimension" },
+      "kpi-tabular": { "$value": "28px", "$type": "dimension" }
+    }
+  },
+  "spacing": {
+    "space-1": { "$value": "4px", "$type": "dimension" },
+    "space-2": { "$value": "8px", "$type": "dimension" },
+    "space-3": { "$value": "16px", "$type": "dimension" },
+    "space-4": { "$value": "24px", "$type": "dimension" },
+    "space-5": { "$value": "32px", "$type": "dimension" },
+    "space-6": { "$value": "48px", "$type": "dimension" }
+  },
+  "borderRadius": {
+    "control": { "$value": "0px", "$type": "dimension", "$description": "Carbon architectural 0px corners" },
+    "card": { "$value": "0px", "$type": "dimension" },
+    "modal": { "$value": "0px", "$type": "dimension" },
+    "table": { "$value": "0px", "$type": "dimension" },
+    "status-tag": { "$value": "9999px", "$type": "dimension", "$description": "Carbon pill-shaped status tags" },
+    "selectable-tag": { "$value": "9999px", "$type": "dimension", "$description": "Carbon pill-shaped selectable filter tags" }
+  },
+  "sizing": {
+    "shell-header-height": { "$value": "48px", "$type": "dimension" },
+    "control-compact": { "$value": "32px", "$type": "dimension" },
+    "control-default": { "$value": "40px", "$type": "dimension" },
+    "control-touch": { "$value": "48px", "$type": "dimension" }
+  }
+}

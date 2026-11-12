@@ -211,14 +211,15 @@ async def main():
                 renderApp();
 
                 const clusterRail = document.querySelector('.v1-seizure-cluster-rail');
-                const formSelect = document.querySelector('.v1-seizure-form-select');
+                const formSelectWrap = document.querySelector('.v1-seizure-form-select');
+                const formSelect = formSelectWrap ? (formSelectWrap.tagName === 'SELECT' ? formSelectWrap : formSelectWrap.querySelector('select')) : null;
                 const badgeRail = document.querySelector('.v1-seizure-badge-rail');
                 const nav = document.querySelector('.v1-seizure-nav');
                 const content = document.querySelector('.v1-seizure-content');
                 const formList = document.querySelector('.v1-seizure-form-list');
 
                 const clusterChips = clusterRail ? clusterRail.querySelectorAll('.v1-chip').length : 0;
-                const formOptions = formSelect ? formSelect.options.length : 0;
+                const formOptions = formSelect && formSelect.options ? formSelect.options.length : 0;
                 const badges = badgeRail ? badgeRail.querySelectorAll('.v1-chip').length : 0;
 
                 const navRect = nav ? nav.getBoundingClientRect() : null;

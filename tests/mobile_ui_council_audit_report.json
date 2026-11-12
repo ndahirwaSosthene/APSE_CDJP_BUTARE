@@ -29,7 +29,7 @@
         "text": "Paralegals (Parajuristes)",
         "iconName": "gavel",
         "hasSvg": true,
-        "width": 177.15625,
+        "width": 179.578125,
         "height": 38,
         "tapTargetComfortable": true
       },
@@ -37,7 +37,7 @@
         "text": "Mediators (Abahuza)",
         "iconName": "handshake",
         "hasSvg": true,
-        "width": 180.625,
+        "width": 168.28125,
         "height": 38,
         "tapTargetComfortable": true
       },
@@ -45,15 +45,15 @@
         "text": "Psychosocial Companions (Abahumurizamitima)",
         "iconName": "psychology",
         "hasSvg": true,
-        "width": 296,
-        "height": 48,
+        "width": 294,
+        "height": 43.96875,
         "tapTargetComfortable": true
       },
       {
         "text": "Healing & Reconciliation (Isanamitima)",
         "iconName": "healing",
         "hasSvg": true,
-        "width": 258.390625,
+        "width": 263.984375,
         "height": 38,
         "tapTargetComfortable": true
       },
@@ -61,7 +61,7 @@
         "text": "General Centrale / CEB Field Work",
         "iconName": "groups",
         "hasSvg": true,
-        "width": 232.640625,
+        "width": 237.125,
         "height": 38,
         "tapTargetComfortable": true
       }
@@ -128,7 +128,7 @@
           "height": 30,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -138,7 +138,7 @@
           "height": 30,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -148,7 +148,7 @@
           "height": 30,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -158,7 +158,7 @@
           "height": 30,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -168,7 +168,7 @@
           "height": 30,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         }
@@ -222,7 +222,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -232,7 +232,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -242,7 +242,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -252,7 +252,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -262,7 +262,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -272,7 +272,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -282,7 +282,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         },
@@ -292,7 +292,7 @@
           "height": 32,
           "ratio": 1,
           "aspectRatioCSS": "1 / 1",
-          "borderRadiusCSS": "50%",
+          "borderRadiusCSS": "0px",
           "isPerfectCircle": true,
           "isNeverOval": true
         }
@@ -310,26 +310,26 @@
       },
       {
         "className": "gf-q-title-input",
-        "width": 298,
-        "parentWidth": 298,
+        "width": 295,
+        "parentWidth": 295,
         "fitsWithoutClipping": true
       },
       {
         "className": "gf-q-title-input",
-        "width": 298,
-        "parentWidth": 298,
+        "width": 295,
+        "parentWidth": 295,
         "fitsWithoutClipping": true
       },
       {
         "className": "gf-q-title-input",
-        "width": 298,
-        "parentWidth": 298,
+        "width": 295,
+        "parentWidth": 295,
         "fitsWithoutClipping": true
       },
       {
         "className": "gf-q-title-input",
-        "width": 298,
-        "parentWidth": 298,
+        "width": 295,
+        "parentWidth": 295,
         "fitsWithoutClipping": true
       }
     ],
@@ -342,8 +342,8 @@
   "preview_modal_360": {
     "modalOpen": true,
     "closeFound": true,
-    "closeWidth": 34.55999755859375,
-    "closeHeight": 34.55999755859375,
+    "closeWidth": 36,
+    "closeHeight": 36,
     "closeIsCircle": true,
     "closeAspectRatioCSS": "1 / 1",
     "previewCardsCount": 4,
@@ -358,13 +358,13 @@
         "innerWidth": 360,
         "hasOverflow": false,
         "primaryBtnsCount": 9,
-        "btnsTapTargetOk": true
+        "btnsTapTargetOk": false
       },
       "approvals": {
         "scrollWidth": 360,
         "innerWidth": 360,
         "hasOverflow": false,
-        "primaryBtnsCount": 0,
+        "primaryBtnsCount": 1,
         "btnsTapTargetOk": true
       },
       "analytics": {
@@ -388,13 +388,13 @@
         "innerWidth": 390,
         "hasOverflow": false,
         "primaryBtnsCount": 9,
-        "btnsTapTargetOk": true
+        "btnsTapTargetOk": false
       },
       "approvals": {
         "scrollWidth": 390,
         "innerWidth": 390,
         "hasOverflow": false,
-        "primaryBtnsCount": 0,
+        "primaryBtnsCount": 1,
         "btnsTapTargetOk": true
       },
       "analytics": {
@@ -416,28 +416,28 @@
   "themes": {
     "light": {
       "theme": "light",
-      "bodyBg": "rgb(239, 239, 239)",
-      "textPrimary": "#232323",
+      "bodyBg": "rgb(244, 244, 244)",
+      "textPrimary": "#161616",
       "bgSurface": "#FFFFFF",
-      "colorPrimary": "#232323",
+      "colorPrimary": "#0F62FE",
       "btnBg": null,
       "btnColor": null
     },
     "dark": {
       "theme": "dark",
-      "bodyBg": "rgb(10, 10, 10)",
-      "textPrimary": "#FAFAFA",
-      "bgSurface": "#171717",
-      "colorPrimary": "#E5E5E5",
+      "bodyBg": "rgb(22, 22, 22)",
+      "textPrimary": "#F4F4F4",
+      "bgSurface": "#262626",
+      "colorPrimary": "#0F62FE",
       "btnBg": null,
       "btnColor": null
     },
     "soft": {
       "theme": "soft",
-      "bodyBg": "rgb(234, 230, 223)",
-      "textPrimary": "#232323",
-      "bgSurface": "#F7F4EB",
-      "colorPrimary": "#232323",
+      "bodyBg": "rgb(255, 255, 255)",
+      "textPrimary": "#161616",
+      "bgSurface": "#F4F4F4",
+      "colorPrimary": "#0F62FE",
       "btnBg": null,
       "btnColor": null
     },
@@ -445,8 +445,8 @@
       "theme": "contrast",
       "bodyBg": "rgb(0, 0, 0)",
       "textPrimary": "#FFFFFF",
-      "bgSurface": "#0D0D0D",
-      "colorPrimary": "#FFEE00",
+      "bgSurface": "#161616",
+      "colorPrimary": "#0F62FE",
       "btnBg": null,
       "btnColor": null
     }

@@ -1,10 +1,10 @@
 'use strict';
 /* ==========================================================================
-   APSE v1.0 Unified Design System Frontend
-   - IBM Carbon Desktop Grid (16-col), Breadcrumbs, Forms & Data Viz
-   - Atlassian Typography (Inter + IBM Plex Mono tabular-nums), Lozenges & Light/Dark Themes
+   APSE v2.0 Unified Design System Frontend (IBM Carbon Design System v11)
+   - IBM Carbon 16-Col 2x Grid, Breadcrumbs, Sharp 0px Controls & Data Viz
+   - IBM Plex Sans / IBM Plex Mono tabular-nums, Pill Tags & Multi-Theme Tokens
    - Material Symbols Outlined Iconography (16px / 20px / 24px)
-   - Shopify Polaris Resource Cards & Cisco Momentum Slide-Up Bottom Sheets (< 768px)
+   - Responsive Mobile Drawer (< 1024px) & Slide-Up Bottom Sheets (< 768px)
    ========================================================================== */
 
 const V1 = {
@@ -247,6 +247,7 @@ const MATERIAL_SYMBOLS = {
   arrow_back: 'm7.825 13 5.6 5.6L12 20l-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825Z',
   add: 'M11 13H5v-2h6V5h2v6h6v2h-6v6h-2v-6Z',
   lock: 'M6 22q-.825 0-1.412-.587T4 20V10q0-.825.588-1.412T6 8h1V6q0-2.075 1.463-3.537T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.587 1.413T18 22H6Zm6-5q.825 0 1.413-.587T14 15q0-.825-.587-1.412T12 13q-.825 0-1.412.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z',
+  menu: 'M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z',
   close: 'm6.4 19-1.4-1.4 5.6-5.6-5.6-5.6L6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19Z',
   check: 'M9.55 18 3.85 12.3l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4 9.55 18Z',
   undo: 'M7 19v-2h7.1q1.575 0 2.738-1T18 13.5q0-1.5-1.162-2.5T14.1 10H7.8l2.6 2.6L9 14 4 9l5-5 1.4 1.4L7.8 8h6.3q2.425 0 4.163 1.575T20 13.5q0 2.35-1.737 3.925T14.1 19H7Z',
@@ -5047,7 +5048,7 @@ function renderApp() {
   document.documentElement.lang = V1.lang;
   document.documentElement.dataset.theme = V1.theme;
   document.body.className = 'v1-body' + (V1.rightRailExpanded ? ' rail-expanded' : '');
-  const brandAsset = V1.theme === 'dark' ? 'white.png' : 'black.png';
+  const brandAsset = 'white.png';
 
   // Capture active focus and cursor selection range before replacing children
   const activeEl = document.activeElement;
@@ -5106,7 +5107,7 @@ function renderApp() {
   ].filter(item => canAccessWorkspace(item.id));
 
   const shell = h('div', {},
-    /* Single 56px Top Bar */
+    /* Single 48px IBM Carbon UI Shell Header (#161616) */
     h('header', { className: 'v1-topbar' },
       h('div', {
         className: 'v1-brand',
@@ -5121,6 +5122,7 @@ function renderApp() {
           }
         },
       },
+        h('span', { className: 'v1-mobile-menu-trigger', 'aria-hidden': 'true' }, msIcon('menu', 20)),
         h('img', {
           className: 'v1-brand-logo v1-brand-text',
           src: `assets/${brandAsset}`,

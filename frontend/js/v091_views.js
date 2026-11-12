@@ -237,9 +237,9 @@
   };
 
   /* --------------------------------------------------------------------------
-     FIGMA / CLICKUP-STYLE CUSTOM DROPDOWN COMPONENT (Node 18:77 + Add Task Menu)
-     Renders the rounded #F5F5F5 trigger ("Prefix | Selected Label ⌄") and opens
-     a floating theme-adaptive popover menu (.v1-cu-add-dropdown) on click.
+     CLICKUP / CARBON CUSTOM DROPDOWN COMPONENT
+     Renders the IBM Carbon Gray 10 field trigger ("Prefix | Selected Label ⌄")
+     and opens a floating theme-adaptive menu (.v1-cu-add-dropdown) on click.
      -------------------------------------------------------------------------- */
   V091.openDropdownId = null;
 
@@ -407,9 +407,9 @@
       icon: 'ps_planning',
       maxWidth: '820px',
       content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
-        h('div', { style: { padding: '12px 16px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+        h('div', { style: { padding: '12px 16px', background: 'var(--bg-canvas)', borderRadius: '0px', border: '1px solid var(--border-subtle)' } },
           h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '6px' } },
-            h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, `Axe Stratégique ${item.axis}`),
+            h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', fontWeight: '600' } }, `Axe Stratégique ${item.axis}`),
             h('span', { className: 'v1-badge' }, `Objectif : ${item.objective}`),
             h('span', { className: 'v1-badge' }, `Intervention : ${item.intervention || (item.interventionCandidates ? item.interventionCandidates.join(' / ') : 'Axe transversal')}`),
             h('span', { className: 'v1-meta-code-badge' }, item.code)
@@ -419,11 +419,11 @@
         h('div', { className: 'v1-grid-16' },
           h('div', { style: { gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '12px' } },
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('target', 14), 'Changement Stratégique Recherché'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('target', 14), 'Changement Stratégique Recherché'),
               h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 } }, expected)
             ),
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('analytics', 14), 'Indicateur Stratégique PS'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('analytics', 14), 'Indicateur Stratégique PS'),
               h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 } }, indicator)
             ),
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
@@ -438,7 +438,7 @@
           ),
           h('div', { style: { gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '12px' } },
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('payments', 14), 'Budget & Financement'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('payments', 14), 'Budget & Financement'),
               h('div', { style: { fontSize: '0.875rem', fontWeight: '700', color: 'var(--color-success)', marginBottom: '4px' } }, budgetStr),
               item.indicativeMillionsRWF ? h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '6px' } },
                 'Enveloppe quinquennale : ' + Object.entries(item.indicativeMillionsRWF).map(([y, m]) => `${y}: ${m}M`).join(' · ')
@@ -447,7 +447,7 @@
               h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' } }, `Portée : ${item.budgetScope || 'Enveloppe PS approuvée'}`)
             ),
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('place', 14), 'Périmètre & Acteurs'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('place', 14), 'Périmètre & Acteurs'),
               h('div', { style: { fontSize: '0.8125rem' } }, h('strong', {}, 'Localisation : '), item.locations || '27 paroisses / 4 districts'),
               h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, 'Responsable : '), item.responsibleSource || 'Responsable de volet CDJP'),
               h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, 'Bénéficiaires : '), item.beneficiariesSource || 'Communautés locales, jeunes, femmes')
@@ -589,7 +589,7 @@
             it.rw ? h('div', { style: { fontSize: '0.8125rem', color: 'var(--text-muted)', fontStyle: 'italic' } },
               `Kinyarwanda : ${it.rw}`
             ) : null,
-            it.count ? h('div', { style: { fontSize: '0.8125rem', fontWeight: '600', color: 'var(--color-primary)' } },
+            it.count ? h('div', { style: { fontSize: '0.8125rem', fontWeight: '600', color: 'var(--color-link)' } },
               it.count
             ) : null,
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
@@ -670,7 +670,7 @@
     );
   }
 
-/* Helper to render custom styled file upload button matching Kargul Studio design system */
+/* Helper to render custom styled file upload button matching IBM Carbon v11 design system */
   function renderFileUploadComponent({ id, label, accept, onSelect, selectedFilename, helperText }) {
     const inputId = id || ('file_input_' + Math.random().toString(36).slice(2, 9));
     return h('div', { className: 'v1-file-upload-wrap' },
@@ -812,8 +812,8 @@
                 rw.duties[V1.lang] || rw.duties.fr
               ),
               h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
-                (rw.primary_forms || []).map(f => h('span', { className: 'v1-chip', style: { fontSize: '0.6875rem' } }, f)),
-                h('span', { className: 'v1-chip', style: { fontSize: '0.6875rem', background: 'var(--color-primary-bg)' } }, rw.scope)
+                (rw.primary_forms || []).map(f => h('span', { className: 'v1-chip', style: { fontFamily: 'var(--font-mono)', fontWeight: '600', cursor: 'default' } }, f)),
+                h('span', { className: 'v1-badge info' }, rw.scope)
               )
             )
           )
@@ -1146,9 +1146,9 @@
         style: {
           marginBottom: '20px',
           padding: '16px 20px',
-          background: 'rgba(218, 30, 40, 0.08)',
-          border: '1px solid var(--color-critical)',
-          borderRadius: 'var(--radius-md)',
+          background: 'var(--tag-danger-bg)',
+          border: '1px solid var(--color-danger)',
+          borderRadius: '0px',
           display: 'flex',
           alignItems: 'center',
           gap: '14px',
@@ -1305,7 +1305,7 @@
                       alignItems: 'center',
                       gap: '16px',
                       border: '1px solid var(--border-subtle)',
-                      borderRadius: 'var(--radius-md)',
+                      borderRadius: '0px',
                       flexWrap: 'wrap',
                     }
                   },
@@ -1369,9 +1369,9 @@
                 h('div', { className: 'gf-header-card-inner', style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', flexWrap: 'wrap' } },
                   h('div', { style: { flex: 1, minWidth: '220px' } },
                     h('div', { style: { display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' } },
-                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: 700 } }, currentForm.code),
+                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: 'var(--color-primary-fg)', fontWeight: 600 } }, currentForm.code),
                       h('span', { className: 'v1-badge' }, `${formFields.length} champs natifs`),
-                      isSensitiveForm ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
+                      isSensitiveForm ? h('span', { className: 'v1-badge', style: { background: 'var(--tag-danger-bg)', color: 'var(--tag-danger-text)' } }, 'Sensible') : null
                     ),
                     h('h2', { style: { fontSize: '1.5rem', fontWeight: 700, margin: '4px 0', wordBreak: 'break-word' } },
                       currentForm.label[V1.lang] || currentForm.label.fr
@@ -1433,9 +1433,9 @@
                     },
                   })
                 ),
-              V091.prefillPreview ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)' } },
+              V091.prefillPreview ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-surface)', borderRadius: '0px', border: '1px solid var(--border-subtle)' } },
                 h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
-                  h('span', { style: { fontWeight: 600, color: 'var(--color-primary)' } }, `✓ ${Object.keys(V091.prefillPreview).length} champs extraits`),
+                  h('span', { style: { fontWeight: 600, color: 'var(--color-link)' } }, `✓ ${Object.keys(V091.prefillPreview).length} champs extraits`),
                   h('div', { style: { display: 'flex', gap: '8px' } },
                     h('button', {
                       type: 'button',
@@ -1521,7 +1521,8 @@
                       style: {
                         padding: '10px 14px',
                         background: 'var(--bg-canvas)',
-                        borderRadius: 'var(--radius-sm)',
+                        borderRadius: '0px',
+                        border: '1px solid var(--border-subtle)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -1536,20 +1537,20 @@
                       h('span', {
                         className: 'v1-badge',
                         style: {
-                          background: calcTotal > 0 ? 'var(--color-positive-bg, rgba(36, 161, 72, 0.1))' : 'var(--bg-hover)',
-                          color: calcTotal > 0 ? 'var(--color-positive, #24a148)' : 'var(--text-secondary)'
+                          background: calcTotal > 0 ? 'var(--tag-success-bg)' : 'var(--bg-hover)',
+                          color: calcTotal > 0 ? 'var(--tag-success-text)' : 'var(--text-secondary)'
                         }
                       }, calcTotal > 0 ? '✓ Règle d’or respectée' : 'En attente de saisie')
                     ),
                     disabilityExceedsTotal ? h('div', {
                       style: {
                         padding: '8px 12px',
-                        background: 'rgba(218, 30, 40, 0.08)',
-                        border: '1px solid var(--color-critical)',
-                        borderRadius: 'var(--radius-sm)',
+                        background: 'var(--tag-danger-bg)',
+                        border: '1px solid var(--color-danger)',
+                        borderRadius: '0px',
                         marginBottom: '12px',
                         fontSize: '0.8125rem',
-                        color: 'var(--color-critical)',
+                        color: 'var(--tag-danger-text)',
                       }
                     }, `Attention : Le nombre de participants avec handicap (${disabilityCount}) dépasse le total des participants (${calcTotal}). Le handicap est un sous-ensemble.`) : null,
                     h('div', { className: 'v1-grid-16' },
@@ -1777,10 +1778,10 @@
                       },
                     }),
                     /* Summary Card of the record ready to submit */
-                    h('div', { style: { marginTop: '16px', padding: '14px 18px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+                    h('div', { style: { marginTop: '16px', padding: '14px 18px', background: 'var(--bg-canvas)', borderRadius: '0px', border: '1px solid var(--border-subtle)' } },
                       h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' } },
                         h('strong', { style: { fontSize: '0.875rem' } }, 'Récapitulatif de saisie avant soumission'),
-                        h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, currentForm.code)
+                        h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', fontWeight: '600' } }, currentForm.code)
                       ),
                       h('div', { style: { display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
                         h('span', {}, `Date : ${V091.formValues.event_date || '2026-10-25'}`),
@@ -1802,23 +1803,23 @@
                 h('div', { className: 'gf-stepper-container' },
                   h('div', { className: 'gf-stepper-header' },
                     h('div', { className: 'gf-stepper-title-wrap' },
-                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: '700', padding: '4px 12px' } },
+                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: 'var(--color-primary-fg)', fontWeight: '600', padding: '4px 12px' } },
                         `Section ${activeSecIdx + 1} / ${formSections.length}`
                       ),
                       h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)' } }, currentSection.title)
                     ),
                     /* Toggle View: Stepper vs All */
-                    h('div', { style: { display: 'flex', gap: '4px', background: 'var(--bg-canvas)', padding: '3px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--border-subtle)' } },
+                    h('div', { style: { display: 'flex', gap: '2px', background: 'var(--bg-canvas)', padding: '2px', borderRadius: '0px', border: '1px solid var(--border-subtle)' } },
                       h('button', {
                         type: 'button',
                         className: 'v1-btn v1-btn-sm' + (isStepper ? ' v1-btn-primary' : ' v1-btn-ghost'),
-                        style: { borderRadius: 'var(--radius-pill)', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
+                        style: { borderRadius: '0px', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
                         onClick: () => { V091.formViewMode = 'stepper'; renderApp(); },
                       }, msIcon('task_alt', 14), h('span', {}, 'Étape par étape')),
                       h('button', {
                         type: 'button',
                         className: 'v1-btn v1-btn-sm' + (!isStepper ? ' v1-btn-primary' : ' v1-btn-ghost'),
-                        style: { borderRadius: 'var(--radius-pill)', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
+                        style: { borderRadius: '0px', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
                         onClick: () => { V091.formViewMode = 'all'; renderApp(); },
                       }, msIcon('open_in_full', 14), h('span', {}, 'Vue complète'))
                     )
@@ -1869,7 +1870,7 @@
                     padding: '16px 24px',
                     background: 'var(--bg-elevated)',
                     border: '1px solid var(--border-subtle)',
-                    borderRadius: '12px',
+                    borderRadius: '0px',
                     marginTop: '12px',
                     flexWrap: 'wrap',
                     gap: '12px',
@@ -2273,7 +2274,7 @@
                   icon: 'lock',
                   content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
                     h('p', {}, 'Snapshot ID : ' + res.snapshot),
-                    h('div', { style: { fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: 'var(--bg-input)', padding: '10px', borderRadius: '4px', wordBreak: 'break-all' } },
+                    h('div', { style: { fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: 'var(--bg-input)', padding: '10px', borderRadius: '0px', wordBreak: 'break-all' } },
                       'SHA-256 : ' + res.sha256
                     )
                   ),
@@ -2376,7 +2377,7 @@
                 msIcon(V091.vaultUnlocked ? 'lock_open' : 'lock', 24),
                 h('strong', { style: { fontSize: '1.0625rem' } }, 'Coffre-Fort Chiffré AES-GCM')
               ),
-              h('span', { className: 'v1-badge', style: V091.vaultUnlocked ? { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } : {} },
+              h('span', { className: 'v1-badge', style: V091.vaultUnlocked ? { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' } : {} },
                 V091.vaultUnlocked ? 'DÉVERROUILLÉ' : 'VERROUILLÉ'
               )
             ),
@@ -2434,7 +2435,7 @@
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: '0 0 16px' } },
               'Transmission ordonnée des fiches enregistrées hors ligne vers la base centrale avec résolution automatique des conflits.'
             ),
-            h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px', background: 'var(--bg-input)', padding: '12px', borderRadius: '8px', fontSize: '0.8125rem' } },
+            h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px', background: 'var(--bg-input)', padding: '12px', borderRadius: '0px', border: '1px solid var(--border-subtle)', fontSize: '0.8125rem' } },
               h('div', { style: { display: 'flex', justifyContent: 'space-between' } },
                 h('span', { style: { color: 'var(--text-secondary)' } }, 'File cache navigateur :'),
                 h('strong', {}, `${qLen} fiche(s)`)
@@ -2491,7 +2492,7 @@
           ) :
           h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
             V1.offlineQueue.map((item, qIdx) =>
-              h('div', { key: qIdx, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-input)' } },
+              h('div', { key: qIdx, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '0px', border: '1px solid var(--border-subtle)', background: 'var(--bg-input)' } },
                 h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
                   msIcon('description', 20),
                   h('div', {},
@@ -2782,12 +2783,12 @@
       ),
 
       /* Pastoral Year Phase Banner */
-      h('div', { className: 'v1-panel', style: { marginBottom: '20px', padding: '16px 20px', borderRadius: '12px', background: 'var(--bg-canvas)' } },
+      h('div', { className: 'v1-panel', style: { marginBottom: '20px', padding: '16px 20px', borderRadius: '0px', background: 'var(--bg-canvas)' } },
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' } },
           h('div', { style: { flex: '1 1 260px', minWidth: '240px' } },
             h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' } },
               h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', whiteSpace: 'nowrap' } }, `${V091.planningYear} · ${yearData.start} au ${yearData.end}`),
-              h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', whiteSpace: 'nowrap' } }, yearData.phase || 'Phase active'),
+              h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', whiteSpace: 'nowrap' } }, yearData.phase || 'Phase active'),
               V091.planningLoading ? h('span', { className: 'v1-badge' }, 'Chargement API...') : null
             ),
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 } },
@@ -2806,7 +2807,7 @@
           h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
             yearData.roadmap.map((stepText, sIdx) =>
               h('div', { key: sIdx, style: { display: 'flex', gap: '8px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-                h('span', { style: { fontWeight: '700', color: 'var(--color-primary)' } }, `Étape ${sIdx + 1} :`),
+                h('span', { style: { fontWeight: '700', color: 'var(--color-link)' } }, `Étape ${sIdx + 1} :`),
                 h('span', { style: { whiteSpace: 'pre-line' } }, stepText)
               )
             )
@@ -2985,7 +2986,7 @@
                   h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
                     h('div', { style: { display: 'flex', gap: '6px', alignItems: 'center' } },
                       h('span', { className: 'v1-meta-code-badge' }, item.code),
-                      h('span', { className: 'v1-badge', style: isLine ? { background: 'rgba(138, 43, 226, 0.1)', color: '#6A1B9A' } : { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } },
+                      h('span', { className: 'v1-badge', style: isLine ? { background: 'var(--tag-purple-bg)', color: 'var(--tag-purple-text)' } : { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' } },
                         isLine ? 'Ligne PS' : 'Tâche PAO'
                       )
                     ),
@@ -3010,11 +3011,11 @@
                   ) : null,
 
                   /* Metadata Chips */
-                  h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '12px' } },
-                    h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('payments', 12), budgetText),
-                    h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('place', 12), item.locations || '4 districts'),
-                    item.responsibleSource ? h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('person', 12), item.responsibleSource) : null,
-                    fundersList ? h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('handshake', 12), fundersList) : null
+                  h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' } },
+                    h('span', { className: 'v1-badge neutral' }, msIcon('payments', 12), budgetText),
+                    h('span', { className: 'v1-badge neutral' }, msIcon('place', 12), item.locations || '4 districts'),
+                    item.responsibleSource ? h('span', { className: 'v1-badge info' }, msIcon('person', 12), item.responsibleSource) : null,
+                    fundersList ? h('span', { className: 'v1-badge neutral' }, msIcon('handshake', 12), fundersList) : null
                   )
                 ),
 
@@ -3628,7 +3629,7 @@
       /* Top Bar: Action Buttons & Duplication */
       h('div', { className: 'gf-builder-toolbar' },
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
-          h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff' } }, form.code),
+          h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: 'var(--color-primary-fg)' } }, form.code),
           h('span', { className: 'v1-badge' }, form.status === 'ACTIVE' ? 'ACTIF' : 'BROUILLON')
         ),
         h('div', { className: 'gf-builder-toolbar-actions' },
@@ -3779,7 +3780,7 @@
               ),
               h('button', {
                 type: 'button',
-                style: { alignSelf: 'flex-start', background: 'transparent', border: 0, color: 'var(--color-primary)', fontSize: '0.8125rem', fontWeight: '600', cursor: 'pointer', padding: '4px 0', marginTop: '4px' },
+                style: { alignSelf: 'flex-start', background: 'transparent', border: 0, color: 'var(--color-link)', fontSize: '0.8125rem', fontWeight: '600', cursor: 'pointer', padding: '4px 0', marginTop: '4px' },
                 onClick: () => {
                   if (!q.options) q.options = [];
                   q.options.push(`Option ${q.options.length + 1}`);
@@ -3803,7 +3804,7 @@
               )
             ) :
           qType === 'FILE' ?
-            h('div', { style: { padding: '16px', border: '1px dashed var(--border-strong)', borderRadius: '8px', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8125rem' } },
+            h('div', { style: { padding: '16px', border: '1px dashed var(--border-strong)', borderRadius: '0px', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8125rem' } },
               msIcon('upload_file', 24),
               h('div', { style: { marginTop: '4px' } }, 'Bouton d\'import de justificatif ou fichier média (PDF, DOCX, JPG, PNG)')
             ) :
@@ -3963,7 +3964,7 @@
             h('div', {},
               h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' } },
                 h('span', { className: 'v1-meta-code-badge' }, f.code),
-                h('span', { className: 'v1-badge', style: f.status === 'ACTIVE' ? { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } : {} },
+                h('span', { className: 'v1-badge', style: f.status === 'ACTIVE' ? { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' } : {} },
                   f.status === 'ACTIVE' ? 'ACTIF' : 'BROUILLON'
                 )
               ),
@@ -4029,7 +4030,7 @@
       maxWidth: '720px',
       content: h('div', { className: 'gf-preview-container', style: { display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '100%', boxSizing: 'border-box' } },
         (form.questions || []).map((q, idx) =>
-          h('div', { key: idx, className: 'gf-preview-card', style: { padding: '14px 12px', border: '1px solid var(--border-subtle)', borderRadius: '8px', background: 'var(--bg-input)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden' } },
+          h('div', { key: idx, className: 'gf-preview-card', style: { padding: '14px 12px', border: '1px solid var(--border-subtle)', borderRadius: '0px', background: 'var(--bg-input)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden' } },
             h('label', { style: { fontWeight: '600', fontSize: '0.875rem', display: 'block', marginBottom: '8px', wordBreak: 'break-word', overflowWrap: 'break-word' } },
               `${idx + 1}. ${q.label?.fr || q.label || q.title || 'Question'}`,
               q.required ? h('span', { style: { color: 'var(--color-danger)', marginLeft: '4px' } }, '*') : null
@@ -4286,7 +4287,7 @@
       ),
 
       /* Security & Privacy Notice */
-      h('div', { className: 'v1-panel', style: { padding: '14px 18px', marginBottom: '20px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+      h('div', { className: 'v1-panel', style: { padding: '14px 18px', marginBottom: '20px', background: 'var(--bg-canvas)', borderRadius: '0px' } },
         h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 } },
           'Confidentialité stricte : Les données sensibles et identifiants de personnes protégées ne sont jamais transmis au modèle d’assistance. Toute suggestion doit faire l’objet d’une relecture humaine avant application.'
         )
@@ -4303,7 +4304,7 @@
             { code: 'GENDER_DISABILITY_MATH', status: 'PASS', title: 'Désagrégation Genre & Handicap', detail: 'Total = Femmes + Hommes + Non déclaré, Handicap <= Total.' },
             { code: 'PRIVACY_PROTECTION', status: 'PASS', title: 'Protection des données sensibles', detail: 'Aucun identifiant privé de victime dans les fiches partagées.' },
           ]).map((c, cIdx) =>
-            h('div', { key: cIdx, style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+            h('div', { key: cIdx, style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: '0px', border: '1px solid var(--border-subtle)' } },
               msIcon(c.status === 'PASS' ? 'check_circle' : 'warning', 20),
               h('div', {},
                 h('strong', { style: { fontSize: '0.875rem' } }, c.title),
@@ -4365,7 +4366,7 @@
           onInput: e => { V091.assistantText = e.target.value; },
           style: { marginBottom: '14px' },
         }),
-        V091.assistantResults?.suggestion ? h('div', { style: { padding: '16px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+        V091.assistantResults?.suggestion ? h('div', { style: { padding: '16px', background: 'var(--bg-canvas)', borderRadius: '0px', border: '1px solid var(--border-subtle)' } },
           h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
             h('strong', { style: { color: 'var(--color-success)' } }, '✓ Proposition générée (Relecture requise) :'),
             h('button', {
@@ -4524,7 +4525,7 @@
       ),
 
       /* Rules of Governance Banner */
-      h('div', { className: 'v1-panel', style: { padding: '16px 20px', marginBottom: '24px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+      h('div', { className: 'v1-panel', style: { padding: '16px 20px', marginBottom: '24px', background: 'var(--bg-canvas)', borderRadius: '0px' } },
         h('strong', { style: { fontSize: '0.9375rem', display: 'block', marginBottom: '6px' } }, 'Règles de gouvernance & Lignes institutionnelles :'),
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
           h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Trait plein (solid line) = Hiérarchie d’autorité : '), 'Responsabilité de ligne directe avec autorité d’approbation et de signature légale.'),
@@ -4547,11 +4548,11 @@
                 gap: '8px',
                 padding: '16px 20px',
                 background: 'var(--bg-canvas)',
-                borderRadius: '12px',
+                borderRadius: '0px',
               }
             },
               h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
-                h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700', padding: '4px 10px', fontSize: '0.75rem' } }, `Étape ${s.step || idx + 1}`)
+                h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', fontWeight: '600', padding: '4px 10px', fontSize: '0.75rem' } }, `Étape ${s.step || idx + 1}`)
               ),
               h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)', display: 'block' } }, s.label),
               h('p', { style: { color: 'var(--text-secondary)', fontSize: '0.8125rem', lineHeight: '1.45', margin: 0 } }, s.detail)
@@ -5129,8 +5130,8 @@
                   h('span', {
                     className: 'v1-badge',
                     style: acc.active
-                      ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' }
-                      : { background: 'var(--color-danger-bg)', color: 'var(--color-danger)' },
+                      ? { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' }
+                      : { background: 'var(--tag-danger-bg)', color: 'var(--tag-danger-text)' },
                   }, isCurrent ? 'CONNECTÉ' : (acc.active ? 'ACTIF' : 'DÉSACTIVÉ'))
                 ),
                 h('td', {},
