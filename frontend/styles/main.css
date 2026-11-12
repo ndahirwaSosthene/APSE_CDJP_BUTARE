@@ -452,7 +452,7 @@ th {
 }
 
 /* ==========================================================================
-   4. Iconography (16px / 20px / 24px Crisp Vector Paths)
+   4. IBM Carbon Precision Iconography (12px–48px Crisp Geometric Vectors)
    ========================================================================== */
 
 .v1-icon {
@@ -482,19 +482,21 @@ th {
   stroke: currentColor !important;
 }
 
-.v1-icon-16 {
-  width: 16px;
-  height: 16px;
-}
+.v1-icon-12 { width: 12px; height: 12px; }
+.v1-icon-14 { width: 14px; height: 14px; }
+.v1-icon-16 { width: 16px; height: 16px; }
+.v1-icon-18 { width: 18px; height: 18px; }
+.v1-icon-19 { width: 19px; height: 19px; }
+.v1-icon-20 { width: 20px; height: 20px; }
+.v1-icon-22 { width: 22px; height: 22px; }
+.v1-icon-24 { width: 24px; height: 24px; }
+.v1-icon-32 { width: 32px; height: 32px; }
+.v1-icon-40 { width: 40px; height: 40px; }
+.v1-icon-48 { width: 48px; height: 48px; }
 
-.v1-icon-20 {
-  width: 20px;
-  height: 20px;
-}
-
-.v1-icon-24 {
-  width: 24px;
-  height: 24px;
+.v1-modal-title .v1-icon {
+  align-self: flex-start;
+  margin-top: 3px;
 }
 
 /* ==========================================================================
@@ -6735,6 +6737,10 @@ html[data-theme="contrast"] .v1-feedback-code-pill {
 }
 
 .dp-shell-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 0;
   border-radius: 0;
   background: var(--topbar-surface);
@@ -7038,7 +7044,88 @@ html[data-theme="contrast"] .v1-feedback-code-pill {
   overflow-wrap: anywhere;
 }
 
+.dp-icon-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.dp-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(156px, 1fr));
+  gap: 1px;
+  background: var(--border-subtle);
+  border: 1px solid var(--border-subtle);
+}
+
+.dp-icon-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: var(--bg-surface);
+  min-width: 0;
+  transition: background-color 110ms ease;
+}
+
+.dp-icon-card:hover {
+  background: var(--bg-hover, var(--bg-input));
+}
+
+.dp-icon-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+
+.dp-icon-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.dp-icon-info strong {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.dp-icon-info code {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.dp-dialog-kicker {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+}
+
+.dp-shell-btn {
+  gap: 6px;
+}
+
 @media (max-width: 900px) {
+  .dp-icon-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .dp-topbar {
     padding: 8px 12px;
     width: 100%;

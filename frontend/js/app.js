@@ -60,212 +60,190 @@ const V1 = {
   addTaskMenuOpen: false,
 };
 
-/* Section 4: APSE Iconography System (24x24 viewBox)
-   - Supports rich multi-node SVGs (Hugeicons, Lucide, Remix Icon, Tabler)
-   - Preserves backward compatibility with Material Symbols single-path fallbacks
+/* Section 4: IBM Carbon v11 Precision Iconography System (24x24 Grid)
+   - Uniform 1.5px geometric monoline stroke, sharp square caps & miter joins
+   - 100% vector coverage across all 19 modules, wizard volets, toolbars & states
 */
+const CARBON_G = '<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">';
+
 const APSE_ICON_SVGS = {
-  // 1. My Space / Tasks (Hugeicons TaskDaily01Icon)
-  tasks: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14.496 2h-5a1.5 1.5 0 0 0 0 3h5a1.5 1.5 0 0 0 0-3"/><path d="M15.996 3.5c1.554.047 2.48.22 3.121.862c.88.878.88 2.292.88 5.12V16c0 2.828 0 4.242-.88 5.121c-.878.879-2.293.879-5.12.879h-4c-2.83 0-4.244 0-5.122-.879S3.996 18.828 3.996 16V9.483c0-2.828 0-4.243.879-5.121c.641-.642 1.568-.815 3.121-.862"/><path d="m7.496 11l1 1l2-2.5M13.5 17h3m-3-6h3m-7.875 6H8.5m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g>',
-  task_alt: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14.496 2h-5a1.5 1.5 0 0 0 0 3h5a1.5 1.5 0 0 0 0-3"/><path d="M15.996 3.5c1.554.047 2.48.22 3.121.862c.88.878.88 2.292.88 5.12V16c0 2.828 0 4.242-.88 5.121c-.878.879-2.293.879-5.12.879h-4c-2.83 0-4.244 0-5.122-.879S3.996 18.828 3.996 16V9.483c0-2.828 0-4.243.879-5.121c.641-.642 1.568-.815 3.121-.862"/><path d="m7.496 11l1 1l2-2.5M13.5 17h3m-3-6h3m-7.875 6H8.5m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g>',
-  my_space: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14.496 2h-5a1.5 1.5 0 0 0 0 3h5a1.5 1.5 0 0 0 0-3"/><path d="M15.996 3.5c1.554.047 2.48.22 3.121.862c.88.878.88 2.292.88 5.12V16c0 2.828 0 4.242-.88 5.121c-.878.879-2.293.879-5.12.879h-4c-2.83 0-4.244 0-5.122-.879S3.996 18.828 3.996 16V9.483c0-2.828 0-4.243.879-5.121c.641-.642 1.568-.815 3.121-.862"/><path d="m7.496 11l1 1l2-2.5M13.5 17h3m-3-6h3m-7.875 6H8.5m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g>',
+  // 1. My Space / Tasks / Checklists
+  tasks: CARBON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8 11.5 1.5 1.5 3-3"/><path d="M14 11.5h2.5"/><path d="M8 16h8.5"/></g>',
+  task_alt: CARBON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8 11.5 1.5 1.5 3-3"/><path d="M14 11.5h2.5"/><path d="M8 16h8.5"/></g>',
+  my_space: CARBON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8 11.5 1.5 1.5 3-3"/><path d="M14 11.5h2.5"/><path d="M8 16h8.5"/></g>',
+  assignment: CARBON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8.5 13 2 2 4.5-4.5"/></g>',
+  iconsax_clipboard_tick: CARBON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8.5 13 2 2 4.5-4.5"/></g>',
+  check_box: CARBON_G + '<rect x="3.5" y="3.5" width="17" height="17"/><path d="m8 12.2 2.8 2.8 5.4-5.5"/></g>',
 
-  // 2. Seizure / Field Data Entry (Hugeicons TableImportIcon)
-  seizure: '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8M3 10h18M10 3v18m9 1v-6m3 3l-3-3l-3 3"/>',
-  edit_note: '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8M3 10h18M10 3v18m9 1v-6m3 3l-3-3l-3 3"/>',
+  // 2. Seizure / Field Data Entry
+  seizure: CARBON_G + '<path d="M13 20H3V4h18v8.5"/><path d="M3 9h18"/><path d="M9 4v16"/><path d="M18.5 21v-6"/><path d="m16 17.5 2.5-2.5 2.5 2.5"/></g>',
+  edit_note: CARBON_G + '<path d="M13 20H3V4h18v8.5"/><path d="M3 9h18"/><path d="M9 4v16"/><path d="M18.5 21v-6"/><path d="m16 17.5 2.5-2.5 2.5 2.5"/></g>',
 
-  // 3. Drafts in progress (Lucide notepad-text-dashed)
-  drafts: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4"/><path d="M12 2v4"/><path d="M16 2v4"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 12v2"/><path d="M20 18v2a2 2 0 0 1-2 2h-1"/><path d="M13 22h-2"/><path d="M7 22H6a2 2 0 0 1-2-2v-2"/><path d="M4 14v-2"/><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M8 10h6"/><path d="M8 14h8"/></g>',
-  pending_actions: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4"/><path d="M12 2v4"/><path d="M16 2v4"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 12v2"/><path d="M20 18v2a2 2 0 0 1-2 2h-1"/><path d="M13 22h-2"/><path d="M7 22H6a2 2 0 0 1-2-2v-2"/><path d="M4 14v-2"/><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M8 10h6"/><path d="M8 14h8"/></g>',
+  // 3. Drafts in progress
+  drafts: CARBON_G + '<path d="M5 7V3.5h3.5"/><path d="M12 3.5h3"/><path d="M19 7V3.5h-1"/><path d="M19 10.5v3"/><path d="M19 17v3.5h-3"/><path d="M12 20.5H9"/><path d="M5 17v3.5h1"/><path d="M5 10.5v3"/><path d="M8.5 9.5h7"/><path d="M8.5 13.5h7"/><path d="M8.5 17h4.5"/></g>',
+  pending_actions: CARBON_G + '<path d="M5 7V3.5h3.5"/><path d="M12 3.5h3"/><path d="M19 7V3.5h-1"/><path d="M19 10.5v3"/><path d="M19 17v3.5h-3"/><path d="M12 20.5H9"/><path d="M5 17v3.5h1"/><path d="M5 10.5v3"/><path d="M8.5 9.5h7"/><path d="M8.5 13.5h7"/><path d="M8.5 17h4.5"/></g>',
 
-  // 4. Files & Validation / Approvals (Hugeicons FileLike)
-  approvals: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 9.995v4.545c0 3.247 0 4.87.886 5.97.27.334.6 1.01 1.258 1.488.586.425 1.341.425 2.852.425h6.008c1.511 0 2.266 0 2.852-.425.658-.478.988-1.154 1.258-1.488.886-1.1 886-2.723.886-5.97V9.996c0-3.248 0-4.871-.886-5.971-.27-.333-.6-1.01-1.258-1.488C18.174 2.11 17.419 2.11 15.908 2.11h-2.106c-.82 0-1.23 0-1.57.14-.34.14-.61.41-1.15.95l-.94.94c-.54.54-.81.81-1.15.95-.34.14-.75.14-1.57.14H8.092c-1.511 0-2.266 0-2.852.425-.658.478-.988 1.155-1.258 1.488C4 5.124 4 6.748 4 9.995z"/><path d="M10 12l1.5 1.5L15 10"/></g>',
-  rule_folder: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 9.995v4.545c0 3.247 0 4.87.886 5.97.27.334.6 1.01 1.258 1.488.586.425 1.341.425 2.852.425h6.008c1.511 0 2.266 0 2.852-.425.658-.478.988-1.154 1.258-1.488.886-1.1 886-2.723.886-5.97V9.996c0-3.248 0-4.871-.886-5.971-.27-.333-.6-1.01-1.258-1.488C18.174 2.11 17.419 2.11 15.908 2.11h-2.106c-.82 0-1.23 0-1.57.14-.34.14-.61.41-1.15.95l-.94.94c-.54.54-.81.81-1.15.95-.34.14-.75.14-1.57.14H8.092c-1.511 0-2.266 0-2.852.425-.658.478-.988 1.155-1.258 1.488C4 5.124 4 6.748 4 9.995z"/><path d="M10 12l1.5 1.5L15 10"/></g>',
-  files_validation: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 9.995v4.545c0 3.247 0 4.87.886 5.97.27.334.6 1.01 1.258 1.488.586.425 1.341.425 2.852.425h6.008c1.511 0 2.266 0 2.852-.425.658-.478.988-1.154 1.258-1.488.886-1.1 886-2.723.886-5.97V9.996c0-3.248 0-4.871-.886-5.971-.27-.333-.6-1.01-1.258-1.488C18.174 2.11 17.419 2.11 15.908 2.11h-2.106c-.82 0-1.23 0-1.57.14-.34.14-.61.41-1.15.95l-.94.94c-.54.54-.81.81-1.15.95-.34.14-.75.14-1.57.14H8.092c-1.511 0-2.266 0-2.852.425-.658.478-.988 1.155-1.258 1.488C4 5.124 4 6.748 4 9.995z"/><path d="M10 12l1.5 1.5L15 10"/></g>',
+  // 4. Files & Validation / Approvals (Clean sharp Carbon folder-check)
+  approvals: CARBON_G + '<path d="M3 4.5h6.5l2 2H21v13H3z"/><path d="m9 13.2 2.2 2.2 4.3-4.4"/></g>',
+  rule_folder: CARBON_G + '<path d="M3 4.5h6.5l2 2H21v13H3z"/><path d="m9 13.2 2.2 2.2 4.3-4.4"/></g>',
+  files_validation: CARBON_G + '<path d="M3 4.5h6.5l2 2H21v13H3z"/><path d="m9 13.2 2.2 2.2 4.3-4.4"/></g>',
+  fact_check: CARBON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M6.5 9h5"/><path d="M6.5 12.5h5"/><path d="M6.5 16h5"/><path d="m13.5 13.2 1.5 1.5 3-3.2"/></g>',
+  folder_copy: CARBON_G + '<path d="M6 3.5h5.5l1.5 1.5H21v11H6z"/><path d="M3 8.5v11.5h14.5"/></g>',
+  folder_open: CARBON_G + '<path d="M3 19.5V5h6.5l2 2H20v3"/><path d="M3 19.5h15.5L21 10H6.5z"/></g>',
 
-  // 5. PS Dashboard / Analytics (Lucide chart-scatter)
-  analytics: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><circle cx="7.5" cy="7.5" r=".75" fill="currentColor"/><circle cx="18.5" cy="5.5" r=".75" fill="currentColor"/><circle cx="11.5" cy="11.5" r=".75" fill="currentColor"/><circle cx="7.5" cy="16.5" r=".75" fill="currentColor"/><circle cx="17.5" cy="14.5" r=".75" fill="currentColor"/></g>',
-  monitoring: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><circle cx="7.5" cy="7.5" r=".75" fill="currentColor"/><circle cx="18.5" cy="5.5" r=".75" fill="currentColor"/><circle cx="11.5" cy="11.5" r=".75" fill="currentColor"/><circle cx="7.5" cy="16.5" r=".75" fill="currentColor"/><circle cx="17.5" cy="14.5" r=".75" fill="currentColor"/></g>',
-  ps_dashboard: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><circle cx="7.5" cy="7.5" r=".75" fill="currentColor"/><circle cx="18.5" cy="5.5" r=".75" fill="currentColor"/><circle cx="11.5" cy="11.5" r=".75" fill="currentColor"/><circle cx="7.5" cy="16.5" r=".75" fill="currentColor"/><circle cx="17.5" cy="14.5" r=".75" fill="currentColor"/></g>',
+  // 5. Analytics / Monitoring / PS Dashboard
+  analytics: CARBON_G + '<path d="M3.5 3.5v17h17"/><path d="M7.5 17v-4.5"/><path d="M12 17V9.5"/><path d="M16.5 17V7"/><path d="m7.5 9 4.5-2.8 4.5-2.2"/></g>',
+  monitoring: CARBON_G + '<path d="M3.5 3.5v17h17"/><path d="M7.5 17v-4.5"/><path d="M12 17V9.5"/><path d="M16.5 17V7"/><path d="m7.5 9 4.5-2.8 4.5-2.2"/></g>',
+  insights: CARBON_G + '<path d="M3.5 17.5 9 12l3.5 3.5 8-9"/><path d="M16 6.5h4.5V11"/><path d="M3.5 20.5h17"/></g>',
+  ps_dashboard: CARBON_G + '<path d="M3.5 3.5v17h17"/><path d="M7.5 17v-4.5"/><path d="M12 17V9.5"/><path d="M16.5 17V7"/><path d="m7.5 9 4.5-2.8 4.5-2.2"/></g>',
 
-  // 6. Reports & Exports (Tabler database-export)
-  exports: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6c0 1.657 3.582 3 8 3s8-1.343 8-3s-3.582-3-8-3s-8 1.343-8 3"/><path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68-.05 2.454-.144m5.546-2.856v-6"/><path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341-.002 .51-.006"/><path d="M15 18h7"/><path d="M19 15l3 3l-3 3"/></g>',
-  summarize: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6c0 1.657 3.582 3 8 3s8-1.343 8-3s-3.582-3-8-3s-8 1.343-8 3"/><path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68-.05 2.454-.144m5.546-2.856v-6"/><path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341-.002 .51-.006"/><path d="M15 18h7"/><path d="M19 15l3 3l-3 3"/></g>',
-  reports: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6c0 1.657 3.582 3 8 3s8-1.343 8-3s-3.582-3-8-3s-8 1.343-8 3"/><path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68-.05 2.454-.144m5.546-2.856v-6"/><path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341-.002 .51-.006"/><path d="M15 18h7"/><path d="M19 15l3 3l-3 3"/></g>',
+  // 6. Reports & Exports
+  exports: CARBON_G + '<path d="M14 3.5H5v17h14v-6"/><path d="M14 3.5v5h5"/><path d="M8.5 11.5h4.5"/><path d="M8.5 15h3"/><path d="M13 18h8"/><path d="m18.5 15.5 2.5 2.5-2.5 2.5"/></g>',
+  summarize: CARBON_G + '<path d="M14 3.5H5v17h14v-6"/><path d="M14 3.5v5h5"/><path d="M8.5 11.5h4.5"/><path d="M8.5 15h3"/><path d="M13 18h8"/><path d="m18.5 15.5 2.5 2.5-2.5 2.5"/></g>',
+  reports: CARBON_G + '<path d="M14 3.5H5v17h14v-6"/><path d="M14 3.5v5h5"/><path d="M8.5 11.5h4.5"/><path d="M8.5 15h3"/><path d="M13 18h8"/><path d="m18.5 15.5 2.5 2.5-2.5 2.5"/></g>',
 
-  // 7. Learning, stories & lessons (Lucide blocks)
-  learning: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></g>',
-  tips_and_updates: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></g>',
+  // 7. Learning, Stories & Lessons
+  learning: CARBON_G + '<rect x="3" y="10" width="11" height="10.5"/><rect x="3" y="3.5" width="7.5" height="4.5"/><rect x="13" y="3.5" width="8" height="4.5"/><rect x="16" y="10" width="5" height="10.5"/></g>',
+  tips_and_updates: CARBON_G + '<rect x="3" y="10" width="11" height="10.5"/><rect x="3" y="3.5" width="7.5" height="4.5"/><rect x="13" y="3.5" width="8" height="4.5"/><rect x="16" y="10" width="5" height="10.5"/></g>',
 
-  // 8. Create/share form (Lucide form-input)
-  create_form: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M12 12h.01M17 12h.01M7 12h.01"/></g>',
-  post_add: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M12 12h.01M17 12h.01M7 12h.01"/></g>',
+  // 8. Create / Share Form & Dynamic Forms
+  create_form: CARBON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M3 8.5h18"/><path d="M7 12.5h4"/><path d="M13.5 12.5H17"/><path d="M7 16.5h10"/></g>',
+  post_add: CARBON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M3 8.5h18"/><path d="M7 12.5h4"/><path d="M13.5 12.5H17"/><path d="M7 16.5h10"/></g>',
+  dynamic_form: CARBON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M3 8.5h18"/><path d="M7 12.5h5"/><path d="M7 16.5h10"/><circle cx="15.5" cy="12.5" r="1.2" fill="currentColor" stroke="none"/></g>',
 
-  // 9. Offline Hub (Remix Icon loop-right-line / stroke cycle)
-  offline_hub: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>',
-  cloud_sync: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>',
-  offline_vault: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>',
+  // 9. Offline Hub & Cloud Sync
+  offline_hub: CARBON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  cloud_sync: CARBON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  offline_vault: CARBON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  sync: CARBON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  cloud: CARBON_G + '<path d="M7 18.5h10.5a4 4 0 0 0 .6-7.9A5.5 5.5 0 0 0 7.3 9.2 4.5 4.5 0 0 0 7 18.5Z"/></g>',
+  cloud_done: CARBON_G + '<path d="M7 18.5h10.5a4 4 0 0 0 .6-7.9A5.5 5.5 0 0 0 7.3 9.2 4.5 4.5 0 0 0 7 18.5Z"/><path d="m9.5 13.5 1.8 1.8 3.5-3.6"/></g>',
+  cloud_off: CARBON_G + '<path d="m3 3 18 18"/><path d="M7 18.5h7.5"/><path d="M19.8 17.3A4 4 0 0 0 18.1 10.6 5.5 5.5 0 0 0 8.5 6.8"/><path d="M5.6 9.8A4.5 4.5 0 0 0 7 18.5"/></g>',
 
-  // 10. Back to the file / Record Feedback (Lucide book-open-check)
-  feedback: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-3"/></g>',
-  back_to_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-3"/></g>',
-  rate_review: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-3"/></g>',
+  // 10. Back to the File / Record Feedback
+  feedback: CARBON_G + '<path d="M3 4.5h7.5l1.5 1.5 1.5-1.5H21v14h-7.5l-1.5 1.5-1.5-1.5H3z"/><path d="M12 6v14"/><path d="m14.8 11.5 1.5 1.5 2.9-3"/></g>',
+  back_to_file: CARBON_G + '<path d="M3 4.5h7.5l1.5 1.5 1.5-1.5H21v14h-7.5l-1.5 1.5-1.5-1.5H3z"/><path d="M12 6v14"/><path d="m14.8 11.5 1.5 1.5 2.9-3"/></g>',
+  rate_review: CARBON_G + '<path d="M3 4.5h7.5l1.5 1.5 1.5-1.5H21v14h-7.5l-1.5 1.5-1.5-1.5H3z"/><path d="M12 6v14"/><path d="m14.8 11.5 1.5 1.5 2.9-3"/></g>',
 
-  // 11. PS Planning (Hugeicons Strategy)
-  ps_planning: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 11L20.3458 8.84853C20.7819 8.44853 21 8.24853 21 8M18 5L20.3458 7.15147C20.7819 7.55147 21 7.75147 21 8M21 8C3 8 3 21 3 21"/><path d="M6 16h6m-3-3v6"/></g>',
-  view_timeline: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 11L20.3458 8.84853C20.7819 8.44853 21 8.24853 21 8M18 5L20.3458 7.15147C20.7819 7.55147 21 7.75147 21 8M21 8C3 8 3 21 3 21"/><path d="M6 16h6m-3-3v6"/></g>',
+  // 11. PS Planning & Timeline
+  ps_planning: CARBON_G + '<path d="M3.5 20V8H20"/><path d="m17 5 3 3-3 3"/><path d="M8 14h6"/><path d="M11 11v6"/></g>',
+  view_timeline: CARBON_G + '<path d="M3.5 20V8H20"/><path d="m17 5 3 3-3 3"/><path d="M8 14h6"/><path d="M11 11v6"/></g>',
 
-  // 12. Projects & Operations (Hugeicons timeline view / chart-gantt)
-  projects_ops: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3.5 12H5.5M18.5 12H20.5M12 3V5M12 19V21"/><rect x="5.5" y="8" width="13" height="8" rx="2"/><path d="M8.5 12h4"/></g>',
-  workspaces: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3.5 12H5.5M18.5 12H20.5M12 3V5M12 19V21"/><rect x="5.5" y="8" width="13" height="8" rx="2"/><path d="M8.5 12h4"/></g>',
+  // 12. Projects & Operations
+  projects_ops: CARBON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="M6.5 9.5h7"/><path d="M10.5 14.5h7"/></g>',
+  workspaces: CARBON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="M6.5 9.5h7"/><path d="M10.5 14.5h7"/></g>',
 
-  // 13. Evaluation of Staff Achievements (Lucide users-round)
-  staff_eval: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></g>',
-  staff_achievements: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></g>',
-  workspace_premium: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></g>',
+  // 13. Staff Achievements & Teams
+  staff_eval: CARBON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  staff_achievements: CARBON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  workspace_premium: CARBON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  group: CARBON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  groups: CARBON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
 
-  // 14. Assistant and Controls (Hugeicons AI User)
-  assistant: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M19 3.5l1-1m-1 0l1 1M4 3.5l1-1m-1 0l1 1"/></g>',
-  assistant_controls: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M19 3.5l1-1m-1 0l1 1M4 3.5l1-1m-1 0l1 1"/></g>',
-  auto_fix_high: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M19 3.5l1-1m-1 0l1 1M4 3.5l1-1m-1 0l1 1"/></g>',
+  // 14. Assistant & AI Controls
+  assistant: CARBON_G + '<circle cx="12" cy="8" r="3.5"/><path d="M5 20.5a7 7 0 0 1 14 0"/><path d="M19 3v3M17.5 4.5h3M5 3v3M3.5 4.5h3"/></g>',
+  assistant_controls: CARBON_G + '<circle cx="12" cy="8" r="3.5"/><path d="M5 20.5a7 7 0 0 1 14 0"/><path d="M19 3v3M17.5 4.5h3M5 3v3M3.5 4.5h3"/></g>',
+  auto_fix_high: CARBON_G + '<circle cx="12" cy="8" r="3.5"/><path d="M5 20.5a7 7 0 0 1 14 0"/><path d="M19 3v3M17.5 4.5h3M5 3v3M3.5 4.5h3"/></g>',
+  sparkle_ai: CARBON_G + '<path d="m12 2.5 2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z"/><path d="M18.5 16v3M17 17.5h3"/></g>',
 
-  // 15. Contacts and Diocesan Directory (Remix Icon contacts-book-line)
-  contacts: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="5" y="2" width="15" height="20" rx="2"/><path d="M5 6H3m2 6H3m2 6H3"/><circle cx="12.5" cy="9.5" r="3"/><path d="M8.5 18a4 4 0 0 1 8 0"/></g>',
-  contact_phone: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="5" y="2" width="15" height="20" rx="2"/><path d="M5 6H3m2 6H3m2 6H3"/><circle cx="12.5" cy="9.5" r="3"/><path d="M8.5 18a4 4 0 0 1 8 0"/></g>',
+  // 15. Contacts & Directory
+  contacts: CARBON_G + '<rect x="5.5" y="3" width="14.5" height="18"/><path d="M3.5 7h2M3.5 12h2M3.5 17h2"/><circle cx="12.8" cy="9.5" r="2.5"/><path d="M9 17.5a3.8 3.8 0 0 1 7.6 0"/></g>',
+  contact_phone: CARBON_G + '<rect x="5.5" y="3" width="14.5" height="18"/><path d="M3.5 7h2M3.5 12h2M3.5 17h2"/><circle cx="12.8" cy="9.5" r="2.5"/><path d="M9 17.5a3.8 3.8 0 0 1 7.6 0"/></g>',
 
-  // 16. Data Structure & Flow (Tabler hierarchy)
-  data_structure: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 17.5l5.5-4.5l5.5 4.5"/><path d="M12 7v6"/></g>',
-  data_flow: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 17.5l5.5-4.5l5.5 4.5"/><path d="M12 7v6"/></g>',
-  account_tree: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 17.5l5.5-4.5l5.5 4.5"/><path d="M12 7v6"/></g>',
+  // 16. Data Structure & Flow (Orthogonal Carbon tree)
+  data_structure: CARBON_G + '<rect x="9.5" y="3" width="5" height="4"/><rect x="3.5" y="17" width="5" height="4"/><rect x="15.5" y="17" width="5" height="4"/><path d="M12 7v5M6 12h12M6 12v5M18 12v5"/></g>',
+  data_flow: CARBON_G + '<rect x="9.5" y="3" width="5" height="4"/><rect x="3.5" y="17" width="5" height="4"/><rect x="15.5" y="17" width="5" height="4"/><path d="M12 7v5M6 12h12M6 12v5M18 12v5"/></g>',
+  account_tree: CARBON_G + '<rect x="9.5" y="3" width="5" height="4"/><rect x="3.5" y="17" width="5" height="4"/><rect x="15.5" y="17" width="5" height="4"/><path d="M12 7v5M6 12h12M6 12v5M18 12v5"/></g>',
 
-  // 17. Timesheets (Hugeicons calendar-01 / calendar month)
-  timesheets: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
-  more_time: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
+  // 17. Timesheets & Calendars
+  timesheets: CARBON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/><path d="M7.5 13h1.5M11.2 13h1.6M15 13h1.5M7.5 16.5h1.5M11.2 16.5h1.6"/></g>',
+  more_time: CARBON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/><path d="M7.5 13h1.5M11.2 13h1.6M15 13h1.5M7.5 16.5h1.5M11.2 16.5h1.6"/></g>',
+  calendar_month: CARBON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/><path d="M7.5 13h1.5M11.2 13h1.6M15 13h1.5M7.5 16.5h1.5M11.2 16.5h1.6"/></g>',
+  calendar_today: CARBON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/></g>',
 
-  // 18. Strategic Metadata (Hugeicons Document Code)
-  metadata: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2m4-4 2 2-2 2"/></g>',
-  category: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2m4-4 2 2-2 2"/></g>',
+  // 18. Strategic Metadata & Code Docs
+  metadata: CARBON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="m10 12.5-2 2 2 2M14 12.5l2 2-2 2"/></g>',
+  category: CARBON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="m10 12.5-2 2 2 2M14 12.5l2 2-2 2"/></g>',
+  description: CARBON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="M8.5 12h7M8.5 15.5h7M8.5 8.5h3"/></g>',
 
-  // 19. MEL Administration (Remix Icon admin-line)
-  mel_admin: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8.5" r="3"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/></g>',
-  admin_panel_settings: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8.5" r="3"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/></g>',
+  // 19. MEL Administration & Security
+  mel_admin: CARBON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><circle cx="12" cy="9.5" r="2.2"/><path d="M8.5 16a3.5 3.5 0 0 1 7 0"/></g>',
+  admin_panel_settings: CARBON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><circle cx="12" cy="9.5" r="2.2"/><path d="M8.5 16a3.5 3.5 0 0 1 7 0"/></g>',
+  verified_user: CARBON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><path d="m9 12 2 2 4-4"/></g>',
+  shield: CARBON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><path d="m9 12 2 2 4-4"/></g>',
+  lock: CARBON_G + '<rect x="4.5" y="10.5" width="15" height="10"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></g>',
+  lock_open: CARBON_G + '<rect x="4.5" y="10.5" width="15" height="10"/><path d="M8 10.5V7a4 4 0 0 1 7.6-1.7"/></g>',
 
-  // 20. MISC Support Icons
-  search: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>',
-  close: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></g>',
-  check: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 6 9 17l-5-5"/></g>',
-  check_circle: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>',
-  add: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 5v14M5 12h14"/></g>',
-  add_circle: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></g>',
-  arrow_back: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m12 19-7-7 7-7M5 12h14"/></g>',
-  arrow_forward: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m12 5 7 7-7 7M19 12H5"/></g>',
-  chevron_right: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 18 6-6-6-6"/></g>',
-  chevron_left: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15 18-6-6 6-6"/></g>',
-  expand_more: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m6 9 6 6 6-6"/></g>',
-  calendar_today: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g>',
-  location_on: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>',
-  person: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g>',
-  person_add: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></g>',
-  lock: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>',
-  lock_open: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></g>',
-  info: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></g>',
-  warning: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></g>',
-  error: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></g>',
-  sync: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></g>',
-  cloud_done: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="m9 13 2 2 4-4"/></g>',
-  cloud_off: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m2 2 20 20M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.954-.443M21.5 15.5a4.5 4.5 0 0 0-3.95-4.46A7 7 0 0 0 11.2 5.2"/></g>',
-  content_copy: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>',
-  delete: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M10 11v6M14 11v6"/></g>',
-  edit: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></g>',
-  upload_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M12 12v6M9 15l3-3 3 3"/></g>',
-  download: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></g>',
-  description: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></g>',
-  light_mode: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g>',
-  dark_mode: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></g>',
-  tune: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></g>',
-  filter_list: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></g>',
-  visibility: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></g>',
-  open_in_full: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15 3 6 6M9 21 3 15M21 3l-7 7M3 21l7-7"/></g>',
-  open_in_new: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></g>',
-  dock_to_right: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/></g>',
-  target: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></g>',
-  flag: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></g>',
-  language: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>',
-  globe: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>',
-  payments: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></g>',
-  banknote: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></g>',
-  handshake: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-3-3"/><path d="m18 10 1.3-1.3a1 1 0 0 0 0-1.4l-3-3a1 1 0 0 0-1.4 0L13.6 5.6"/><path d="m2 14 6 6"/><path d="M22 10l-6-6"/><path d="m7 7 4.3 4.3"/><path d="m10 14 1.4 1.4"/></g>',
-  phone: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g>',
-  call: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g>',
-  mail: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>',
-  email: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>',
-  verified_user: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>',
-  shield: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>',
-  group: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>',
-  groups: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>',
-  assignment: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></g>',
-  calendar_month: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
-  attach_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></g>',
-  place: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>',
-  gavel: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m14 13-7.5 7.5c-.8.8-2 .8-2.8 0l-1.4-1.4c-.8-.8-.8-2 0-2.8L9.8 8.8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></g>',
-  psychology: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v14"/></g>',
-  favorite: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></g>',
-  healing: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
-  volunteer_activism: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
-  terrain: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/><path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19"/></g>',
-  iconsax_sort: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 7h18"/><path d="M6 12h12"/><path d="M10 17h4"/></g>',
-  iconsax_clipboard_tick: '<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9.31 14.7 1.5 1.5 4-4"/><path d="M10 6h4c2 0 2-1 2-2 0-2-1-2-2-2h-4C9 2 8 2 8 4c0 2 1 2 2 2Z"/><path d="M16 4.02c3.33.18 5 1.41 5 5.98v6c0 4-1 6-6 6H9c-5 0-6-2-6-6v-6c0-4.56 1.67-5.8 5-5.98"/></g>',
-  iconsax_add: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"/><path d="M12 18V6"/></g>',
-  iconsax_arrow_down: '<path fill="currentColor" d="M12 16.8c-.7 0-1.4-.27-1.93-.8L3.55 9.48a.754.754 0 0 1 0-1.06c.29-.29.77-.29 1.06 0l6.52 6.52c.48.48 1.26.48 1.74 0l6.52-6.52c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06L13.93 16c-.53.53-1.23.8-1.93.8Z"/>',
-  sparkle_ai: '<path fill="currentColor" d="M12 2L14.4 7.6L20 10L14.4 12.4L12 18L9.6 12.4L4 10L9.6 7.6L12 2ZM19 15L20.1 17.4L22.5 18.5L20.1 19.6L19 22L17.9 19.6L15.5 18.5L17.9 17.4L19 15ZM5 15L5.9 16.9L7.8 17.8L5.9 18.7L5 20.6L4.1 18.7L2.2 17.8L4.1 16.9L5 15Z"/>',
-  send: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></g>',
-  tag: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></g>',
+  // 20. Navigation, Actions, Tools & Calculators
+  menu: CARBON_G + '<path d="M3.5 6h17M3.5 12h17M3.5 18h17"/></g>',
+  search: CARBON_G + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.2 15.2 4.8 4.8"/></g>',
+  search_off: CARBON_G + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.2 15.2 4.8 4.8"/><path d="m8 8 5 5"/></g>',
+  close: CARBON_G + '<path d="M18 6 6 18M6 6l12 12"/></g>',
+  cancel: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></g>',
+  check: CARBON_G + '<path d="M19.5 6.5 9.5 17 4.5 12"/></g>',
+  check_circle: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.3 2.3 4.7-4.8"/></g>',
+  add: CARBON_G + '<path d="M12 5v14M5 12h14"/></g>',
+  iconsax_add: CARBON_G + '<path d="M12 5v14M5 12h14"/></g>',
+  add_circle: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></g>',
+  arrow_back: CARBON_G + '<path d="m11 18-6-6 6-6M5.5 12H19.5"/></g>',
+  arrow_forward: CARBON_G + '<path d="m13 6 6 6-6 6M4.5 12h14"/></g>',
+  chevron_right: CARBON_G + '<path d="m9 6 6 6-6 6"/></g>',
+  chevron_left: CARBON_G + '<path d="m15 18-6-6 6-6"/></g>',
+  expand_more: CARBON_G + '<path d="m6 9 6 6 6-6"/></g>',
+  iconsax_arrow_down: CARBON_G + '<path d="m6 9 6 6 6-6"/></g>',
+  undo: CARBON_G + '<path d="M7.5 18.5h7a4.5 4.5 0 1 0 0-9H6"/><path d="m9.5 6-3.5 3.5L9.5 13"/></g>',
+  restart_alt: CARBON_G + '<path d="M5 12a7 7 0 1 0 2-4.9L4.5 9.5"/><path d="M4.5 5v4.5H9"/></g>',
+  filter_list: CARBON_G + '<path d="M3.5 6.5h17M6.5 12h11M9.5 17.5h5"/></g>',
+  iconsax_sort: CARBON_G + '<path d="M3.5 6.5h17M6.5 12h11M9.5 17.5h5"/></g>',
+  tune: CARBON_G + '<path d="M4 20v-6.5M4 9.5V4M12 20v-8.5M12 7.5V4M20 20v-4.5M20 11.5V4"/><path d="M1.5 13.5h5M9.5 7.5h5M17.5 15.5h5"/></g>',
+  calculate: CARBON_G + '<rect x="5" y="3" width="14" height="18"/><rect x="8" y="6" width="8" height="3.5"/><path d="M8.5 13h1.5M11.5 13h1M14.5 13h1M8.5 16h1.5M11.5 16h1M14.5 16h1M8.5 18.5h1.5M11.5 18.5h4"/></g>',
+  open_in_full: CARBON_G + '<path d="m15 3.5 5.5 0 0 5.5M9 20.5l-5.5 0 0-5.5M20.5 3.5l-6.5 6.5M3.5 20.5l6.5-6.5"/></g>',
+  open_in_new: CARBON_G + '<path d="M18 13.5v6H4.5V6h6"/><path d="M14.5 3.5h6v6M11 13 20.5 3.5"/></g>',
+  dock_to_right: CARBON_G + '<rect x="3.5" y="3.5" width="17" height="17"/><path d="M14.5 3.5v17"/></g>',
+
+  // 21. Domain Helpers, Metadata, Field Volets & Files
+  location_on: CARBON_G + '<path d="M19 10c0 5.5-7 11-7 11s-7-5.5-7-11a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></g>',
+  place: CARBON_G + '<path d="M19 10c0 5.5-7 11-7 11s-7-5.5-7-11a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></g>',
+  person: CARBON_G + '<circle cx="12" cy="7.5" r="3.8"/><path d="M5 20.5a7 7 0 0 1 14 0"/></g>',
+  person_add: CARBON_G + '<circle cx="9.5" cy="7.5" r="3.5"/><path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><path d="M19 8v6M16 11h6"/></g>',
+  info: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r=".8" fill="currentColor" stroke="none"/></g>',
+  warning: CARBON_G + '<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5"/><circle cx="12" cy="17.2" r=".8" fill="currentColor" stroke="none"/></g>',
+  error: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></g>',
+  content_copy: CARBON_G + '<rect x="8.5" y="8.5" width="12" height="12"/><path d="M15.5 8.5v-5h-12v12h5"/></g>',
+  delete: CARBON_G + '<path d="M4 6.5h16M9 6.5V3.5h6v3M6.5 6.5l.8 14h9.4l.8-14M10 10.5v6M14 10.5v6"/></g>',
+  edit: CARBON_G + '<path d="M12 4.5H4.5v15h15V12"/><path d="M17.5 3.5 20.5 6.5 11.5 15.5H8.5v-3z"/></g>',
+  upload_file: CARBON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="M12 18v-5.5M9.5 15 12 12.5 14.5 15"/></g>',
+  download: CARBON_G + '<path d="M4 15.5v4.5h16v-4.5M7.5 10.5 12 15l4.5-4.5M12 14.5V3.5"/></g>',
+  attach_file: CARBON_G + '<path d="m20 11.5-8.5 8.5a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.5 17a1.7 1.7 0 0 1-2.4-2.4l7.5-7.5"/></g>',
+  light_mode: CARBON_G + '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M2.5 12h2M19.5 12h2M6.7 17.3l-1.4 1.4M18.7 5.3l-1.4 1.4"/></g>',
+  dark_mode: CARBON_G + '<path d="M12.5 3.5a8.5 8.5 0 1 0 8 11.3 6.8 6.8 0 0 1-8-11.3Z"/></g>',
+  visibility: CARBON_G + '<path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></g>',
+  target: CARBON_G + '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g>',
+  flag: CARBON_G + '<path d="M5 20.5V4h13.5l-2.5 4 2.5 4H5"/></g>',
+  language: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 3a13 13 0 0 0 0 18 13 13 0 0 0 0-18"/><path d="M3 12h18"/></g>',
+  globe: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 3a13 13 0 0 0 0 18 13 13 0 0 0 0-18"/><path d="M3 12h18"/></g>',
+  payments: CARBON_G + '<rect x="3" y="6" width="18" height="12"/><circle cx="12" cy="12" r="2.2"/><path d="M6.5 12h1M16.5 12h1"/></g>',
+  banknote: CARBON_G + '<rect x="3" y="6" width="18" height="12"/><circle cx="12" cy="12" r="2.2"/><path d="M6.5 12h1M16.5 12h1"/></g>',
+  phone: CARBON_G + '<path d="M20.5 16.5v3h-2a14 14 0 0 1-14-14v-2h3l1.8 4-2 1.8a11 11 0 0 0 5.4 5.4l1.8-2z"/></g>',
+  call: CARBON_G + '<path d="M20.5 16.5v3h-2a14 14 0 0 1-14-14v-2h3l1.8 4-2 1.8a11 11 0 0 0 5.4 5.4l1.8-2z"/></g>',
+  mail: CARBON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="m3.5 6 8.5 6.5L20.5 6"/></g>',
+  email: CARBON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="m3.5 6 8.5 6.5L20.5 6"/></g>',
+  send: CARBON_G + '<path d="m20.5 3.5-6 17-3.5-7.5-7.5-3.5z"/><path d="M20.5 3.5 11 13"/></g>',
+  tag: CARBON_G + '<path d="M11.5 3H4v7.5L13 19.5 20.5 12z"/><circle cx="7.8" cy="7.8" r="1" fill="currentColor" stroke="none"/></g>',
+
+  // 22. 5 Field Volets (Paralegals, Mediators, Psychosocial, Healing, General)
+  gavel: CARBON_G + '<path d="m14 12.5-8 8-2.5-2.5 8-8"/><path d="m13 4.5 6.5 6.5-3 3L10 7.5z"/><path d="m16.5 8 2.5-2.5"/><path d="m7.5 10 2.5-2.5"/></g>',
+  handshake: CARBON_G + '<path d="m11 16.5 2 2 4.5-4.5-3.5-3.5-2.5 2-2.5-2.5 4-4 6 6"/><path d="m3.5 13 5.5 5.5"/><path d="M20.5 10.5 15 5"/><path d="m7.5 7 3.5 3.5"/></g>',
+  psychology: CARBON_G + '<path d="M12 5a3.5 3.5 0 0 0-6.5 1.8A4 4 0 0 0 3.5 12a4 4 0 0 0 2 5.2A3.8 3.8 0 0 0 12 18.5Z"/><path d="M12 5a3.5 3.5 0 0 1 6.5 1.8A4 4 0 0 1 20.5 12a4 4 0 0 1-2 5.2A3.8 3.8 0 0 1 12 18.5Z"/></g>',
+  healing: CARBON_G + '<path d="M12 19.5s-7.5-4.6-8.5-9.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.5 3.5c-1 5.2-8.5 9.8-8.5 9.8Z"/><path d="M12 10v5M9.5 12.5h5"/></g>',
+  volunteer_activism: CARBON_G + '<path d="M12 19.5s-7.5-4.6-8.5-9.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.5 3.5c-1 5.2-8.5 9.8-8.5 9.8Z"/><path d="M12 10v5M9.5 12.5h5"/></g>',
+  favorite: CARBON_G + '<path d="M12 19.5s-7.5-4.6-8.5-9.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.5 3.5c-1 5.2-8.5 9.8-8.5 9.8Z"/></g>',
+  terrain: CARBON_G + '<path d="M3 19.5 8.5 7l4 8 3-4.5L21 19.5z"/></g>',
 };
 
-/* Section 4: Material Symbols Outlined Vector Paths (weight: 400, grade: 0, 24x24 viewBox) */
 const MATERIAL_SYMBOLS = {
-  check_box: 'M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21H5Zm0-2h14V5H5v14Zm5.6-2.8 7.05-7.05-1.4-1.4-5.65 5.65-2.85-2.85-1.4 1.4 4.25 4.25Z',
-  assignment: 'M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h4.2q.325-.9 1.088-1.45T12 1q.95 0 1.713.55T14.8 3H19q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21H5Zm0-2h14V5H5v14Zm2-2h7v-2H7v2Zm0-4h10v-2H7v2Zm0-4h10V7H7v2Zm5-4.75q.325 0 .538-.213t.212-.537q0-.325-.212-.537T12 2.75q-.325 0-.537.213T11.25 3.5q0 .325.213.537T12 4.25Z',
-  fact_check: 'M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20H4Zm0-2h16V6H4v12Zm1.5-3h5v-2h-5v2Zm0-4h5V9h-5v2Zm0-4h5V5h-5v2Zm9.35 8 4.25-4.25-1.4-1.425-2.85 2.85-1.425-1.425-1.4 1.425L14.85 15Z',
-  insights: 'm3.5 18.5-1.5-1.5 6-6 4 4 8.5-9.5 1.5 1.35L12 18l-4-4-4.5 4.5ZM19 9l-.95-2.05L16 6l2.05-.95L19 3l.95 2.05L22 6l-2.05.95L19 9ZM6 11l-.65-1.35L4 9l1.35-.65L6 7l.65 1.35L8 9l-1.35.65L6 11Z',
-  monitoring: 'M3 21v-2l2-2v4H3Zm4 0v-6l2-2v8H7Zm4 0v-8l2 2.025V21h-2Zm4 0v-5.975l2-2V21h-2Zm4 0V11l2-2v12h-2ZM3 15.825V13l7-7 4 4 7-7v2.825l-7 7-4-4-7 7Z',
-  download: 'M12 16 7 11l1.4-1.45 2.6 2.6V4h2v8.15l2.6-2.6L17 11l-5 5Zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20H6Z',
-  upload_file: 'M11 18h2v-4.175l1.6 1.6L16 14l-4-4-4 4 1.425 1.4L11 13.825V18ZM6 22q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
-  cloud_done: 'm10.6 16.2 5.65-5.65-1.425-1.425-4.225 4.225-2.1-2.1L7.075 12.675 10.6 16.2ZM6.5 20q-2.275 0-3.887-1.575T1 14.575q0-1.95 1.175-3.475T5.25 9.15q.625-2.3 2.5-3.725T12 4q2.925 0 4.963 2.038T19 11q1.725.2 2.863 1.488T23 15.5q0 1.875-1.312 3.188T18.5 20H6.5Z',
-  sync: 'M4 20v-2h2.75l-.4-.35q-1.3-1.15-1.825-2.625T4 12.05q0-2.775 1.663-4.938T10 4.25v2.1Q8.2 7 7.1 8.563T6 12.05q0 1.125.425 2.188T7.75 16.2l.25.25V14h2v6H4Zm10-.25v-2.1q1.8-.65 2.9-2.212T18 11.95q0-1.125-.425-2.187T16.25 7.8L16 7.55V10h-2V4h6v2h-2.75l.4.35q1.225 1.225 1.788 2.663T20 11.95q0 2.775-1.662 4.938T14 19.75Z',
-  cloud_off: 'm19.9 22.6-3.15-3.15H6.5q-2.275 0-3.887-1.575T1 14.025q0-1.85 1.1-3.325T4.925 8.8L1.4 5.275 2.8 3.85l18.5 18.5-1.4 1.25ZM6.5 17.45h8.25L6.8 9.5q-1.6.175-2.7 1.35T3 13.75q0 1.55 1.075 2.625T6.5 17.45Zm14.95-.625-1.45-1.45q.5-.375.75-.913t.25-1.212q0-1.05-.725-1.775T18.5 10.75H17v-1.5q0-2.075-1.463-3.537T12 4.25q-.95 0-1.787.35T8.75 5.65L7.3 4.2q1.025-.9 2.263-1.375T12 2.35q2.725 0 4.688 1.813T18.95 8.75q1.725.15 2.888 1.4T23 13.25q0 1.075-.413 2.025t-1.137 1.55Z',
-  info: 'M11 17h2v-6h-2v6Zm1-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9Zm0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
-  warning: 'M1 21 12 2l11 19H1Zm3.45-2h15.1L12 6 4.45 19ZM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18Zm-1-3h2v-5h-2v5Z',
-  error: 'M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
-  search: 'M19.6 21 13.3 14.7q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5q0-2.725 1.888-4.612T9.5 3q2.725 0 4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3-1.4 1.4ZM9.5 14q1.875 0 3.188-1.312T14 9.5q0-1.875-1.312-3.187T9.5 5Q7.625 5 6.313 6.313T5 9.5q0 1.875 1.313 3.188T9.5 14Z',
-  calendar_today: 'M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V2h2v2h8V2h2v2h1q.825 0 1.413.588T21 6v14q0 .825-.587 1.413T19 22H5Zm0-2h14V10H5v10ZM5 8h14V6H5v2Z',
-  filter_list: 'M10 18v-2h4v2h-4Zm-4-5v-2h12v2H6ZM3 8V6h18v2H3Z',
-  chevron_right: 'M12.6 12 8 7.4 9.4 6l6 6-6 6L8 16.6l4.6-4.6Z',
-  chevron_left: 'm14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6L14 18Z',
-  expand_more: 'M12 15.375 6 9.375 7.4 7.975l4.6 4.6 4.6-4.6 1.4 1.4Z',
-  arrow_forward: 'm12 20-1.425-1.4 5.6-5.6H4v-2h12.175l-5.6-5.6L12 4l8 8-8 8Z',
-  arrow_back: 'm7.825 13 5.6 5.6L12 20l-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825Z',
-  add: 'M11 13H5v-2h6V5h2v6h6v2h-6v6h-2v-6Z',
-  lock: 'M6 22q-.825 0-1.412-.587T4 20V10q0-.825.588-1.412T6 8h1V6q0-2.075 1.463-3.537T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.587 1.413T18 22H6Zm6-5q.825 0 1.413-.587T14 15q0-.825-.587-1.412T12 13q-.825 0-1.412.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z',
-  menu: 'M3 18v-2h18v2H3Zm0-5v-2h18v2H3Zm0-5V6h18v2H3Z',
-  close: 'm6.4 19-1.4-1.4 5.6-5.6-5.6-5.6L6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19Z',
-  check: 'M9.55 18 3.85 12.3l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4 9.55 18Z',
-  undo: 'M7 19v-2h7.1q1.575 0 2.738-1T18 13.5q0-1.5-1.162-2.5T14.1 10H7.8l2.6 2.6L9 14 4 9l5-5 1.4 1.4L7.8 8h6.3q2.425 0 4.163 1.575T20 13.5q0 2.35-1.737 3.925T14.1 19H7Z',
-  light_mode: 'M12 17q-2.075 0-3.537-1.463T7 12q0-2.075 1.463-3.537T12 7q2.075 0 3.538 1.463T17 12q0 2.075-1.462 3.538T12 17ZM2 13v-2h3v2H2Zm17 0v-2h3v2h-3ZM11 5V2h2v3h-2Zm0 17v-3h2v3h-2ZM6.4 7.8 4.25 5.65l1.4-1.4L7.8 6.4 6.4 7.8Zm12.35 12.35L16.6 18l1.4-1.4 2.15 2.15-1.4 1.4ZM16.6 6.4l2.15-2.15 1.4 1.4L18 7.8l-1.4-1.4ZM4.25 18.75 6.4 16.6l1.4 1.4-2.15 2.15-1.4-1.4Z',
-  dark_mode: 'M12 21q-3.75 0-6.375-2.625T3 12q0-3.75 2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21Z',
-  location_on: 'M12 12q.825 0 1.413-.587T14 10q0-.825-.587-1.412T12 8q-.825 0-1.412.588T10 10q0 .825.588 1.413T12 12Zm0 10q-4.025-3.425-6.012-6.362T4 10.2q0-3.75 2.413-5.975T12 2q3.175 0 5.588 2.225T20 10.2q0 2.5-1.987 5.438T12 22Z',
-  attach_file: 'M11.5 22q-2.3 0-3.9-1.6T6 16.5V6q0-1.65 1.175-2.825T10 2q1.65 0 2.825 1.175T14 6v9.5q0 1.05-.725 1.775T11.5 18q-1.05 0-1.775-.725T9 15.5V6h1.5v9.5q0 .425.288.713T11.5 16.5q.425 0 .713-.287T12.5 15.5V6q0-1.05-.725-1.775T10 3.5q-1.05 0-1.775.725T7.5 6v10.5q0 1.65 1.175 2.825T11.5 20.5q1.65 0 2.825-1.175T15.5 16.5V6H17v10.5q0 2.3-1.6 3.9T11.5 22Z',
-  description: 'M8 18h8v-2H8v2Zm0-4h8v-2H8v2Zm-2 8q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
-  person: 'M12 12q-1.65 0-2.825-1.175T8 8q0-1.65 1.175-2.825T12 4q1.65 0 2.825 1.175T16 8q0 1.65-1.175 2.825T12 12Zm-8 8v-2.8q0-.85.438-1.563T5.6 14.55q1.55-.775 3.15-1.163T12 13q1.65 0 3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20H4Z',
-  verified_user: 'm10.6 16.2 5.65-5.65-1.425-1.425-4.225 4.225-2.1-2.1L7.075 12.675 10.6 16.2ZM12 22q-3.475-.875-5.738-3.988T4 11.1V5l8-3 8 3v6.1q0 3.8-2.262 6.913T12 22Z',
-  gavel: 'm5.25 18 12.75-12.75 1.75 1.75L7 19.75Zm-2.1 2.1 1.4-1.4 14.15-14.15q.6-.6 1.4-.6t1.4.6l.05.05q.6.6.6 1.4t-.6 1.4L7.4 21.55q-.6.6-1.4.6t-1.4-.6l-1.45-1.45ZM18.7 11.6l-5.65 5.65 2.85 2.85 5.65-5.65ZM8.85 4.6 6 7.45l2.85 2.85 2.85-2.85Z',
-  handshake: 'M8.7 17.3 3.65 12.25q-.3-.3-.425-.662T3.1 10.8q0-.425.138-.8t.437-.675l4.6-4.6q.3-.3.675-.425T9.75 4.175q.425 0 .8.138t.675.437L13.8 7.35l-1.4 1.4-2.6-2.6-4.6 4.6 4.55 4.55ZM12 21.85l-4.55-4.55 1.4-1.4 3.15 3.15 7.8-7.8-1.4-1.4-3.15 3.15-1.4-1.4 3.85-3.85q.3-.3.675-.425t.8-.125q.425 0 .8.138t.675.437l1.7 1.7q.3.3.438.688t.137.812q0 .425-.137.8t-.438.675L12 21.85Z',
-  psychology: 'M12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
-  healing: 'm17.75 21.15-2.15-2.15 4.25-4.25 2.15 2.15Zm-14.9-14.9 2.15-2.15 4.25 4.25-2.15 2.15Zm14.9 0 2.15 2.15-4.25 4.25-2.15-2.15Zm-14.9 14.9 4.25-4.25 2.15 2.15-4.25 4.25ZM12 15.15 8.85 12 12 8.85 15.15 12ZM7.05 21.85l-4.9-4.9q-.6-.6-.6-1.425t.6-1.425l10.9-10.9q.6-.6 1.425-.6t1.425.6l4.9 4.9q.6.6.6 1.425t-.6 1.425l-10.9 10.9q-.6.6-1.425.6t-1.425-.6Z',
-  groups: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2Zm-7-8q-1.65 0-2.825-1.175T5 9q0-1.65 1.175-2.825T9 5q1.65 0 2.825 1.175T13 9q0 1.65-1.175 2.825T9 13Zm11 8v-1.9q0-.825-.438-1.537T18.4 16.5q1.55.775 2.075 1.638T21 21Zm-3-8q-.425 0-.85-.062t-.85-.213q1.1-.8 1.4-1.925T18 9q0-1.25-.3-2.375T16.3 4.7q.425-.15.85-.225T18 4.4q1.65 0 2.825 1.175T22 8.4q0 1.65-1.175 2.825T18 13Z',
-  favorite: 'm12 21.35-1.45-1.32Q5.4 15.36 2 12.28 0 8.5 0 5.5 0 2.42 2.42 0 4.24 0 5.86 1.05t2.47 2.7q.85-1.65 2.47-2.7T14.5 0Q16.92 0 19.34 2.42t2.42 5.5q0 3.08-3.4 6.16-3.4 3.08-8.55 7.75l-1.45 1.32Z',
-  volunteer_activism: 'M12 21.35-1.45-1.32Q5.4 15.36 2 12.28 0 8.5 0 5.5 0 2.42 2.42 0 4.24 0 5.86 1.05t2.47 2.7q.85-1.65 2.47-2.7T14.5 0Q16.92 0 19.34 2.42t2.42 5.5q0 3.08-3.4 6.16-3.4 3.08-8.55 7.75l-1.45 1.32Z',
-  terrain: 'm8 3 4 8 5-5 5 15H2L8 3z',
+  check_box: 'M4 4h16v16H4V4Zm1.5 1.5v13h13v-13h-13Zm4.8 9.2L7.5 12l1.1-1.1 1.7 1.7 5.1-5.1L16.5 8.6l-6.2 6.1Z',
+  info: 'M11.25 16h1.5v-5h-1.5v5Zm.75-6.8a.9.9 0 1 0 0-1.8.9.9 0 0 0 0 1.8ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 1.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Z',
 };
 
 function msIcon(name, size = 20) {
@@ -282,7 +260,7 @@ function msIcon(name, size = 20) {
     svg.innerHTML = APSE_ICON_SVGS[name];
   } else {
     const path = document.createElementNS(svgNS, 'path');
-    path.setAttribute('d', MATERIAL_SYMBOLS[name] || MATERIAL_SYMBOLS.check_box);
+    path.setAttribute('d', MATERIAL_SYMBOLS[name] || MATERIAL_SYMBOLS.info);
     svg.appendChild(path);
   }
   span.appendChild(svg);

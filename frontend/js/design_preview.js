@@ -94,6 +94,66 @@
     { name: 'Subtle Hairline', token: '--border-subtle', value: '#E0E0E0 / #393939' }
   ];
 
+  const CARBON_G = '<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">';
+
+  const DP_ICONS = {
+    tasks: CARBON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8 11.5 1.5 1.5 3-3"/><path d="M14 11.5h2.5"/><path d="M8 16h8.5"/></g>',
+    seizure: CARBON_G + '<path d="M13 20H3V4h18v8.5"/><path d="M3 9h18"/><path d="M9 4v16"/><path d="M18.5 21v-6"/><path d="m16 17.5 2.5-2.5 2.5 2.5"/></g>',
+    drafts: CARBON_G + '<path d="M5 7V3.5h3.5"/><path d="M12 3.5h3"/><path d="M19 7V3.5h-1"/><path d="M19 10.5v3"/><path d="M19 17v3.5h-3"/><path d="M12 20.5H9"/><path d="M5 17v3.5h1"/><path d="M5 10.5v3"/><path d="M8.5 9.5h7"/><path d="M8.5 13.5h7"/><path d="M8.5 17h4.5"/></g>',
+    approvals: CARBON_G + '<path d="M3 4.5h6.5l2 2H21v13H3z"/><path d="m9 13.2 2.2 2.2 4.3-4.4"/></g>',
+    analytics: CARBON_G + '<path d="M3.5 3.5v17h17"/><path d="M7.5 17v-4.5"/><path d="M12 17V9.5"/><path d="M16.5 17V7"/><path d="m7.5 9 4.5-2.8 4.5-2.2"/></g>',
+    exports: CARBON_G + '<path d="M14 3.5H5v17h14v-6"/><path d="M14 3.5v5h5"/><path d="M8.5 11.5h4.5"/><path d="M8.5 15h3"/><path d="M13 18h8"/><path d="m18.5 15.5 2.5 2.5-2.5 2.5"/></g>',
+    dynamic_form: CARBON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M3 8.5h18"/><path d="M7 12.5h5"/><path d="M7 16.5h10"/><circle cx="15.5" cy="12.5" r="1.2" fill="currentColor" stroke="none"/></g>',
+    cloud_done: CARBON_G + '<path d="M7 18.5h10.5a4 4 0 0 0 .6-7.9A5.5 5.5 0 0 0 7.3 9.2 4.5 4.5 0 0 0 7 18.5Z"/><path d="m9.5 13.5 1.8 1.8 3.5-3.6"/></g>',
+    data_structure: CARBON_G + '<rect x="9.5" y="3" width="5" height="4"/><rect x="3.5" y="17" width="5" height="4"/><rect x="15.5" y="17" width="5" height="4"/><path d="M12 7v5M6 12h12M6 12v5M18 12v5"/></g>',
+    verified_user: CARBON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><path d="m9 12 2 2 4-4"/></g>',
+    gavel: CARBON_G + '<path d="m14 12.5-8 8-2.5-2.5 8-8"/><path d="m13 4.5 6.5 6.5-3 3L10 7.5z"/><path d="m16.5 8 2.5-2.5"/><path d="m7.5 10 2.5-2.5"/></g>',
+    handshake: CARBON_G + '<path d="m11 16.5 2 2 4.5-4.5-3.5-3.5-2.5 2-2.5-2.5 4-4 6 6"/><path d="m3.5 13 5.5 5.5"/><path d="M20.5 10.5 15 5"/><path d="m7.5 7 3.5 3.5"/></g>',
+    psychology: CARBON_G + '<path d="M12 5a3.5 3.5 0 0 0-6.5 1.8A4 4 0 0 0 3.5 12a4 4 0 0 0 2 5.2A3.8 3.8 0 0 0 12 18.5Z"/><path d="M12 5a3.5 3.5 0 0 1 6.5 1.8A4 4 0 0 1 20.5 12a4 4 0 0 1-2 5.2A3.8 3.8 0 0 1 12 18.5Z"/></g>',
+    healing: CARBON_G + '<path d="M12 19.5s-7.5-4.6-8.5-9.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.5 3.5c-1 5.2-8.5 9.8-8.5 9.8Z"/><path d="M12 10v5M9.5 12.5h5"/></g>',
+    groups: CARBON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+    content_copy: CARBON_G + '<rect x="8.5" y="8.5" width="12" height="12"/><path d="M15.5 8.5v-5h-12v12h5"/></g>',
+    download: CARBON_G + '<path d="M4 15.5v4.5h16v-4.5M7.5 10.5 12 15l4.5-4.5M12 14.5V3.5"/></g>',
+    check_circle: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.3 2.3 4.7-4.8"/></g>',
+    error: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></g>',
+    warning: CARBON_G + '<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5"/><circle cx="12" cy="17.2" r=".8" fill="currentColor" stroke="none"/></g>',
+    info: CARBON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r=".8" fill="currentColor" stroke="none"/></g>',
+    flag: CARBON_G + '<path d="M5 20.5V4h13.5l-2.5 4 2.5 4H5"/></g>',
+    restart_alt: CARBON_G + '<path d="M5 12a7 7 0 1 0 2-4.9L4.5 9.5"/><path d="M4.5 5v4.5H9"/></g>',
+    search_off: CARBON_G + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.2 15.2 4.8 4.8"/><path d="m8 8 5 5"/></g>',
+    chevron_left: CARBON_G + '<path d="m15 18-6-6 6-6"/></g>',
+    chevron_right: CARBON_G + '<path d="m9 6 6 6-6 6"/></g>'
+  };
+
+  const ICON_SPECIMENS = [
+    { key: 'tasks', label: 'My Space / Tasks' },
+    { key: 'seizure', label: 'Field Seizure' },
+    { key: 'drafts', label: 'Drafts Queue' },
+    { key: 'approvals', label: 'Files & Approvals' },
+    { key: 'analytics', label: 'MEL Analytics' },
+    { key: 'exports', label: 'Dossier Exports' },
+    { key: 'dynamic_form', label: 'Form Builder' },
+    { key: 'cloud_done', label: 'Encrypted Sync' },
+    { key: 'data_structure', label: 'Logframe Tree' },
+    { key: 'verified_user', label: 'HMAC Sign-Off' },
+    { key: 'gavel', label: 'Volet · Paralegals' },
+    { key: 'handshake', label: 'Volet · Mediators' },
+    { key: 'psychology', label: 'Volet · Psychosocial' },
+    { key: 'healing', label: 'Volet · Healing' },
+    { key: 'groups', label: 'Volet · General' },
+    { key: 'flag', label: 'Anomaly Flag' }
+  ];
+
+  function dpIcon(name, size) {
+    const px = size || 16;
+    const body = DP_ICONS[name] || DP_ICONS.info;
+    return (
+      '<span class="v1-icon v1-icon-' + px + '" aria-hidden="true" data-icon="' + esc(name) + '">' +
+        '<svg viewBox="0 0 24 24" width="' + px + '" height="' + px + '">' + body + '</svg>' +
+      '</span>'
+    );
+  }
+
   function esc(v) {
     return String(v == null ? '' : v)
       .replace(/&/g, '&amp;')
@@ -186,7 +246,23 @@
       );
     }).join('');
 
-    const emptyRowHtml = '<tr><td colspan="7" class="dp-empty-cell">No parish disbursements match the current filter criteria.</td></tr>';
+    const iconCardsHtml = ICON_SPECIMENS.map(function (ic) {
+      return (
+        '<div class="dp-icon-card">' +
+          '<span class="dp-icon-glyph">' + dpIcon(ic.key, 20) + '</span>' +
+          '<div class="dp-icon-info">' +
+            '<strong>' + esc(ic.label) + '</strong>' +
+            '<code>' + esc(ic.key) + '</code>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
+
+    const emptyRowHtml =
+      '<tr><td colspan="7" class="dp-empty-cell">' +
+        dpIcon('search_off', 20) +
+        ' <span>No parish disbursements match the current filter criteria.</span>' +
+      '</td></tr>';
 
     root.innerHTML =
       '<header class="v1-topbar dp-topbar" role="banner">' +
@@ -205,8 +281,8 @@
             '<button type="button" class="dp-shell-btn' + (STATE.density === 'compact' ? ' active' : '') + '" data-action="set-density" data-density-val="compact">Compact 32px</button>' +
             '<button type="button" class="dp-shell-btn' + (STATE.density === 'standard' ? ' active' : '') + '" data-action="set-density" data-density-val="standard">Standard 40px</button>' +
           '</div>' +
-          '<button type="button" class="dp-shell-btn" id="dp_copy_tokens">Copy tokens.figma.json</button>' +
-          '<button type="button" class="dp-shell-btn dp-shell-btn-primary" id="dp_download_tokens">Download tokens.figma.json</button>' +
+          '<button type="button" class="dp-shell-btn" id="dp_copy_tokens">' + dpIcon('content_copy', 16) + '<span>Copy tokens.figma.json</span></button>' +
+          '<button type="button" class="dp-shell-btn dp-shell-btn-primary" id="dp_download_tokens">' + dpIcon('download', 16) + '<span>Download tokens.figma.json</span></button>' +
         '</div>' +
       '</header>' +
 
@@ -219,9 +295,9 @@
               '<span class="v1-breadcrumb-item current">IBM Carbon v11 Specimen Matrix</span>' +
             '</nav>' +
             '<h1 class="v1-page-title">IBM Carbon v11 Architecture &amp; Management Specimen</h1>' +
-            '<p class="v1-page-subtitle">Strict 0px architectural geometry, Carbon Gray 10 / Gray 100 / Blue 60 (#0F62FE) hierarchy, 48px UI Shell header, 9999px semantic status pills, and W3C DTCG Figma tokens across real CDJP Butare workflows.</p>' +
+            '<p class="v1-page-subtitle">Strict 0px architectural geometry, Carbon Gray 10 / Gray 100 / Blue 60 (#0F62FE) hierarchy, 48px UI Shell header, 9999px semantic status pills, 1.5px geometric monoline iconography, and W3C DTCG Figma tokens across real CDJP Butare workflows.</p>' +
           '</div>' +
-          (STATE.actionFeedback ? '<span class="v1-badge GREAT" role="status">' + esc(STATE.actionFeedback) + '</span>' : '') +
+          (STATE.actionFeedback ? '<span class="v1-badge GREAT" role="status">' + dpIcon('check_circle', 14) + '<span>' + esc(STATE.actionFeedback) + '</span></span>' : '') +
         '</div>' +
 
         '<!-- 1. KPI Strip: Anti-Truncation Stress Test -->' +
@@ -290,8 +366,8 @@
                 '<label class="v1-field-label" for="dp_budget_input">Disbursed Voucher Amount (RWF)</label>' +
                 '<input id="dp_budget_input" type="text" class="v1-input dp-ctrl' + (STATE.simulateError ? ' has-error' : '') + '" value="' + (STATE.simulateError ? '-18450000' : '18450000') + '">' +
                 (STATE.simulateError
-                  ? '<div class="v1-field-error" role="alert">Amount must be greater than 0 RWF and within approved ceiling.</div>'
-                  : '<div class="v1-field-helper">Validated against Q4 parish disbursement ledger</div>') +
+                  ? '<div class="v1-field-error" role="alert">' + dpIcon('error', 14) + '<span>Amount must be greater than 0 RWF and within approved ceiling.</span></div>'
+                  : '<div class="v1-field-helper">' + dpIcon('info', 14) + '<span>Validated against Q4 parish disbursement ledger</span></div>') +
               '</div>' +
 
               '<div class="v1-field">' +
@@ -305,10 +381,10 @@
             '</div>' +
 
             '<div class="dp-button-row">' +
-              '<button type="button" class="v1-btn v1-btn-primary dp-ctrl" id="dp_btn_save">Submit Field Log</button>' +
-              '<button type="button" class="v1-btn v1-btn-secondary dp-ctrl">Save Draft Locally</button>' +
-              '<button type="button" class="v1-btn v1-btn-ghost dp-ctrl">Reset Form Fields</button>' +
-              '<button type="button" class="v1-btn v1-btn-danger dp-ctrl">Flag Anomaly / Seize</button>' +
+              '<button type="button" class="v1-btn v1-btn-primary dp-ctrl" id="dp_btn_save"><span>Submit Field Log</span>' + dpIcon('check_circle', 16) + '</button>' +
+              '<button type="button" class="v1-btn v1-btn-secondary dp-ctrl"><span>Save Draft Locally</span>' + dpIcon('cloud_done', 16) + '</button>' +
+              '<button type="button" class="v1-btn v1-btn-ghost dp-ctrl"><span>Reset Form Fields</span>' + dpIcon('restart_alt', 16) + '</button>' +
+              '<button type="button" class="v1-btn v1-btn-danger dp-ctrl"><span>Flag Anomaly / Seize</span>' + dpIcon('flag', 16) + '</button>' +
             '</div>' +
           '</div>' +
         '</section>' +
@@ -352,9 +428,9 @@
             '<div class="dp-table-pagination">' +
               '<span>Showing ' + (filtered.length ? (startIdx + 1) : 0) + '–' + Math.min(startIdx + STATE.pageSize, filtered.length) + ' of ' + filtered.length + ' verified deliverables</span>' +
               '<div class="dp-pagination-controls">' +
-                '<button type="button" class="v1-btn v1-btn-sm v1-btn-ghost" id="dp_prev_page"' + (STATE.page <= 1 ? ' disabled' : '') + '>Previous</button>' +
+                '<button type="button" class="v1-btn v1-btn-sm v1-btn-ghost" id="dp_prev_page"' + (STATE.page <= 1 ? ' disabled' : '') + '>' + dpIcon('chevron_left', 16) + '<span>Previous</span></button>' +
                 '<span class="v1-tabular">Page ' + STATE.page + ' / ' + totalPages + '</span>' +
-                '<button type="button" class="v1-btn v1-btn-sm v1-btn-ghost" id="dp_next_page"' + (STATE.page >= totalPages ? ' disabled' : '') + '>Next</button>' +
+                '<button type="button" class="v1-btn v1-btn-sm v1-btn-ghost" id="dp_next_page"' + (STATE.page >= totalPages ? ' disabled' : '') + '><span>Next</span>' + dpIcon('chevron_right', 16) + '</button>' +
               '</div>' +
             '</div>' +
           '</div>' +
@@ -369,31 +445,46 @@
           '<div class="dp-dialog-split">' +
             '<article class="dp-dialog-card">' +
               '<div class="dp-dialog-header">' +
-                '<span>PRIMARY WORKFLOW CONFIRMATION</span>' +
+                '<span class="dp-dialog-kicker">' + dpIcon('verified_user', 14) + '<span>PRIMARY WORKFLOW CONFIRMATION</span></span>' +
                 '<h3>Submit Quarterly Diocesan M&amp;E Dossier</h3>' +
               '</div>' +
               '<p class="dp-dialog-body">Seals 27 parish execution logs, locks HMAC-SHA256 verification digests, and queues the signed export bundle for coordinator sign-off.</p>' +
               '<div class="dp-dialog-actions">' +
                 '<button type="button" class="v1-btn v1-btn-ghost dp-ctrl">Cancel</button>' +
-                '<button type="button" class="v1-btn v1-btn-primary dp-ctrl">Seal &amp; Submit Dossier</button>' +
+                '<button type="button" class="v1-btn v1-btn-primary dp-ctrl"><span>Seal &amp; Submit Dossier</span>' + dpIcon('check_circle', 16) + '</button>' +
               '</div>' +
             '</article>' +
 
             '<article class="dp-dialog-card dp-dialog-danger">' +
               '<div class="dp-dialog-header">' +
-                '<span>DESTRUCTIVE SECURITY ACTION</span>' +
+                '<span class="dp-dialog-kicker">' + dpIcon('warning', 14) + '<span>DESTRUCTIVE SECURITY ACTION</span></span>' +
                 '<h3>Revoke Parish Seizure Authorization</h3>' +
               '</div>' +
               '<p class="dp-dialog-body">Immediately suspends offline Fernet key access for PAR-22 and writes an immutable entry to the diocesan audit trail. This cannot be undone.</p>' +
               '<div class="dp-dialog-actions">' +
                 '<button type="button" class="v1-btn v1-btn-ghost dp-ctrl">Keep Authorization</button>' +
-                '<button type="button" class="v1-btn v1-btn-danger dp-ctrl">Revoke Access Permanently</button>' +
+                '<button type="button" class="v1-btn v1-btn-danger dp-ctrl"><span>Revoke Access Permanently</span>' + dpIcon('error', 16) + '</button>' +
               '</div>' +
             '</article>' +
           '</div>' +
 
           '<div class="v1-panel dp-full-panel dp-swatch-panel">' +
             '<div class="dp-swatch-grid">' + swatchCards + '</div>' +
+          '</div>' +
+        '</section>' +
+
+        '<!-- 5. IBM Carbon v11 Precision Iconography Matrix -->' +
+        '<section class="dp-section" aria-label="Carbon v11 Precision Iconography Matrix">' +
+          '<div class="dp-section-head">' +
+            '<h2>5. Carbon v11 Precision Iconography System (1.5px Geometric Monoline)</h2>' +
+            '<span>24x24 viewBox · stroke-width="1.5" · square caps · miter joins · zero fallback glyphs</span>' +
+          '</div>' +
+          '<div class="v1-panel dp-full-panel dp-swatch-panel">' +
+            '<div class="dp-icon-meta-bar">' +
+              '<span>100% vector coverage across all 19 APSE modules, 5 field volets, sync states, and form actions</span>' +
+              '<code>Sizes: 12px · 14px · 16px · 18px · 19px · 20px · 22px · 24px · 32px · 40px · 48px</code>' +
+            '</div>' +
+            '<div class="dp-icon-grid">' + iconCardsHtml + '</div>' +
           '</div>' +
         '</section>' +
       '</main>';
