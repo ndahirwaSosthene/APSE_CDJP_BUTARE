@@ -1174,8 +1174,7 @@
               h('button', {
                 type: 'button',
                 key: c.id,
-                className: 'v1-chip' + (V091.formCategory === c.id ? ' active' : ''),
-                style: { fontSize: '0.6875rem', padding: '3px 8px' },
+                className: 'v1-chip v1-cluster-btn' + (V091.formCategory === c.id ? ' active' : ''),
                 onClick: () => {
                   V091.formCategory = c.id;
                   renderApp();
@@ -2128,12 +2127,12 @@
         )
       ),
 
-      /* Subtabs pills */
-      h('div', { className: 'v1-chips', style: { marginBottom: '20px' } },
+      /* Subtabs Content Switcher (Carbon sharp rectangular switcher) */
+      h('div', { className: 'v1-segmented', style: { marginBottom: '20px' } },
         subTabs.map(t =>
           h('button', {
             type: 'button',
-            className: 'v1-chip' + (V091.learningSubTab === t.id ? ' active' : ''),
+            className: 'v1-seg-btn' + (V091.learningSubTab === t.id ? ' active' : ''),
             onClick: () => {
               V091.learningSubTab = t.id;
               renderApp();

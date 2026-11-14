@@ -666,7 +666,7 @@ th {
   font-weight: 600;
   line-height: 1;
   padding: 4px 8px;
-  border-radius: var(--radius-pill);
+  border-radius: 0;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -756,8 +756,8 @@ th {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  border-radius: 0;
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 600;
@@ -768,7 +768,7 @@ th {
   background: var(--topbar-surface);
   color: var(--topbar-text);
   cursor: pointer;
-  min-height: 30px;
+  min-height: 32px;
   transition: background-color 120ms ease, border-color 120ms ease;
 }
 
@@ -1509,6 +1509,7 @@ th {
 .v1-chips {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   width: 100%;
   box-sizing: border-box;
@@ -1578,27 +1579,30 @@ html[data-theme="contrast"] .v1-chip.active {
 }
 
 .v1-goal-axis-tab {
-  border: 0;
-  border-radius: var(--radius-pill);
-  background: var(--tag-gray-bg);
-  color: var(--tag-gray-text);
+  border: 1px solid var(--border-subtle);
+  border-radius: 0;
+  background: var(--bg-input);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   padding: 4px 12px;
-  min-height: 28px;
+  min-width: 56px;
+  min-height: 32px;
+  text-align: center;
   cursor: pointer;
-  transition: background-color 110ms, color 110ms;
+  transition: background-color 110ms, color 110ms, border-color 110ms;
 }
 
 .v1-goal-axis-tab:hover {
-  background: var(--tag-gray-hover);
+  background: var(--bg-hover);
 }
 
 .v1-goal-axis-tab.active {
-  background: var(--tag-selected-bg);
-  color: var(--tag-selected-text);
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  border-color: var(--color-primary);
 }
 
 .v1-chips.v1-goal-list {
@@ -6214,9 +6218,46 @@ details[open] .v1-accordion-chevron {
 
 .v1-seizure-cluster-rail {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 4px;
+  width: 100%;
   margin-bottom: 12px;
+}
+
+.v1-seizure-cluster-rail .v1-chip,
+.v1-seizure-cluster-rail .v1-cluster-btn {
+  width: 100%;
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 0 !important;
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid transparent;
+  background: var(--bg-input);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.333;
+  letter-spacing: 0.01em;
+  justify-content: flex-start;
+  text-align: left;
+  white-space: normal;
+}
+
+.v1-seizure-cluster-rail .v1-chip:hover,
+.v1-seizure-cluster-rail .v1-cluster-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+.v1-seizure-cluster-rail .v1-chip.active,
+.v1-seizure-cluster-rail .v1-cluster-btn.active {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  font-weight: 600;
+  border-color: var(--border-subtle);
+  border-left: 3px solid var(--color-primary);
 }
 
 .v1-seizure-search {
@@ -6268,21 +6309,32 @@ details[open] .v1-accordion-chevron {
 }
 
 .v1-seizure-badge-rail .v1-chip {
-  flex-shrink: 0;
+  flex: 0 0 56px;
+  width: 56px;
+  min-width: 56px;
+  height: 32px;
+  min-height: 32px;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 4px 12px;
-  min-height: 28px;
-  border-radius: var(--radius-pill);
+  padding: 0 6px;
+  border-radius: 0 !important;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-input);
+  color: var(--text-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
+.v1-seizure-badge-rail .v1-chip:hover {
+  background: var(--bg-hover);
+}
+
 .v1-seizure-badge-rail .v1-chip.active {
-  background: var(--tag-selected-bg);
-  color: var(--tag-selected-text);
+  background: var(--color-primary);
+  color: var(--color-primary-fg);
+  border-color: var(--color-primary);
 }
 
 .v1-seizure-form-list {
@@ -6333,9 +6385,9 @@ details[open] .v1-accordion-chevron {
 
   .v1-seizure-cluster-rail {
     display: flex !important;
+    flex-direction: row !important;
     flex-wrap: nowrap !important;
     overflow-x: auto !important;
-    white-space: nowrap !important;
     -webkit-overflow-scrolling: touch !important;
     gap: 8px !important;
     padding: 2px 2px 8px !important;
@@ -6352,9 +6404,27 @@ details[open] .v1-accordion-chevron {
     border-radius: 0;
   }
 
-  .v1-seizure-cluster-rail .v1-chip {
-    flex-shrink: 0 !important;
-    white-space: nowrap !important;
+  .v1-seizure-cluster-rail .v1-chip,
+  .v1-seizure-cluster-rail .v1-cluster-btn {
+    flex: 0 0 216px !important;
+    width: 216px !important;
+    min-width: 216px !important;
+    min-height: 44px !important;
+    border-radius: 0 !important;
+    white-space: normal !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding: 6px 12px !important;
+    line-height: 1.25 !important;
+    border-left: 1px solid var(--border-subtle) !important;
+    border-bottom: 2px solid transparent !important;
+  }
+
+  .v1-seizure-cluster-rail .v1-chip.active,
+  .v1-seizure-cluster-rail .v1-cluster-btn.active {
+    border-left: 1px solid var(--border-subtle) !important;
+    border-bottom: 2px solid var(--color-primary) !important;
   }
 
   .v1-seizure-mobile-picker {
