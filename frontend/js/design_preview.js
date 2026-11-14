@@ -122,8 +122,40 @@
     restart_alt: CARBON_G + '<path d="M5 12a7 7 0 1 0 2-4.9L4.5 9.5"/><path d="M4.5 5v4.5H9"/></g>',
     search_off: CARBON_G + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.2 15.2 4.8 4.8"/><path d="m8 8 5 5"/></g>',
     chevron_left: CARBON_G + '<path d="m15 18-6-6 6-6"/></g>',
-    chevron_right: CARBON_G + '<path d="m9 6 6 6-6 6"/></g>'
+    chevron_right: CARBON_G + '<path d="m9 6 6 6-6 6"/></g>',
+    close: CARBON_G + '<path d="M6 6l12 12M6 18L18 6"/></g>'
   };
+
+  const CARBON_TAG_PALETTES = [
+    { name: 'Gray (Neutral)', className: 'gray', sample: 'Pending Sync' },
+    { name: 'Cool Gray', className: 'cool-gray', sample: 'Archived File' },
+    { name: 'Warm Gray', className: 'warm-gray', sample: 'Local Draft' },
+    { name: 'Red (Danger)', className: 'red', sample: 'Critical Risk' },
+    { name: 'Magenta', className: 'magenta', sample: 'Special Project' },
+    { name: 'Purple', className: 'purple', sample: 'Pastoral Council' },
+    { name: 'Blue (Info)', className: 'blue', sample: 'Under Review' },
+    { name: 'Cyan', className: 'cyan', sample: 'Queued Sync' },
+    { name: 'Teal', className: 'teal', sample: 'Centrale Field' },
+    { name: 'Green (Success)', className: 'green', sample: 'Diocese Approved' },
+    { name: 'High Contrast', className: 'high-contrast', sample: 'Audit Sealed' }
+  ];
+
+  const CARBON_TYPE_SPECIMENS = [
+    { token: 'code-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-code-01', sample: 'HMAC-SHA256: 8f4e2b0c1a93d07e6f8' },
+    { token: 'code-02', size: '14px', weight: '400', leading: '20px', tracking: '+0.32px', cssClass: 'v1-type-code-02', sample: 'PAR-02 · VOUCHER-RWF-18450000 · AP1-Q4' },
+    { token: 'label-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-label-01', sample: 'PLANNED ACTIVITY REFERENCE' },
+    { token: 'helper-text-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-helper-text-01', sample: 'Matches approved annual diocesan workplan item SO-01.4' },
+    { token: 'caption-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-caption-01', sample: 'Figure 1: Verified parish disbursement distribution across Southern Province' },
+    { token: 'body-short-01', size: '14px', weight: '400', leading: '18px', tracking: '+0.16px', cssClass: 'v1-type-body-short-01', sample: 'Compact UI text, table cells, form inputs, and breadcrumbs.' },
+    { token: 'body-long-01', size: '14px', weight: '400', leading: '20px', tracking: '+0.16px', cssClass: 'v1-type-body-long-01', sample: 'Continuous narrative paragraphs, field notes, beneficiary stories, and M&E reports.' },
+    { token: 'body-short-02', size: '16px', weight: '400', leading: '22px', tracking: '0px', cssClass: 'v1-type-body-short-02', sample: 'Expressive callouts, emphasized summaries, and large body labels.' },
+    { token: 'body-long-02', size: '16px', weight: '400', leading: '24px', tracking: '0px', cssClass: 'v1-type-body-long-02', sample: 'Long-form editorial narratives and diocesan pastoral letters.' },
+    { token: 'productive-heading-01', size: '14px', weight: '600', leading: '18px', tracking: '+0.16px', cssClass: 'v1-type-productive-heading-01', sample: 'Table Column Headers & In-Card Section Labels' },
+    { token: 'productive-heading-02', size: '16px', weight: '600', leading: '22px', tracking: '0px', cssClass: 'v1-type-productive-heading-02', sample: 'Card Titles & Collapsible Accordion Headers' },
+    { token: 'productive-heading-03', size: '20px', weight: '400', leading: '26px', tracking: '0px', cssClass: 'v1-type-productive-heading-03', sample: 'Modal Titles & Sub-Section Titles' },
+    { token: 'productive-heading-04', size: '28px', weight: '400', leading: '36px', tracking: '0px', cssClass: 'v1-type-productive-heading-04', sample: 'Top-Level H1 Page Titles & Workspace Names' },
+    { token: 'productive-heading-05', size: '32px', weight: '400', leading: '40px', tracking: '0px', cssClass: 'v1-type-productive-heading-05', sample: 'Hero Headlines & Dashboard Milestone Banners' }
+  ];
 
   const ICON_SPECIMENS = [
     { key: 'tasks', label: 'My Space / Tasks' },
@@ -258,6 +290,30 @@
       );
     }).join('');
 
+    const typeRowsHtml = CARBON_TYPE_SPECIMENS.map(function (ts) {
+      return (
+        '<tr>' +
+          '<td><code class="dp-type-token">' + esc(ts.token) + '</code></td>' +
+          '<td><span class="dp-type-specs">' + esc(ts.size) + ' / ' + esc(ts.leading) + ' · ' + esc(ts.weight) + ' · ' + esc(ts.tracking) + '</span></td>' +
+          '<td><div class="dp-type-preview ' + esc(ts.cssClass) + '">' + esc(ts.sample) + '</div></td>' +
+        '</tr>'
+      );
+    }).join('');
+
+    const tagCardsHtml = CARBON_TAG_PALETTES.map(function (tg) {
+      return (
+        '<div class="dp-tag-item">' +
+          '<span class="dp-tag-name">' + esc(tg.name) + '</span>' +
+          '<span class="v1-badge ' + esc(tg.className) + '">' +
+            esc(tg.sample) +
+            '<button type="button" class="v1-tag-dismiss" aria-label="Dismiss ' + esc(tg.sample) + '" title="Remove tag">' +
+              dpIcon('close', 12) +
+            '</button>' +
+          '</span>' +
+        '</div>'
+      );
+    }).join('');
+
     const emptyRowHtml =
       '<tr><td colspan="7" class="dp-empty-cell">' +
         dpIcon('search_off', 20) +
@@ -326,10 +382,32 @@
           '</div>' +
         '</section>' +
 
-        '<!-- 2. Multi-Field Form Matrix + Carbon Buttons -->' +
+        '<!-- 2. IBM Carbon v11 Canonical Typography Scale Matrix -->' +
+        '<section class="dp-section" aria-label="IBM Carbon v11 Typography Scale">' +
+          '<div class="dp-section-head">' +
+            '<h2>2. IBM Carbon v11 Canonical Typography Scale (Figma 2318:180601)</h2>' +
+            '<span>IBM Plex Sans &amp; IBM Plex Mono · Exact token weights, line-heights and letter-spacing</span>' +
+          '</div>' +
+          '<div class="v1-panel dp-full-panel dp-table-panel">' +
+            '<div class="dp-table-scroll">' +
+              '<table class="dp-type-table">' +
+                '<thead>' +
+                  '<tr>' +
+                    '<th style="width: 140px;">Type Token</th>' +
+                    '<th style="width: 220px;">Size / Leading / Weight / Tracking</th>' +
+                    '<th>Live Rendered Specimen</th>' +
+                  '</tr>' +
+                '</thead>' +
+                '<tbody>' + typeRowsHtml + '</tbody>' +
+              '</table>' +
+            '</div>' +
+          '</div>' +
+        '</section>' +
+
+        '<!-- 3. Multi-Field Form Matrix + Carbon Buttons -->' +
         '<section class="dp-section" aria-label="Multi-Field Form Matrix">' +
           '<div class="dp-section-head">' +
-            '<h2>2. Multi-Field Form Matrix &amp; Carbon Interaction States</h2>' +
+            '<h2>3. Multi-Field Form Matrix &amp; Carbon Interaction States</h2>' +
             '<span>Bottom-border field hierarchy, dual inset #0F62FE focus ring, and #DA1E28 validation</span>' +
           '</div>' +
           '<div class="v1-panel dp-full-panel">' +
@@ -389,10 +467,10 @@
           '</div>' +
         '</section>' +
 
-        '<!-- 3. Operational Data Table -->' +
+        '<!-- 4. Operational Data Table -->' +
         '<section class="dp-section" aria-label="Operational Data Table">' +
           '<div class="dp-section-head">' +
-            '<h2>3. Operational Data Table (Toolbar, Selection, Pill Tags &amp; Pagination)</h2>' +
+            '<h2>4. Operational Data Table (Toolbar, Selection, Pill Tags &amp; Pagination)</h2>' +
             '<span>Right-aligned tabular numerals, 0px architectural borders, 9999px status pills</span>' +
           '</div>' +
           '<div class="v1-panel dp-full-panel dp-table-panel">' +
@@ -436,10 +514,21 @@
           '</div>' +
         '</section>' +
 
-        '<!-- 4. Action Dialogs & Carbon Color Tokens Reference -->' +
+        '<!-- 5. IBM Carbon v11 Semantic Status Tags & 11-Color Filter Tag Palette -->' +
+        '<section class="dp-section" aria-label="Carbon Status Tags and Chips">' +
+          '<div class="dp-section-head">' +
+            '<h2>5. IBM Carbon v11 Tags, Chips &amp; Filter Dismiss Actions (Figma 2238:174573)</h2>' +
+            '<span>11 canonical color variants · 9999px pill geometry · 0px border · Filter dismissable buttons</span>' +
+          '</div>' +
+          '<div class="v1-panel dp-full-panel">' +
+            '<div class="dp-tag-grid">' + tagCardsHtml + '</div>' +
+          '</div>' +
+        '</section>' +
+
+        '<!-- 6. Action Dialogs & Carbon Color Tokens Reference -->' +
         '<section class="dp-section" aria-label="Action Dialogs and Color Matrix">' +
           '<div class="dp-section-head">' +
-            '<h2>4. Workflow vs. Destructive Dialogs &amp; Active Token Matrix</h2>' +
+            '<h2>6. Workflow vs. Destructive Dialogs &amp; Active Token Matrix</h2>' +
             '<span>Strict 0px modal containers (#0F62FE workflow save vs. #DA1E28 irreversible seizure)</span>' +
           '</div>' +
           '<div class="dp-dialog-split">' +
@@ -473,10 +562,10 @@
           '</div>' +
         '</section>' +
 
-        '<!-- 5. IBM Carbon v11 Precision Iconography Matrix -->' +
+        '<!-- 7. IBM Carbon v11 Precision Iconography Matrix -->' +
         '<section class="dp-section" aria-label="Carbon v11 Precision Iconography Matrix">' +
           '<div class="dp-section-head">' +
-            '<h2>5. Carbon v11 Precision Iconography System (1.5px Geometric Monoline)</h2>' +
+            '<h2>7. Carbon v11 Precision Iconography System (1.5px Geometric Monoline)</h2>' +
             '<span>24x24 viewBox · stroke-width="1.5" · square caps · miter joins · zero fallback glyphs</span>' +
           '</div>' +
           '<div class="v1-panel dp-full-panel dp-swatch-panel">' +

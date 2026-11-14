@@ -33,9 +33,11 @@ if not CHROME_EXE.exists():
 
 PARENT_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\69d32cba-a372-4b83-a1ee-722422214c21")
 OWN_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\9cb3c229-f30d-4da6-bc61-1ec41788accf")
+CURRENT_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\fa089038-5176-422d-8e24-a011ba27193d")
 
 PARENT_ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 OWN_ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
+CURRENT_ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def get_free_port() -> int:
@@ -118,7 +120,7 @@ class CDPClient:
     async def screenshot(self, filename: str):
         res = await self.send("Page.captureScreenshot", {"format": "png", "captureBeyondViewport": False})
         png_bytes = base64.b64decode(res["data"])
-        for out_dir in (PARENT_ARTIFACT_DIR, OWN_ARTIFACT_DIR):
+        for out_dir in (PARENT_ARTIFACT_DIR, OWN_ARTIFACT_DIR, CURRENT_ARTIFACT_DIR):
             target = out_dir / filename
             target.write_bytes(png_bytes)
             print(f"Saved screenshot: {target} ({len(png_bytes):,} bytes)")
@@ -151,7 +153,7 @@ async def main():
         server_proc = subprocess.Popen(server_cmd, cwd=str(ROOT), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         app_url = f"http://127.0.0.1:{server_port}/api/apps/apse/operations.html"
-        for _ in range(60):
+        for _ in range(120):
             try:
                 with urllib.request.urlopen(app_url, timeout=1) as r:
                     if r.status == 200:
@@ -159,7 +161,10 @@ async def main():
             except Exception:
                 await asyncio.sleep(0.15)
         else:
-            raise RuntimeError("Loopback server failed to start.")
+            err_msg = ""
+            if server_proc.poll() is not None and server_proc.stderr:
+                err_msg = server_proc.stderr.read().decode('utf-8', errors='ignore')
+            raise RuntimeError(f"Loopback server failed to start. {err_msg}")
 
         chrome_cmd = [
             str(CHROME_EXE),

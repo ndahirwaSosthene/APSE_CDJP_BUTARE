@@ -17,6 +17,26 @@ html[data-theme="cdjp"] {
   --font-sans: 'IBM Plex Sans', 'Inter Tight', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Code', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
+  /* 1.1 IBM Carbon v11 Canonical Typography Scale Tokens (Figma 2318:180601) */
+  --type-code-01: 400 0.75rem/1.333 var(--font-mono);          /* 12px / 16px / 0.32px */
+  --type-code-02: 400 0.875rem/1.428 var(--font-mono);         /* 14px / 20px / 0.32px */
+  --type-label-01: 400 0.75rem/1.333 var(--font-sans);         /* 12px / 16px / 0.32px */
+  --type-helper-text-01: 400 0.75rem/1.333 var(--font-sans);   /* 12px / 16px / 0.32px */
+  --type-caption-01: 400 0.75rem/1.333 var(--font-sans);       /* 12px / 16px / 0.32px */
+  --type-body-short-01: 400 0.875rem/1.286 var(--font-sans);   /* 14px / 18px / 0.16px */
+  --type-body-long-01: 400 0.875rem/1.428 var(--font-sans);    /* 14px / 20px / 0.16px */
+  --type-body-short-02: 400 1rem/1.375 var(--font-sans);       /* 16px / 22px / 0px */
+  --type-body-long-02: 400 1rem/1.5 var(--font-sans);          /* 16px / 24px / 0px */
+  --type-heading-compact-01: 600 0.875rem/1.286 var(--font-sans); /* 14px / 18px / 0.16px */
+  --type-heading-compact-02: 600 1rem/1.375 var(--font-sans);     /* 16px / 22px / 0px */
+  --type-productive-heading-01: 600 0.875rem/1.286 var(--font-sans); /* 14px / 18px / 0.16px */
+  --type-productive-heading-02: 600 1rem/1.375 var(--font-sans);     /* 16px / 22px / 0px */
+  --type-productive-heading-03: 400 1.25rem/1.3 var(--font-sans);    /* 20px / 26px / 0px */
+  --type-productive-heading-04: 400 1.75rem/1.286 var(--font-sans);  /* 28px / 36px / 0px */
+  --type-productive-heading-05: 400 2rem/1.25 var(--font-sans);      /* 32px / 40px / 0px */
+  --type-productive-heading-06: 300 2.625rem/1.19 var(--font-sans);  /* 42px / 50px / 0px */
+  --type-productive-heading-07: 300 3.375rem/1.185 var(--font-sans); /* 54px / 64px / 0px */
+
   /* 2.1 Carbon Gray 10 Surfaces (Management Default Light) */
   --bg-canvas: #F4F4F4;
   --bg-surface: #FFFFFF;
@@ -70,9 +90,41 @@ html[data-theme="cdjp"] {
   --focus-ring-inset: #FFFFFF;
 
   /* 2.5 Carbon Semantic Status Tags & Selectable Chips (9999px pill radius, 0px border) */
+  /* Canonical 11 Carbon Tag Color Tokens (Figma 2238:174573) */
   --tag-gray-bg: #E0E0E0;
   --tag-gray-hover: #CACACA;
   --tag-gray-text: #161616;
+  --tag-cool-gray-bg: #DDE1E6;
+  --tag-cool-gray-hover: #C1C7CD;
+  --tag-cool-gray-text: #121619;
+  --tag-warm-gray-bg: #E5E0DF;
+  --tag-warm-gray-hover: #CAC5C4;
+  --tag-warm-gray-text: #171414;
+  --tag-red-bg: #FFD7D9;
+  --tag-red-hover: #FFB3B8;
+  --tag-red-text: #A2191F;
+  --tag-magenta-bg: #FFD6E8;
+  --tag-magenta-hover: #FFB3D0;
+  --tag-magenta-text: #9F1853;
+  --tag-purple-bg: #E8DAFF;
+  --tag-purple-hover: #D0BFFF;
+  --tag-purple-text: #6929C4;
+  --tag-blue-bg: #D0E2FF;
+  --tag-blue-hover: #A6C8FF;
+  --tag-blue-text: #0043CE;
+  --tag-cyan-bg: #BAE6FF;
+  --tag-cyan-hover: #82CFFF;
+  --tag-cyan-text: #00539A;
+  --tag-teal-bg: #9EF0F0;
+  --tag-teal-hover: #3DDBD9;
+  --tag-teal-text: #005D5D;
+  --tag-green-bg: #A7F0BA;
+  --tag-green-hover: #6FDC8C;
+  --tag-green-text: #0E6027;
+  --tag-high-contrast-bg: #393939;
+  --tag-high-contrast-hover: #4C4C4C;
+  --tag-high-contrast-text: #FFFFFF;
+
   --tag-selected-bg: #161616;
   --tag-selected-hover: #393939;
   --tag-selected-text: #FFFFFF;
@@ -209,9 +261,41 @@ html[data-theme="dark"] {
   --border-strong: #6F6F6F;
   --focus-ring-inset: #161616;
 
+  /* Canonical 11 Carbon Tag Color Tokens in Dark (Gray 100) */
   --tag-gray-bg: #393939;
   --tag-gray-hover: #4C4C4C;
   --tag-gray-text: #F4F4F4;
+  --tag-cool-gray-bg: #343A3F;
+  --tag-cool-gray-hover: #4D5358;
+  --tag-cool-gray-text: #F2F4F8;
+  --tag-warm-gray-bg: #3C3838;
+  --tag-warm-gray-hover: #565151;
+  --tag-warm-gray-text: #F7F3F2;
+  --tag-red-bg: #750E13;
+  --tag-red-hover: #A2191F;
+  --tag-red-text: #FFD7D9;
+  --tag-magenta-bg: #740937;
+  --tag-magenta-hover: #9F1853;
+  --tag-magenta-text: #FFD6E8;
+  --tag-purple-bg: #491D8B;
+  --tag-purple-hover: #6929C4;
+  --tag-purple-text: #E8DAFF;
+  --tag-blue-bg: #002D9C;
+  --tag-blue-hover: #0043CE;
+  --tag-blue-text: #D0E2FF;
+  --tag-cyan-bg: #003A6D;
+  --tag-cyan-hover: #00539A;
+  --tag-cyan-text: #BAE6FF;
+  --tag-teal-bg: #004144;
+  --tag-teal-hover: #005D5D;
+  --tag-teal-text: #9EF0F0;
+  --tag-green-bg: #0E6027;
+  --tag-green-hover: #24A148;
+  --tag-green-text: #A7F0BA;
+  --tag-high-contrast-bg: #F4F4F4;
+  --tag-high-contrast-hover: #E0E0E0;
+  --tag-high-contrast-text: #161616;
+
   --tag-selected-bg: #F4F4F4;
   --tag-selected-hover: #E0E0E0;
   --tag-selected-text: #161616;
@@ -440,15 +524,45 @@ h3,
   letter-spacing: 0;
 }
 
-/* Form Label / Table Header / Breadcrumb (Carbon label-01: 12px / 16px / +0.32px) */
+/* ==========================================================================
+   IBM Carbon v11 Canonical Typography Scale Utility Classes (Figma 2318:180601)
+   ========================================================================== */
+.v1-type-code-01 { font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.333; letter-spacing: 0.32px; font-weight: 400; }
+.v1-type-code-02 { font-family: var(--font-mono); font-size: 0.875rem; line-height: 1.428; letter-spacing: 0.32px; font-weight: 400; }
+.v1-type-label-01 { font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.333; letter-spacing: 0.32px; font-weight: 400; }
+.v1-type-helper-text-01 { font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.333; letter-spacing: 0.32px; font-weight: 400; }
+.v1-type-caption-01 { font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.333; letter-spacing: 0.32px; font-weight: 400; }
+.v1-type-body-short-01 { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.286; letter-spacing: 0.16px; font-weight: 400; }
+.v1-type-body-long-01 { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.428; letter-spacing: 0.16px; font-weight: 400; }
+.v1-type-body-short-02 { font-family: var(--font-sans); font-size: 1rem; line-height: 1.375; letter-spacing: 0; font-weight: 400; }
+.v1-type-body-long-02 { font-family: var(--font-sans); font-size: 1rem; line-height: 1.5; letter-spacing: 0; font-weight: 400; }
+.v1-type-heading-compact-01,
+.v1-type-productive-heading-01 { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.286; letter-spacing: 0.16px; font-weight: 600; }
+.v1-type-heading-compact-02,
+.v1-type-productive-heading-02 { font-family: var(--font-sans); font-size: 1rem; line-height: 1.375; letter-spacing: 0; font-weight: 600; }
+.v1-type-productive-heading-03 { font-family: var(--font-sans); font-size: 1.25rem; line-height: 1.3; letter-spacing: 0; font-weight: 400; }
+.v1-type-productive-heading-04 { font-family: var(--font-sans); font-size: 1.75rem; line-height: 1.286; letter-spacing: 0; font-weight: 400; }
+.v1-type-productive-heading-05 { font-family: var(--font-sans); font-size: 2rem; line-height: 1.25; letter-spacing: 0; font-weight: 400; }
+.v1-type-productive-heading-06 { font-family: var(--font-sans); font-size: 2.625rem; line-height: 1.19; letter-spacing: 0; font-weight: 300; }
+.v1-type-productive-heading-07 { font-family: var(--font-sans); font-size: 3.375rem; line-height: 1.185; letter-spacing: 0; font-weight: 300; }
+
+/* Form Label (Carbon label-01: 12px / 16px / 400 Regular / +0.32px / #525252) */
 .v1-label,
-label,
-th {
+label {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.333;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.32px;
   color: var(--text-secondary);
+}
+
+/* Table Header (Carbon heading-compact-01: 14px / 18px / 600 SemiBold / +0.16px / #161616) */
+th {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.286;
+  letter-spacing: 0.16px;
+  color: var(--text-primary);
 }
 
 /* ==========================================================================
@@ -1067,17 +1181,17 @@ th {
   align-items: stretch;
 }
 
-/* Carbon UI Breadcrumbs above H1 heading-04 */
+/* Carbon UI Breadcrumbs above H1 heading-04 (body-compact-01: 14px / 18px / 400 / +0.16px) */
 .v1-breadcrumbs {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 6px;
   margin-bottom: 8px;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 400;
-  line-height: 1.333;
-  letter-spacing: 0.02em;
+  line-height: 1.286;
+  letter-spacing: 0.16px;
   color: var(--color-link);
 }
 
@@ -1244,7 +1358,7 @@ th {
   gap: var(--space-2);
 }
 
-/* Form Fields & Carbon Bottom-Border Inputs */
+/* Form Fields & Carbon Bottom-Border Inputs (Figma 2526:182092 & 2577:185553) */
 .v1-field {
   display: flex;
   flex-direction: column;
@@ -1254,11 +1368,11 @@ th {
 .v1-field-label {
   display: block;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.333;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.32px;
   color: var(--text-secondary);
-  margin: 0 0 6px 0;
+  margin: 0 0 8px 0;
 }
 
 .v1-input,
@@ -1267,7 +1381,7 @@ th {
 .v1-step-input {
   width: 100%;
   min-height: 40px;
-  padding: 8px 14px;
+  padding: 11px 16px 10px 16px;
   background: var(--bg-input);
   color: var(--text-primary);
   border: 0;
@@ -1277,6 +1391,7 @@ th {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.286;
+  letter-spacing: 0.16px;
   transition: box-shadow 110ms, border-color 110ms, background-color 110ms;
 }
 
@@ -1299,7 +1414,7 @@ th {
 .v1-textarea {
   min-height: 84px;
   resize: vertical;
-  padding: 10px 14px;
+  padding: 11px 16px 10px 16px;
   line-height: 20px;
 }
 
@@ -1329,21 +1444,23 @@ th {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.333;
-  color: var(--text-muted);
+  letter-spacing: 0.32px;
+  color: var(--text-secondary);
 }
 
 .v1-field-error {
   display: flex;
   align-items: center;
   gap: var(--space-1);
-  margin-top: 6px;
+  margin-top: 4px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.333;
+  letter-spacing: 0.32px;
   color: var(--color-danger);
 }
 
@@ -1577,8 +1694,8 @@ html[data-theme="contrast"] .v1-chip.active {
 }
 
 /* ==========================================================================
-   IBM Carbon v11 Pill Tags (.v1-badge, .v1-lozenge)
-   (12px, 600 SemiBold, uppercase, 9999px pill radius, 0px border)
+   IBM Carbon v11 Pill Tags (.v1-badge, .v1-lozenge) & Filter Tags
+   (Figma 2238:174573 / 2238:174572: 12px, 600 SemiBold, uppercase, 9999px pill radius, 0px border)
    ========================================================================== */
 
 .v1-badge,
@@ -1602,36 +1719,102 @@ html[data-theme="contrast"] .v1-chip.active {
   color: var(--tag-neutral-text);
 }
 
-.v1-badge.GREAT,
-.v1-badge.success {
-  background: var(--tag-success-bg);
-  color: var(--tag-success-text);
+/* Canonical 11 Carbon Tag Color Classes (Figma Community File 52jzK8ujcDXU9t36sT0IM7) */
+.v1-badge.gray,
+.v1-badge.neutral,
+.v1-badge.PENDING {
+  background: var(--tag-gray-bg);
+  color: var(--tag-gray-text);
 }
 
-.v1-badge.GOOD,
-.v1-badge.info {
-  background: var(--tag-info-bg);
-  color: var(--tag-info-text);
+.v1-badge.cool-gray {
+  background: var(--tag-cool-gray-bg);
+  color: var(--tag-cool-gray-text);
 }
 
+.v1-badge.warm-gray {
+  background: var(--tag-warm-gray-bg);
+  color: var(--tag-warm-gray-text);
+}
+
+.v1-badge.red,
+.v1-badge.danger,
+.v1-badge.LOW,
+.v1-badge.MAJOR {
+  background: var(--tag-red-bg);
+  color: var(--tag-red-text);
+}
+
+.v1-badge.magenta {
+  background: var(--tag-magenta-bg);
+  color: var(--tag-magenta-text);
+}
+
+.v1-badge.purple {
+  background: var(--tag-purple-bg);
+  color: var(--tag-purple-text);
+}
+
+.v1-badge.blue,
+.v1-badge.info,
+.v1-badge.GOOD {
+  background: var(--tag-blue-bg);
+  color: var(--tag-blue-text);
+}
+
+.v1-badge.cyan {
+  background: var(--tag-cyan-bg);
+  color: var(--tag-cyan-text);
+}
+
+.v1-badge.teal {
+  background: var(--tag-teal-bg);
+  color: var(--tag-teal-text);
+}
+
+.v1-badge.green,
+.v1-badge.success,
+.v1-badge.GREAT {
+  background: var(--tag-green-bg);
+  color: var(--tag-green-text);
+}
+
+.v1-badge.warn,
 .v1-badge.MEDIUM,
-.v1-badge.MINOR,
-.v1-badge.warn {
+.v1-badge.MINOR {
   background: var(--tag-warn-bg);
   color: var(--tag-warn-text);
 }
 
-.v1-badge.LOW,
-.v1-badge.MAJOR,
-.v1-badge.danger {
-  background: var(--tag-danger-bg);
-  color: var(--tag-danger-text);
+.v1-badge.high-contrast {
+  background: var(--tag-high-contrast-bg);
+  color: var(--tag-high-contrast-text);
 }
 
-.v1-badge.PENDING,
-.v1-badge.neutral {
-  background: var(--tag-neutral-bg);
-  color: var(--tag-neutral-text);
+/* Carbon Filter Tag Dismiss Button (Figma Filter=True dismiss action) */
+.v1-tag-dismiss {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+  margin-right: -4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 50%;
+  padding: 0;
+  transition: background-color 100ms ease;
+}
+
+.v1-tag-dismiss:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .v1-tag-dismiss:hover {
+  background-color: rgba(255, 255, 255, 0.16);
 }
 
 /* ==========================================================================
@@ -3228,8 +3411,10 @@ details[open] .v1-accordion-chevron {
   background: var(--bg-hover);
   padding: 12px 16px;
   text-align: left;
-  font-size: 0.75rem;
+  font-size: 0.875rem; /* 14px - Carbon heading-compact-01 */
   font-weight: 600;
+  line-height: 1.286;
+  letter-spacing: 0.16px;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-subtle);
   border-right: 1px solid var(--border-subtle);
@@ -3241,8 +3426,10 @@ details[open] .v1-accordion-chevron {
 
 .v1-data-table td {
   padding: 12px 16px;
-  font-size: 0.875rem;
+  font-size: 0.875rem; /* 14px - Carbon body-compact-01 */
   font-weight: 400;
+  line-height: 1.286;
+  letter-spacing: 0.16px;
   color: var(--text-primary);
   border-bottom: 1px solid var(--border-subtle);
   border-right: 1px solid var(--border-subtle);
@@ -4340,9 +4527,22 @@ details[open] .v1-accordion-chevron {
   background: var(--bg-surface-elevated, var(--bg-surface));
 }
 
+.v1-modal-kicker,
+.v1-modal-label {
+  font-family: var(--font-sans);
+  font-size: 0.75rem; /* 12px - Carbon label-01 */
+  font-weight: 400;
+  line-height: 1.333;
+  letter-spacing: 0.32px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: block;
+}
+
 .v1-modal-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.25rem; /* 20px - Carbon heading-03 */
   font-weight: 400;
   line-height: 1.4;
   color: var(--text-primary);
@@ -7120,6 +7320,71 @@ html[data-theme="contrast"] .v1-feedback-code-pill {
 
 .dp-shell-btn {
   gap: 6px;
+}
+
+.dp-type-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dp-type-table th {
+  background: var(--bg-hover);
+  padding: 10px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left;
+}
+
+.dp-type-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+
+.dp-type-table tr:hover td {
+  background: var(--bg-hover);
+}
+
+.dp-type-token {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.dp-type-specs {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.dp-type-preview {
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.dp-tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+}
+
+.dp-tag-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.dp-tag-item span.dp-tag-name {
+  font-size: 0.6875rem;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
 }
 
 @media (max-width: 900px) {

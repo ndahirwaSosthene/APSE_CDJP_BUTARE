@@ -36,6 +36,8 @@ if not CHROME_EXE.exists():
 
 PARENT_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\153a4561-1c61-4c3d-b9fe-43ed1d186c63")
 OWN_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\b8e8e53f-2716-4d3f-a88d-24e6cf9af15b")
+CURRENT_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\fa089038-5176-422d-8e24-a011ba27193d")
+CURRENT_ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def get_free_port() -> int:
@@ -118,7 +120,7 @@ class CDPClient:
     async def screenshot(self, filename: str):
         res = await self.send("Page.captureScreenshot", {"format": "png", "captureBeyondViewport": False})
         png_bytes = base64.b64decode(res["data"])
-        for out_dir in (PARENT_ARTIFACT_DIR, OWN_ARTIFACT_DIR):
+        for out_dir in (PARENT_ARTIFACT_DIR, OWN_ARTIFACT_DIR, CURRENT_ARTIFACT_DIR):
             if out_dir.exists():
                 (out_dir / filename).write_bytes(png_bytes)
         return len(png_bytes)

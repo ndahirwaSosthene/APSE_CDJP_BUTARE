@@ -3,7 +3,8 @@
   "meta": {
     "system": "ibm-carbon-v11",
     "application": "APSE CDJP Butare",
-    "version": "2.0.0",
+    "version": "2.1.0",
+    "sourceFigmaCommunityFile": "52jzK8ujcDXU9t36sT0IM7",
     "generatedBy": "ultimate-ui-design"
   },
   "color": {
@@ -46,11 +47,28 @@
         "danger": { "$value": "#DA1E28", "$type": "color" },
         "danger-bg": { "$value": "#FFF1F1", "$type": "color" },
         "danger-text": { "$value": "#A2191F", "$type": "color" },
-        "purple-bg": { "$value": "#F6F2FF", "$type": "color" },
-        "purple-text": { "$value": "#6929C4", "$type": "color" },
-        "tag-gray-bg": { "$value": "#E0E0E0", "$type": "color", "$description": "Carbon Gray 20 selectable tag background" },
-        "tag-gray-hover": { "$value": "#CACACA", "$type": "color" },
+        "tag-gray-bg": { "$value": "#E0E0E0", "$type": "color", "$description": "Carbon Gray 20 tag background" },
         "tag-gray-text": { "$value": "#161616", "$type": "color" },
+        "tag-cool-gray-bg": { "$value": "#DDE1E6", "$type": "color" },
+        "tag-cool-gray-text": { "$value": "#121619", "$type": "color" },
+        "tag-warm-gray-bg": { "$value": "#E5E0DF", "$type": "color" },
+        "tag-warm-gray-text": { "$value": "#171414", "$type": "color" },
+        "tag-red-bg": { "$value": "#FFD7D9", "$type": "color" },
+        "tag-red-text": { "$value": "#A2191F", "$type": "color" },
+        "tag-magenta-bg": { "$value": "#FFD6E8", "$type": "color" },
+        "tag-magenta-text": { "$value": "#9F1853", "$type": "color" },
+        "tag-purple-bg": { "$value": "#E8DAFF", "$type": "color" },
+        "tag-purple-text": { "$value": "#6929C4", "$type": "color" },
+        "tag-blue-bg": { "$value": "#D0E2FF", "$type": "color" },
+        "tag-blue-text": { "$value": "#0043CE", "$type": "color" },
+        "tag-cyan-bg": { "$value": "#BAE6FF", "$type": "color" },
+        "tag-cyan-text": { "$value": "#00539A", "$type": "color" },
+        "tag-teal-bg": { "$value": "#9EF0F0", "$type": "color" },
+        "tag-teal-text": { "$value": "#005D5D", "$type": "color" },
+        "tag-green-bg": { "$value": "#A7F0BA", "$type": "color" },
+        "tag-green-text": { "$value": "#0E6027", "$type": "color" },
+        "tag-high-contrast-bg": { "$value": "#393939", "$type": "color" },
+        "tag-high-contrast-text": { "$value": "#FFFFFF", "$type": "color" },
         "tag-selected-bg": { "$value": "#161616", "$type": "color", "$description": "Carbon high-contrast inverse selected tag" },
         "tag-selected-text": { "$value": "#FFFFFF", "$type": "color" }
       }
@@ -91,11 +109,28 @@
         "danger": { "$value": "#DA1E28", "$type": "color" },
         "danger-bg": { "$value": "#750E13", "$type": "color" },
         "danger-text": { "$value": "#FFD7D9", "$type": "color" },
-        "purple-bg": { "$value": "#491D8B", "$type": "color" },
-        "purple-text": { "$value": "#E8DAFF", "$type": "color" },
         "tag-gray-bg": { "$value": "#393939", "$type": "color" },
-        "tag-gray-hover": { "$value": "#4C4C4C", "$type": "color" },
         "tag-gray-text": { "$value": "#F4F4F4", "$type": "color" },
+        "tag-cool-gray-bg": { "$value": "#343A3F", "$type": "color" },
+        "tag-cool-gray-text": { "$value": "#F2F4F8", "$type": "color" },
+        "tag-warm-gray-bg": { "$value": "#3C3838", "$type": "color" },
+        "tag-warm-gray-text": { "$value": "#F7F3F2", "$type": "color" },
+        "tag-red-bg": { "$value": "#750E13", "$type": "color" },
+        "tag-red-text": { "$value": "#FFD7D9", "$type": "color" },
+        "tag-magenta-bg": { "$value": "#740937", "$type": "color" },
+        "tag-magenta-text": { "$value": "#FFD6E8", "$type": "color" },
+        "tag-purple-bg": { "$value": "#491D8B", "$type": "color" },
+        "tag-purple-text": { "$value": "#E8DAFF", "$type": "color" },
+        "tag-blue-bg": { "$value": "#002D9C", "$type": "color" },
+        "tag-blue-text": { "$value": "#D0E2FF", "$type": "color" },
+        "tag-cyan-bg": { "$value": "#003A6D", "$type": "color" },
+        "tag-cyan-text": { "$value": "#BAE6FF", "$type": "color" },
+        "tag-teal-bg": { "$value": "#004144", "$type": "color" },
+        "tag-teal-text": { "$value": "#9EF0F0", "$type": "color" },
+        "tag-green-bg": { "$value": "#0E6027", "$type": "color" },
+        "tag-green-text": { "$value": "#A7F0BA", "$type": "color" },
+        "tag-high-contrast-bg": { "$value": "#F4F4F4", "$type": "color" },
+        "tag-high-contrast-text": { "$value": "#161616", "$type": "color" },
         "tag-selected-bg": { "$value": "#F4F4F4", "$type": "color" },
         "tag-selected-text": { "$value": "#161616", "$type": "color" }
       }
@@ -119,11 +154,153 @@
       "mono": { "$value": "IBM Plex Mono", "$type": "fontFamily" }
     },
     "fontSize": {
+      "code-01": { "$value": "12px", "$type": "dimension" },
+      "code-02": { "$value": "14px", "$type": "dimension" },
       "label-01": { "$value": "12px", "$type": "dimension" },
+      "helper-text-01": { "$value": "12px", "$type": "dimension" },
+      "caption-01": { "$value": "12px", "$type": "dimension" },
       "body-compact-01": { "$value": "14px", "$type": "dimension" },
+      "body-long-01": { "$value": "14px", "$type": "dimension" },
+      "body-compact-02": { "$value": "16px", "$type": "dimension" },
+      "body-long-02": { "$value": "16px", "$type": "dimension" },
+      "heading-compact-01": { "$value": "14px", "$type": "dimension" },
+      "heading-compact-02": { "$value": "16px", "$type": "dimension" },
+      "heading-01": { "$value": "14px", "$type": "dimension" },
       "heading-02": { "$value": "16px", "$type": "dimension" },
+      "heading-03": { "$value": "20px", "$type": "dimension" },
       "heading-04": { "$value": "28px", "$type": "dimension" },
+      "heading-05": { "$value": "32px", "$type": "dimension" },
+      "heading-06": { "$value": "42px", "$type": "dimension" },
+      "heading-07": { "$value": "54px", "$type": "dimension" },
       "kpi-tabular": { "$value": "28px", "$type": "dimension" }
+    },
+    "typeScale": {
+      "code-01": {
+        "fontFamily": { "$value": "IBM Plex Mono", "$type": "fontFamily" },
+        "fontSize": { "$value": "12px", "$type": "dimension" },
+        "lineHeight": { "$value": "16px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0.32px", "$type": "dimension" }
+      },
+      "code-02": {
+        "fontFamily": { "$value": "IBM Plex Mono", "$type": "fontFamily" },
+        "fontSize": { "$value": "14px", "$type": "dimension" },
+        "lineHeight": { "$value": "20px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0.32px", "$type": "dimension" }
+      },
+      "label-01": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "12px", "$type": "dimension" },
+        "lineHeight": { "$value": "16px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0.32px", "$type": "dimension" }
+      },
+      "helper-text-01": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "12px", "$type": "dimension" },
+        "lineHeight": { "$value": "16px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0.32px", "$type": "dimension" }
+      },
+      "caption-01": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "12px", "$type": "dimension" },
+        "lineHeight": { "$value": "16px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0.32px", "$type": "dimension" }
+      },
+      "body-compact-01": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "14px", "$type": "dimension" },
+        "lineHeight": { "$value": "18px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0.16px", "$type": "dimension" }
+      },
+      "body-long-01": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "14px", "$type": "dimension" },
+        "lineHeight": { "$value": "20px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0.16px", "$type": "dimension" }
+      },
+      "body-compact-02": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "16px", "$type": "dimension" },
+        "lineHeight": { "$value": "22px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "body-long-02": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "16px", "$type": "dimension" },
+        "lineHeight": { "$value": "24px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "heading-compact-01": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "14px", "$type": "dimension" },
+        "lineHeight": { "$value": "18px", "$type": "dimension" },
+        "fontWeight": { "$value": 600, "$type": "number" },
+        "letterSpacing": { "$value": "0.16px", "$type": "dimension" }
+      },
+      "heading-compact-02": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "16px", "$type": "dimension" },
+        "lineHeight": { "$value": "22px", "$type": "dimension" },
+        "fontWeight": { "$value": 600, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "heading-01": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "14px", "$type": "dimension" },
+        "lineHeight": { "$value": "20px", "$type": "dimension" },
+        "fontWeight": { "$value": 600, "$type": "number" },
+        "letterSpacing": { "$value": "0.16px", "$type": "dimension" }
+      },
+      "heading-02": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "16px", "$type": "dimension" },
+        "lineHeight": { "$value": "22px", "$type": "dimension" },
+        "fontWeight": { "$value": 600, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "heading-03": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "20px", "$type": "dimension" },
+        "lineHeight": { "$value": "26px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "heading-04": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "28px", "$type": "dimension" },
+        "lineHeight": { "$value": "36px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "heading-05": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "32px", "$type": "dimension" },
+        "lineHeight": { "$value": "40px", "$type": "dimension" },
+        "fontWeight": { "$value": 400, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "heading-06": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "42px", "$type": "dimension" },
+        "lineHeight": { "$value": "50px", "$type": "dimension" },
+        "fontWeight": { "$value": 300, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      },
+      "heading-07": {
+        "fontFamily": { "$value": "IBM Plex Sans", "$type": "fontFamily" },
+        "fontSize": { "$value": "54px", "$type": "dimension" },
+        "lineHeight": { "$value": "64px", "$type": "dimension" },
+        "fontWeight": { "$value": 300, "$type": "number" },
+        "letterSpacing": { "$value": "0px", "$type": "dimension" }
+      }
     }
   },
   "spacing": {

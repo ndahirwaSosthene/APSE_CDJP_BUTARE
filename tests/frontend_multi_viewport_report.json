@@ -17,7 +17,7 @@
       "title": "16-Column Carbon Grid: 4 KPI Cards in 1 Row (span 4) & 2 Split Panels (span 8)",
       "status": "PASS",
       "passed": true,
-      "details": "KPI tops=[458, 458, 458, 458] widths=[254, 254, 254, 254]px; Panel tops=[623, 623] widths=[525, 525]px; canvasPad=32px"
+      "details": "KPI tops=[460, 460, 460, 460] widths=[254, 254, 254, 254]px; Panel tops=[624, 624] widths=[525, 525]px; canvasPad=32px"
     },
     {
       "test_id": "TC-UI-03",
@@ -33,7 +33,7 @@
       "title": "4-Col Wizard Stepper Bar, Hidden Momentum Header & Mobile Filter Trigger",
       "status": "PASS",
       "passed": true,
-      "details": "stepperTops=[185, 185, 185, 185], momentumHeader=none, mobileFilterTrigger=none, footerPos=static"
+      "details": "stepperTops=[187, 187, 187, 187], momentumHeader=none, mobileFilterTrigger=none, footerPos=static"
     },
     {
       "test_id": "TC-UI-05",
@@ -65,7 +65,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[450, 450, 592, 592] (2x2=True), panelTops=[741, 1101] widths=[736, 736]px (stacked=True)"
+      "details": "kpiTops=[452, 452, 592, 592] (2x2=True), panelTops=[740, 1099] widths=[736, 736]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -89,7 +89,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[450, 450, 592, 592] (2x2=True), panelTops=[741, 1101] widths=[992, 992]px (stacked=True)"
+      "details": "kpiTops=[452, 452, 592, 592] (2x2=True), panelTops=[740, 1099] widths=[992, 992]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -105,7 +105,7 @@
       "title": "Wizard Step 4 Summary KPI Cards Responsive Reflow (.v1-step4-card-5 / .v1-step4-card-6)",
       "status": "PASS",
       "passed": true,
-      "details": "Wizard Step 4 cards responsive reflow: tops=[295, 295, 437], widths=[327, 327, 327]px"
+      "details": "Wizard Step 4 cards responsive reflow: tops=[297, 297, 437], widths=[327, 327, 327]px"
     },
     {
       "test_id": "TC-UI-10",
@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[689, 821, 953, 1061]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[694, 824, 953, 1061]"
     },
     {
       "test_id": "TC-UI-11",
@@ -137,7 +137,7 @@
       "title": "Cisco Momentum Progress Header, 2x2 Stepper Bar & Sticky Footer (bottom: 60px)",
       "status": "PASS",
       "passed": true,
-      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[335, 335, 401, 401]), footer=sticky bottom=60px"
+      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[339, 339, 405, 405]), footer=sticky bottom=60px"
     },
     {
       "test_id": "TC-UI-14",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[632, 764, 896, 1004]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[662, 792, 922, 1030]"
     },
     {
       "test_id": "TC-UI-11",
@@ -185,7 +185,7 @@
       "title": "Cisco Momentum Progress Header, 2x2 Stepper Bar & Sticky Footer (bottom: 60px)",
       "status": "PASS",
       "passed": true,
-      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[335, 335, 401, 401]), footer=sticky bottom=60px"
+      "details": "momentum=flex ('Step 2: Attendance & Activity2 / 4'), stepper2x2=True (tops=[339, 339, 405, 405]), footer=sticky bottom=60px"
     },
     {
       "test_id": "TC-UI-14",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-C5C5E3', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-8BA659', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",
