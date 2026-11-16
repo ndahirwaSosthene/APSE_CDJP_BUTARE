@@ -10,6 +10,8 @@
     theme: 'light',
     density: 'standard', // 'compact' (32px) | 'standard' (40px)
     mode: 'ENUMERATOR',
+    parishCode: 'PAR-02',
+    parishDropdownOpen: false,
     simulateError: true,
     searchQuery: '',
     statusFilter: 'ALL',
@@ -20,51 +22,58 @@
     tokensJsonText: ''
   };
 
+  const PARISH_OPTIONS = [
+    { value: 'PAR-02', label: 'PAR-02: Save Parish (Gisagara)' },
+    { value: 'PAR-07', label: 'PAR-07: Mugombwa Parish' },
+    { value: 'PAR-11', label: 'PAR-11: Cyanika Parish' },
+    { value: 'PAR-19', label: 'PAR-19: Kibeho Parish' }
+  ];
+
   const PARISH_LEDGER = [
     {
       id: 'ACT-042',
-      code: 'PAR-02 · Save',
-      activity: 'Agro-pastoral seed & fertilizer distribution (Season A)',
+      code: 'PAR-02: Save',
+      activity: 'Agro-pastoral seed and fertilizer distribution (Season A)',
       axis: 'SO-01 Livelihoods',
       status: 'GREAT',
-      statusLabel: 'Verified · Great',
+      statusLabel: 'Verified (Great)',
       beneficiaries: 1420,
       disbursedRwf: 18450000
     },
     {
       id: 'ACT-043',
-      code: 'PAR-07 · Mugombwa',
-      activity: 'Emergency WASH & borehole maintenance campaign',
+      code: 'PAR-07: Mugombwa',
+      activity: 'Emergency WASH and borehole maintenance campaign',
       axis: 'SO-02 Health & WASH',
       status: 'GOOD',
-      statusLabel: 'Reviewed · Good',
+      statusLabel: 'Reviewed (Good)',
       beneficiaries: 985,
       disbursedRwf: 12900500
     },
     {
       id: 'ACT-044',
-      code: 'PAR-11 · Cyanika',
-      activity: 'Youth vocational tailoring & carpentry toolkit handover',
+      code: 'PAR-11: Cyanika',
+      activity: 'Youth vocational tailoring and carpentry toolkit handover',
       axis: 'SO-03 Protection',
       status: 'MEDIUM',
-      statusLabel: 'Pending MEL · Medium',
+      statusLabel: 'Pending MEL (Medium)',
       beneficiaries: 410,
       disbursedRwf: 8760000
     },
     {
       id: 'ACT-045',
-      code: 'PAR-19 · Kibeho',
-      activity: 'School feeding & vulnerable household nutrition grant',
+      code: 'PAR-19: Kibeho',
+      activity: 'School feeding and vulnerable household nutrition grant',
       axis: 'SO-01 Livelihoods',
       status: 'GREAT',
-      statusLabel: 'Verified · Great',
+      statusLabel: 'Verified (Great)',
       beneficiaries: 2310,
       disbursedRwf: 24380750
     },
     {
       id: 'ACT-046',
-      code: 'PAR-22 · Nyumba',
-      activity: 'Community peacebuilding & dialogue facilitation clinics',
+      code: 'PAR-22: Nyumba',
+      activity: 'Community peacebuilding and dialogue facilitation clinics',
       axis: 'SO-04 Governance',
       status: 'LOW',
       statusLabel: 'Correction Needed',
@@ -73,11 +82,11 @@
     },
     {
       id: 'ACT-047',
-      code: 'PAR-25 · Gakoma',
-      activity: 'Maternal health referral vouchers & community kit supply',
+      code: 'PAR-25: Gakoma',
+      activity: 'Maternal health referral vouchers and community kit supply',
       axis: 'SO-02 Health & WASH',
       status: 'GOOD',
-      statusLabel: 'Reviewed · Good',
+      statusLabel: 'Reviewed (Good)',
       beneficiaries: 760,
       disbursedRwf: 9150200
     }
@@ -123,6 +132,8 @@
     search_off: CARBON_G + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.2 15.2 4.8 4.8"/><path d="m8 8 5 5"/></g>',
     chevron_left: CARBON_G + '<path d="m15 18-6-6 6-6"/></g>',
     chevron_right: CARBON_G + '<path d="m9 6 6 6-6 6"/></g>',
+    expand_more: CARBON_G + '<path d="m6 9 6 6 6-6"/></g>',
+    check: CARBON_G + '<path d="m4.5 12.5 5 5 10-10"/></g>',
     close: CARBON_G + '<path d="M6 6l12 12M6 18L18 6"/></g>'
   };
 
@@ -142,7 +153,7 @@
 
   const CARBON_TYPE_SPECIMENS = [
     { token: 'code-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-code-01', sample: 'HMAC-SHA256: 8f4e2b0c1a93d07e6f8' },
-    { token: 'code-02', size: '14px', weight: '400', leading: '20px', tracking: '+0.32px', cssClass: 'v1-type-code-02', sample: 'PAR-02 · VOUCHER-RWF-18450000 · AP1-Q4' },
+    { token: 'code-02', size: '14px', weight: '400', leading: '20px', tracking: '+0.32px', cssClass: 'v1-type-code-02', sample: 'PAR-02 / VOUCHER-RWF-18450000 / AP1-Q4' },
     { token: 'label-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-label-01', sample: 'PLANNED ACTIVITY REFERENCE' },
     { token: 'helper-text-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-helper-text-01', sample: 'Matches approved annual diocesan workplan item SO-01.4' },
     { token: 'caption-01', size: '12px', weight: '400', leading: '16px', tracking: '+0.32px', cssClass: 'v1-type-caption-01', sample: 'Figure 1: Verified parish disbursement distribution across Southern Province' },
@@ -158,21 +169,21 @@
   ];
 
   const ICON_SPECIMENS = [
-    { key: 'tasks', label: 'My Space / Tasks' },
-    { key: 'seizure', label: 'Field Seizure' },
+    { key: 'tasks', label: 'My Workspace and Tasks' },
+    { key: 'seizure', label: 'Data Entry' },
     { key: 'drafts', label: 'Drafts Queue' },
-    { key: 'approvals', label: 'Files & Approvals' },
+    { key: 'approvals', label: 'Records and Approvals' },
     { key: 'analytics', label: 'MEL Analytics' },
-    { key: 'exports', label: 'Dossier Exports' },
+    { key: 'exports', label: 'Record Exports' },
     { key: 'dynamic_form', label: 'Form Builder' },
     { key: 'cloud_done', label: 'Encrypted Sync' },
-    { key: 'data_structure', label: 'Logframe Tree' },
+    { key: 'data_structure', label: 'Org and Data Flow' },
     { key: 'verified_user', label: 'HMAC Sign-Off' },
-    { key: 'gavel', label: 'Volet · Paralegals' },
-    { key: 'handshake', label: 'Volet · Mediators' },
-    { key: 'psychology', label: 'Volet · Psychosocial' },
-    { key: 'healing', label: 'Volet · Healing' },
-    { key: 'groups', label: 'Volet · General' },
+    { key: 'gavel', label: 'Team: Paralegals' },
+    { key: 'handshake', label: 'Team: Mediators' },
+    { key: 'psychology', label: 'Team: Psychosocial' },
+    { key: 'healing', label: 'Team: Healing' },
+    { key: 'groups', label: 'Team: General' },
     { key: 'flag', label: 'Anomaly Flag' }
   ];
 
@@ -242,9 +253,9 @@
     });
 
     const themeButtons = [
-      { id: 'light', label: 'Light · Gray 10' },
-      { id: 'cdjp', label: 'White · UI Shell' },
-      { id: 'dark', label: 'Dark · Gray 100' },
+      { id: 'light', label: 'Light (Gray 10)' },
+      { id: 'cdjp', label: 'White (UI Shell)' },
+      { id: 'dark', label: 'Dark (Gray 100)' },
       { id: 'contrast', label: 'High Contrast' }
     ].map(function (t) {
       const active = STATE.theme === t.id ? ' active' : '';
@@ -257,7 +268,7 @@
           '<span class="dp-swatch-chip" style="background: var(' + sw.token + ');"></span>' +
           '<div class="dp-swatch-meta">' +
             '<strong>' + esc(sw.name) + '</strong>' +
-            '<code>' + esc(sw.token) + ' · ' + esc(sw.value) + '</code>' +
+            '<code>' + esc(sw.token) + ': ' + esc(sw.value) + '</code>' +
           '</div>' +
         '</div>'
       );
@@ -294,7 +305,7 @@
       return (
         '<tr>' +
           '<td><code class="dp-type-token">' + esc(ts.token) + '</code></td>' +
-          '<td><span class="dp-type-specs">' + esc(ts.size) + ' / ' + esc(ts.leading) + ' · ' + esc(ts.weight) + ' · ' + esc(ts.tracking) + '</span></td>' +
+          '<td><span class="dp-type-specs">' + esc(ts.size) + ' / ' + esc(ts.leading) + ', ' + esc(ts.weight) + ', ' + esc(ts.tracking) + '</span></td>' +
           '<td><div class="dp-type-preview ' + esc(ts.cssClass) + '">' + esc(ts.sample) + '</div></td>' +
         '</tr>'
       );
@@ -320,12 +331,39 @@
         ' <span>No parish disbursements match the current filter criteria.</span>' +
       '</td></tr>';
 
+    const selectedParish = PARISH_OPTIONS.find(function (opt) { return opt.value === STATE.parishCode; }) || PARISH_OPTIONS[0];
+    const parishDropdownHtml =
+      '<div class="v1-figma-dropdown-wrap dp-parish-dropdown-wrap" style="width: 100%;">' +
+        '<select id="dp_parish_select" class="v1-select v1-figma-native-sync dp-ctrl" aria-hidden="true" tabindex="-1">' +
+          PARISH_OPTIONS.map(function (opt) {
+            return '<option value="' + esc(opt.value) + '"' + (opt.value === selectedParish.value ? ' selected' : '') + '>' + esc(opt.label) + '</option>';
+          }).join('') +
+        '</select>' +
+        '<button type="button" id="dp_parish_trigger" class="v1-figma-dropdown-trigger dp-ctrl' + (STATE.parishDropdownOpen ? ' is-open' : '') + '" aria-haspopup="listbox" aria-expanded="' + (STATE.parishDropdownOpen ? 'true' : 'false') + '" aria-labelledby="dp_parish_label">' +
+          '<span class="v1-figma-dropdown-main">' +
+            '<span class="v1-figma-dropdown-value">' + esc(selectedParish.label) + '</span>' +
+          '</span>' +
+          '<span class="v1-figma-dropdown-caret" aria-hidden="true">' + dpIcon('expand_more', 18) + '</span>' +
+        '</button>' +
+        (STATE.parishDropdownOpen
+          ? '<div class="v1-cu-add-dropdown v1-figma-dropdown-menu is-open" role="listbox">' +
+              PARISH_OPTIONS.map(function (opt) {
+                const isSel = opt.value === selectedParish.value;
+                return '<button type="button" role="option" aria-selected="' + (isSel ? 'true' : 'false') + '" class="v1-cu-dropdown-item v1-figma-dropdown-item' + (isSel ? ' active' : '') + '" data-action="dp-select-parish" data-parish-val="' + esc(opt.value) + '">' +
+                  '<span class="v1-figma-item-text">' + esc(opt.label) + '</span>' +
+                  (isSel ? dpIcon('check', 16) : '') +
+                '</button>';
+              }).join('') +
+            '</div>'
+          : '') +
+      '</div>';
+
     root.innerHTML =
       '<header class="v1-topbar dp-topbar" role="banner">' +
         '<div class="dp-topbar-left">' +
           '<a class="v1-brand dp-brand-link" href="/api/apps/apse/operations.html">' +
             '<img class="v1-brand-logo" src="/assets/white.png" alt="CDJP Butare">' +
-            '<span class="dp-brand-title">CDJP Butare · Design Preview</span>' +
+            '<span class="dp-brand-title">CDJP Butare (Design Preview)</span>' +
           '</a>' +
           '<span class="dp-system-pill" data-system="carbon">SYSTEM: IBM CARBON v11</span>' +
         '</div>' +
@@ -386,7 +424,7 @@
         '<section class="dp-section" aria-label="IBM Carbon v11 Typography Scale">' +
           '<div class="dp-section-head">' +
             '<h2>2. IBM Carbon v11 Canonical Typography Scale (Figma 2318:180601)</h2>' +
-            '<span>IBM Plex Sans &amp; IBM Plex Mono · Exact token weights, line-heights and letter-spacing</span>' +
+            '<span>IBM Plex Sans &amp; IBM Plex Mono with exact token weights, line-heights, and letter-spacing</span>' +
           '</div>' +
           '<div class="v1-panel dp-full-panel dp-table-panel">' +
             '<div class="dp-table-scroll">' +
@@ -430,13 +468,8 @@
               '</div>' +
 
               '<div class="v1-field">' +
-                '<label class="v1-field-label" for="dp_parish_select">Implementing Parish Unit</label>' +
-                '<select id="dp_parish_select" class="v1-select dp-ctrl">' +
-                  '<option value="PAR-02">PAR-02 · Save Parish (Gisagara)</option>' +
-                  '<option value="PAR-07">PAR-07 · Mugombwa Parish</option>' +
-                  '<option value="PAR-11">PAR-11 · Cyanika Parish</option>' +
-                  '<option value="PAR-19">PAR-19 · Kibeho Parish</option>' +
-                '</select>' +
+                '<label id="dp_parish_label" class="v1-field-label" for="dp_parish_trigger">Implementing Parish Unit</label>' +
+                parishDropdownHtml +
                 '<div class="v1-field-helper">Scoped to parish financial &amp; MEL signatory</div>' +
               '</div>' +
 
@@ -462,7 +495,7 @@
               '<button type="button" class="v1-btn v1-btn-primary dp-ctrl" id="dp_btn_save"><span>Submit Field Log</span>' + dpIcon('check_circle', 16) + '</button>' +
               '<button type="button" class="v1-btn v1-btn-secondary dp-ctrl"><span>Save Draft Locally</span>' + dpIcon('cloud_done', 16) + '</button>' +
               '<button type="button" class="v1-btn v1-btn-ghost dp-ctrl"><span>Reset Form Fields</span>' + dpIcon('restart_alt', 16) + '</button>' +
-              '<button type="button" class="v1-btn v1-btn-danger dp-ctrl"><span>Flag Anomaly / Seize</span>' + dpIcon('flag', 16) + '</button>' +
+              '<button type="button" class="v1-btn v1-btn-danger dp-ctrl"><span>Flag Anomaly</span>' + dpIcon('flag', 16) + '</button>' +
             '</div>' +
           '</div>' +
         '</section>' +
@@ -518,7 +551,7 @@
         '<section class="dp-section" aria-label="Carbon Status Tags and Chips">' +
           '<div class="dp-section-head">' +
             '<h2>5. IBM Carbon v11 Tags, Chips &amp; Filter Dismiss Actions (Figma 2238:174573)</h2>' +
-            '<span>11 canonical color variants · 9999px pill geometry · 0px border · Filter dismissable buttons</span>' +
+            '<span>11 canonical color variants, 9999px pill geometry, 0px border, and dismissible filter tags</span>' +
           '</div>' +
           '<div class="v1-panel dp-full-panel">' +
             '<div class="dp-tag-grid">' + tagCardsHtml + '</div>' +
@@ -528,8 +561,8 @@
         '<!-- 6. Action Dialogs & Carbon Color Tokens Reference -->' +
         '<section class="dp-section" aria-label="Action Dialogs and Color Matrix">' +
           '<div class="dp-section-head">' +
-            '<h2>6. Workflow vs. Destructive Dialogs &amp; Active Token Matrix</h2>' +
-            '<span>Strict 0px modal containers (#0F62FE workflow save vs. #DA1E28 irreversible seizure)</span>' +
+            '<h2>6. Workflow and Destructive Dialogs, and Active Token Matrix</h2>' +
+            '<span>Sharp 0px modal containers (#0F62FE workflow save vs. #DA1E28 destructive action)</span>' +
           '</div>' +
           '<div class="dp-dialog-split">' +
             '<article class="dp-dialog-card">' +
@@ -547,9 +580,9 @@
             '<article class="dp-dialog-card dp-dialog-danger">' +
               '<div class="dp-dialog-header">' +
                 '<span class="dp-dialog-kicker">' + dpIcon('warning', 14) + '<span>DESTRUCTIVE SECURITY ACTION</span></span>' +
-                '<h3>Revoke Parish Seizure Authorization</h3>' +
+                '<h3>Revoke Parish Data Entry Access</h3>' +
               '</div>' +
-              '<p class="dp-dialog-body">Immediately suspends offline Fernet key access for PAR-22 and writes an immutable entry to the diocesan audit trail. This cannot be undone.</p>' +
+              '<p class="dp-dialog-body">Suspends offline Fernet key access for PAR-22 and writes an immutable entry to the diocesan audit trail. You cannot undo this action.</p>' +
               '<div class="dp-dialog-actions">' +
                 '<button type="button" class="v1-btn v1-btn-ghost dp-ctrl">Keep Authorization</button>' +
                 '<button type="button" class="v1-btn v1-btn-danger dp-ctrl"><span>Revoke Access Permanently</span>' + dpIcon('error', 16) + '</button>' +
@@ -566,12 +599,12 @@
         '<section class="dp-section" aria-label="Carbon v11 Precision Iconography Matrix">' +
           '<div class="dp-section-head">' +
             '<h2>7. Carbon v11 Precision Iconography System (1.5px Geometric Monoline)</h2>' +
-            '<span>24x24 viewBox · stroke-width="1.5" · square caps · miter joins · zero fallback glyphs</span>' +
+            '<span>24x24 viewBox, stroke-width="1.5", square caps, miter joins, and zero fallback glyphs</span>' +
           '</div>' +
           '<div class="v1-panel dp-full-panel dp-swatch-panel">' +
             '<div class="dp-icon-meta-bar">' +
-              '<span>100% vector coverage across all 19 APSE modules, 5 field volets, sync states, and form actions</span>' +
-              '<code>Sizes: 12px · 14px · 16px · 18px · 19px · 20px · 22px · 24px · 32px · 40px · 48px</code>' +
+              '<span>100% vector coverage across all 19 APSE modules, 5 field streams, sync states, and form actions</span>' +
+              '<code>Sizes: 12px, 14px, 16px, 18px, 19px, 20px, 22px, 24px, 32px, 40px, 48px</code>' +
             '</div>' +
             '<div class="dp-icon-grid">' + iconCardsHtml + '</div>' +
           '</div>' +
@@ -681,6 +714,49 @@
       nextBtn.addEventListener('click', function () {
         STATE.page += 1;
         render();
+      });
+    }
+
+    const parishTrigger = document.getElementById('dp_parish_trigger');
+    if (parishTrigger) {
+      parishTrigger.addEventListener('click', function (e) {
+        e.stopPropagation();
+        STATE.parishDropdownOpen = !STATE.parishDropdownOpen;
+        render();
+      });
+    }
+
+    const parishSelect = document.getElementById('dp_parish_select');
+    if (parishSelect) {
+      parishSelect.addEventListener('change', function (e) {
+        STATE.parishCode = e.target.value;
+        STATE.parishDropdownOpen = false;
+        render();
+      });
+    }
+
+    document.querySelectorAll('[data-action="dp-select-parish"]').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        STATE.parishCode = btn.getAttribute('data-parish-val') || 'PAR-02';
+        STATE.parishDropdownOpen = false;
+        render();
+      });
+    });
+
+    if (!document.__dpDropdownOutsideBound) {
+      document.__dpDropdownOutsideBound = true;
+      document.addEventListener('click', function (e) {
+        if (STATE.parishDropdownOpen && !(e.target.closest && e.target.closest('.dp-parish-dropdown-wrap'))) {
+          STATE.parishDropdownOpen = false;
+          render();
+        }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && STATE.parishDropdownOpen) {
+          STATE.parishDropdownOpen = false;
+          render();
+        }
       });
     }
 

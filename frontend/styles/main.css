@@ -79,6 +79,7 @@ html[data-theme="cdjp"] {
   --color-secondary: #393939;
   --color-secondary-fg: #FFFFFF;
   --color-secondary-hover: #4C4C4C;
+  --color-secondary-active: #606060;
   --color-danger: #DA1E28;
   --color-danger-hover: #BA1B23;
   --color-danger-active: #750E13;
@@ -254,6 +255,7 @@ html[data-theme="dark"] {
   --color-secondary: #6F6F6F;
   --color-secondary-fg: #FFFFFF;
   --color-secondary-hover: #5E5E5E;
+  --color-secondary-active: #393939;
   --color-danger: #DA1E28;
   --color-danger-hover: #BA1B23;
   --color-danger-active: #750E13;
@@ -365,6 +367,8 @@ html[data-theme="soft"] {
   --color-primary-fg: #FFFFFF;
   --color-secondary: #393939;
   --color-secondary-fg: #FFFFFF;
+  --color-secondary-hover: #4C4C4C;
+  --color-secondary-active: #606060;
   --border-subtle: #E0E0E0;
   --border-strong: #8D8D8D;
   color-scheme: light;
@@ -403,6 +407,8 @@ html[data-theme="contrast"] {
   --color-primary-hover: #0353E9;
   --color-secondary: #525252;
   --color-secondary-fg: #FFFFFF;
+  --color-secondary-hover: #6F6F6F;
+  --color-secondary-active: #393939;
   --border-subtle: #FFFFFF;
   --border-strong: #FFFFFF;
   --focus-ring-inset: #000000;
@@ -1314,7 +1320,7 @@ th {
 /* Secondary Carbon Button (#393939 light / #6F6F6F dark with #FFFFFF ink) */
 .v1-btn-secondary {
   background: var(--color-secondary);
-  color: var(--color-secondary-fg) !important;
+  color: var(--color-secondary-fg);
   border-color: transparent;
 }
 
@@ -1323,7 +1329,7 @@ th {
 }
 
 .v1-btn-secondary:active {
-  background: var(--color-secondary-active);
+  background: var(--color-secondary-active, var(--color-secondary-hover));
 }
 
 /* Ghost / Tertiary Carbon Button */
@@ -1424,10 +1430,32 @@ th {
 .v1-textarea:focus,
 .v1-select:focus,
 .v1-feedback-ref-input:focus,
-.v1-panel .v1-input:not(.has-error):focus,
-.v1-figma-dropdown-trigger:focus,
-.v1-figma-dropdown-trigger.is-open {
+.v1-panel .v1-input:not(.has-error):focus {
   outline: none;
+  box-shadow: inset 0 0 0 2px var(--color-primary), inset 0 0 0 3px var(--focus-ring-inset);
+}
+
+.v1-figma-dropdown-trigger:focus,
+.v1-figma-dropdown-trigger.is-open,
+.v1-cu-saved-filters-btn:focus,
+.v1-cu-saved-filters-btn.is-open,
+.v1-cu-and-btn:focus,
+.v1-cu-op-btn:focus,
+.v1-cu-op-btn.is-open {
+  outline: none;
+}
+
+.v1-figma-dropdown-trigger:focus::after,
+.v1-figma-dropdown-trigger.is-open::after,
+.v1-cu-saved-filters-btn:focus::after,
+.v1-cu-saved-filters-btn.is-open::after,
+.v1-cu-and-btn:focus::after,
+.v1-cu-op-btn:focus::after,
+.v1-cu-op-btn.is-open::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
   box-shadow: inset 0 0 0 2px var(--color-primary), inset 0 0 0 3px var(--focus-ring-inset);
 }
 
@@ -2143,7 +2171,28 @@ html[data-theme="contrast"] .v1-chip.active {
   gap: 8px;
 }
 
-.v1-cu-saved-filters-btn,
+.v1-cu-saved-filters-btn {
+  position: relative;
+  height: 32px;
+  padding: 0;
+  border-radius: 0;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: stretch;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 110ms;
+}
+
+.v1-cu-saved-filters-btn:hover {
+  border-color: var(--border-strong);
+}
+
 .v1-cu-filter-close-btn {
   height: 32px;
   padding: 0 12px;
@@ -2161,7 +2210,6 @@ html[data-theme="contrast"] .v1-chip.active {
   transition: background-color 110ms, border-color 110ms;
 }
 
-.v1-cu-saved-filters-btn:hover,
 .v1-cu-filter-close-btn:hover {
   background: var(--bg-hover);
   border-color: var(--border-strong);
@@ -2229,8 +2277,9 @@ html[data-theme="contrast"] .v1-chip.active {
 }
 
 .v1-cu-and-btn {
+  position: relative;
   height: 32px;
-  padding: 0 10px;
+  padding: 0;
   border-radius: 0;
   border: 1px solid var(--border-subtle);
   background: var(--bg-elevated);
@@ -2239,13 +2288,14 @@ html[data-theme="contrast"] .v1-chip.active {
   font-size: 0.75rem;
   font-weight: 600;
   display: inline-flex;
-  align-items: center;
-  gap: 4px;
+  align-items: stretch;
+  overflow: hidden;
   cursor: pointer;
+  transition: border-color 110ms;
 }
 
 .v1-cu-and-btn:hover {
-  background: var(--bg-hover);
+  border-color: var(--border-strong);
 }
 
 .v1-cu-rule-card {
@@ -2312,13 +2362,14 @@ html[data-theme="contrast"] .v1-chip.active {
 
 .v1-cu-op-wrap {
   position: relative;
-  flex: 0 0 116px;
+  flex: 0 0 128px;
 }
 
 .v1-cu-op-btn {
+  position: relative;
   width: 100%;
   height: 36px;
-  padding: 0 10px;
+  padding: 0;
   border-radius: 0;
   border: 0;
   border-bottom: 1px solid var(--border-strong);
@@ -2328,9 +2379,51 @@ html[data-theme="contrast"] .v1-chip.active {
   font-size: 0.8125rem;
   font-weight: 400;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
+  overflow: hidden;
   cursor: pointer;
+}
+
+/* Shared Split-Button Segments for Compact Filter/Operator Dropdown Triggers */
+.v1-cu-split-btn-main {
+  flex: 1;
+  min-width: 0;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  white-space: nowrap;
+  transition: background-color 110ms;
+}
+
+.v1-cu-split-btn-caret {
+  width: 28px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--border-subtle);
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 110ms;
+}
+
+.v1-cu-split-btn-caret .v1-icon {
+  transition: transform 0.15s ease;
+}
+
+.is-open > .v1-cu-split-btn-caret .v1-icon {
+  transform: rotate(180deg);
+}
+
+.v1-cu-op-btn .v1-cu-split-btn-caret {
+  width: 32px;
+  border-left-color: var(--border-strong);
+}
+
+.v1-cu-split-btn-main:hover,
+.v1-cu-split-btn-caret:hover {
+  background: var(--bg-hover);
 }
 
 .v1-cu-op-dropdown {
@@ -4388,11 +4481,15 @@ details[open] .v1-accordion-chevron {
   margin-top: 4px;
 }
 
-.v1-file-upload-btn {
+.v1-file-upload-btn,
+.v1-btn.v1-file-upload-btn,
+.v1-btn-secondary.v1-file-upload-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: flex-start;
   gap: var(--space-3);
   height: 40px;
+  min-height: 40px;
   padding: 0 16px;
   border-radius: 0;
   border: 1px solid var(--border-strong);
@@ -4402,11 +4499,22 @@ details[open] .v1-accordion-chevron {
   font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 110ms, border-color 110ms;
+  transition: background-color 110ms, border-color 110ms, color 110ms;
 }
 
-.v1-file-upload-btn:hover {
+.v1-file-upload-btn:hover,
+.v1-btn.v1-file-upload-btn:hover,
+.v1-btn-secondary.v1-file-upload-btn:hover {
   background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--color-primary);
+}
+
+.v1-file-upload-btn:active,
+.v1-btn.v1-file-upload-btn:active,
+.v1-btn-secondary.v1-file-upload-btn:active {
+  background: var(--bg-hover);
+  color: var(--text-primary);
   border-color: var(--color-primary);
 }
 
@@ -6543,19 +6651,21 @@ details[open] .v1-accordion-chevron {
 }
 
 .v1-figma-dropdown-trigger {
+  position: relative;
   width: 100%;
   height: auto;
   min-height: 40px;
-  padding: 8px 14px 8px 16px;
+  padding: 0;
   background: var(--bg-input);
   color: var(--text-primary);
   border: 0;
   border-bottom: 1px solid var(--border-strong);
   border-radius: 0;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   gap: 0;
+  overflow: hidden;
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 400;
@@ -6565,16 +6675,26 @@ details[open] .v1-accordion-chevron {
   transition: box-shadow 110ms ease, background-color 110ms ease;
 }
 
-.v1-figma-dropdown-trigger:hover {
+.v1-figma-dropdown-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  transition: background-color 110ms ease;
+}
+
+.v1-figma-dropdown-main:hover,
+.v1-figma-dropdown-caret:hover {
   background: var(--bg-hover);
 }
 
 .v1-figma-dropdown-prefix {
   display: inline-flex;
   align-items: center;
-  width: 59px;
-  min-width: 59px;
-  padding-right: 8px;
+  align-self: stretch;
+  min-width: 75px;
+  padding: 8px 8px 8px 16px;
   border-right: 1px solid var(--border-strong);
   color: var(--text-secondary);
   font-size: 0.875rem;
@@ -6582,12 +6702,13 @@ details[open] .v1-accordion-chevron {
   line-height: 1.286;
   white-space: nowrap;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .v1-figma-dropdown-value {
   flex: 1;
   min-width: 0;
-  padding: 0 8px;
+  padding: 8px 12px 8px 16px;
   text-align: left;
   color: var(--text-primary);
   font-size: 0.875rem;
@@ -6597,23 +6718,32 @@ details[open] .v1-accordion-chevron {
   word-break: break-word;
 }
 
+.v1-figma-dropdown-prefix + .v1-figma-dropdown-value {
+  padding-left: 10px;
+}
+
 .v1-figma-dropdown-caret {
-  width: 19px;
-  height: 19px;
+  width: 38px;
+  min-height: 100%;
   flex-shrink: 0;
+  border-left: 1px solid var(--border-strong);
+  background: transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 110ms ease;
 }
 
-.v1-figma-caret-img {
+.v1-figma-caret-img,
+.v1-figma-dropdown-caret .v1-icon {
   display: block;
   width: 19px;
   height: 19px;
   transition: transform 0.15s ease;
 }
 
-.v1-figma-dropdown-trigger.is-open .v1-figma-caret-img {
+.v1-figma-dropdown-trigger.is-open .v1-figma-caret-img,
+.v1-figma-dropdown-trigger.is-open .v1-figma-dropdown-caret .v1-icon {
   transform: rotate(180deg);
 }
 
@@ -6945,6 +7075,12 @@ html[data-theme="contrast"] .v1-feedback-code-pill {
 .dp-body .dp-ctrl {
   min-height: var(--dp-ctrl-h);
   height: auto;
+}
+
+.dp-body .v1-figma-dropdown-trigger.dp-ctrl .v1-figma-dropdown-prefix,
+.dp-body .v1-figma-dropdown-trigger.dp-ctrl .v1-figma-dropdown-value {
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 
 .dp-topbar {

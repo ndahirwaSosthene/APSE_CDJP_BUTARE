@@ -17,7 +17,7 @@
       "title": "16-Column Carbon Grid: 4 KPI Cards in 1 Row (span 4) & 2 Split Panels (span 8)",
       "status": "PASS",
       "passed": true,
-      "details": "KPI tops=[460, 460, 460, 460] widths=[254, 254, 254, 254]px; Panel tops=[624, 624] widths=[525, 525]px; canvasPad=32px"
+      "details": "KPI tops=[428, 428, 428, 428] widths=[254, 254, 254, 254]px; Panel tops=[592, 592] widths=[525, 525]px; canvasPad=32px"
     },
     {
       "test_id": "TC-UI-03",
@@ -89,7 +89,7 @@
       "title": "KPI Cards Reflow to 2-per-row (span 8) & Analytics Panels Stack Full-Width (span 16)",
       "status": "PASS",
       "passed": true,
-      "details": "kpiTops=[452, 452, 592, 592] (2x2=True), panelTops=[740, 1099] widths=[992, 992]px (stacked=True)"
+      "details": "kpiTops=[420, 420, 560, 560] (2x2=True), panelTops=[708, 1067] widths=[992, 992]px (stacked=True)"
     },
     {
       "test_id": "TC-UI-09",
@@ -113,7 +113,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[694, 824, 953, 1061]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[622, 752, 882, 990]"
     },
     {
       "test_id": "TC-UI-11",
@@ -161,7 +161,7 @@
       "title": "Brand Text Hidden, KPI Cards Stacked 1-per-row (span 16), Task Cards Column Layout",
       "status": "PASS",
       "passed": true,
-      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[662, 792, 922, 1030]"
+      "details": "brandText=none, taskCardFlexDir=column, kpiTops=[602, 732, 862, 970]"
     },
     {
       "test_id": "TC-UI-11",
@@ -257,7 +257,7 @@
       "title": "Zero-Code Task Creation & Automatic Strategic Metadata Binding",
       "status": "PASS",
       "passed": true,
-      "details": "tasks 6->7, autoBound={'code': 'TSK-975CB9', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
+      "details": "tasks 6->7, autoBound={'code': 'TSK-F6C5D5', 'axis': 'A1', 'outcome': 'A1.R2', 'intervention': 'A1.I1', 'indicator': 'KPI-A1-R2', 'ap': 'AP1', 'pastoral_quarter': 'Q1', 'min_threshold': 15, 'target_threshold': 22}"
     },
     {
       "test_id": "TC-CAP-01..11",
@@ -289,7 +289,7 @@
       "title": "Offline Queueing (apse-v1-offline-queue) & Sequential Sync to Central Database",
       "status": "PASS",
       "passed": true,
-      "details": "offlineBtn='Save Offline on Device', waitingPill='Saved on Device (1 waiting for internet)', syncedPill='All Data Synced (11 local DB)'"
+      "details": "offlineBtn='Save Offline on Device', waitingPill='Saved on device (1 waiting for internet)', syncedPill='All Data Synced (11 local)'"
     },
     {
       "test_id": "TC-CAP-12..13",
