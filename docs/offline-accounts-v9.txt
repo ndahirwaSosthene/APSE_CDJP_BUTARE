@@ -1,0 +1,8 @@
+PASS — seven real encrypted local account logins and server-filtered workspace/config endpoints. No passwords included.
+mel.theophile : MEL ; permitted forms 45 ; create 45 ; workspace HTTP 200
+direction.janvier : DIRECTOR ; permitted forms 45 ; create 3 ; workspace HTTP 200
+coordination.emmanuel : COORDINATOR ; permitted forms 45 ; create 9 ; workspace HTTP 200
+finance.marceline : FINANCE ; permitted forms 14 ; create 12 ; workspace HTTP 200
+cooperation.ruth : COOPERATION ; permitted forms 26 ; create 23 ; workspace HTTP 200
+driver.emmanuel : DRIVER ; permitted forms 7 ; create 5 ; workspace HTTP 200
+cpjp.test : CPJP ; permitted forms 28 ; create 19 ; workspace HTTP 200

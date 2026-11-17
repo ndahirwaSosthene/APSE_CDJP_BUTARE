@@ -1,5 +1,0 @@
-changed: README.md
-changed: app/operations.html
-changed: service/portable.py
-changed: service/server.py
-changed: service/engine.py

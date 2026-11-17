@@ -1,0 +1,196 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "system": "apse-v2-architectural",
+    "inspiration": "Kargul Studio Architectural Bento + CDJP Butare Figma Spec",
+    "application": "APSE CDJP Butare",
+    "version": "2.0.0",
+    "generatedBy": "apse-v2-design-system"
+  },
+  "color": {
+    "light": {
+      "surface": {
+        "canvas": { "$value": "#EFEFEF", "$type": "color", "$description": "Warm-neutral page & sidebar canvas (--bg-canvas)" },
+        "surface": { "$value": "#FFFFFF", "$type": "color", "$description": "Borderless pure-white bento card & panel surface (--bg-surface)" },
+        "elevated": { "$value": "#FFFFFF", "$type": "color", "$description": "Modal, popover, and sheet elevated surface (--bg-elevated)" },
+        "input": { "$value": "#F5F5F5", "$type": "color", "$description": "Soft recessed 12px input & segmented track surface (--bg-input)" },
+        "hover": { "$value": "#E8E8E8", "$type": "color", "$description": "Interactive hover state (--bg-hover)" },
+        "topbar": { "$value": "rgba(239, 239, 239, 0.88)", "$type": "color", "$description": "56px frosted-glass sticky topbar (--topbar-bg)" },
+        "monolith-dark": { "$value": "#232323", "$type": "color", "$description": "Inverted dark monolith banner (--dark)" },
+        "monolith-surface": { "$value": "#313131", "$type": "color", "$description": "Active nav badge & monolith inner badge (--dark-surface)" }
+      },
+      "text": {
+        "primary": { "$value": "#232323", "$type": "color", "$description": "Deep charcoal primary ink (--text-primary)" },
+        "secondary": { "$value": "#707070", "$type": "color", "$description": "Mid-gray labels, subtitles, and table headers (--text-secondary)" },
+        "muted": { "$value": "#888888", "$type": "color", "$description": "Placeholders, helper text, and separators (--text-muted)" },
+        "on-primary": { "$value": "#EFEFEF", "$type": "color", "$description": "Foreground ink on primary charcoal buttons (--color-primary-fg)" }
+      },
+      "border": {
+        "subtle": { "$value": "#DBDBDB", "$type": "color", "$description": "1px architectural table matrix gridlines & dividers (--border-subtle)" },
+        "strong": { "$value": "#888888", "$type": "color", "$description": "Outline filter pills & bottom-sheet drag handle (--border-strong)" }
+      },
+      "brand": {
+        "primary": { "$value": "#232323", "$type": "color", "$description": "Primary pill CTA, active nav item, and active segment (--color-primary)" },
+        "primary-hover": { "$value": "#383838", "$type": "color", "$description": "Primary CTA hover (--color-primary-hover)" },
+        "secondary": { "$value": "#E4E4E4", "$type": "color", "$description": "Secondary pill button surface (--color-secondary)" },
+        "secondary-hover": { "$value": "#D6D6D6", "$type": "color", "$description": "Secondary pill button hover (--color-secondary-hover)" },
+        "danger": { "$value": "#E40014", "$type": "color", "$description": "Alert Vermilion danger CTA, split Add button, and error border (--color-danger)" },
+        "danger-hover": { "$value": "#BE0010", "$type": "color", "$description": "Danger CTA hover (--color-danger-hover)" },
+        "success": { "$value": "#1DAF61", "$type": "color", "$description": "Live availability emerald signal dot (--success)" }
+      },
+      "status": {
+        "success-bg": { "$value": "#DCFCE7", "$type": "color" },
+        "success-text": { "$value": "#147A43", "$type": "color" },
+        "info-bg": { "$value": "#E0F2FE", "$type": "color" },
+        "info-text": { "$value": "#104E64", "$type": "color" },
+        "warn-bg": { "$value": "#FEF3C7", "$type": "color" },
+        "warn-text": { "$value": "#92400E", "$type": "color" },
+        "danger-bg": { "$value": "#FEE2E2", "$type": "color" },
+        "danger-text": { "$value": "#B91C1C", "$type": "color" },
+        "neutral-bg": { "$value": "#EFEFEF", "$type": "color" },
+        "neutral-text": { "$value": "#232323", "$type": "color" }
+      }
+    },
+    "dark": {
+      "surface": {
+        "canvas": { "$value": "#0A0A0A", "$type": "color" },
+        "surface": { "$value": "#171717", "$type": "color" },
+        "elevated": { "$value": "#1F1F1F", "$type": "color" },
+        "input": { "$value": "#262626", "$type": "color" },
+        "hover": { "$value": "#2E2E2E", "$type": "color" },
+        "topbar": { "$value": "rgba(10, 10, 10, 0.88)", "$type": "color" }
+      },
+      "text": {
+        "primary": { "$value": "#FAFAFA", "$type": "color" },
+        "secondary": { "$value": "#A1A1A1", "$type": "color" },
+        "muted": { "$value": "#737373", "$type": "color" },
+        "on-primary": { "$value": "#171717", "$type": "color" }
+      },
+      "border": {
+        "subtle": { "$value": "#262626", "$type": "color" },
+        "strong": { "$value": "#525252", "$type": "color" }
+      },
+      "brand": {
+        "primary": { "$value": "#E5E5E5", "$type": "color" },
+        "primary-hover": { "$value": "#FFFFFF", "$type": "color" },
+        "secondary": { "$value": "#262626", "$type": "color" },
+        "secondary-hover": { "$value": "#333333", "$type": "color" },
+        "danger": { "$value": "#E40014", "$type": "color" },
+        "danger-hover": { "$value": "#FF3344", "$type": "color" },
+        "success": { "$value": "#1DAF61", "$type": "color" }
+      },
+      "status": {
+        "success-bg": { "$value": "#112A1E", "$type": "color" },
+        "success-text": { "$value": "#4ADE80", "$type": "color" },
+        "info-bg": { "$value": "#12263A", "$type": "color" },
+        "info-text": { "$value": "#7DD3FC", "$type": "color" },
+        "warn-bg": { "$value": "#2E2110", "$type": "color" },
+        "warn-text": { "$value": "#FBBF24", "$type": "color" },
+        "danger-bg": { "$value": "#361518", "$type": "color" },
+        "danger-text": { "$value": "#FCA5A5", "$type": "color" },
+        "neutral-bg": { "$value": "#262626", "$type": "color" },
+        "neutral-text": { "$value": "#FAFAFA", "$type": "color" }
+      }
+    },
+    "soft": {
+      "surface": {
+        "canvas": { "$value": "#EAE6DF", "$type": "color" },
+        "surface": { "$value": "#F7F4EB", "$type": "color" },
+        "input": { "$value": "#ECE8DF", "$type": "color" },
+        "hover": { "$value": "#DFDACE", "$type": "color" }
+      }
+    },
+    "contrast": {
+      "surface": {
+        "canvas": { "$value": "#000000", "$type": "color" },
+        "surface": { "$value": "#0D0D0D", "$type": "color" },
+        "input": { "$value": "#1A1A1A", "$type": "color" }
+      },
+      "brand": {
+        "primary": { "$value": "#FFEE00", "$type": "color" }
+      }
+    },
+    "charts": {
+      "gridline": { "$value": "#DBDBDB", "$type": "color" },
+      "series-1": { "$value": "#F05100", "$type": "color" },
+      "series-2": { "$value": "#009588", "$type": "color" },
+      "series-3": { "$value": "#104E64", "$type": "color" },
+      "series-4": { "$value": "#FCBB00", "$type": "color" },
+      "series-5": { "$value": "#F99C00", "$type": "color" },
+      "status-great": { "$value": "#1DAF61", "$type": "color" },
+      "status-good": { "$value": "#009588", "$type": "color" },
+      "status-minor": { "$value": "#FCBB00", "$type": "color" },
+      "status-medium": { "$value": "#F99C00", "$type": "color" },
+      "status-major": { "$value": "#E40014", "$type": "color" },
+      "status-idle": { "$value": "#888888", "$type": "color" }
+    }
+  },
+  "typography": {
+    "fontFamily": {
+      "sans": { "$value": "Geist", "$type": "fontFamily", "$description": "Geist Sans with stylistic alternates ('salt' 1)" },
+      "mono": { "$value": "Geist Mono", "$type": "fontFamily", "$description": "Geist Mono with tabular-nums" }
+    },
+    "scale": {
+      "display-kpi": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "36px", "lineHeight": "1.05", "fontWeight": 700, "letterSpacing": "-0.03em", "fontVariantNumeric": "tabular-nums" }
+      },
+      "heading-h1": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "32px", "lineHeight": "1.08", "fontWeight": 700, "letterSpacing": "-0.03em" }
+      },
+      "heading-h2": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "20px", "lineHeight": "1.18", "fontWeight": 700, "letterSpacing": "-0.025em" }
+      },
+      "heading-h3": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "17px", "lineHeight": "1.33", "fontWeight": 700, "letterSpacing": "-0.015em" }
+      },
+      "body-default": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "14px", "lineHeight": "1.55", "fontWeight": 500, "letterSpacing": "-0.008em" }
+      },
+      "nav-item": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "13px", "lineHeight": "1.4", "fontWeight": 500, "letterSpacing": "-0.008em" }
+      },
+      "label-table-th": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "12px", "lineHeight": "1.33", "fontWeight": 700, "letterSpacing": "-0.008em" }
+      },
+      "capsule-lozenge": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "11px", "lineHeight": "1.0", "fontWeight": 700, "letterSpacing": "0.02em", "textTransform": "uppercase" }
+      },
+      "filter-chip": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist", "fontSize": "11px", "lineHeight": "1.2", "fontWeight": 500, "letterSpacing": "0.01em" }
+      },
+      "code-mono": {
+        "$type": "typography",
+        "$value": { "fontFamily": "Geist Mono", "fontSize": "12px", "lineHeight": "1.33", "fontWeight": 500, "fontVariantNumeric": "tabular-nums" }
+      }
+    }
+  },
+  "borderRadius": {
+    "pill": { "$value": "9999px", "$type": "dimension" },
+    "xs": { "$value": "9999px", "$type": "dimension" },
+    "sm": { "$value": "12px", "$type": "dimension" },
+    "md": { "$value": "20px", "$type": "dimension" },
+    "lg": { "$value": "28px", "$type": "dimension" },
+    "table": { "$value": "16px", "$type": "dimension" },
+    "role-banner": { "$value": "22px", "$type": "dimension" },
+    "task-card": { "$value": "10px", "$type": "dimension" },
+    "chip": { "$value": "8px", "$type": "dimension" },
+    "task-badge": { "$value": "5px", "$type": "dimension" },
+    "sheet": { "$value": "16px 16px 0 0", "$type": "dimension" }
+  },
+  "sizing": {
+    "topbar-height": { "$value": "56px", "$type": "dimension" },
+    "sidebar-width": { "$value": "240px", "$type": "dimension" },
+    "control-compact": { "$value": "32px", "$type": "dimension" },
+    "control-default": { "$value": "40px", "$type": "dimension" },
+    "control-touch": { "$value": "48px", "$type": "dimension" }
+  }
+}

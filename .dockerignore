@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.git/
+.gitignore
+.vscode/
+data/runtime_store/
+portable_data/
+*.sqlite*
+*.key
+*.enc
+.env
+.agents/
+

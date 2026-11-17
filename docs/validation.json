@@ -4,21 +4,21 @@
   "counts": {
     "optionSets": 5,
     "options": 43,
-    "dataElements": 218,
-    "programs": 43,
-    "programStages": 43,
+    "dataElements": 246,
+    "programs": 45,
+    "programStages": 45,
     "programStageSections": 0,
-    "userGroups": 18,
+    "userGroups": 24,
     "dashboards": 10,
     "indicatorTypes": 2,
     "indicators": 28,
     "dataSets": 1
   },
   "languageCoverage": {
-    "rw": 158,
-    "en": 158,
-    "fr": 158,
-    "sw": 158
+    "rw": 186,
+    "en": 186,
+    "fr": 186,
+    "sw": 186
   },
   "notTested": [
     "Live DHIS2 metadata/schema import",

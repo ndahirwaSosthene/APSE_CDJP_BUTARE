@@ -1,0 +1,38 @@
+{
+  "version": "0.9.1",
+  "pythonTests": 221,
+  "pythonPassed": true,
+  "nativeForms": 45,
+  "interfaceFields": 186,
+  "languages": [
+    "rw",
+    "en",
+    "fr",
+    "sw"
+  ],
+  "implemented": [
+    "CPJP annual Q1-Q4 allocation with annual reconciliation",
+    "Staff F31/F32 across central workspaces; own-data access; max24h daily; four exports",
+    "MEL audit and retention oversight; no automatic purge",
+    "Local account creation and password reset; portable recovery kit",
+    "Document form prefill with preview, conflict handling and manual application",
+    "Updated RW/EN/FR operational manuals and training"
+  ],
+  "browserPassed": [
+    "Existing four-language/capture/offline-vault journey",
+    "Document import/timesheets/audit/annual allocation/role workspaces/mobile360"
+  ],
+  "requiresConfiguration": [
+    "Tesseract optional OCR and language data; pdftoppm for scanned PDFs",
+    "Optional approved generative AI provider",
+    "Real DHIS2 instance, authentication, native metadata import and same-origin service/proxy",
+    "Approved detailed annual tasks for AP2 onward"
+  ],
+  "notExecuted": [
+    "Native Windows executable runtime",
+    "Real Android device",
+    "Live DHIS2 2.42.x end-to-end acceptance",
+    "Production load/security and offsite restore acceptance"
+  ],
+  "zeroFutureErrorsGuaranteed": false
+}

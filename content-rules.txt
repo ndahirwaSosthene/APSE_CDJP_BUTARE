@@ -1,0 +1,22 @@
+Content Rules for APSE CDJP Butare
+
+1. Core Principles
+- Be direct, clear, and simple.
+- Use short, plain labels so text fits cleanly across desktop and mobile layouts.
+- Match terms to the monitoring, evaluation, and pastoral context of CDJP Butare.
+- Keep English UI text in English across every workspace, tooltip, modal, and error message.
+
+2. AI-Slop Guidelines (Review Judgement)
+- Awkward or Unnatural Wording: Rephrase wording that reads unnaturally or literally from French (for example, "Seizure" for data entry, "Back to the File" for record feedback, "Controls" for checks, "Elaborate" for create/prepare).
+- Excessive or Flowery Wording: Remove elaborate, overly formal, or slogan-like phrasing.
+- Vague or Empty Wording: Replace abstract or general statements with concrete actions and facts.
+- Unnecessary Wording: Cut filler words and redundant qualifiers (for example, "Drafts in Progress" becomes "Drafts").
+- Illogical Wording: Fix phrasing that does not make sense in context.
+
+3. Strict Content Rules (Always Flagged)
+- Punctuation: Do not use em-dashes (—), semicolons (;), in-line middle-dot notation (·), vertical bars (|), or in-line arrows (→) in user-facing text. Use commas, colons, parentheses, or separate UI elements instead.
+- Contrast Framing: Do not use "It's not X, it's Y" or "Do Y, not X" sentence structures.
+- Passive Voice: Write in active voice. Name the actor performing the action instead of phrasing where the subject receives the action.
+- Imperative Titles: Do not write page, workspace, card, or section titles as commands. Use clear noun phrases for titles and headings; reserve action verbs for buttons.
+- Slogan-like Phrasing: Remove formulaic, buzzword-led statements that sound polished but say little.
+- Illustrative Hedging: Do not present charts, counts, or visuals as illustrative, approximate, or placeholder.

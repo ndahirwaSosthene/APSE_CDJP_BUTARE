@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+data/runtime_store/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.key
+*.enc
