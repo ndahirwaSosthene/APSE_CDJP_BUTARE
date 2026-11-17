@@ -1186,6 +1186,27 @@ def create_app(
             },
         )
 
+    @app.get("/design-preview", include_in_schema=False)
+    @app.get("/api/apps/apse/design-preview", include_in_schema=False)
+    async def serve_design_preview():
+        return FileResponse(
+            frontend_dir / "design-preview.html",
+            media_type="text/html; charset=utf-8",
+            headers=dict(SECURITY_HEADERS),
+        )
+
+    @app.get("/tokens.figma.json", include_in_schema=False)
+    @app.get("/api/apps/apse/tokens.figma.json", include_in_schema=False)
+    async def serve_figma_tokens():
+        target = ROOT_DIR / "tokens.figma.json"
+        if not target.exists():
+            return _json_response(404, {"error": "not_found"})
+        return FileResponse(
+            target,
+            media_type="application/json; charset=utf-8",
+            headers=dict(SECURITY_HEADERS),
+        )
+
     @app.get("/styles/main.css", include_in_schema=False)
     @app.get("/v1.css", include_in_schema=False)
     @app.get("/api/apps/apse/v1.css", include_in_schema=False)
@@ -1240,6 +1261,10 @@ def create_app(
     async def serve_root_v1_js():
         return await serve_js("v1.js")
 
+    @app.get("/design_preview.js", include_in_schema=False)
+    async def serve_root_design_preview_js():
+        return await serve_js("design_preview.js")
+
     @app.get("/js/{filename}", include_in_schema=False)
     @app.get("/api/apps/apse/{filename}", include_in_schema=False)
     async def serve_js(filename: str):
@@ -1250,6 +1275,7 @@ def create_app(
             "v1.js": frontend_dir / "js" / "app.js",
             "app.js": frontend_dir / "js" / "app.js",
             "v091_views.js": frontend_dir / "js" / "v091_views.js",
+            "design_preview.js": frontend_dir / "js" / "design_preview.js",
         }
         target = mapping.get(filename)
         if not target or not target.exists():

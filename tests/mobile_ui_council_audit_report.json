@@ -26,44 +26,44 @@
     "voletChipsCount": 5,
     "voletChips": [
       {
-        "text": "Paralegals (Parajuristes)",
+        "text": "Paralegals (Legal Aid)",
         "iconName": "gavel",
         "hasSvg": true,
-        "width": 177.15625,
-        "height": 38,
-        "tapTargetComfortable": true
+        "width": 151.5,
+        "height": 30,
+        "tapTargetComfortable": false
       },
       {
-        "text": "Mediators (Abahuza)",
+        "text": "Mediators",
         "iconName": "handshake",
         "hasSvg": true,
-        "width": 180.625,
-        "height": 38,
-        "tapTargetComfortable": true
+        "width": 107.578125,
+        "height": 30,
+        "tapTargetComfortable": false
       },
       {
-        "text": "Psychosocial Companions (Abahumurizamitima)",
+        "text": "Psychosocial Support (Abahumurizamitima)",
         "iconName": "psychology",
         "hasSvg": true,
-        "width": 296,
-        "height": 48,
-        "tapTargetComfortable": true
+        "width": 264.5,
+        "height": 30,
+        "tapTargetComfortable": false
       },
       {
         "text": "Healing & Reconciliation (Isanamitima)",
         "iconName": "healing",
         "hasSvg": true,
-        "width": 258.390625,
-        "height": 38,
-        "tapTargetComfortable": true
+        "width": 239.625,
+        "height": 30,
+        "tapTargetComfortable": false
       },
       {
-        "text": "General Centrale / CEB Field Work",
+        "text": "General Field Work (Centrale / CEB)",
         "iconName": "groups",
         "hasSvg": true,
-        "width": 232.640625,
-        "height": 38,
-        "tapTargetComfortable": true
+        "width": 222.5625,
+        "height": 30,
+        "tapTargetComfortable": false
       }
     ],
     "step1InputsComfortable": false,
@@ -87,11 +87,11 @@
       "Terrain g\u00e9n\u00e9ral (Centrale / CEB)"
     ],
     "en": [
-      "Paralegals (Parajuristes)",
-      "Mediators (Abahuza)",
-      "Psychosocial Companions (Abahumurizamitima)",
+      "Paralegals (Legal Aid)",
+      "Mediators",
+      "Psychosocial Support (Abahumurizamitima)",
       "Healing & Reconciliation (Isanamitima)",
-      "General Centrale / CEB Field Work"
+      "General Field Work (Centrale / CEB)"
     ],
     "sw": [
       "Wasaidizi wa Kisheria",
@@ -358,21 +358,21 @@
         "innerWidth": 360,
         "hasOverflow": false,
         "primaryBtnsCount": 9,
-        "btnsTapTargetOk": true
+        "btnsTapTargetOk": false
       },
       "approvals": {
         "scrollWidth": 360,
         "innerWidth": 360,
         "hasOverflow": false,
-        "primaryBtnsCount": 0,
-        "btnsTapTargetOk": true
+        "primaryBtnsCount": 1,
+        "btnsTapTargetOk": false
       },
       "analytics": {
         "scrollWidth": 360,
         "innerWidth": 360,
         "hasOverflow": false,
         "primaryBtnsCount": 1,
-        "btnsTapTargetOk": true
+        "btnsTapTargetOk": false
       },
       "exports": {
         "scrollWidth": 360,
@@ -388,21 +388,21 @@
         "innerWidth": 390,
         "hasOverflow": false,
         "primaryBtnsCount": 9,
-        "btnsTapTargetOk": true
+        "btnsTapTargetOk": false
       },
       "approvals": {
         "scrollWidth": 390,
         "innerWidth": 390,
         "hasOverflow": false,
-        "primaryBtnsCount": 0,
-        "btnsTapTargetOk": true
+        "primaryBtnsCount": 1,
+        "btnsTapTargetOk": false
       },
       "analytics": {
         "scrollWidth": 390,
         "innerWidth": 390,
         "hasOverflow": false,
         "primaryBtnsCount": 1,
-        "btnsTapTargetOk": true
+        "btnsTapTargetOk": false
       },
       "exports": {
         "scrollWidth": 390,

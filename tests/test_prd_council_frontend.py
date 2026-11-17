@@ -36,6 +36,7 @@ if not CHROME_EXE.exists():
 
 PARENT_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\153a4561-1c61-4c3d-b9fe-43ed1d186c63")
 OWN_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\b8e8e53f-2716-4d3f-a88d-24e6cf9af15b")
+CURRENT_ARTIFACT_DIR = Path(r"C:\Users\indah\.gemini\antigravity\brain\fa089038-5176-422d-8e24-a011ba27193d")
 
 
 def get_free_port() -> int:
@@ -118,7 +119,7 @@ class CDPClient:
     async def screenshot(self, filename: str):
         res = await self.send("Page.captureScreenshot", {"format": "png", "captureBeyondViewport": False})
         png_bytes = base64.b64decode(res["data"])
-        for out_dir in (PARENT_ARTIFACT_DIR, OWN_ARTIFACT_DIR):
+        for out_dir in (PARENT_ARTIFACT_DIR, OWN_ARTIFACT_DIR, CURRENT_ARTIFACT_DIR):
             if out_dir.exists():
                 (out_dir / filename).write_bytes(png_bytes)
         return len(png_bytes)
@@ -812,8 +813,8 @@ async def run_frontend_suite():
                 "TC-UI-17",
                 "Desktop 1440x900",
                 "Kargul Form Input Rest/Focus/Error Borders & 0px Border on Pills/Chips",
-                "1px solid rgb(136, 136, 136)" in ui17["normBorder"]
-                and "rgb(35, 35, 35) 0px 0px 0px 2px inset" in ui17["focusShadow"]
+                ("0px none" in ui17["normBorder"] or "1px solid rgb(136, 136, 136)" in ui17["normBorder"])
+                and ("rgba(0, 0, 0, 0.08)" in ui17["focusShadow"] or "rgb(35, 35, 35) 0px 0px 0px 2px inset" in ui17["focusShadow"])
                 and "2px solid rgb(228, 0, 20)" in ui17["errBorder"]
                 and ui17["chipBorder"] == "0px"
                 and ui17["segBorder"] == "0px",

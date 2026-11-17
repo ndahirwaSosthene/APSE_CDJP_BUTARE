@@ -37,11 +37,11 @@ PENDING_STAGES = {STAGE_SUBMITTED, STAGE_PARISH, STAGE_MEL, STAGE_VERIFIED}
 # CPJP specialist Volets (LIRE_AVANT_UTILISATION_RW.md §6, V0_4 §2)
 # ---------------------------------------------------------------------------
 VOLETS = [
-    {'code': 'PARAJURISTES', 'labels': {'en': 'Paralegals (Parajuristes)', 'fr': 'Parajuristes', 'rw': "Abafasha mu by'amategeko", 'sw': 'Wasaidizi wa Kisheria'}},
-    {'code': 'MEDIATEURS', 'labels': {'en': 'Mediators (Abahuza)', 'fr': 'Médiateurs', 'rw': 'Abahuza', 'sw': 'Wapatanishi'}},
-    {'code': 'ABAHUMURIZAMITIMA', 'labels': {'en': 'Psychosocial Companions (Abahumurizamitima)', 'fr': 'Abahumurizamitima (accompagnement psychosocial)', 'rw': 'Abahumurizamitima', 'sw': 'Wafariji wa Kisaikolojia'}},
+    {'code': 'PARAJURISTES', 'labels': {'en': 'Paralegals (Legal Aid)', 'fr': 'Parajuristes', 'rw': "Abafasha mu by'amategeko", 'sw': 'Wasaidizi wa Kisheria'}},
+    {'code': 'MEDIATEURS', 'labels': {'en': 'Mediators', 'fr': 'Médiateurs', 'rw': 'Abahuza', 'sw': 'Wapatanishi'}},
+    {'code': 'ABAHUMURIZAMITIMA', 'labels': {'en': 'Psychosocial Support (Abahumurizamitima)', 'fr': 'Abahumurizamitima (accompagnement psychosocial)', 'rw': 'Abahumurizamitima', 'sw': 'Wafariji wa Kisaikolojia'}},
     {'code': 'ISANAMITIMA', 'labels': {'en': 'Healing & Reconciliation (Isanamitima)', 'fr': 'Abafashamyumvire mu isanamitima', 'rw': 'Abafashamyumvire mu isanamitima', 'sw': 'Wawezeshaji wa Uponyaji'}},
-    {'code': 'FIELD', 'labels': {'en': 'General Centrale / CEB Field Work', 'fr': 'Terrain général (Centrale / CEB)', 'rw': 'Ibikorwa rusange bya Santarali / CEB', 'sw': 'Kazi ya Jumla ya Kigango / CEB'}},
+    {'code': 'FIELD', 'labels': {'en': 'General Field Work (Centrale / CEB)', 'fr': 'Terrain général (Centrale / CEB)', 'rw': 'Ibikorwa rusange bya Santarali / CEB', 'sw': 'Kazi ya Jumla ya Kigango / CEB'}},
 ]
 VOLET_CODES = {v['code'] for v in VOLETS}
 
@@ -71,38 +71,38 @@ WORKSPACES = {
 
 ROLE_PROFILES = {
     'field': {
-        'title': 'Parish Volet / Centrale / CEB Field Enumerator',
-        'mandate': 'Field Enumeration & Case Intake (PAIR 2-person preparation, Volet tagging & CNV/DNH/Trauma safeguards). Cannot create plans or approve reports.',
+        'title': 'Parish Field Reporter (Centrale / CEB)',
+        'mandate': 'Collects field data and logs cases in pairs (2 names), tags specialist teams, and checks CNV, Do No Harm, and trauma safeguards. Cannot create plans or approve reports.',
         'badge_variant': 'info',
     },
     'cpjp': {
-        'title': 'Parish CPJP Committee (6 Seats + Chaplain, Curé Supervision)',
-        'mandate': 'Elaborates Parish Annual Action Plans (F03) and reviews field submissions from Parish Volets, Centrales & CEBs. Cannot approve Diocesan tier or own submissions.',
+        'title': 'Parish CPJP Committee (6 Members and Chaplain)',
+        'mandate': 'Creates Parish Annual Action Plans (F03) and reviews field submissions from Parish teams, Centrales, and CEBs. Cannot approve Diocesan stages or own submissions.',
         'badge_variant': 'GOOD',
     },
     'staff': {
-        'title': 'CDJP Diocesan Thematic Staff Officer',
-        'mandate': 'Elaborates Annual (F03), Quarterly (F04), Monthly (F43) & Weekly (F05) workplans and logs diocesan field activities for MEL validation.',
+        'title': 'CDJP Diocesan Staff Officer',
+        'mandate': 'Creates Annual (F03), Quarterly (F04), Monthly (F43), and Weekly (F05) workplans and logs diocesan field activities for MEL validation.',
         'badge_variant': 'info',
     },
     'mel': {
         'title': 'CDJP Diocesan MEL Officer (All 27 Parishes)',
-        'mandate': 'Technical validation of Parish-approved reports (MEL_VALIDATED), 27-parish strategic planning, metadata governance, and Central Server DB sync.',
+        'mandate': 'Validates Parish-approved reports (MEL_VALIDATED), manages 27-parish strategic planning and metadata, and syncs the Central Server database.',
         'badge_variant': 'GREAT',
     },
     'coordinator': {
         'title': 'CDJP Diocesan Coordinator (All 27 Parishes)',
-        'mandate': 'Institutional verification of MEL-validated reports (VERIFIED), cross-parish bottleneck resolution, and portfolio oversight.',
+        'mandate': 'Verifies MEL-validated reports (VERIFIED), resolves cross-parish bottlenecks, and oversees the project portfolio.',
         'badge_variant': 'GREAT',
     },
     'director': {
-        'title': 'CDJP Diocesan Director — Executive Sign-Off (All 27 Parishes)',
-        'mandate': 'Final institutional approval & lock (DIOCESE_APPROVED), R13 Strategic Results oversight, and Executive KPIs (EFF-01, EFI-01, EFI-02, FIN-01).',
+        'title': 'CDJP Diocesan Director (All 27 Parishes)',
+        'mandate': 'Grants final Diocesan approval (DIOCESE_APPROVED), oversees R13 Strategic Results, and monitors KPIs (EFF-01, EFI-01, EFI-02, FIN-01).',
         'badge_variant': 'GREAT',
     },
     'viewer': {
         'title': 'Read-Only Observer',
-        'mandate': 'Read-only access to assigned parish activities.',
+        'mandate': 'Views assigned parish activities in read-only mode.',
         'badge_variant': 'neutral',
     },
 }

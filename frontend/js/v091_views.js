@@ -25,6 +25,8 @@
    ========================================================================== */
 
 (function(root) {
+  const tr = (en, fr) => (typeof V1 !== 'undefined' && V1.lang === 'fr' && fr) ? fr : en;
+
   const V091 = {
     // In-App Modal & Toast state
     modal: {
@@ -53,48 +55,57 @@
       {
         id: 'c_youth_01',
         code: 'C_YOUTH_01',
-        title: { fr: 'Enquête Annuelle sur la Jeunesse et Cohésion Sociale', en: 'Annual Youth & Social Cohesion Survey', rw: 'Ubushakashatsi ku rubyiruko', sw: 'Utafiti wa Vijana' },
-        description: 'Collecte standard pour évaluer la participation des jeunes dans les clubs de paix et activités civiques.',
+        title: { fr: 'Enquête Annuelle sur la Jeunesse et Cohésion Sociale', en: 'Annual Youth and Social Cohesion Survey', rw: 'Ubushakashatsi ku rubyiruko', sw: 'Utafiti wa Vijana' },
+        description: {
+          en: 'Standard survey to measure youth participation in peace clubs and civic activities.',
+          fr: 'Collecte standard pour évaluer la participation des jeunes dans les clubs de paix et activités civiques.',
+        },
         audienceRoles: ['APSE_CPJP', 'APSE_PARISH_REPORTER'],
         sensitive: false,
         updatedAt: '2026-10-15',
         status: 'ACTIVE',
         questions: [
-          { id: 'q1', code: 'q1_club', label: { fr: 'Nom ou référence du Club de Paix' }, type: 'TEXT', required: true },
-          { id: 'q2', code: 'q2_participants', label: { fr: 'Nombre de jeunes présents à la session' }, type: 'NUMBER', required: true },
-          { id: 'q3', code: 'q3_theme', label: { fr: 'Thématique principale abordée' }, type: 'RADIO', options: ['Résolution non-violente des conflits', 'Justice écologique et Laudato Si', 'Droits humains et devoirs civiques', 'Autre thématique'], required: true },
-          { id: 'q4', code: 'q4_score', label: { fr: 'Niveau d\'engagement perçu des jeunes participants' }, type: 'SCALE_1_5', scaleMin: 1, scaleMax: 5, minLabel: 'Faible', maxLabel: 'Remarquable', required: false },
+          { id: 'q1', code: 'q1_club', label: { en: 'Peace Club name or code', fr: 'Nom ou référence du Club de Paix' }, type: 'TEXT', required: true },
+          { id: 'q2', code: 'q2_participants', label: { en: 'Number of youth attending the session', fr: 'Nombre de jeunes présents à la session' }, type: 'NUMBER', required: true },
+          { id: 'q3', code: 'q3_theme', label: { en: 'Main topic covered', fr: 'Thématique principale abordée' }, type: 'RADIO', options: { en: ['Peaceful conflict resolution', 'Ecological justice and Laudato Si', 'Human rights and civic duties', 'Other topic'], fr: ['Résolution non-violente des conflits', 'Justice écologique et Laudato Si', 'Droits humains et devoirs civiques', 'Autre thématique'] }, required: true },
+          { id: 'q4', code: 'q4_score', label: { en: 'Observed engagement level of youth participants', fr: 'Niveau d\'engagement perçu des jeunes participants' }, type: 'SCALE_1_5', scaleMin: 1, scaleMax: 5, minLabel: 'Low', maxLabel: 'High', required: false },
         ]
       },
       {
         id: 'c_eval_q1',
         code: 'C_EVAL_Q1',
-        title: { fr: 'Évaluation Trimestrielle des Comités Paroissiaux Q1', en: 'Parish Committees Q1 Evaluation', rw: 'Isuzuma ry\'igihembwe cya 1', sw: 'Tathmini ya Robo ya 1' },
-        description: 'Auto-évaluation de la dynamique des comités Justice et Paix de base et médiation communautaire.',
+        title: { fr: 'Évaluation Trimestrielle des Comités Paroissiaux Q1', en: 'Parish Committees Q1 Review', rw: 'Isuzuma ry\'igihembwe cya 1', sw: 'Tathmini ya Robo ya 1' },
+        description: {
+          en: 'Self-assessment of parish Justice and Peace committees and community mediation.',
+          fr: 'Auto-évaluation de la dynamique des comités Justice et Paix de base et médiation communautaire.',
+        },
         audienceRoles: ['APSE_CPJP', 'DIOCESE_MEL'],
         sensitive: false,
         updatedAt: '2026-11-01',
         status: 'ACTIVE',
         questions: [
-          { id: 'q1', code: 'q1_parish', label: { fr: 'Paroisse concernée' }, type: 'DROPDOWN', options: ['Astrida (Cathédrale)', 'Save', 'Kansi', 'Maraba', 'Mugombwa', 'Autre paroisse'], required: true },
-          { id: 'q2', code: 'q2_meetings', label: { fr: 'Nombre de réunions tenues ce trimestre' }, type: 'NUMBER', required: true },
-          { id: 'q3', code: 'q3_cases', label: { fr: 'Nombre de litiges fonciers / familiaux résolus à l\'amiable' }, type: 'NUMBER', required: true },
-          { id: 'q4', code: 'q4_feedback', label: { fr: 'Principaux défis rencontrés et besoins d\'appui diocésain' }, type: 'LONG_TEXT', required: false },
+          { id: 'q1', code: 'q1_parish', label: { en: 'Parish', fr: 'Paroisse concernée' }, type: 'DROPDOWN', options: ['Butare (Cathedral)', 'Save', 'Kansi', 'Maraba', 'Mugombwa', 'Other parish'], required: true },
+          { id: 'q2', code: 'q2_meetings', label: { en: 'Number of meetings held this quarter', fr: 'Nombre de réunions tenues ce trimestre' }, type: 'NUMBER', required: true },
+          { id: 'q3', code: 'q3_cases', label: { en: 'Number of land or family disputes resolved peacefully', fr: 'Nombre de litiges fonciers / familiaux résolus à l\'amiable' }, type: 'NUMBER', required: true },
+          { id: 'q4', code: 'q4_feedback', label: { en: 'Main challenges and diocesan support needs', fr: 'Principaux défis rencontrés et besoins d\'appui diocésain' }, type: 'LONG_TEXT', required: false },
         ]
       },
       {
         id: 'c_recon_feed',
         code: 'C_RECON_FEED',
-        title: { fr: 'Fiche de Rétroaction — Ateliers de Réconciliation', en: 'Reconciliation Workshops Feedback Form', rw: 'Ifishi y\'ibitekerezo ku bwiyunge', sw: 'Fomu ya Maoni ya Upatanisho' },
-        description: 'Recueil des impressions des participants après les cercles de parole et d\'écoute.',
+        title: { fr: 'Fiche de Rétroaction : Ateliers de Réconciliation', en: 'Reconciliation Workshops Feedback Form', rw: 'Ifishi y\'ibitekerezo ku bwiyunge', sw: 'Fomu ya Maoni ya Upatanisho' },
+        description: {
+          en: 'Collects participant feedback after dialogue and listening circles.',
+          fr: 'Recueil des impressions des participants après les cercles de parole et d\'écoute.',
+        },
         audienceRoles: ['APSE_CPJP'],
         sensitive: true,
         updatedAt: '2026-11-03',
         status: 'DRAFT',
         questions: [
-          { id: 'q1', code: 'q1_safe', label: { fr: 'Vous êtes-vous senti écouté et en sécurité durant l\'atelier ?' }, type: 'RADIO', options: ['Tout à fait', 'En partie', 'Pas vraiment', 'Pas du tout'], required: true },
-          { id: 'q2', code: 'q2_dialogue', label: { fr: 'Le dialogue avec l\'autre partie a-t-il progressé ?' }, type: 'RADIO', options: ['Oui, grandement', 'Progrès modéré', 'Aucun changement perceptible'], required: true },
-          { id: 'q3', code: 'q3_next_steps', label: { fr: 'Vos suggestions et recommandations pour la suite' }, type: 'LONG_TEXT', required: false },
+          { id: 'q1', code: 'q1_safe', label: { en: 'Did you feel heard and safe during the workshop?', fr: 'Vous êtes-vous senti écouté et en sécurité durant l\'atelier ?' }, type: 'RADIO', options: { en: ['Yes, completely', 'Partly', 'Not really', 'Not at all'], fr: ['Tout à fait', 'En partie', 'Pas vraiment', 'Pas du tout'] }, required: true },
+          { id: 'q2', code: 'q2_dialogue', label: { en: 'Did dialogue with the other party improve?', fr: 'Le dialogue avec l\'autre partie a-t-il progressé ?' }, type: 'RADIO', options: { en: ['Yes, greatly', 'Moderate progress', 'No clear change'], fr: ['Oui, grandement', 'Progrès modéré', 'Aucun changement perceptible'] }, required: true },
+          { id: 'q3', code: 'q3_next_steps', label: { en: 'Your suggestions and next steps', fr: 'Vos suggestions et recommandations pour la suite' }, type: 'LONG_TEXT', required: false },
         ]
       }
     ],
@@ -233,20 +244,23 @@
   V091.closeModal = function() {
     V091.modal.open = false;
     V091.modal.content = null;
+    V091.openDropdownId = null;
     if (typeof renderApp === 'function') renderApp();
   };
 
   /* --------------------------------------------------------------------------
-     FIGMA / CLICKUP-STYLE CUSTOM DROPDOWN COMPONENT (Node 18:77 + Add Task Menu)
-     Renders the rounded #F5F5F5 trigger ("Prefix | Selected Label ⌄") and opens
-     a floating theme-adaptive popover menu (.v1-cu-add-dropdown) on click.
+     CLICKUP / CARBON CUSTOM DROPDOWN COMPONENT
+     Renders the IBM Carbon Gray 10 field trigger ("Prefix | Selected Label | ⌄")
+     with independent label vs chevron hover segments and opens a floating
+     theme-adaptive menu (.v1-cu-add-dropdown) on click.
      -------------------------------------------------------------------------- */
   V091.openDropdownId = null;
 
-  V091.renderFigmaDropdown = function({ id, prefix, value, options = [], placeholder = 'Sélectionner...', width, className = '', onChange }) {
+  V091.renderFigmaDropdown = function({ id, prefix, value, options = [], placeholder, width, className = '', onChange }) {
+    const resolvedPlaceholder = placeholder || tr('Select...', 'Sélectionner...');
     const isOpen = V091.openDropdownId === id;
     const selectedOpt = options.find(o => String(o.value) === String(value));
-    const displayLabel = selectedOpt ? selectedOpt.label : (options[0] && value === undefined ? options[0].label : placeholder);
+    const displayLabel = selectedOpt ? selectedOpt.label : (options[0] && value === undefined ? options[0].label : resolvedPlaceholder);
 
     return h('div', {
       className: ('v1-figma-dropdown-wrap ' + className).trim(),
@@ -270,7 +284,7 @@
         }, o.label))
       ),
 
-      /* Custom Trigger Button (Figma Node 18:77) */
+      /* Custom Split Trigger Button (Unified container with independent label/caret segments) */
       h('button', {
         type: 'button',
         className: 'v1-figma-dropdown-trigger' + (isOpen ? ' is-open' : ''),
@@ -278,13 +292,19 @@
         'aria-expanded': isOpen ? 'true' : 'false',
         onClick: e => {
           e.stopPropagation();
+          if (typeof window !== 'undefined' && window.V1) {
+            window.V1.cuOperatorMenuRowId = null;
+            window.V1.cuSavedFiltersOpen = false;
+          }
           V091.openDropdownId = isOpen ? null : id;
           if (typeof renderApp === 'function') renderApp();
         },
       },
-        prefix ? h('span', { className: 'v1-figma-dropdown-prefix' }, prefix) : null,
-        h('span', { className: 'v1-figma-dropdown-value' }, displayLabel),
-        h('span', { className: 'v1-figma-dropdown-caret' },
+        h('span', { className: 'v1-figma-dropdown-main' },
+          prefix ? h('span', { className: 'v1-figma-dropdown-prefix' }, prefix) : null,
+          h('span', { className: 'v1-figma-dropdown-value' }, displayLabel)
+        ),
+        h('span', { className: 'v1-figma-dropdown-caret', 'aria-hidden': 'true' },
           h('img', {
             src: 'assets/figma/iconsax-arrow-down4.svg',
             width: '19',
@@ -346,16 +366,16 @@
     V091.formsList.unshift(clone);
     V091.activeFormIndex = 0;
     V091.activeFormTab = 'builder';
-    V091.showToast('✓ Formulaire dupliqué avec succès : ' + clone.code, 'info');
+    V091.showToast(tr('Form duplicated: ' + clone.code, 'Formulaire dupliqué : ' + clone.code), 'info');
     if (typeof renderApp === 'function') renderApp();
   };
 
   /* Deep-link to F03 and prefill all 17 authoritative planning properties */
   V091.preparePlanningActivity = function(item, yearData) {
-    const lang = V1.lang || 'fr';
-    const labelText = (item.labels && (item.labels[lang] || item.labels.fr || item.labels.en || item.labels.rw || item.labels.sw)) || item.code;
-    const expectedText = (item.expected && (item.expected[lang] || item.expected.fr || item.expected.en)) || '';
-    const indicatorText = (item.indicator && (item.indicator[lang] || item.indicator.fr || item.indicator.en)) || '';
+    const lang = V1.lang || 'en';
+    const labelText = (item.labels && (item.labels[lang] || item.labels.en || item.labels.fr || item.labels.rw || item.labels.sw)) || item.code;
+    const expectedText = (item.expected && (item.expected[lang] || item.expected.en || item.expected.fr)) || '';
+    const indicatorText = (item.indicator && (item.indicator[lang] || item.indicator.en || item.indicator.fr)) || '';
     const fundersText = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ');
     const start = yearData?.start || '2026-09-01';
     const end = yearData?.end || '2027-08-31';
@@ -386,32 +406,34 @@
       source: item.source || '',
     };
     V1.workspace = 'seizure';
-    V091.showToast(`✓ Pré-remplissage de F03 pour l'activité ${item.code}`, 'info');
+    V091.showToast(tr(`Prefilled F03 for activity ${item.code}`, `Pré-remplissage de F03 pour l'activité ${item.code}`), 'info');
     if (typeof renderApp === 'function') renderApp();
   };
 
   /* In-App Full Planning Item Details Modal */
   V091.showPlanningItemModal = function(item, yearData) {
-    const lang = V1.lang || 'fr';
-    const title = (item.labels && (item.labels[lang] || item.labels.fr || item.labels.en || item.labels.rw || item.labels.sw)) || item.code;
+    const lang = V1.lang || 'en';
+    const title = (item.labels && (item.labels[lang] || item.labels.en || item.labels.fr || item.labels.rw || item.labels.sw)) || item.code;
     const isLine = !!item.indicativeMillionsRWF;
-    const kind = isLine ? 'Ligne Opérationnelle PS (Indicative)' : 'Tâche Annuelle PAO (Prioritaire)';
-    const expected = (item.expected && (item.expected[lang] || item.expected.fr || item.expected.en)) || 'Renforcement de la cohésion et des capacités locales.';
-    const indicator = (item.indicator && (item.indicator[lang] || item.indicator.fr || item.indicator.en)) || 'Taux d’exécution et qualité de la participation.';
-    const funders = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP (Misereor)', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ') || 'Fonds propres CDJP';
-    const budgetStr = item.budgetRWF ? Number(item.budgetRWF).toLocaleString() + ' RWF' : (item.indicativeMillionsRWF ? (item.indicativeMillionsRWF[V091.planningYear] || Object.values(item.indicativeMillionsRWF)[0]) + ' M RWF' : '—');
+    const kind = isLine
+      ? tr('Indicative Operational Line', 'Ligne Opérationnelle PS (Indicative)')
+      : tr('Annual Priority Task', 'Tâche Annuelle PAO (Prioritaire)');
+    const expected = (item.expected && (item.expected[lang] || item.expected.en || item.expected.fr)) || tr('Stronger local cohesion and capacity.', 'Renforcement de la cohésion et des capacités locales.');
+    const indicator = (item.indicator && (item.indicator[lang] || item.indicator.en || item.indicator.fr)) || tr('Execution rate and participation quality.', 'Taux d’exécution et qualité de la participation.');
+    const funders = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP (Misereor)', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ') || tr('CDJP Own Funds', 'Fonds propres CDJP');
+    const budgetStr = item.budgetRWF ? Number(item.budgetRWF).toLocaleString() + ' RWF' : (item.indicativeMillionsRWF ? (item.indicativeMillionsRWF[V091.planningYear] || Object.values(item.indicativeMillionsRWF)[0]) + ' M RWF' : '-');
 
     V091.showModal({
-      title: `${item.code} · ${title}`,
-      subtitle: `${kind} · Axe ${item.axis} · Objectif ${item.objective} · ${item.intervention || (item.interventionCandidates ? item.interventionCandidates.join(' / ') : '')}`,
+      title: `${item.code}: ${title}`,
+      subtitle: `${kind}, Axis ${item.axis}, Objective ${item.objective}, ${item.intervention || (item.interventionCandidates ? item.interventionCandidates.join(' / ') : '')}`,
       icon: 'ps_planning',
       maxWidth: '820px',
       content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '16px' } },
-        h('div', { style: { padding: '12px 16px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+        h('div', { style: { padding: '12px 16px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' } },
           h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '6px' } },
-            h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, `Axe Stratégique ${item.axis}`),
-            h('span', { className: 'v1-badge' }, `Objectif : ${item.objective}`),
-            h('span', { className: 'v1-badge' }, `Intervention : ${item.intervention || (item.interventionCandidates ? item.interventionCandidates.join(' / ') : 'Axe transversal')}`),
+            h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', fontWeight: '600' } }, `${tr('Strategic Axis', 'Axe Stratégique')} ${item.axis}`),
+            h('span', { className: 'v1-badge' }, `${tr('Objective', 'Objectif')}: ${item.objective}`),
+            h('span', { className: 'v1-badge' }, `${tr('Intervention', 'Intervention')}: ${item.intervention || (item.interventionCandidates ? item.interventionCandidates.join(' / ') : tr('Cross-cutting', 'Axe transversal'))}`),
             h('span', { className: 'v1-meta-code-badge' }, item.code)
           ),
           h('strong', { style: { fontSize: '0.9375rem', display: 'block', color: 'var(--text-primary)' } }, title)
@@ -419,49 +441,49 @@
         h('div', { className: 'v1-grid-16' },
           h('div', { style: { gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '12px' } },
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('target', 14), 'Changement Stratégique Recherché'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('target', 14), tr('Expected Strategic Change', 'Changement Stratégique Recherché')),
               h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 } }, expected)
             ),
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('analytics', 14), 'Indicateur Stratégique PS'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('analytics', 14), tr('Strategic Indicator', 'Indicateur Stratégique PS')),
               h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: 0, lineHeight: 1.4 } }, indicator)
             ),
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' } }, msIcon('globe', 14), 'Libellés en 4 langues'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' } }, msIcon('globe', 14), tr('Labels in 4 Languages', 'Libellés en 4 langues')),
               h('div', { style: { fontSize: '0.75rem', display: 'flex', flexDirection: 'column', gap: '4px' } },
-                h('div', {}, h('strong', {}, 'FR : '), item.labels?.fr || '—'),
-                h('div', {}, h('strong', {}, 'RW : '), item.labels?.rw || '—'),
-                h('div', {}, h('strong', {}, 'EN : '), item.labels?.en || '—'),
-                h('div', {}, h('strong', {}, 'SW : '), item.labels?.sw || '—')
+                h('div', {}, h('strong', {}, 'EN: '), item.labels?.en || '-'),
+                h('div', {}, h('strong', {}, 'FR: '), item.labels?.fr || '-'),
+                h('div', {}, h('strong', {}, 'RW: '), item.labels?.rw || '-'),
+                h('div', {}, h('strong', {}, 'SW: '), item.labels?.sw || '-')
               )
             )
           ),
           h('div', { style: { gridColumn: 'span 8', display: 'flex', flexDirection: 'column', gap: '12px' } },
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('payments', 14), 'Budget & Financement'),
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('payments', 14), tr('Budget and Funding', 'Budget & Financement')),
               h('div', { style: { fontSize: '0.875rem', fontWeight: '700', color: 'var(--color-success)', marginBottom: '4px' } }, budgetStr),
               item.indicativeMillionsRWF ? h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '6px' } },
-                'Enveloppe quinquennale : ' + Object.entries(item.indicativeMillionsRWF).map(([y, m]) => `${y}: ${m}M`).join(' · ')
+                tr('Five-year allocation: ', 'Enveloppe quinquennale : ') + Object.entries(item.indicativeMillionsRWF).map(([y, m]) => `${y}: ${m}M`).join(', ')
               ) : null,
-              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, `Bailleurs : ${funders}`),
-              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' } }, `Portée : ${item.budgetScope || 'Enveloppe PS approuvée'}`)
+              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, `${tr('Funders', 'Bailleurs')}: ${funders}`),
+              h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '2px' } }, `${tr('Scope', 'Portée')}: ${item.budgetScope || tr('Approved Strategic Plan budget', 'Enveloppe PS approuvée')}`)
             ),
             h('div', { className: 'v1-panel', style: { padding: '12px' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('place', 14), 'Périmètre & Acteurs'),
-              h('div', { style: { fontSize: '0.8125rem' } }, h('strong', {}, 'Localisation : '), item.locations || '27 paroisses / 4 districts'),
-              h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, 'Responsable : '), item.responsibleSource || 'Responsable de volet CDJP'),
-              h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, 'Bénéficiaires : '), item.beneficiariesSource || 'Communautés locales, jeunes, femmes')
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--color-link)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('place', 14), tr('Scope and Actors', 'Périmètre & Acteurs')),
+              h('div', { style: { fontSize: '0.8125rem' } }, h('strong', {}, tr('Locations: ', 'Localisation : ')), item.locations || tr('27 parishes, 4 districts', '27 paroisses / 4 districts')),
+              h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, tr('Owner: ', 'Responsable : ')), item.responsibleSource || tr('CDJP Lead Officer', 'Responsable de volet CDJP')),
+              h('div', { style: { fontSize: '0.8125rem', marginTop: '2px' } }, h('strong', {}, tr('Beneficiaries: ', 'Bénéficiaires : ')), item.beneficiariesSource || tr('Local communities, youth, women', 'Communautés locales, jeunes, femmes'))
             ),
             h('div', { className: 'v1-panel', style: { padding: '12px', background: 'var(--bg-canvas)' } },
-              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('description', 14), 'Source Documentaire'),
-              h('p', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' } }, item.source || 'Plan Stratégique CDJP Butare 2026–2031')
+              h('span', { style: { fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' } }, msIcon('description', 14), tr('Source Document', 'Source Documentaire')),
+              h('p', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', margin: 0, wordBreak: 'break-word' } }, item.source || tr('CDJP Butare Strategic Plan 2026–2031', 'Plan Stratégique CDJP Butare 2026–2031'))
             )
           )
         )
       ),
       actions: [
         {
-          label: 'Préparer cette activité (F03)',
+          label: tr('Prepare in F03', 'Préparer cette activité (F03)'),
           type: 'primary',
           onClick: () => {
             V091.closeModal();
@@ -469,7 +491,7 @@
           }
         },
         {
-          label: 'Fermer',
+          label: tr('Close', 'Fermer'),
           type: 'secondary',
           onClick: () => V091.closeModal()
         }
@@ -480,68 +502,68 @@
   /* Interactive Metadata Details Popup */
   V091.showMetadataDetailsModal = function(category) {
     const catTitles = {
-      axes: 'Axes Stratégiques (5 Axes)',
-      objectives: 'Objectifs Stratégiques (5 Objectifs)',
-      results: 'Résultats Stratégiques (13 Résultats)',
-      interventions: 'Interventions Stratégiques (15 Interventions)',
-      years: 'Années Pastorales (AP1–AP5)',
-      operational_lines: 'Lignes Opérationnelles Indicatives (25 Lignes)',
-      annual_tasks: 'Tâches Annuelles AP1 (33 Tâches)',
-      organisation_units: 'Unités Organisationnelles (Paroisses & Centrales)',
-      ccjp_units: 'Comités Justice et Paix de Base',
-      geography_units: 'Périmètres Géographiques (4 Districts)',
-      volets: 'Volets Pastoraux & Institutionnels (4 Volets)',
-      projects: 'Projets en Cours & Financements',
-      programs: 'Programmes Pluriannuels',
-      partners: 'Partenaires Techniques et Financiers',
-      positions: 'Postes et Rôles Institutionnels',
-      fields: 'Dictionnaire des 186 Champs',
-      forms: 'Catalogue des 45 Formulaires (F01–F45)',
-      settings: 'Paramètres et Règles de Validation',
+      axes: tr('Strategic Axes (5)', 'Axes Stratégiques (5 Axes)'),
+      objectives: tr('Strategic Objectives (5)', 'Objectifs Stratégiques (5 Objectifs)'),
+      results: tr('Strategic Outcomes (13)', 'Résultats Stratégiques (13 Résultats)'),
+      interventions: tr('Strategic Interventions (15)', 'Interventions Stratégiques (15 Interventions)'),
+      years: tr('Pastoral Years (AP1–AP5)', 'Années Pastorales (AP1–AP5)'),
+      operational_lines: tr('Indicative Operational Lines (25)', 'Lignes Opérationnelles Indicatives (25 Lignes)'),
+      annual_tasks: tr('AP1 Annual Tasks (33)', 'Tâches Annuelles AP1 (33 Tâches)'),
+      organisation_units: tr('Organization Units (Parishes and Centrales)', 'Unités Organisationnelles (Paroisses & Centrales)'),
+      ccjp_units: tr('Centrale Committees (CCJP)', 'Comités Justice et Paix de Base'),
+      geography_units: tr('Districts (4)', 'Périmètres Géographiques (4 Districts)'),
+      volets: tr('Specialist Teams (4)', 'Volets Pastoraux & Institutionnels (4 Volets)'),
+      projects: tr('Active Projects and Funding', 'Projets en Cours & Financements'),
+      programs: tr('Multi-Year Programs', 'Programmes Pluriannuels'),
+      partners: tr('Funding and Technical Partners', 'Partenaires Techniques et Financiers'),
+      positions: tr('Staff Roles and Positions', 'Postes et Rôles Institutionnels'),
+      fields: tr('Field Dictionary (186 Fields)', 'Dictionnaire des 186 Champs'),
+      forms: tr('Form Catalog (F01–F45)', 'Catalogue des 45 Formulaires (F01–F45)'),
+      settings: tr('Validation Settings and Rules', 'Paramètres et Règles de Validation'),
     };
 
-    const modalTitle = catTitles[category] || `Référentiel : ${category}`;
+    const modalTitle = catTitles[category] || `${tr('Catalog', 'Référentiel')}: ${category}`;
 
     /* Curated, human-readable data for key categories */
     let items = [];
     if (category === 'axes') {
       items = [
-        { code: 'A1', label: 'Guérison, Unité et Réconciliation', rw: 'Ubukangurambaga ku Bwiyunge n’Ubumwe', en: 'Healing, Unity & Reconciliation', count: '2 Résultats (A1.R1, A1.R2) · 3 Interventions', desc: 'Accompagnement psychosocial, cercles d’écoute, dialogue communautaire et mémoire apaisée.' },
-        { code: 'A2', label: 'Résolution Pacifique des Conflits', rw: 'Gukemura Amakimbirane mu Mahoro', en: 'Peaceful Conflict Resolution', count: '3 Résultats (A2.R1, A2.R2, A2.R3) · 3 Interventions', desc: 'Médiation foncière et familiale, formation des comités paroissiaux et prévention non-violente.' },
-        { code: 'A3', label: 'Justice Écologique et Environnement', rw: 'Ubutabera ku Bidukikije no Kurengera Isi', en: 'Ecological Justice & Environment', count: '2 Résultats (A3.R1, A3.R2) · 3 Interventions', desc: 'Application de Laudato Si’, reboisement communautaire, pépinières et transition agroécologique.' },
-        { code: 'A4', label: 'Droits Humains et Aide Juridique', rw: 'Uburenganzira bwa Muntu n’Ubufasha mu by’Amategeko', en: 'Human Rights & Legal Aid', count: '3 Résultats (A4.R1, A4.R2, A4.R3) · 3 Interventions', desc: 'Clinique juridique diocésaine, écoute des victimes vulnérables et monitoring des droits fondamentaux.' },
-        { code: 'A5', label: 'Renforcement des Comités et Équipes', rw: 'Gushimangira Ubushobozi bw’Inzego n’Amakipe', en: 'Institutional Capacity & MEL', count: '3 Résultats (A5.R1, A5.R2, A5.R3) · 3 Interventions', desc: 'Gouvernance interne, équipement des 27 commissions paroissiales, système de suivi-évaluation APSE.' },
+        { code: 'A1', label: tr('Healing, Unity, and Reconciliation', 'Guérison, Unité et Réconciliation'), rw: 'Ubukangurambaga ku Bwiyunge n’Ubumwe', count: tr('2 Outcomes (A1.R1, A1.R2), 3 Interventions', '2 Résultats (A1.R1, A1.R2) · 3 Interventions'), desc: tr('Psychosocial support, listening circles, community dialogue, and healing.', 'Accompagnement psychosocial, cercles d’écoute, dialogue communautaire et mémoire apaisée.') },
+        { code: 'A2', label: tr('Peaceful Conflict Resolution', 'Résolution Pacifique des Conflits'), rw: 'Gukemura Amakimbirane mu Mahoro', count: tr('3 Outcomes (A2.R1, A2.R2, A2.R3), 3 Interventions', '3 Résultats (A2.R1, A2.R2, A2.R3) · 3 Interventions'), desc: tr('Land and family mediation, parish committee training, and nonviolent conflict prevention.', 'Médiation foncière et familiale, formation des comités paroissiaux et prévention non-violente.') },
+        { code: 'A3', label: tr('Environmental Care and Climate Action', 'Justice Écologique et Environnement'), rw: 'Ubutabera ku Bidukikije no Kurengera Isi', count: tr('2 Outcomes (A3.R1, A3.R2), 3 Interventions', '2 Résultats (A3.R1, A3.R2) · 3 Interventions'), desc: tr('Laudato Si action, tree planting, nurseries, and resilient farming practices.', 'Application de Laudato Si’, reboisement communautaire, pépinières et transition agroécologique.') },
+        { code: 'A4', label: tr('Human Rights and Legal Aid', 'Droits Humains et Aide Juridique'), rw: 'Uburenganzira bwa Muntu n’Ubufasha mu by’Amategeko', count: tr('3 Outcomes (A4.R1, A4.R2, A4.R3), 3 Interventions', '3 Résultats (A4.R1, A4.R2, A4.R3) · 3 Interventions'), desc: tr('Diocesan legal clinic, support for vulnerable people, and human rights monitoring.', 'Clinique juridique diocésaine, écoute des victimes vulnérables et monitoring des droits fondamentaux.') },
+        { code: 'A5', label: tr('Parish Committee and Team Strengthening', 'Renforcement des Comités et Équipes'), rw: 'Gushimangira Ubushobozi bw’Inzego n’Amakipe', count: tr('3 Outcomes (A5.R1, A5.R2, A5.R3), 3 Interventions', '3 Résultats (A5.R1, A5.R2, A5.R3) · 3 Interventions'), desc: tr('Internal governance, support for 27 parish committees, and APSE monitoring.', 'Gouvernance interne, équipement des 27 commissions paroissiales, système de suivi-évaluation APSE.') },
       ];
     } else if (category === 'results') {
       items = [
-        { code: 'A1.R1', label: 'Espaces de dialogue et guérison des mémoires opérationnels', axis: 'A1', desc: 'Cercles de guérison et ateliers de réconciliation organisés dans les paroisses.' },
-        { code: 'A1.R2', label: 'Cohésion sociale renforcée entre générations et communautés', axis: 'A1', desc: 'Clubs de paix scolaires et initiatives conjointes de jeunesse.' },
-        { code: 'A2.R1', label: 'Comités de médiation paroissiaux formés et opérationnels', axis: 'A2', desc: 'Médiateurs bénévoles équipés pour la résolution amiable des différends.' },
-        { code: 'A2.R2', label: 'Litiges fonciers et intrafamiliaux résolus sans recours judiciaire', axis: 'A2', desc: 'Dossiers traités et clôturés avec accord consensuel écrit.' },
-        { code: 'A2.R3', label: 'Système d’alerte précoce communautaire fonctionnel', axis: 'A2', desc: 'Remontée des tensions communautaires et désamorçage préventif.' },
-        { code: 'A3.R1', label: 'Initiatives de reboisement et pépinières paroissiales établies', axis: 'A3', desc: 'Plants agroforestiers distribués et entretenus par les CEB.' },
-        { code: 'A3.R2', label: 'Pratiques agroécologiques résilientes adoptées par les ménages', axis: 'A3', desc: 'Foyers améliorés et techniques de conservation des sols vulgarisées.' },
-        { code: 'A4.R1', label: 'Assistance juridique et écoute assurées pour les vulnérables', axis: 'A4', desc: 'Conseils juridiques gratuits et accompagnement des personnes démunies.' },
-        { code: 'A4.R2', label: 'Sensibilisation aux droits fondamentaux et devoirs civiques', axis: 'A4', desc: 'Campagnes d’information communautaire et émissions radiophoniques.' },
-        { code: 'A4.R3', label: 'Visites et assistance psychosociale en milieu pénitentiaire', axis: 'A4', desc: 'Aumônerie carcérale et aide à la réinsertion post-libération.' },
-        { code: 'A5.R1', label: 'Commissions Justice et Paix paroissiales (CPJP) actives', axis: 'A5', desc: '27 commissions dotées de plans d’action trimestriels et registres.' },
-        { code: 'A5.R2', label: 'Système numérique MEL (APSE) pérennisé et maîtrisé', axis: 'A5', desc: 'Collecte sécurisée, synchronisation hors ligne et rapports R13 générés.' },
-        { code: 'A5.R3', label: 'Gestion administrative, financière et fiduciaire exemplaire', axis: 'A5', desc: 'Audits HMAC réguliers, conformité bailleurs et transparence comptable.' },
+        { code: 'A1.R1', label: tr('Dialogue and healing spaces active', 'Espaces de dialogue et guérison des mémoires opérationnels'), axis: 'A1', desc: tr('Healing circles and reconciliation workshops held in parishes.', 'Cercles de guérison et ateliers de réconciliation organisés dans les paroisses.') },
+        { code: 'A1.R2', label: tr('Social cohesion strengthened across generations', 'Cohésion sociale renforcée entre générations et communautés'), axis: 'A1', desc: tr('School peace clubs and joint youth initiatives.', 'Clubs de paix scolaires et initiatives conjointes de jeunesse.') },
+        { code: 'A2.R1', label: tr('Parish mediation committees trained and active', 'Comités de médiation paroissiaux formés et opérationnels'), axis: 'A2', desc: tr('Volunteer mediators equipped for peaceful dispute resolution.', 'Médiateurs bénévoles équipés pour la résolution amiable des différends.') },
+        { code: 'A2.R2', label: tr('Land and family disputes resolved out of court', 'Litiges fonciers et intrafamiliaux résolus sans recours judiciaire'), axis: 'A2', desc: tr('Cases closed with signed mutual agreements.', 'Dossiers traités et clôturés avec accord consensuel écrit.') },
+        { code: 'A2.R3', label: tr('Community early-warning system active', 'Système d’alerte précoce communautaire fonctionnel'), axis: 'A2', desc: tr('Local tensions reported early and addressed peacefully.', 'Remontée des tensions communautaires et désamorçage préventif.') },
+        { code: 'A3.R1', label: tr('Tree planting and parish nurseries established', 'Initiatives de reboisement et pépinières paroissiales établies'), axis: 'A3', desc: tr('Agroforestry seedlings distributed and cared for by CEBs.', 'Plants agroforestiers distribués et entretenus par les CEB.') },
+        { code: 'A3.R2', label: tr('Resilient farming practices adopted by households', 'Pratiques agroécologiques résilientes adoptées par les ménages'), axis: 'A3', desc: tr('Improved cookstoves and soil conservation shared with households.', 'Foyers améliorés et techniques de conservation des sols vulgarisées.') },
+        { code: 'A4.R1', label: tr('Legal aid and listening provided to vulnerable people', 'Assistance juridique et écoute assurées pour les vulnérables'), axis: 'A4', desc: tr('Free legal guidance and referrals for people in need.', 'Conseils juridiques gratuits et accompagnement des personnes démunies.') },
+        { code: 'A4.R2', label: tr('Awareness of fundamental rights and civic duties', 'Sensibilisation aux droits fondamentaux et devoirs civiques'), axis: 'A4', desc: tr('Community awareness campaigns and radio programs.', 'Campagnes d’information communautaire et émissions radiophoniques.') },
+        { code: 'A4.R3', label: tr('Prison visits and reintegration support', 'Visites et assistance psychosociale en milieu pénitentiaire'), axis: 'A4', desc: tr('Prison chaplaincy visits and post-release reintegration support.', 'Aumônerie carcérale et aide à la réinsertion post-libération.') },
+        { code: 'A5.R1', label: tr('Parish Justice and Peace committees (CPJP) active', 'Commissions Justice et Paix paroissiales (CPJP) actives'), axis: 'A5', desc: tr('27 parish committees running quarterly action plans and logs.', '27 commissions dotées de plans d’action trimestriels et registres.') },
+        { code: 'A5.R2', label: tr('Digital MEL system (APSE) maintained', 'Système numérique MEL (APSE) pérennisé et maîtrisé'), axis: 'A5', desc: tr('Secure data collection, offline sync, and R13 reporting.', 'Collecte sécurisée, synchronisation hors ligne et rapports R13 générés.') },
+        { code: 'A5.R3', label: tr('Sound administrative and financial management', 'Gestion administrative, financière et fiduciaire exemplaire'), axis: 'A5', desc: tr('Regular HMAC audits, donor compliance, and transparent accounting.', 'Audits HMAC réguliers, conformité bailleurs et transparence comptable.') },
       ];
     } else if (category === 'years') {
       items = [
-        { code: 'AP1', label: 'Année Pastorale 1 (2026–2027)', desc: 'Période : 1 Sept 2026 au 31 Août 2027 · Quarts : Q1, Q2, Q3, Q4 · 33 Tâches prioritaires' },
-        { code: 'AP2', label: 'Année Pastorale 2 (2027–2028)', desc: 'Période : 1 Sept 2027 au 31 Août 2028 (Année bissextile avec 29 Fév 2028)' },
-        { code: 'AP3', label: 'Année Pastorale 3 (2028–2029)', desc: 'Période : 1 Sept 2028 au 31 Août 2029 · Revue à mi-parcours du Plan Stratégique' },
-        { code: 'AP4', label: 'Année Pastorale 4 (2029–2030)', desc: 'Période : 1 Sept 2029 au 31 Août 2030 · Consolidation et extension des acquis' },
-        { code: 'AP5', label: 'Année Pastorale 5 (2030–2031)', desc: 'Période : 1 Sept 2030 au 31 Août 2031 · Clôture du cycle quinquennal et évaluation finale' },
+        { code: 'AP1', label: tr('Pastoral Year 1 (2026–2027)', 'Année Pastorale 1 (2026–2027)'), desc: tr('1 Sept 2026 to 31 Aug 2027. Quarters Q1 to Q4, 33 priority tasks.', 'Période : 1 Sept 2026 au 31 Août 2027. Quarts : Q1, Q2, Q3, Q4. 33 Tâches prioritaires') },
+        { code: 'AP2', label: tr('Pastoral Year 2 (2027–2028)', 'Année Pastorale 2 (2027–2028)'), desc: tr('1 Sept 2027 to 31 Aug 2028 (Leap year with 29 Feb 2028).', 'Période : 1 Sept 2027 au 31 Août 2028 (Année bissextile avec 29 Fév 2028)') },
+        { code: 'AP3', label: tr('Pastoral Year 3 (2028–2029)', 'Année Pastorale 3 (2028–2029)'), desc: tr('1 Sept 2028 to 31 Aug 2029. Strategic Plan midterm review.', 'Période : 1 Sept 2028 au 31 Août 2029. Revue à mi-parcours du Plan Stratégique') },
+        { code: 'AP4', label: tr('Pastoral Year 4 (2029–2030)', 'Année Pastorale 4 (2029–2030)'), desc: tr('1 Sept 2029 to 31 Aug 2030. Consolidation and scale-up.', 'Période : 1 Sept 2029 au 31 Août 2030. Consolidation et extension des acquis') },
+        { code: 'AP5', label: tr('Pastoral Year 5 (2030–2031)', 'Année Pastorale 5 (2030–2031)'), desc: tr('1 Sept 2030 to 31 Aug 2031. Five-year cycle closeout and final evaluation.', 'Période : 1 Sept 2030 au 31 Août 2031. Clôture du cycle quinquennal et évaluation finale') },
       ];
     } else if (category === 'geography_units' || category === 'organisation_units') {
       items = [
-        { code: 'DIST-HUYE', label: 'District de Huye (11 Paroisses)', desc: 'Astrida Cathédrale, Save, Ngoma, Tumba, Mbazi, Maraba, Simbi, Karama, Ruhashya, Rusatira, Kinazi' },
-        { code: 'DIST-GISAGARA', label: 'District de Gisagara (7 Paroisses)', desc: 'Kansi, Mugombwa, Kibirizi, Mamba, Higiro, Muganza, Kigembe' },
-        { code: 'DIST-NYANZA', label: 'District de Nyanza (5 Paroisses)', desc: 'Nyanza Christ-Roi, Kigoma, Nyabisindu, Hanika, Rwabicuma' },
-        { code: 'DIST-NYARUGURU', label: 'District de Nyaruguru (4 Paroisses)', desc: 'Kibeho Sanctuaire, Munini, Ruramba, Muganza-Sud' },
+        { code: 'DIST-HUYE', label: tr('Huye District (11 Parishes)', 'District de Huye (11 Paroisses)'), desc: 'Butare Cathedral, Save, Ngoma, Tumba, Mbazi, Maraba, Simbi, Karama, Ruhashya, Rusatira, Kinazi' },
+        { code: 'DIST-GISAGARA', label: tr('Gisagara District (7 Parishes)', 'District de Gisagara (7 Paroisses)'), desc: 'Kansi, Mugombwa, Kibirizi, Mamba, Higiro, Muganza, Kigembe' },
+        { code: 'DIST-NYANZA', label: tr('Nyanza District (5 Parishes)', 'District de Nyanza (5 Paroisses)'), desc: 'Nyanza Christ-Roi, Kigoma, Nyabisindu, Hanika, Rwabicuma' },
+        { code: 'DIST-NYARUGURU', label: tr('Nyaruguru District (4 Parishes)', 'District de Nyaruguru (4 Paroisses)'), desc: 'Kibeho, Munini, Ruramba, Muganza-Sud' },
       ];
     } else {
       /* Fallback: fetch dynamically from /metadata */
@@ -549,27 +571,27 @@
         const raw = m[category] || [];
         V091.showModal({
           title: modalTitle,
-          subtitle: `${raw.length} entrées configurées dans le schéma institutionnel MEL.`,
+          subtitle: tr(`${raw.length} entries configured in the MEL catalog.`, `${raw.length} entrées configurées dans le schéma institutionnel MEL.`),
           icon: 'tune',
           content: h('div', { className: 'v1-meta-list' },
             raw.slice(0, 20).map((it, idx) =>
               h('div', { className: 'v1-meta-item-card', key: idx },
                 h('div', { className: 'v1-meta-item-header' },
-                  h('strong', {}, typeof it === 'string' ? it : (it.code || it.id || `Élément #${idx + 1}`)),
+                  h('strong', {}, typeof it === 'string' ? it : (it.code || it.id || `${tr('Item', 'Élément')} #${idx + 1}`)),
                   h('span', { className: 'v1-meta-code-badge' }, category.toUpperCase())
                 ),
                 typeof it === 'object' ? h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-                  it.label?.fr || it.label?.en || it.name || JSON.stringify(it).slice(0, 120)
+                  localize(it.label || it.labels) || it.name || JSON.stringify(it).slice(0, 120)
                 ) : null
               )
             )
           ),
           actions: [
-            { label: 'Fermer', type: 'secondary', onClick: () => V091.closeModal() }
+            { label: tr('Close', 'Fermer'), type: 'secondary', onClick: () => V091.closeModal() }
           ]
         });
       }).catch(err => {
-        V091.showToast('Erreur chargement métadonnées : ' + err.message, 'error');
+        V091.showToast(tr('Could not load metadata: ', 'Erreur chargement métadonnées : ') + err.message, 'error');
       });
       return;
     }
@@ -577,7 +599,7 @@
     /* Render modal for curated items */
     V091.showModal({
       title: modalTitle,
-      subtitle: `${items.length} entrées validées dans le cadre stratégique CDJP Butare.`,
+      subtitle: tr(`${items.length} validated entries in the CDJP Butare catalog.`, `${items.length} entrées validées dans le cadre stratégique CDJP Butare.`),
       icon: 'tune',
       content: h('div', { className: 'v1-meta-list' },
         items.map((it, idx) =>
@@ -587,9 +609,9 @@
               h('span', { className: 'v1-meta-code-badge' }, it.code)
             ),
             it.rw ? h('div', { style: { fontSize: '0.8125rem', color: 'var(--text-muted)', fontStyle: 'italic' } },
-              `Kinyarwanda : ${it.rw}`
+              `Kinyarwanda: ${it.rw}`
             ) : null,
-            it.count ? h('div', { style: { fontSize: '0.8125rem', fontWeight: '600', color: 'var(--color-primary)' } },
+            it.count ? h('div', { style: { fontSize: '0.8125rem', fontWeight: '600', color: 'var(--color-link)' } },
               it.count
             ) : null,
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
@@ -600,14 +622,14 @@
       ),
       actions: [
         {
-          label: 'Éditer le schéma brut (JSON)',
+          label: tr('Edit Raw Schema (JSON)', 'Éditer le schéma brut (JSON)'),
           type: 'secondary',
           onClick: () => {
             V091.closeModal();
-            V091.showToast('Accès éditeur JSON réservé aux administrateurs MEL.', 'info');
+            V091.showToast(tr('Only MEL admins can edit the raw JSON schema.', 'Accès éditeur JSON réservé aux administrateurs MEL.'), 'info');
           }
         },
-        { label: 'Fermer', type: 'primary', onClick: () => V091.closeModal() }
+        { label: tr('Close', 'Fermer'), type: 'primary', onClick: () => V091.closeModal() }
       ]
     });
   };
@@ -638,7 +660,7 @@
           h('button', {
             type: 'button',
             className: 'v1-modal-close',
-            title: 'Fermer (ESC)',
+            title: tr('Close (ESC)', 'Fermer (ESC)'),
             onClick: () => V091.closeModal()
           }, '×')
         ),
@@ -670,20 +692,20 @@
     );
   }
 
-/* Helper to render custom styled file upload button matching Kargul Studio design system */
+/* Helper to render custom styled file upload button matching IBM Carbon v11 design system */
   function renderFileUploadComponent({ id, label, accept, onSelect, selectedFilename, helperText }) {
     const inputId = id || ('file_input_' + Math.random().toString(36).slice(2, 9));
     return h('div', { className: 'v1-file-upload-wrap' },
       h('button', {
         type: 'button',
-        className: 'v1-btn v1-btn-secondary v1-file-upload-btn',
+        className: 'v1-btn v1-file-upload-btn',
         onClick: () => {
           const el = document.getElementById(inputId);
           if (el) el.click();
         },
       },
         msIcon('upload_file', 18),
-        h('span', {}, label || 'Choisir un document...')
+        h('span', {}, label || tr('Choose file', 'Choisir un document...'))
       ),
       h('input', {
         type: 'file',
@@ -726,7 +748,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_my_space')),
             h('p', { className: 'v1-page-subtitle' },
-              `Connecté en tant que ${user.name || 'Utilisateur'} · Rôles : ${(user.roles || []).join(', ')} · Périmètre : ${user.is_diocesan ? 'Diocèse (27 Paroisses)' : (user.assigned_parish || 'Paroisse')}`
+              tr(
+                `Signed in as ${user.name || 'User'}, Roles: ${(user.roles || []).join(', ')}, Scope: ${user.is_diocesan ? 'Diocese (27 Parishes)' : (user.assigned_parish || 'Parish')}`,
+                `Connecté en tant que ${user.name || 'Utilisateur'}, Rôles : ${(user.roles || []).join(', ')}, Périmètre : ${user.is_diocesan ? 'Diocèse (27 Paroisses)' : (user.assigned_parish || 'Paroisse')}`
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
@@ -739,7 +764,7 @@
               },
             },
               msIcon('add', 18),
-              h('span', {}, 'Nouvelle saisie de formulaire')
+              h('span', {}, tr('New Form Entry', 'Nouvelle saisie'))
             ),
             h('button', {
               type: 'button',
@@ -750,7 +775,7 @@
               },
             },
               msIcon('person', 18),
-              h('span', {}, 'Changer de profil (14 profils)')
+              h('span', {}, tr('Switch Account', 'Changer de profil'))
             )
           )
         )
@@ -759,35 +784,38 @@
       /* 4 KPI overview cards */
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'Activités prévues (Mes tâches)'),
+          h('span', { className: 'v1-kpi-label' }, tr('Planned Tasks', 'Activités prévues')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, String(tasks.length)),
-          h('span', { className: 'v1-kpi-sub' }, `${tasks.filter(t => t.status === 'COMPLETED').length} terminées`)
+          h('span', { className: 'v1-kpi-sub' }, `${tasks.filter(t => t.status === 'COMPLETED').length} ${tr('completed', 'terminées')}`)
         ),
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'Rapports en attente de revue'),
+          h('span', { className: 'v1-kpi-label' }, tr('Pending Review', 'En attente de revue')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, String(pendingReview.length)),
-          h('span', { className: 'v1-kpi-sub' }, 'Comité CPJP & validation MEL')
+          h('span', { className: 'v1-kpi-sub' }, tr('CPJP and MEL review', 'Comité CPJP et validation MEL'))
         ),
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'Participants totaux accompagnés'),
+          h('span', { className: 'v1-kpi-label' }, tr('Total Participants', 'Participants totaux')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, String(V1.data?.analytics?.summary?.total_participants || 140)),
-          h('span', { className: 'v1-kpi-sub' }, `${V1.data?.analytics?.summary?.women || 77} femmes · ${V1.data?.analytics?.summary?.men || 63} hommes`)
+          h('span', { className: 'v1-kpi-sub' }, `${V1.data?.analytics?.summary?.women || 77} ${tr('women', 'femmes')}, ${V1.data?.analytics?.summary?.men || 63} ${tr('men', 'hommes')}`)
         ),
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'File locale hors ligne'),
+          h('span', { className: 'v1-kpi-label' }, tr('Offline Queue', 'File hors ligne')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, String(V1.offlineQueue.length)),
-          h('span', { className: 'v1-kpi-sub' }, V1.offlineQueue.length > 0 ? 'En attente de synchronisation' : 'Toutes les données synchronisées')
+          h('span', { className: 'v1-kpi-sub' }, V1.offlineQueue.length > 0 ? tr('Waiting to sync', 'En attente de synchro') : tr('All data synced', 'Tout est synchronisé'))
         )
       ),
 
       /* 14 Role Workspace Profiles Grid */
       h('div', { className: 'v1-panel', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, 'Profils de postes & espaces de travail institutionnels (14 profils)'),
-          h('span', { className: 'v1-badge' }, 'Rôles CDJP & CPJP')
+          h('span', { className: 'v1-chart-title' }, tr('Role Profiles (14)', 'Profils de postes (14 profils)')),
+          h('span', { className: 'v1-badge' }, tr('CDJP and CPJP Roles', 'Rôles CDJP & CPJP'))
         ),
         h('p', { className: 'v1-field-helper', style: { marginBottom: '16px' } },
-          'Conformément au manuel opérationnel APSE et à l’organigramme CPJP 2025, chaque fonction dispose de responsabilités, formulaires et droits dédiés sans contournement possible.'
+          tr(
+            'Each role has its own forms, approvals, and permissions based on the CDJP Butare operational manual.',
+            'Chaque fonction dispose de responsabilités, formulaires et droits dédiés selon le manuel opérationnel APSE.'
+          )
         ),
         h('div', { className: 'v1-grid-16' },
           (V1.data?.roleWorkspaces || []).map(rw =>
@@ -812,8 +840,8 @@
                 rw.duties[V1.lang] || rw.duties.fr
               ),
               h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
-                (rw.primary_forms || []).map(f => h('span', { className: 'v1-chip', style: { fontSize: '0.6875rem' } }, f)),
-                h('span', { className: 'v1-chip', style: { fontSize: '0.6875rem', background: 'var(--color-primary-bg)' } }, rw.scope)
+                (rw.primary_forms || []).map(f => h('span', { className: 'v1-chip', style: { fontFamily: 'var(--font-mono)', fontWeight: '600', cursor: 'default' } }, f)),
+                h('span', { className: 'v1-badge info' }, rw.scope)
               )
             )
           )
@@ -836,20 +864,20 @@
 
     /* 7 Official Clusters from APSE Comprehensive Manual */
     const clusters = [
-      { id: 'ALL', label: 'Tous les formulaires (45)', codes: [] },
-      { id: 'CLUST_A', label: 'Cluster A : Planification & Organisation', codes: ['F03', 'F04', 'F05', 'F06', 'F43'] },
-      { id: 'CLUST_B', label: 'Cluster B : Terrain & Consolidation de la paix', codes: ['F07', 'F08', 'F13', 'F15', 'F44'] },
-      { id: 'CLUST_C', label: 'Cluster C : Accompagnement confidentiel & Guérison', codes: ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'] },
-      { id: 'CLUST_D', label: 'Cluster D : Finances, Marchés & Bailleurs', codes: ['F19', 'F20', 'F36', 'F37'] },
-      { id: 'CLUST_E', label: 'Cluster E : Apprentissage, Évaluation & Stratégie', codes: ['F25', 'F27', 'F28', 'F29', 'F30', 'F40', 'F41', 'F42'] },
-      { id: 'CLUST_F', label: 'Cluster F : RH, Véhicules & Administration', codes: ['F31', 'F32', 'F33', 'F34', 'F35', 'F38', 'F39'] },
-      { id: 'CLUST_G', label: 'Cluster G : Système, Qualité & Gouvernance', codes: ['F01', 'F02', 'F21', 'F24', 'F26'] },
+      { id: 'ALL', label: tr('All Forms (45)', 'Tous les formulaires (45)'), codes: [] },
+      { id: 'CLUST_A', label: tr('A: Planning & Organization', 'Cluster A : Planification & Organisation'), codes: ['F03', 'F04', 'F05', 'F06', 'F43'] },
+      { id: 'CLUST_B', label: tr('B: Field & Peacebuilding', 'Cluster B : Terrain & Consolidation de la paix'), codes: ['F07', 'F08', 'F13', 'F15', 'F44'] },
+      { id: 'CLUST_C', label: tr('C: Confidential Care & Healing', 'Cluster C : Accompagnement confidentiel & Guérison'), codes: ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'] },
+      { id: 'CLUST_D', label: tr('D: Finance, Grants & Donors', 'Cluster D : Finances, Marchés & Bailleurs'), codes: ['F19', 'F20', 'F36', 'F37'] },
+      { id: 'CLUST_E', label: tr('E: Learning & Evaluation', 'Cluster E : Apprentissage, Évaluation & Stratégie'), codes: ['F25', 'F27', 'F28', 'F29', 'F30', 'F40', 'F41', 'F42'] },
+      { id: 'CLUST_F', label: tr('F: HR, Vehicles & Admin', 'Cluster F : RH, Véhicules & Administration'), codes: ['F31', 'F32', 'F33', 'F34', 'F35', 'F38', 'F39'] },
+      { id: 'CLUST_G', label: tr('G: System & Governance', 'Cluster G : Système, Qualité & Gouvernance'), codes: ['F01', 'F02', 'F21', 'F24', 'F26'] },
     ];
 
     V091.formCategory = V091.formCategory || 'ALL';
     V091.seizureSubTab = V091.seizureSubTab || 'form'; // 'form' | 'history'
 
-    const currentForm = allForms.find(f => f.code === V091.activeFormCode) || allForms[0] || { code: 'F07', label: { fr: 'F07 — Réalisation activité' }, fields: [] };
+    const currentForm = allForms.find(f => f.code === V091.activeFormCode) || allForms[0] || { code: 'F07', label: { en: 'Activity Implementation', fr: 'F07 — Réalisation activité' }, fields: [] };
     const formFields = currentForm.fields || [];
 
     // Filter forms by cluster & search
@@ -958,31 +986,31 @@
         optList ? V091.renderFigmaDropdown({
           id: 'seizure-field-' + fCode,
           value: val,
-          placeholder: `-- Sélectionner ${fLabel} --`,
+          placeholder: `${tr('Select', 'Sélectionner')} ${fLabel}`,
           width: '100%',
           options: [
-            { value: '', label: `-- Sélectionner ${fLabel} --` },
+            { value: '', label: `${tr('Select', 'Sélectionner')} ${fLabel}` },
             ...optList.map(opt => {
               if (fCode === 'volet') {
                 if (typeof window !== 'undefined' && typeof window.normalizeVolet === 'function') {
                   const norm = window.normalizeVolet(opt);
-                  return { value: norm.canonicalCode, label: `${norm.canonicalCode} — ${norm.labelText}` };
+                  return { value: norm.canonicalCode, label: `${norm.canonicalCode}: ${norm.labelText}` };
                 }
                 const optCode = (typeof opt === 'string' ? opt : (opt.code || opt.id || '')).toUpperCase();
                 const canon = (typeof window !== 'undefined' && window.VOLET_CANONICAL && window.VOLET_CANONICAL[optCode]) || optCode;
                 const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
-                const lang = (typeof V1 !== 'undefined' && V1?.lang) || 'fr';
+                const lang = (typeof V1 !== 'undefined' && V1?.lang) || 'en';
                 const fallbacks = (typeof window !== 'undefined' && window.VOLET_FALLBACKS) || {};
                 const fbObj = fallbacks[optCode] || fallbacks[canon];
-                const optLabel = (lblObj && (lblObj[lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) ||
-                  (fbObj && (fbObj[lang] || fbObj.fr || fbObj.en || fbObj.rw || fbObj.sw || Object.values(fbObj)[0])) ||
+                const optLabel = (lblObj && (lblObj[lang] || lblObj.en || lblObj.fr || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) ||
+                  (fbObj && (fbObj[lang] || fbObj.en || fbObj.fr || fbObj.rw || fbObj.sw || Object.values(fbObj)[0])) ||
                   optCode;
-                return { value: canon, label: `${canon} — ${optLabel}` };
+                return { value: canon, label: `${canon}: ${optLabel}` };
               }
               const optCode = typeof opt === 'string' ? opt : (opt.code || opt.id);
               const lblObj = typeof opt === 'object' && opt ? (opt.label || opt.labels) : null;
-              const optLabel = typeof opt === 'string' ? opt : ((lblObj && (lblObj[V1.lang] || lblObj.fr || lblObj.en || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) || optCode);
-              return { value: optCode, label: `${optCode} — ${optLabel}` };
+              const optLabel = typeof opt === 'string' ? opt : ((lblObj && (lblObj[V1.lang] || lblObj.en || lblObj.fr || lblObj.rw || lblObj.sw || Object.values(lblObj)[0])) || optCode);
+              return { value: optCode, label: `${optCode}: ${optLabel}` };
             }),
           ],
           onChange: nextVal => {
@@ -998,7 +1026,7 @@
         }) : fType === 'LONG_TEXT' ? h('textarea', {
           className: 'v1-textarea',
           rows: 3,
-          placeholder: `Saisir ${fLabel}...`,
+          placeholder: `${tr('Enter', 'Saisir')} ${fLabel}...`,
           value: val,
           onInput: e => { V091.formValues[fCode] = e.target.value; },
         }) : fType === 'BOOLEAN' ? h('label', { style: { display: 'flex', alignItems: 'center', gap: '8px', height: '40px', cursor: 'pointer' } },
@@ -1010,11 +1038,11 @@
               renderApp();
             },
           }),
-          h('span', { style: { fontSize: '0.875rem' } }, 'Confirmer (Oui / Non)')
+          h('span', { style: { fontSize: '0.875rem' } }, tr('Confirm (Yes / No)', 'Confirmer (Oui / Non)'))
         ) : h('input', {
           type: (fType.startsWith('INTEGER') || fType === 'NUMBER') ? 'number' : fType === 'DATE' ? 'date' : 'text',
           className: 'v1-input',
-          placeholder: `Saisir ${fLabel}...`,
+          placeholder: `${tr('Enter', 'Saisir')} ${fLabel}...`,
           value: val,
           onInput: e => {
             V091.formValues[fCode] = e.target.value;
@@ -1030,21 +1058,22 @@
 
     // Records created over time / history list
     const createdRecords = (V1.data?.logs || []).filter(l => l.task_titles || l.form === currentForm.code);
+    const formTitle = localize(currentForm.label) || currentForm.code;
 
     return h('div', { className: 'v1-workspace-fade' },
       h('header', { className: 'v1-page-header v1-seizure-page-header' },
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Saisie opérationnelle'),
+          h('span', { className: 'v1-breadcrumb-item' }, L('nav_seizure')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-current' }, `${currentForm.code} — ${currentForm.label[V1.lang] || currentForm.label.fr}`)
+          h('span', { className: 'v1-breadcrumb-current' }, `${currentForm.code}: ${formTitle}`)
         ),
         h('div', { className: 'v1-header-split' },
           h('div', { style: { minWidth: 0 } },
-            h('h1', { className: 'v1-page-title' }, `Saisie : ${currentForm.code} · ${currentForm.label[V1.lang] || currentForm.label.fr}`),
+            h('h1', { className: 'v1-page-title' }, `${currentForm.code}: ${formTitle}`),
             h('p', { className: 'v1-page-subtitle' },
-              `${formFields.length} champs disponibles · ${isSensitiveForm ? 'Fiche confidentielle & sensible' : 'Fiche publique opérationnelle'} · Standard ${currentForm.captureStandard || 'V8'}`
+              `${formFields.length} ${tr('fields', 'champs')}, ${isSensitiveForm ? tr('Confidential form', 'Fiche confidentielle') : tr('Standard form', 'Fiche standard')}`
             )
           ),
           h('div', { className: 'v1-header-actions v1-seizure-header-actions' },
@@ -1059,8 +1088,8 @@
                 },
               },
                 msIcon('edit_note', 16),
-                h('span', { className: 'v1-tab-text-full' }, 'Formulaire de saisie'),
-                h('span', { className: 'v1-tab-text-short' }, 'Formulaire')
+                h('span', { className: 'v1-tab-text-full' }, tr('Form Entry', 'Formulaire')),
+                h('span', { className: 'v1-tab-text-short' }, tr('Form', 'Formulaire'))
               ),
               h('button', {
                 type: 'button',
@@ -1071,8 +1100,8 @@
                 },
               },
                 msIcon('folder_copy', 16),
-                h('span', { className: 'v1-tab-text-full' }, `Dossiers créés au fil du temps (${createdRecords.length})`),
-                h('span', { className: 'v1-tab-text-short' }, `Dossiers (${createdRecords.length})`)
+                h('span', { className: 'v1-tab-text-full' }, `${tr('Records', 'Dossiers')} (${createdRecords.length})`),
+                h('span', { className: 'v1-tab-text-short' }, `${tr('Records', 'Dossiers')} (${createdRecords.length})`)
               )
             ),
 
@@ -1080,20 +1109,20 @@
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-secondary',
-              title: 'Dupliquer les valeurs de ce formulaire pour créer un nouveau dossier',
+              title: tr('Duplicate these values into a new record', 'Dupliquer ces valeurs dans un nouveau dossier'),
               onClick: () => {
                 const cloned = Object.assign({}, V091.formValues);
                 cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
-                if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
+                if (cloned.title) cloned.title = `${cloned.title} (${tr('Copy', 'Copie')})`;
                 cloned.event_date = '2026-10-25';
                 V091.formValues = cloned;
                 V091.seizureSubTab = 'form';
-                V091.showToast('✓ Formulaire dupliqué avec succès ! Modifiez les champs puis validez.', 'info');
+                V091.showToast(tr('Form values duplicated. Edit and submit.', 'Formulaire dupliqué. Modifiez puis validez.'), 'info');
                 renderApp();
               },
             },
               msIcon('content_copy', 18),
-              h('span', {}, 'Dupliquer ce formulaire')
+              h('span', {}, tr('Duplicate', 'Dupliquer'))
             ),
 
             h('button', {
@@ -1107,12 +1136,12 @@
                   language: V1.lang,
                 };
                 apiV1('/working-drafts', 'POST', draftPayload).then(() => {
-                  V091.showToast('✓ Brouillon chiffré enregistré sur le serveur.', 'info');
-                }).catch(err => V091.showToast('Erreur sauvegarde brouillon : ' + err.message, 'error'));
+                  V091.showToast(tr('Encrypted draft saved on server.', 'Brouillon chiffré enregistré sur le serveur.'), 'info');
+                }).catch(err => V091.showToast(tr('Could not save draft: ', 'Erreur sauvegarde brouillon : ') + err.message, 'error'));
               },
             },
               msIcon('cloud_done', 18),
-              h('span', {}, 'Enregistrer brouillon')
+              h('span', {}, tr('Save Draft', 'Enregistrer brouillon'))
             ),
 
             h('button', {
@@ -1126,15 +1155,15 @@
                   values: V091.formValues,
                 };
                 apiV1('/records', 'POST', payload).then(rec => {
-                  V091.showToast(`✓ Dossier ${rec.values?.record || rec.id} créé avec succès en statut DRAFT.`, 'info');
+                  V091.showToast(tr(`Record ${rec.values?.record || rec.id} saved as draft.`, `Dossier ${rec.values?.record || rec.id} créé en brouillon.`), 'info');
                   V091.formValues = {};
                   V1.workspace = 'files_validation';
                   renderApp();
-                }).catch(err => V091.showToast('Erreur validation : ' + (err.details || err.message), 'error'));
+                }).catch(err => V091.showToast(tr('Validation error: ', 'Erreur validation : ') + (err.details || err.message), 'error'));
               },
             },
               msIcon('check', 18),
-              h('span', {}, 'Valider & Soumettre')
+              h('span', {}, tr('Submit Record', 'Valider et soumettre'))
             )
           )
         )
@@ -1146,9 +1175,9 @@
         style: {
           marginBottom: '20px',
           padding: '16px 20px',
-          background: 'rgba(218, 30, 40, 0.08)',
-          border: '1px solid var(--color-critical)',
-          borderRadius: 'var(--radius-md)',
+          background: 'var(--tag-danger-bg)',
+          border: '1px solid var(--color-danger)',
+          borderRadius: 'var(--radius-sm)',
           display: 'flex',
           alignItems: 'center',
           gap: '14px',
@@ -1157,9 +1186,12 @@
       },
         msIcon('lock', 24),
         h('div', { style: { flex: 1, minWidth: '220px' } },
-          h('strong', { style: { color: 'var(--color-critical)', fontSize: '0.9375rem', display: 'block' } }, 'Fiche Confidentielle & Sensible (Do No Harm / Protection des Données)'),
+          h('strong', { style: { color: 'var(--color-critical)', fontSize: '0.9375rem', display: 'block' } }, tr('Confidential Form (Do No Harm and Data Protection)', 'Fiche Confidentielle (Do No Harm et Protection des Données)')),
           h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-primary)', margin: '4px 0 0' } },
-            'Règle d’or institutionnelle : Ne jamais saisir de noms réels, cartes d’identité nationales ou numéros de téléphone dans les champs narratifs. Utilisez exclusivement un code anonyme (ex: CASE-2026-089).'
+            tr(
+              'Never enter real names, national IDs, or phone numbers in narrative fields. Use an anonymous code instead (e.g., CASE-2026-089).',
+              'Ne jamais saisir de noms réels, cartes d’identité nationales ou numéros de téléphone dans les champs narratifs. Utilisez un code anonyme (ex. CASE-2026-089).'
+            )
           )
         )
       ) : null,
@@ -1168,14 +1200,13 @@
       h('div', { className: 'v1-seizure-split' },
         /* Left Column: Form Selector & 7 Clusters */
         h('div', { className: 'v1-panel v1-seizure-nav', style: { gridColumn: 'auto' } },
-          h('label', { className: 'v1-field-label' }, 'Clusters Institutionnels (A à G)'),
+          h('label', { className: 'v1-field-label' }, tr('Form Groups (A to G)', 'Groupes de formulaires (A à G)')),
           h('div', { className: 'v1-chips v1-seizure-cluster-rail', style: { marginBottom: '12px' } },
             clusters.map(c =>
               h('button', {
                 type: 'button',
                 key: c.id,
-                className: 'v1-chip' + (V091.formCategory === c.id ? ' active' : ''),
-                style: { fontSize: '0.6875rem', padding: '3px 8px' },
+                className: 'v1-chip v1-cluster-btn' + (V091.formCategory === c.id ? ' active' : ''),
                 onClick: () => {
                   V091.formCategory = c.id;
                   renderApp();
@@ -1186,7 +1217,7 @@
           h('input', {
             type: 'search',
             className: 'v1-input v1-seizure-search',
-            placeholder: 'Filtrer par code (F07, F03...) ou titre...',
+            placeholder: tr('Filter by code (F07, F03) or title', 'Filtrer par code (F07, F03) ou titre'),
             value: V091.formSearch || '',
             onInput: e => {
               V091.formSearch = e.target.value;
@@ -1196,7 +1227,7 @@
           }),
           /* Mobile/Tablet Prominent Form Picker: Select dropdown & Quick Badge Rail */
           h('div', { className: 'v1-seizure-mobile-picker' },
-            h('label', { className: 'v1-field-label', style: { marginTop: '4px', marginBottom: '4px' } }, 'Sélectionner un formulaire'),
+            h('label', { className: 'v1-field-label', style: { marginTop: '4px', marginBottom: '4px' } }, tr('Select a form', 'Sélectionner un formulaire')),
             V091.renderFigmaDropdown({
               id: 'seizure-form-picker',
               value: V091.activeFormCode,
@@ -1204,8 +1235,8 @@
               className: 'v1-seizure-form-select',
               options: allForms.map(f => {
                 const isSens = f.sensitive || ['F09', 'F10', 'F11', 'F12', 'F14', 'F17', 'F18', 'F23', 'F45'].includes(f.code);
-                const lbl = (f.label && (f.label[V1.lang] || f.label.fr || f.label.en)) || f.code;
-                return { value: f.code, label: `${f.code} — ${lbl}${isSens ? ' [Sensible]' : ''}` };
+                const lbl = localize(f.label) || f.code;
+                return { value: f.code, label: `${f.code}: ${lbl}${isSens ? tr(' [Sensitive]', ' [Sensible]') : ''}` };
               }),
               onChange: code => {
                 if (code) {
@@ -1216,8 +1247,8 @@
                 }
               },
             }),            h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '4px 0 2px' } },
-              h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 } }, 'Accès rapide (badges) :'),
-              h('span', { style: { fontSize: '0.6875rem', color: 'var(--text-muted)' } }, `${filteredForms.length} formulaire${filteredForms.length > 1 ? 's' : ''}`)
+              h('span', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 600 } }, tr('Quick access:', 'Accès rapide :')),
+              h('span', { style: { fontSize: '0.6875rem', color: 'var(--text-muted)' } }, `${filteredForms.length} ${tr(filteredForms.length === 1 ? 'form' : 'forms', filteredForms.length > 1 ? 'formulaires' : 'formulaire')}`)
             ),
             h('div', { className: 'v1-seizure-badge-rail' },
               filteredForms.map(f =>
@@ -1255,9 +1286,9 @@
               },
                 h('div', { style: { overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } },
                   h('strong', {}, f.code),
-                  h('span', { style: { marginLeft: '6px', color: 'var(--text-secondary)' } }, f.label[V1.lang] || f.label.fr)
+                  h('span', { style: { marginLeft: '6px', color: 'var(--text-secondary)' } }, localize(f.label))
                 ),
-                isSens ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
+                isSens ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, tr('Sensitive', 'Sensible')) : null
               );
             })
           )
@@ -1270,9 +1301,12 @@
             h('div', { className: 'v1-panel v1-seizure-history-view', style: { padding: '24px' } },
               h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' } },
                 h('div', { style: { flex: 1, minWidth: '220px' } },
-                  h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } }, `Dossiers créés au fil du temps (${createdRecords.length})`),
+                  h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } }, `${tr('Submitted Records', 'Dossiers créés')} (${createdRecords.length})`),
                   h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
-                    `Consultez les dossiers saisis pour ${currentForm.code} ou dupliquez un formulaire existant pour en créer un nouveau sans repartir de zéro.`
+                    tr(
+                      `View records for ${currentForm.code} or duplicate an existing record to start a new one.`,
+                      `Consultez les dossiers saisis pour ${currentForm.code} ou dupliquez un dossier existant.`
+                    )
                   )
                 ),
                 h('button', {
@@ -1285,14 +1319,14 @@
                   },
                 },
                   msIcon('add', 18),
-                  h('span', {}, 'Nouveau formulaire vierge')
+                  h('span', {}, tr('New Blank Form', 'Nouveau formulaire vierge'))
                 )
               ),
 
               createdRecords.length === 0 ? h('div', { style: { padding: '40px 20px', textAlign: 'center', color: 'var(--text-muted)' } },
                 msIcon('folder_open', 48),
-                h('p', { style: { marginTop: '12px', fontSize: '0.9375rem' } }, 'Aucun dossier encore enregistré pour ce formulaire.'),
-                h('p', { style: { fontSize: '0.8125rem' } }, 'Remplissez le formulaire de saisie pour créer votre premier dossier.')
+                h('p', { style: { marginTop: '12px', fontSize: '0.9375rem' } }, tr('No records saved for this form yet.', 'Aucun dossier enregistré pour ce formulaire.')),
+                h('p', { style: { fontSize: '0.8125rem' } }, tr('Fill out the form to create your first record.', 'Remplissez le formulaire pour créer votre premier dossier.'))
               ) : h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
                 createdRecords.map((rec, rIdx) =>
                   h('div', {
@@ -1305,43 +1339,43 @@
                       alignItems: 'center',
                       gap: '16px',
                       border: '1px solid var(--border-subtle)',
-                      borderRadius: 'var(--radius-md)',
+                      borderRadius: 'var(--radius-sm)',
                       flexWrap: 'wrap',
                     }
                   },
                     h('div', { style: { flex: 1, minWidth: '240px' } },
                       h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px', flexWrap: 'wrap' } },
                         h('span', { className: 'v1-badge', style: { fontWeight: 700 } }, rec.form || currentForm.code),
-                        h('strong', { style: { fontSize: '0.9375rem' } }, rec.task_titles?.fr || rec.values?.title || rec.id || `Dossier #${rIdx + 1}`),
+                        h('strong', { style: { fontSize: '0.9375rem' } }, localize(rec.task_titles) || rec.values?.title || rec.id || `${tr('Record', 'Dossier')} #${rIdx + 1}`),
                         h('span', { className: 'v1-badge' }, rec.status || 'DRAFT')
                       ),
                       h('div', { style: { display: 'flex', gap: '16px', fontSize: '0.8125rem', color: 'var(--text-secondary)', flexWrap: 'wrap' } },
-                        h('span', {}, `Date : ${rec.event_date || '2026-10-25'}`),
-                        h('span', {}, `Paroisse : ${rec.parish_name || 'Diocèse de Butare'}`),
-                        rec.women_count !== undefined ? h('span', {}, `Femmes : ${rec.women_count} · Hommes : ${rec.men_count} · Total : ${rec.total_attendance}`) : null
+                        h('span', {}, `${tr('Date', 'Date')}: ${rec.event_date || '2026-10-25'}`),
+                        h('span', {}, `${tr('Parish', 'Paroisse')}: ${rec.parish_name || tr('Diocese of Butare', 'Diocèse de Butare')}`),
+                        rec.women_count !== undefined ? h('span', {}, `${tr('Women', 'Femmes')}: ${rec.women_count}, ${tr('Men', 'Hommes')}: ${rec.men_count}, ${tr('Total', 'Total')}: ${rec.total_attendance}`) : null
                       )
                     ),
                     h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap' } },
                       h('button', {
                         type: 'button',
                         className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                        title: 'Dupliquer ce dossier dans le formulaire de saisie',
+                        title: tr('Duplicate this record into the active form', 'Dupliquer ce dossier dans le formulaire actif'),
                         onClick: () => {
                           const cloned = Object.assign({}, rec.values || rec);
                           cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
-                          cloned.title = `${rec.task_titles?.fr || rec.values?.title || 'Dossier'} (Copie)`;
+                          cloned.title = `${localize(rec.task_titles) || rec.values?.title || tr('Record', 'Dossier')} (${tr('Copy', 'Copie')})`;
                           cloned.event_date = '2026-10-25';
                           if (rec.women_count !== undefined) cloned.women = String(rec.women_count);
                           if (rec.men_count !== undefined) cloned.men = String(rec.men_count);
                           if (rec.total_attendance !== undefined) cloned.total = String(rec.total_attendance);
                           V091.formValues = cloned;
                           V091.seizureSubTab = 'form';
-                          V091.showToast('✓ Dossier dupliqué avec succès dans le formulaire actif !', 'info');
+                          V091.showToast(tr('Record duplicated into the active form.', 'Dossier dupliqué dans le formulaire actif.'), 'info');
                           renderApp();
                         },
                       },
                         msIcon('content_copy', 16),
-                        h('span', {}, 'Dupliquer')
+                        h('span', {}, tr('Duplicate', 'Dupliquer'))
                       ),
                       h('button', {
                         type: 'button',
@@ -1353,7 +1387,7 @@
                         },
                       },
                         msIcon('edit', 16),
-                        h('span', {}, 'Ouvrir')
+                        h('span', {}, tr('Open', 'Ouvrir'))
                       )
                     )
                   )
@@ -1369,32 +1403,35 @@
                 h('div', { className: 'gf-header-card-inner', style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '16px', flexWrap: 'wrap' } },
                   h('div', { style: { flex: 1, minWidth: '220px' } },
                     h('div', { style: { display: 'flex', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' } },
-                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: 700 } }, currentForm.code),
-                      h('span', { className: 'v1-badge' }, `${formFields.length} champs natifs`),
-                      isSensitiveForm ? h('span', { className: 'v1-badge', style: { background: 'var(--color-critical-bg)', color: 'var(--color-critical)' } }, 'Sensible') : null
+                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: 'var(--color-primary-fg)', fontWeight: 600 } }, currentForm.code),
+                      h('span', { className: 'v1-badge' }, `${formFields.length} ${tr('fields', 'champs')}`),
+                      isSensitiveForm ? h('span', { className: 'v1-badge', style: { background: 'var(--tag-danger-bg)', color: 'var(--tag-danger-text)' } }, tr('Sensitive', 'Sensible')) : null
                     ),
                     h('h2', { style: { fontSize: '1.5rem', fontWeight: 700, margin: '4px 0', wordBreak: 'break-word' } },
-                      currentForm.label[V1.lang] || currentForm.label.fr
+                      formTitle
                     ),
                     h('p', { style: { fontSize: '0.875rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
-                      `Standard de saisie ${currentForm.captureStandard || 'V8'} · Formulaire institutionnel CDJP Butare conforme au Plan Stratégique 2026–2031.`
+                      tr(
+                        `Standard ${currentForm.captureStandard || 'V8'} form for the CDJP Butare 2026–2031 Strategic Plan.`,
+                        `Standard ${currentForm.captureStandard || 'V8'}, formulaire CDJP Butare du Plan Stratégique 2026–2031.`
+                      )
                     )
                   ),
                   h('button', {
                     type: 'button',
                     className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                    title: 'Dupliquer les valeurs actuelles',
+                    title: tr('Duplicate current form values', 'Dupliquer les valeurs actuelles'),
                     onClick: () => {
                       const cloned = Object.assign({}, V091.formValues);
                       cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
-                      if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
+                      if (cloned.title) cloned.title = `${cloned.title} (${tr('Copy', 'Copie')})`;
                       V091.formValues = cloned;
-                      V091.showToast('✓ Formulaire dupliqué !', 'info');
+                      V091.showToast(tr('Form duplicated.', 'Formulaire dupliqué.'), 'info');
                       renderApp();
                     },
                   },
                     msIcon('content_copy', 16),
-                    h('span', {}, 'Dupliquer')
+                    h('span', {}, tr('Duplicate', 'Dupliquer'))
                   )
                 )
               ),
@@ -1403,13 +1440,13 @@
               h('div', { className: 'v1-panel v1-seizure-dropzone', style: { padding: '16px', border: '1px dashed var(--border-subtle)', background: 'var(--bg-canvas)' } },
                 h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' } },
                   h('div', { style: { flex: 1, minWidth: '220px' } },
-                    h('strong', { style: { fontSize: '0.875rem', display: 'block' } }, 'Pré-remplissage automatique depuis un document (DOCX, PDF, XLSX, CSV, JSON)'),
+                    h('strong', { style: { fontSize: '0.875rem', display: 'block' } }, tr('Prefill from Document (DOCX, PDF, XLSX, CSV, JSON)', 'Pré-remplissage depuis un document (DOCX, PDF, XLSX, CSV, JSON)')),
                     h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                      'Extrait les métadonnées et valeurs sans jamais soumettre automatiquement.'
+                      tr('Extracts metadata and field values for review before saving.', 'Extrait les métadonnées et valeurs pour vérification avant enregistrement.')
                     )
                   ),
                   renderFileUploadComponent({
-                    label: 'Importer document source',
+                    label: tr('Import Document', 'Importer un document'),
                     accept: '.docx,.pdf,.xlsx,.csv,.json,.txt',
                     selectedFilename: V091.selectedFile?.name,
                     onSelect: file => {
@@ -1427,15 +1464,15 @@
                           V091.prefillConflicts = res.conflicts || [];
                           V091.prefillWarnings = res.warnings || [];
                           renderApp();
-                        }).catch(err => V091.showToast('Erreur import document : ' + err.message, 'error'));
+                        }).catch(err => V091.showToast(tr('Import failed: ', 'Erreur import document : ') + err.message, 'error'));
                       };
                       reader.readAsDataURL(file);
                     },
                   })
                 ),
-              V091.prefillPreview ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)' } },
+              V091.prefillPreview ? h('div', { style: { marginTop: '12px', padding: '12px', background: 'var(--bg-surface)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' } },
                 h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
-                  h('span', { style: { fontWeight: 600, color: 'var(--color-primary)' } }, `✓ ${Object.keys(V091.prefillPreview).length} champs extraits`),
+                  h('span', { style: { fontWeight: 600, color: 'var(--color-link)' } }, `${Object.keys(V091.prefillPreview).length} ${tr('fields extracted', 'champs extraits')}`),
                   h('div', { style: { display: 'flex', gap: '8px' } },
                     h('button', {
                       type: 'button',
@@ -1445,12 +1482,12 @@
                         V091.prefillPreview = null;
                         renderApp();
                       },
-                    }, 'Appliquer ces valeurs'),
+                    }, tr('Apply Values', 'Appliquer ces valeurs')),
                     h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-sm v1-btn-secondary',
                       onClick: () => { V091.prefillPreview = null; renderApp(); },
-                    }, 'Ignorer')
+                    }, tr('Dismiss', 'Ignorer'))
                   )
                 )
               ) : null
@@ -1466,26 +1503,26 @@
             (() => {
               const formSections = [];
 
-              // Section 1: Identification & Contexte Opérationnel
+              // Section 1: Identification & Operational Context
               formSections.push({
                 id: 'identification',
-                title: 'Section 1 : Identification & Contexte Opérationnel',
-                shortTitle: 'Identification',
+                title: tr('Section 1: Identification and Context', 'Section 1 : Identification et contexte'),
+                shortTitle: tr('Identification', 'Identification'),
                 icon: 'assignment',
-                desc: 'Date d’exécution, dossier, programme, résultat stratégique et lieu d’intervention.',
+                desc: tr('Date, record code, program, outcome, and location.', 'Date d’exécution, dossier, programme, résultat et lieu.'),
                 render: () => h('div', { className: 'gf-question-card' },
                   h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
                     h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
                       msIcon('assignment', 18),
-                      'Section 1 : Identification & Contexte Opérationnel'
+                      tr('Section 1: Identification and Context', 'Section 1 : Identification et contexte')
                     ),
                     h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                      'Date d’exécution, dossier, programme, résultat stratégique et lieu d’intervention.'
+                      tr('Date, record code, program, outcome, and location.', 'Date d’exécution, dossier, programme, résultat et lieu.')
                     )
                   ),
                   h('div', { className: 'v1-grid-16' },
                     h('div', { className: 'v1-field', style: { gridColumn: 'span 8' } },
-                      h('label', { className: 'v1-field-label' }, 'Date de l’événement (YYYY-MM-DD) *'),
+                      h('label', { className: 'v1-field-label' }, tr('Event Date (YYYY-MM-DD) *', 'Date de l’événement (YYYY-MM-DD) *')),
                       h('input', {
                         type: 'date',
                         className: 'v1-input',
@@ -1498,23 +1535,23 @@
                 )
               });
 
-              // Section 2: Cibles, Démographie & Équité (Règle d’or)
+              // Section 2: Demographics & Equity
               if (demoFields.length > 0) {
                 const sNum = formSections.length + 1;
                 formSections.push({
                   id: 'demographics',
-                  title: `Section ${sNum} : Cibles, Démographie & Équité (Règle d’or)`,
-                  shortTitle: 'Démographie',
+                  title: tr(`Section ${sNum}: Participants and Equity`, `Section ${sNum} : Démographie et équité`),
+                  shortTitle: tr('Participants', 'Démographie'),
                   icon: 'group',
-                  desc: 'Total = Femmes + Hommes + Non divulgué · Règle d’or et sous-ensemble handicap.',
+                  desc: tr('Total = Women + Men + Unspecified. Disability is a subset (Disability <= Total).', 'Total = Femmes + Hommes + Non divulgué. Le handicap est un sous-ensemble (Handicap <= Total).'),
                   render: () => h('div', { className: 'gf-question-card' },
                     h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
                       h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
                         msIcon('group', 18),
-                        `Section ${sNum} : Cibles, Démographie & Équité (Règle d’or)`
+                        tr(`Section ${sNum}: Participants and Equity`, `Section ${sNum} : Démographie et équité`)
                       ),
                       h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                        'Total = Femmes + Hommes + Non divulgué · Le handicap est un sous-ensemble non additionnel (Handicap ≤ Total).'
+                        tr('Total = Women + Men + Unspecified. Disability is a subset (Disability <= Total).', 'Total = Femmes + Hommes + Non divulgué. Le handicap est un sous-ensemble (Handicap <= Total).')
                       )
                     ),
                     h('div', {
@@ -1522,6 +1559,7 @@
                         padding: '10px 14px',
                         background: 'var(--bg-canvas)',
                         borderRadius: 'var(--radius-sm)',
+                        border: '1px solid var(--border-subtle)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'space-between',
@@ -1531,27 +1569,33 @@
                     },
                       h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
                         msIcon('calculate', 18),
-                        h('span', {}, `Calcul automatique : Total (${calcTotal}) = Femmes (${womenCount}) + Hommes (${menCount}) + Non divulgué (${undisclosedCount})`)
+                        h('span', {}, tr(
+                          `Calculated total: ${calcTotal} = Women (${womenCount}) + Men (${menCount}) + Unspecified (${undisclosedCount})`,
+                          `Calcul automatique : Total (${calcTotal}) = Femmes (${womenCount}) + Hommes (${menCount}) + Non divulgué (${undisclosedCount})`
+                        ))
                       ),
                       h('span', {
                         className: 'v1-badge',
                         style: {
-                          background: calcTotal > 0 ? 'var(--color-positive-bg, rgba(36, 161, 72, 0.1))' : 'var(--bg-hover)',
-                          color: calcTotal > 0 ? 'var(--color-positive, #24a148)' : 'var(--text-secondary)'
+                          background: calcTotal > 0 ? 'var(--tag-success-bg)' : 'var(--bg-hover)',
+                          color: calcTotal > 0 ? 'var(--tag-success-text)' : 'var(--text-secondary)'
                         }
-                      }, calcTotal > 0 ? '✓ Règle d’or respectée' : 'En attente de saisie')
+                      }, calcTotal > 0 ? tr('Valid total', 'Règle respectée') : tr('Waiting for counts', 'En attente de saisie'))
                     ),
                     disabilityExceedsTotal ? h('div', {
                       style: {
                         padding: '8px 12px',
-                        background: 'rgba(218, 30, 40, 0.08)',
-                        border: '1px solid var(--color-critical)',
+                        background: 'var(--tag-danger-bg)',
+                        border: '1px solid var(--color-danger)',
                         borderRadius: 'var(--radius-sm)',
                         marginBottom: '12px',
                         fontSize: '0.8125rem',
-                        color: 'var(--color-critical)',
+                        color: 'var(--tag-danger-text)',
                       }
-                    }, `Attention : Le nombre de participants avec handicap (${disabilityCount}) dépasse le total des participants (${calcTotal}). Le handicap est un sous-ensemble.`) : null,
+                    }, tr(
+                      `Participants with disabilities (${disabilityCount}) cannot exceed total participants (${calcTotal}).`,
+                      `Le nombre de participants avec handicap (${disabilityCount}) dépasse le total (${calcTotal}).`
+                    )) : null,
                     h('div', { className: 'v1-grid-16' },
                       demoFields.map(fCode => renderFieldInput(fCode))
                     )
@@ -1559,23 +1603,23 @@
                 });
               }
 
-              // Section 3: Sensibilité, CNV & Do No Harm
+              // Section 3: Safeguards, NVC & Do No Harm
               {
                 const sNum = formSections.length + 1;
                 formSections.push({
                   id: 'sensitivity',
-                  title: `Section ${sNum} : Sensibilité, CNV & Do No Harm (Vérifications Obligatoires)`,
-                  shortTitle: 'Sensibilité',
+                  title: tr(`Section ${sNum}: Safeguards and Do No Harm`, `Section ${sNum} : Sensibilité, CNV et Do No Harm`),
+                  shortTitle: tr('Safeguards', 'Sensibilité'),
                   icon: 'verified_user',
-                  desc: 'Engagements institutionnels CDJP Butare pour la protection des participants et la non-violence.',
+                  desc: tr('Required participant protection and nonviolence checks.', 'Vérifications obligatoires pour la protection des participants et la non-violence.'),
                   render: () => h('div', { className: 'gf-question-card' },
                     h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
                       h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
                         msIcon('verified_user', 18),
-                        `Section ${sNum} : Sensibilité, CNV & Do No Harm (Vérifications Obligatoires)`
+                        tr(`Section ${sNum}: Safeguards and Do No Harm`, `Section ${sNum} : Sensibilité, CNV et Do No Harm`)
                       ),
                       h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                        'Engagements institutionnels CDJP Butare pour la protection des participants et la non-violence.'
+                        tr('Required participant protection and nonviolence checks.', 'Vérifications obligatoires pour la protection des participants et la non-violence.')
                       )
                     ),
                     h('div', { className: 'v1-grid-16' },
@@ -1590,7 +1634,7 @@
                                 renderApp();
                               },
                             }),
-                            h('span', { style: { fontSize: '0.875rem' } }, 'Communication Non-Violente (CNV) respectée et favorisée durant l’activité')
+                            h('span', { style: { fontSize: '0.875rem' } }, tr('Nonviolent Communication (NVC) practiced during the activity', 'Communication Non-Violente (CNV) respectée durant l’activité'))
                           ),
                           h('label', { style: { display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' } },
                             h('input', {
@@ -1601,7 +1645,7 @@
                                 renderApp();
                               },
                             }),
-                            h('span', { style: { fontSize: '0.875rem' } }, 'Principes Do No Harm (DNH) vérifiés : aucun préjudice ni risque accru pour les participants')
+                            h('span', { style: { fontSize: '0.875rem' } }, tr('Do No Harm principles verified (no added risk to participants)', 'Principes Do No Harm vérifiés (aucun risque accru pour les participants)'))
                           ),
                           h('label', { style: { display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' } },
                             h('input', {
@@ -1612,16 +1656,16 @@
                                 renderApp();
                               },
                             }),
-                            h('span', { style: { fontSize: '0.875rem' } }, 'Approche sensible aux traumatismes et confidentialité des témoignages garantie')
+                            h('span', { style: { fontSize: '0.875rem' } }, tr('Trauma sensitivity and confidentiality respected', 'Approche sensible aux traumatismes et confidentialité garanties'))
                           )
                         )
                       ),
                       h('div', { className: 'v1-field', style: { gridColumn: 'span 16' } },
-                        h('label', { className: 'v1-field-label' }, 'Notes et précautions qualitatives sur la sensibilité'),
+                        h('label', { className: 'v1-field-label' }, tr('Safeguarding Notes', 'Notes sur la sensibilité')),
                         h('textarea', {
                           className: 'v1-textarea',
                           rows: 2,
-                          placeholder: 'Préciser les mesures de protection spécifiques prises lors de cette activité...',
+                          placeholder: tr('Describe protection steps taken during this activity...', 'Préciser les mesures de protection prises lors de cette activité...'),
                           value: V091.formValues.sensitivity_notes || '',
                           onInput: e => { V091.formValues.sensitivity_notes = e.target.value; },
                         })
@@ -1631,23 +1675,23 @@
                 });
               }
 
-              // Section 4: Répartition Trimestrielle CPJP (Tableau 12) if F03
+              // Section 4: Quarterly Plan Split if F03
               if (currentForm.code === 'F03') {
                 const sNum = formSections.length + 1;
                 formSections.push({
                   id: 'f03_quarterly',
-                  title: `Section ${sNum} : Répartition Trimestrielle CPJP (Tableau 12)`,
-                  shortTitle: 'Trimestres (Tab. 12)',
+                  title: tr(`Section ${sNum}: CPJP Quarterly Split`, `Section ${sNum} : Répartition Trimestrielle CPJP`),
+                  shortTitle: tr('Quarters', 'Trimestres'),
                   icon: 'calendar_month',
-                  desc: 'Allocation opérationnelle par trimestre pastoral pour l’année AP1 (2026–2027).',
+                  desc: tr('Pastoral quarter allocations for Year 1 (2026–2027).', 'Allocation par trimestre pastoral pour l’année AP1 (2026–2027).'),
                   render: () => h('div', { className: 'gf-question-card' },
                     h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
                       h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
                         msIcon('calendar_month', 18),
-                        `Section ${sNum} : Répartition Trimestrielle CPJP (Tableau 12)`
+                        tr(`Section ${sNum}: CPJP Quarterly Split`, `Section ${sNum} : Répartition Trimestrielle CPJP`)
                       ),
                       h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                        'Allocation opérationnelle par trimestre pastoral pour l’année AP1 (2026–2027).'
+                        tr('Pastoral quarter allocations for Year 1 (2026–2027).', 'Allocation par trimestre pastoral pour l’année AP1 (2026–2027).')
                       )
                     ),
                     h('div', { className: 'v1-grid-16' },
@@ -1662,11 +1706,11 @@
                                 renderApp();
                               },
                             }),
-                            h('span', {}, `Trimestre ${q.toUpperCase()} (${['Sept–Nov', 'Déc–Fév', 'Mars–Mai', 'Juin–Août'][qIdx]})`)
+                            h('span', {}, `${tr('Quarter', 'Trimestre')} ${q.toUpperCase()} (${tr(['Sep–Nov', 'Dec–Feb', 'Mar–May', 'Jun–Aug'][qIdx], ['Sept–Nov', 'Déc–Fév', 'Mars–Mai', 'Juin–Août'][qIdx])})`)
                           ),
                           h('input', {
                             className: 'v1-input',
-                            placeholder: `Activités prévues en ${q.toUpperCase()}...`,
+                            placeholder: tr(`Planned activities in ${q.toUpperCase()}...`, `Activités prévues en ${q.toUpperCase()}...`),
                             value: V091.formValues[`${q}_activity`] || '',
                             onInput: e => { V091.formValues[`${q}_activity`] = e.target.value; },
                             style: { marginBottom: '8px' },
@@ -1675,7 +1719,7 @@
                             h('input', {
                               type: 'number',
                               className: 'v1-input',
-                              placeholder: 'Cible...',
+                              placeholder: tr('Target', 'Cible'),
                               value: V091.formValues[`${q}_target`] || '',
                               onInput: e => { V091.formValues[`${q}_target`] = e.target.value; },
                               style: { flex: 1 },
@@ -1683,7 +1727,7 @@
                             h('input', {
                               type: 'number',
                               className: 'v1-input',
-                              placeholder: 'Budget RWF...',
+                              placeholder: 'Budget RWF',
                               value: V091.formValues[`${q}_budget`] || '',
                               onInput: e => { V091.formValues[`${q}_budget`] = e.target.value; },
                               style: { flex: 1 },
@@ -1696,23 +1740,23 @@
                 });
               }
 
-              // Section 5: Déroulement, Résultats & Progrès Qualitatifs
+              // Section 5: Narrative Results & Notes
               if (narrativeFields.length > 0) {
                 const sNum = formSections.length + 1;
                 formSections.push({
                   id: 'narrative',
-                  title: `Section ${sNum} : Déroulement, Résultats & Progrès Qualitatifs`,
-                  shortTitle: 'Résultats',
+                  title: tr(`Section ${sNum}: Results and Notes`, `Section ${sNum} : Résultats et progrès`),
+                  shortTitle: tr('Results', 'Résultats'),
                   icon: 'edit_note',
-                  desc: 'Contenu narratif, progrès constatés, défis rencontrés et recommandations.',
+                  desc: tr('Activity summary, results achieved, challenges, and next steps.', 'Contenu narratif, progrès constatés, défis rencontrés et recommandations.'),
                   render: () => h('div', { className: 'gf-question-card' },
                     h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
                       h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
                         msIcon('edit_note', 18),
-                        `Section ${sNum} : Déroulement, Résultats & Progrès Qualitatifs`
+                        tr(`Section ${sNum}: Results and Notes`, `Section ${sNum} : Résultats et progrès`)
                       ),
                       h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                        'Contenu narratif, progrès constatés, défis rencontrés et recommandations.'
+                        tr('Activity summary, results achieved, challenges, and next steps.', 'Contenu narratif, progrès constatés, défis rencontrés et recommandations.')
                       )
                     ),
                     h('div', { className: 'v1-grid-16' },
@@ -1722,23 +1766,23 @@
                 });
               }
 
-              // Section 6: Paramètres & Informations Complémentaires
+              // Section 6: Additional Form Fields
               if (otherFields.length > 0) {
                 const sNum = formSections.length + 1;
                 formSections.push({
                   id: 'other',
-                  title: `Section ${sNum} : Paramètres & Informations Complémentaires`,
-                  shortTitle: 'Paramètres',
+                  title: tr(`Section ${sNum}: Additional Fields`, `Section ${sNum} : Informations complémentaires`),
+                  shortTitle: tr('Details', 'Paramètres'),
                   icon: 'tune',
-                  desc: `${otherFields.length} champs spécifiques au schéma ${currentForm.code}.`,
+                  desc: tr(`${otherFields.length} fields for form ${currentForm.code}.`, `${otherFields.length} champs spécifiques au schéma ${currentForm.code}.`),
                   render: () => h('div', { className: 'gf-question-card' },
                     h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
                       h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
                         msIcon('tune', 18),
-                        `Section ${sNum} : Paramètres & Informations Complémentaires`
+                        tr(`Section ${sNum}: Additional Fields`, `Section ${sNum} : Informations complémentaires`)
                       ),
                       h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                        `${otherFields.length} champs spécifiques au schéma ${currentForm.code}.`
+                        tr(`${otherFields.length} fields for form ${currentForm.code}.`, `${otherFields.length} champs spécifiques au schéma ${currentForm.code}.`)
                       )
                     ),
                     h('div', { className: 'v1-grid-16' },
@@ -1748,27 +1792,27 @@
                 });
               }
 
-              // Final Section: Pièces Justificatives & Soumission
+              // Final Section: Evidence & Summary
               {
                 const sNum = formSections.length + 1;
                 formSections.push({
                   id: 'evidence',
-                  title: `Section ${sNum} : Pièces Justificatives & Finalisation`,
-                  shortTitle: 'Finalisation',
+                  title: tr(`Section ${sNum}: Evidence and Summary`, `Section ${sNum} : Pièces justificatives et résumé`),
+                  shortTitle: tr('Evidence', 'Finalisation'),
                   icon: 'attach_file',
-                  desc: 'Feuille de présence signée, procès-verbal de médiation ou photos (PDF, PNG, JPG ≤ 10MB).',
+                  desc: tr('Signed attendance sheet, mediation minutes, or photos (PDF, PNG, JPG up to 10MB).', 'Feuille de présence signée, procès-verbal ou photos (PDF, PNG, JPG <= 10MB).'),
                   render: () => h('div', { className: 'gf-question-card' },
                     h('div', { style: { borderBottom: '1px solid var(--border-subtle)', paddingBottom: '12px', marginBottom: '8px' } },
                       h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px' } },
                         msIcon('attach_file', 18),
-                        `Section ${sNum} : Pièces Justificatives & Finalisation`
+                        tr(`Section ${sNum}: Evidence and Summary`, `Section ${sNum} : Pièces justificatives et résumé`)
                       ),
                       h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                        'Feuille de présence signée, procès-verbal de médiation, rapport de visite ou photos (PDF, PNG, JPG ≤ 10MB).'
+                        tr('Signed attendance sheet, mediation minutes, or photos (PDF, PNG, JPG up to 10MB).', 'Feuille de présence signée, procès-verbal ou photos (PDF, PNG, JPG <= 10MB).')
                       )
                     ),
                     renderFileUploadComponent({
-                      label: 'Attacher une pièce justificative ou feuille d’émargement',
+                      label: tr('Attach Supporting Document', 'Joindre une pièce justificative'),
                       accept: 'application/pdf,image/png,image/jpeg',
                       selectedFilename: V091.formValues.evidence,
                       onSelect: file => {
@@ -1777,15 +1821,15 @@
                       },
                     }),
                     /* Summary Card of the record ready to submit */
-                    h('div', { style: { marginTop: '16px', padding: '14px 18px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+                    h('div', { style: { marginTop: '16px', padding: '14px 18px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' } },
                       h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' } },
-                        h('strong', { style: { fontSize: '0.875rem' } }, 'Récapitulatif de saisie avant soumission'),
-                        h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700' } }, currentForm.code)
+                        h('strong', { style: { fontSize: '0.875rem' } }, tr('Entry Summary', 'Récapitulatif de saisie')),
+                        h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', fontWeight: '600' } }, currentForm.code)
                       ),
                       h('div', { style: { display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-                        h('span', {}, `Date : ${V091.formValues.event_date || '2026-10-25'}`),
-                        calcTotal > 0 ? h('span', {}, `Participants : ${calcTotal} (${womenCount}F / ${menCount}H)`) : null,
-                        V091.formValues.evidence ? h('span', {}, `Justificatif : ${V091.formValues.evidence}`) : h('span', { style: { color: 'var(--text-muted)' } }, 'Aucun justificatif joint')
+                        h('span', {}, `${tr('Date', 'Date')}: ${V091.formValues.event_date || '2026-10-25'}`),
+                        calcTotal > 0 ? h('span', {}, `${tr('Participants', 'Participants')}: ${calcTotal} (${womenCount}W, ${menCount}M)`) : null,
+                        V091.formValues.evidence ? h('span', {}, `${tr('Evidence', 'Justificatif')}: ${V091.formValues.evidence}`) : h('span', { style: { color: 'var(--text-muted)' } }, tr('No evidence attached', 'Aucun justificatif joint'))
                       )
                     )
                   )
@@ -1802,8 +1846,8 @@
                 h('div', { className: 'gf-stepper-container' },
                   h('div', { className: 'gf-stepper-header' },
                     h('div', { className: 'gf-stepper-title-wrap' },
-                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff', fontWeight: '700', padding: '4px 12px' } },
-                        `Section ${activeSecIdx + 1} / ${formSections.length}`
+                      h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: 'var(--color-primary-fg)', fontWeight: '600', padding: '4px 12px' } },
+                        `${tr('Section', 'Section')} ${activeSecIdx + 1} / ${formSections.length}`
                       ),
                       h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)' } }, currentSection.title)
                     ),
@@ -1814,13 +1858,13 @@
                         className: 'v1-btn v1-btn-sm' + (isStepper ? ' v1-btn-primary' : ' v1-btn-ghost'),
                         style: { borderRadius: 'var(--radius-pill)', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
                         onClick: () => { V091.formViewMode = 'stepper'; renderApp(); },
-                      }, msIcon('task_alt', 14), h('span', {}, 'Étape par étape')),
+                      }, msIcon('task_alt', 14), h('span', {}, tr('Step by Step', 'Étape par étape'))),
                       h('button', {
                         type: 'button',
                         className: 'v1-btn v1-btn-sm' + (!isStepper ? ' v1-btn-primary' : ' v1-btn-ghost'),
                         style: { borderRadius: 'var(--radius-pill)', padding: '4px 12px', fontSize: '0.75rem', height: '28px' },
                         onClick: () => { V091.formViewMode = 'all'; renderApp(); },
-                      }, msIcon('open_in_full', 14), h('span', {}, 'Vue complète'))
+                      }, msIcon('open_in_full', 14), h('span', {}, tr('Show All', 'Vue complète')))
                     )
                   ),
                   /* Progress Bar (Stepper Mode) */
@@ -1869,7 +1913,7 @@
                     padding: '16px 24px',
                     background: 'var(--bg-elevated)',
                     border: '1px solid var(--border-subtle)',
-                    borderRadius: '12px',
+                    borderRadius: 'var(--radius-sm)',
                     marginTop: '12px',
                     flexWrap: 'wrap',
                     gap: '12px',
@@ -1888,37 +1932,37 @@
                       },
                     },
                       msIcon('arrow_back', 18),
-                      h('span', {}, 'Section précédente')
+                      h('span', {}, tr('Previous', 'Précédent'))
                     ) : null,
                     h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-ghost',
-                      title: 'Réinitialiser toutes les valeurs du formulaire',
+                      title: tr('Clear all fields in this form', 'Réinitialiser toutes les valeurs du formulaire'),
                       onClick: () => {
                         V091.formValues = {};
                         V091.activeFormSectionIndex = 0;
-                        V091.showToast('Formulaire réinitialisé.', 'info');
+                        V091.showToast(tr('Form cleared.', 'Formulaire réinitialisé.'), 'info');
                         renderApp();
                       },
                     },
                       msIcon('restart_alt', 18),
-                      h('span', {}, 'Réinitialiser')
+                      h('span', {}, tr('Reset', 'Réinitialiser'))
                     ),
                     h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-ghost',
-                      title: 'Dupliquer ce formulaire',
+                      title: tr('Duplicate this form', 'Dupliquer ce formulaire'),
                       onClick: () => {
                         const cloned = Object.assign({}, V091.formValues);
                         cloned.record = `REC-${Date.now().toString(36).toUpperCase()}`;
-                        if (cloned.title) cloned.title = `${cloned.title} (Copie)`;
+                        if (cloned.title) cloned.title = `${cloned.title} (${tr('Copy', 'Copie')})`;
                         V091.formValues = cloned;
-                        V091.showToast('✓ Formulaire dupliqué !', 'info');
+                        V091.showToast(tr('Form duplicated.', 'Formulaire dupliqué.'), 'info');
                         renderApp();
                       },
                     },
                       msIcon('content_copy', 18),
-                      h('span', {}, 'Dupliquer')
+                      h('span', {}, tr('Duplicate', 'Dupliquer'))
                     )
                   ),
                   /* Right: Save Draft + Next Step / Submit */
@@ -1934,12 +1978,12 @@
                           language: V1.lang,
                         };
                         apiV1('/working-drafts', 'POST', draftPayload).then(() => {
-                          V091.showToast('✓ Brouillon enregistré avec succès.', 'info');
-                        }).catch(err => V091.showToast('Erreur brouillon : ' + err.message, 'error'));
+                          V091.showToast(tr('Draft saved.', 'Brouillon enregistré.'), 'info');
+                        }).catch(err => V091.showToast(tr('Could not save draft: ', 'Erreur brouillon : ') + err.message, 'error'));
                       },
                     },
                       msIcon('cloud_done', 18),
-                      h('span', {}, 'Enregistrer brouillon')
+                      h('span', {}, tr('Save Draft', 'Enregistrer brouillon'))
                     ),
                     isStepper && activeSecIdx < formSections.length - 1 ? h('button', {
                       type: 'button',
@@ -1951,7 +1995,7 @@
                         if (wrap) wrap.scrollIntoView({ behavior: 'smooth' });
                       },
                     },
-                      h('span', {}, 'Section suivante'),
+                      h('span', {}, tr('Next', 'Suivant')),
                       msIcon('arrow_forward', 18)
                     ) : h('button', {
                       type: 'button',
@@ -1964,16 +2008,16 @@
                           values: V091.formValues,
                         };
                         apiV1('/records', 'POST', payload).then(rec => {
-                          V091.showToast(`✓ Dossier ${rec.values?.record || rec.id} validé et soumis avec succès !`, 'info');
+                          V091.showToast(tr(`Record ${rec.values?.record || rec.id} submitted.`, `Dossier ${rec.values?.record || rec.id} soumis.`), 'info');
                           V091.formValues = {};
                           V091.activeFormSectionIndex = 0;
                           V1.workspace = 'files_validation';
                           renderApp();
-                        }).catch(err => V091.showToast('Erreur validation : ' + (err.details || err.message), 'error'));
+                        }).catch(err => V091.showToast(tr('Validation error: ', 'Erreur validation : ') + (err.details || err.message), 'error'));
                       },
                     },
                       msIcon('check', 18),
-                      h('span', {}, 'Valider & Soumettre le dossier')
+                      h('span', {}, tr('Submit Record', 'Valider et soumettre'))
                     )
                   )
                 )
@@ -1994,7 +2038,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Gouvernance & Suivi'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Governance & Tracking', 'Gouvernance & Suivi')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_files_validation'))
         ),
@@ -2002,7 +2046,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_files_validation')),
             h('p', { className: 'v1-page-subtitle' },
-              'Circuit des 5 étapes d’approbation : Brouillon → Revue CPJP → Validation MEL → Vérification Coordinateur → Approbation Directeur → Verrouillé'
+              tr(
+                'Five-stage approval workflow: Draft, CPJP Review, MEL Validation, Coordinator Check, Director Approval, and Locked.',
+                'Circuit en 5 étapes : Brouillon, Revue CPJP, Validation MEL, Vérification Coordinateur, Approbation Directeur, puis Verrouillé.'
+              )
             )
           )
         )
@@ -2030,45 +2077,45 @@
     }
 
     const subTabs = [
-      { id: 'ALL', label: 'Tous (F27–F30)', form: 'F29' },
-      { id: 'f27', label: 'F27 Questions d’apprentissage', form: 'F27' },
-      { id: 'f28', label: 'F28 Revues après action (AAR)', form: 'F28' },
-      { id: 'f29', label: 'F29 Leçons validées', form: 'F29' },
-      { id: 'f30', label: 'F30 Applications & Adaptations', form: 'F30' },
+      { id: 'ALL', label: tr('All (F27-F30)', 'Tous (F27-F30)'), form: 'F29' },
+      { id: 'f27', label: tr('F27 Learning Questions', 'F27 Questions d’apprentissage'), form: 'F27' },
+      { id: 'f28', label: tr('F28 After-Action Reviews (AAR)', 'F28 Revues après action (AAR)'), form: 'F28' },
+      { id: 'f29', label: tr('F29 Validated Lessons', 'F29 Leçons validées'), form: 'F29' },
+      { id: 'f30', label: tr('F30 Adaptations & Scale-up', 'F30 Applications & Adaptations'), form: 'F30' },
     ];
 
     const fallbackItems = [
       {
         form: 'F27',
         code: 'LRN-F27-2026-01',
-        title: 'Quels facteurs favorisent la durabilité des ententes foncières après médiation ?',
-        lesson: 'Question inscrite à l’agenda d’apprentissage AP1 (Axe A2 — Médiation communautaire).',
-        owner: 'LOCAL:mel.theophile · 2026-11-30',
-        effect: 'En cours d’investigation terrain',
+        title: tr('Which factors help land agreements hold after mediation?', 'Quels facteurs favorisent la durabilité des ententes foncières après médiation ?'),
+        lesson: tr('Question added to the AP1 learning agenda under Axis A2 (Community Mediation).', 'Question inscrite à l’agenda d’apprentissage AP1 (Axe A2, Médiation communautaire).'),
+        owner: tr('LOCAL:mel.theophile (due 2026-11-30)', 'LOCAL:mel.theophile (échéance 2026-11-30)'),
+        effect: tr('Field review in progress', 'En cours d’investigation terrain'),
       },
       {
         form: 'F28',
         code: 'LRN-F28-2026-01',
-        title: 'Revue après action (AAR) — Campagne Justice & Paix Q1 à Gakoma',
-        lesson: 'Implication précoce des chefs de CEB réduit de moitié les absences aux séances.',
-        owner: 'LOCAL:cpjp.test · 2026-10-28',
-        effect: 'Capitalisé vers F29',
+        title: tr('After-Action Review (AAR): Q1 Justice & Peace Campaign in Gakoma', 'Revue après action (AAR) : Campagne Justice & Paix Q1 à Gakoma'),
+        lesson: tr('Involving CEB leaders early cuts session absences in half.', 'L’implication précoce des chefs de CEB réduit de moitié les absences aux séances.'),
+        owner: tr('LOCAL:cpjp.test (due 2026-10-28)', 'LOCAL:cpjp.test (échéance 2026-10-28)'),
+        effect: tr('Promoted to F29 lesson', 'Capitalisé vers F29'),
       },
       {
         form: 'F29',
         code: 'LRN-F29-2026-01',
-        title: 'Articulation CEB → CCJP → CPJP pour le suivi post-médiation',
-        lesson: 'Associer systématiquement le responsable CEB (origin_ceb) au suivi à 30 et 90 jours.',
+        title: tr('CEB, CCJP, and CPJP coordination for post-mediation follow-up', 'Articulation CEB, CCJP et CPJP pour le suivi post-médiation'),
+        lesson: tr('Always include the CEB leader (origin_ceb) in 30-day and 90-day follow-ups.', 'Associer systématiquement le responsable CEB (origin_ceb) au suivi à 30 et 90 jours.'),
         owner: 'LOCAL:mel.theophile',
-        effect: '92% des accords durent avec suivi CEB contre 64% sans suivi.',
+        effect: tr('92% of agreements hold with CEB follow-up versus 64% without follow-up.', '92% des accords durent avec suivi CEB contre 64% sans suivi.'),
       },
       {
         form: 'F30',
         code: 'LRN-F30-2026-01',
-        title: 'Mise en œuvre de la fiche de suivi CEB dans les 27 paroisses',
-        lesson: 'Décision : SCALE — Déploiement généralisé aux comités CPJP.',
-        owner: 'LOCAL:coordination.emmanuel · 2026-12-15',
-        effect: 'Vérifié par Directeur',
+        title: tr('Rollout of the CEB follow-up form across all 27 parishes', 'Mise en œuvre de la fiche de suivi CEB dans les 27 paroisses'),
+        lesson: tr('Decision: SCALE. Deploy across all CPJP parish committees.', 'Décision : SCALE. Déploiement généralisé aux comités CPJP.'),
+        owner: tr('LOCAL:coordination.emmanuel (due 2026-12-15)', 'LOCAL:coordination.emmanuel (échéance 2026-12-15)'),
+        effect: tr('Verified by Director', 'Vérifié par Directeur'),
       },
     ];
 
@@ -2077,10 +2124,10 @@
       return {
         form: r.form,
         code: v.record || r.id,
-        title: v.title || v.question || v.finding || `Dossier ${r.form}`,
-        lesson: v.lesson || v.action || v.adaptation || v.recommendation || v.decision || 'Capitalisation enregistrée',
-        owner: `${v.owner || r.author || 'LOCAL:mel.theophile'}${v.deadline ? ' · ' + v.deadline : ''}`,
-        effect: v.verified_effect || v.effect || r.state || 'Validé',
+        title: v.title || v.question || v.finding || `${tr('Record', 'Dossier')} ${r.form}`,
+        lesson: v.lesson || v.action || v.adaptation || v.recommendation || v.decision || tr('Lesson recorded', 'Capitalisation enregistrée'),
+        owner: `${v.owner || r.author || 'LOCAL:mel.theophile'}${v.deadline ? ' (' + v.deadline + ')' : ''}`,
+        effect: v.verified_effect || v.effect || r.state || tr('Validated', 'Validé'),
       };
     });
 
@@ -2099,7 +2146,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Gestion des connaissances'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Knowledge Management', 'Gestion des connaissances')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_learning'))
         ),
@@ -2107,7 +2154,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_learning')),
             h('p', { className: 'v1-page-subtitle' },
-              'Capitalisation continue, apprentissage par l’action et adaptation empirique sans claims causaux non étayés.'
+              tr(
+                'Staff track learning questions, after-action reviews, validated lessons, and program adaptations based on verified evidence.',
+                'Les équipes suivent les questions d’apprentissage, revues après action, leçons validées et adaptations appuyées par des preuves vérifiées.'
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
@@ -2121,18 +2171,18 @@
               },
             },
               msIcon('add', 18),
-              h('span', {}, 'Ajouter une leçon / adaptation')
+              h('span', {}, tr('Add Lesson / Adaptation', 'Ajouter une leçon / adaptation'))
             )
           )
         )
       ),
 
-      /* Subtabs pills */
-      h('div', { className: 'v1-chips', style: { marginBottom: '20px' } },
+      /* Subtabs Content Switcher (APSE v2 segmented switcher) */
+      h('div', { className: 'v1-segmented', style: { marginBottom: '20px' } },
         subTabs.map(t =>
           h('button', {
             type: 'button',
-            className: 'v1-chip' + (V091.learningSubTab === t.id ? ' active' : ''),
+            className: 'v1-seg-btn' + (V091.learningSubTab === t.id ? ' active' : ''),
             onClick: () => {
               V091.learningSubTab = t.id;
               renderApp();
@@ -2146,13 +2196,13 @@
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Formulaire'),
-              h('th', {}, 'Code Dossier'),
-              h('th', {}, 'Titre / Question / Constat'),
-              h('th', {}, 'Leçon / Action proposée'),
-              h('th', {}, 'Responsable & Échéance'),
-              h('th', {}, 'Effet vérifié'),
-              h('th', {}, 'Actions')
+              h('th', {}, tr('Form', 'Formulaire')),
+              h('th', {}, tr('Record Code', 'Code Dossier')),
+              h('th', {}, tr('Title / Question / Finding', 'Titre / Question / Constat')),
+              h('th', {}, tr('Lesson / Proposed Action', 'Leçon / Action proposée')),
+              h('th', {}, tr('Owner & Due Date', 'Responsable & Échéance')),
+              h('th', {}, tr('Verified Effect', 'Effet vérifié')),
+              h('th', {}, tr('Actions', 'Actions'))
             )
           ),
           h('tbody', {},
@@ -2177,14 +2227,14 @@
                           V091.activeFormCode = 'F30';
                           V091.formValues = {
                             lesson_ref: row.code,
-                            title: `Application de la leçon : ${row.title}`,
+                            title: `${tr('Apply lesson', 'Application de la leçon')} : ${row.title}`,
                             decision: 'SCALE',
                           };
                           V1.workspace = 'seizure';
                           renderApp();
                         },
-                      }, 'Appliquer cette leçon (F30)')
-                    : h('span', { className: 'v1-chip' }, 'Clôturé & vérifié')
+                      }, tr('Apply Lesson (F30)', 'Appliquer cette leçon (F30)'))
+                    : h('span', { className: 'v1-chip' }, tr('Closed & Verified', 'Clôturé & vérifié'))
                 )
               )
             )
@@ -2203,7 +2253,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Rapports institutionnels'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Institutional Reports', 'Rapports institutionnels')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_reports'))
         ),
@@ -2211,7 +2261,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_reports')),
             h('p', { className: 'v1-page-subtitle' },
-              'Génération des rapports opérationnels R01–R12 et constructeur du Rapport axé sur les résultats du Plan Stratégique (R13).'
+              tr(
+                'Generate operational reports R01 to R12 and compile the Strategic Plan results report (R13).',
+                'Génération des rapports opérationnels R01 à R12 et constructeur du Rapport axé sur les résultats du Plan Stratégique (R13).'
+              )
             )
           )
         )
@@ -2223,12 +2276,12 @@
           type: 'button',
           className: 'v1-seg-btn' + (V091.reportsSubTab === 'r13' ? ' active' : ''),
           onClick: () => { V091.reportsSubTab = 'r13'; renderApp(); },
-        }, 'Constructeur R13 (Rapport axé sur les résultats du PS)'),
+        }, tr('R13 Strategic Results Builder', 'Constructeur R13 (Rapport axé sur les résultats du PS)')),
         h('button', {
           type: 'button',
           className: 'v1-seg-btn' + (V091.reportsSubTab === 'ops' ? ' active' : ''),
           onClick: () => { V091.reportsSubTab = 'ops'; renderApp(); },
-        }, 'Rapports opérationnels R01–R12')
+        }, tr('Operational Reports (R01-R12)', 'Rapports opérationnels R01-R12'))
       ),
 
       V091.reportsSubTab === 'r13' ? renderR13Builder() : renderExportsWorkspace()
@@ -2239,9 +2292,12 @@
     return h('div', { className: 'v1-panel', style: { padding: '24px' } },
       h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' } },
         h('div', {},
-          h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } }, 'Rapport R13 : Suivi axé sur les résultats du PS 2026–2031'),
+          h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } }, tr('Report R13: Strategic Plan Results 2026-2031', 'Rapport R13 : Suivi axé sur les résultats du PS 2026-2031')),
           h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: '4px 0 0' } },
-            'Le rapport R13 combine la matrice des 13 résultats PS et les 6 sections d’analyse narrative institutionnelle avant le gel immuable.'
+            tr(
+              'R13 pairs the 13 Strategic Plan results indicators with 6 narrative sections before you lock the final snapshot.',
+              'Le rapport R13 combine la matrice des 13 résultats PS et les 6 sections d’analyse narrative avant le gel immuable.'
+            )
           )
         ),
         h('div', { style: { display: 'flex', gap: '8px' } },
@@ -2253,7 +2309,7 @@
             },
           },
             msIcon('download', 18),
-            h('span', {}, 'Aperçu Word (.docx)')
+            h('span', {}, tr('Word Preview (.docx)', 'Aperçu Word (.docx)'))
           ),
           h('button', {
             type: 'button',
@@ -2268,22 +2324,22 @@
                 narrative: V091.r13Narrative,
               }).then(res => {
                 V091.showModal({
-                  title: 'Rapport R13 gelé avec succès',
-                  subtitle: 'Snapshot immuable généré pour audit et archivage institutionnel.',
+                  title: tr('Report R13 Locked', 'Rapport R13 gelé avec succès'),
+                  subtitle: tr('The system created a permanent snapshot for audit and archiving.', 'Snapshot immuable généré pour audit et archivage institutionnel.'),
                   icon: 'lock',
                   content: h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
-                    h('p', {}, 'Snapshot ID : ' + res.snapshot),
-                    h('div', { style: { fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: 'var(--bg-input)', padding: '10px', borderRadius: '4px', wordBreak: 'break-all' } },
-                      'SHA-256 : ' + res.sha256
+                    h('p', {}, tr('Snapshot ID:', 'Snapshot ID :') + ' ' + res.snapshot),
+                    h('div', { style: { fontFamily: 'var(--font-mono)', fontSize: '0.75rem', background: 'var(--bg-input)', padding: '10px', borderRadius: 'var(--radius-sm)', wordBreak: 'break-all' } },
+                      'SHA-256: ' + res.sha256
                     )
                   ),
-                  actions: [{ label: 'Fermer', type: 'primary', onClick: () => V091.closeModal() }]
+                  actions: [{ label: tr('Close', 'Fermer'), type: 'primary', onClick: () => V091.closeModal() }]
                 });
-              }).catch(err => V091.showToast('Erreur gel rapport : ' + err.message, 'error'));
+              }).catch(err => V091.showToast(tr('Report lock failed: ', 'Erreur gel rapport : ') + err.message, 'error'));
             },
           },
             msIcon('lock', 18),
-            h('span', {}, 'Geler le snapshot immuable (SHA-256)')
+            h('span', {}, tr('Lock Final Snapshot (SHA-256)', 'Geler le snapshot immuable (SHA-256)'))
           )
         )
       ),
@@ -2291,19 +2347,19 @@
       /* 6 Narrative Sections Inputs */
       h('div', { className: 'v1-grid-16' },
         [
-          ['summary', '1. Synthèse des résultats (Results summary)'],
-          ['outcomes', '2. Analyse des changements et contribution (Analysis of changes)'],
-          ['variance', '3. Écarts, causes et hypothèses (Variances and assumptions)'],
-          ['learning', '4. Apprentissages et adaptations (Learning and adaptations)'],
-          ['actions', '5. Décisions, responsables et échéances (Decisions and deadlines)'],
-          ['limitations', '6. Qualité des preuves et limites (Evidence quality and limitations)'],
+          ['summary', tr('1. Results Summary', '1. Synthèse des résultats')],
+          ['outcomes', tr('2. Outcome Changes and Contribution', '2. Analyse des changements et contribution')],
+          ['variance', tr('3. Variances, Causes, and Assumptions', '3. Écarts, causes et hypothèses')],
+          ['learning', tr('4. Learning and Adaptations', '4. Apprentissages et adaptations')],
+          ['actions', tr('5. Decisions, Owners, and Deadlines', '5. Décisions, responsables et échéances')],
+          ['limitations', tr('6. Evidence Quality and Limitations', '6. Qualité des preuves et limites')],
         ].map(([key, title]) =>
           h('div', { className: 'v1-field', style: { gridColumn: 'span 8' } },
             h('label', { className: 'v1-field-label' }, title),
             h('textarea', {
               className: 'v1-textarea',
               rows: 3,
-              placeholder: `Rédiger l'analyse pour la section : ${title}...`,
+              placeholder: tr(`Enter analysis for ${title}...`, `Rédiger l'analyse pour la section : ${title}...`),
               value: V091.r13Narrative[key],
               onInput: e => { V091.r13Narrative[key] = e.target.value; },
             })
@@ -2334,7 +2390,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Résilience Terrain'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Field Storage', 'Résilience Terrain')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_offline_hub'))
         ),
@@ -2342,7 +2398,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_offline_hub')),
             h('p', { className: 'v1-page-subtitle' },
-              'Centre unifié de gestion hors ligne : chiffrement local AES-256-GCM, contrôle de la file d’attente et synchronisation vers la base centrale.'
+              tr(
+                'Manage local AES-256-GCM encryption, offline queue items, and sync to the central database.',
+                'Centre unifié de gestion hors ligne : chiffrement local AES-256-GCM, file d’attente et synchronisation vers la base centrale.'
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
@@ -2355,12 +2414,12 @@
                 } else if (outboxPending > 0) {
                   V1.runDatabaseSyncNow();
                 } else {
-                  V091.showToast('Toutes les données sont déjà synchronisées avec le serveur.', 'info');
+                  V091.showToast(tr('All records match the central database.', 'Toutes les données sont déjà synchronisées avec le serveur.'), 'info');
                 }
               },
             },
               msIcon(qLen > 0 ? 'sync' : 'cloud_done', 18),
-              h('span', {}, qLen > 0 ? `Synchroniser la file (${qLen})` : 'Tout est synchronisé')
+              h('span', {}, qLen > 0 ? tr(`Sync Queue (${qLen})`, `Synchroniser la file (${qLen})`) : tr('All Data Synced', 'Tout est synchronisé'))
             )
           )
         )
@@ -2374,17 +2433,20 @@
             h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' } },
               h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
                 msIcon(V091.vaultUnlocked ? 'lock_open' : 'lock', 24),
-                h('strong', { style: { fontSize: '1.0625rem' } }, 'Coffre-Fort Chiffré AES-GCM')
+                h('strong', { style: { fontSize: '1.0625rem' } }, tr('AES-GCM Encrypted Vault', 'Coffre-Fort Chiffré AES-GCM'))
               ),
-              h('span', { className: 'v1-badge', style: V091.vaultUnlocked ? { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } : {} },
-                V091.vaultUnlocked ? 'DÉVERROUILLÉ' : 'VERROUILLÉ'
+              h('span', { className: 'v1-badge', style: V091.vaultUnlocked ? { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' } : {} },
+                V091.vaultUnlocked ? tr('UNLOCKED', 'DÉVERROUILLÉ') : tr('LOCKED', 'VERROUILLÉ')
               )
             ),
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: '0 0 16px' } },
-              'Chiffrement local des brouillons et dossiers confidentiels avec dérivation de clé PBKDF2 (100 000 itérations SHA-256).'
+              tr(
+                'The vault encrypts offline drafts and confidential cases on this device using PBKDF2 key derivation (100,000 SHA-256 iterations).',
+                'Chiffrement local des brouillons et dossiers confidentiels avec dérivation de clé PBKDF2 (100 000 itérations SHA-256).'
+              )
             ),
             h('div', { className: 'v1-field' },
-              h('label', { className: 'v1-field-label' }, 'Phrase secrète du coffre-fort (>= 12 caractères)'),
+              h('label', { className: 'v1-field-label' }, tr('Vault passphrase (minimum 12 characters)', 'Phrase secrète du coffre-fort (>= 12 caractères)')),
               h('input', {
                 type: 'password',
                 className: 'v1-input',
@@ -2400,7 +2462,7 @@
               className: 'v1-btn v1-btn-secondary',
               onClick: () => {
                 if (!V091.vaultPassphrase || V091.vaultPassphrase.length < 12) {
-                  V091.showToast('La phrase secrète doit comporter au moins 12 caractères.', 'error');
+                  V091.showToast(tr('Passphrase must have at least 12 characters.', 'La phrase secrète doit comporter au moins 12 caractères.'), 'error');
                   return;
                 }
                 apiV1('/offline/vault', 'POST', {
@@ -2408,15 +2470,15 @@
                   passphrase: V091.vaultPassphrase,
                 }).then(res => {
                   V091.vaultUnlocked = res.status === 'unlocked';
-                  V091.showToast(V091.vaultUnlocked ? '✓ Coffre-fort déverrouillé avec succès.' : 'Coffre-fort verrouillé.', 'info');
+                  V091.showToast(V091.vaultUnlocked ? tr('Vault unlocked.', 'Coffre-fort déverrouillé.') : tr('Vault locked.', 'Coffre-fort verrouillé.'), 'info');
                   renderApp();
                 }).catch(err => {
-                  V091.showToast('Erreur coffre-fort : ' + err.message, 'error');
+                  V091.showToast(tr('Vault error: ', 'Erreur coffre-fort : ') + err.message, 'error');
                 });
               },
             },
               msIcon(V091.vaultUnlocked ? 'lock' : 'lock_open', 16),
-              h('span', {}, V091.vaultUnlocked ? 'Verrouiller le coffre-fort' : 'Déverrouiller le coffre-fort')
+              h('span', {}, V091.vaultUnlocked ? tr('Lock Vault', 'Verrouiller le coffre-fort') : tr('Unlock Vault', 'Déverrouiller le coffre-fort'))
             )
           )
         ),
@@ -2427,24 +2489,27 @@
             h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' } },
               h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
                 msIcon('cloud_sync', 24),
-                h('strong', { style: { fontSize: '1.0625rem' } }, 'Synchronisation Déconnectée')
+                h('strong', { style: { fontSize: '1.0625rem' } }, tr('Offline Queue & Sync', 'Synchronisation Déconnectée'))
               ),
-              h('span', { className: 'v1-badge' }, qLen > 0 ? `${qLen} EN ATTENTE` : 'SYNCHRONISÉ')
+              h('span', { className: 'v1-badge' }, qLen > 0 ? tr(`${qLen} PENDING`, `${qLen} EN ATTENTE`) : tr('SYNCED', 'SYNCHRONISÉ'))
             ),
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: '0 0 16px' } },
-              'Transmission ordonnée des fiches enregistrées hors ligne vers la base centrale avec résolution automatique des conflits.'
+              tr(
+                'APSE sends saved offline forms in order to the central database and resolves record conflicts automatically.',
+                'Transmission ordonnée des fiches enregistrées hors ligne vers la base centrale avec résolution automatique des conflits.'
+              )
             ),
-            h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px', background: 'var(--bg-input)', padding: '12px', borderRadius: '8px', fontSize: '0.8125rem' } },
+            h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px', background: 'var(--bg-input)', padding: '12px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', fontSize: '0.8125rem' } },
               h('div', { style: { display: 'flex', justifyContent: 'space-between' } },
-                h('span', { style: { color: 'var(--text-secondary)' } }, 'File cache navigateur :'),
-                h('strong', {}, `${qLen} fiche(s)`)
+                h('span', { style: { color: 'var(--text-secondary)' } }, tr('Browser cache queue:', 'File cache navigateur :')),
+                h('strong', {}, tr(`${qLen} record(s)`, `${qLen} fiche(s)`))
               ),
               h('div', { style: { display: 'flex', justifyContent: 'space-between' } },
-                h('span', { style: { color: 'var(--text-secondary)' } }, 'Boîte d’envoi SQLite locale :'),
-                h('strong', {}, `${outboxPending} fiche(s)`)
+                h('span', { style: { color: 'var(--text-secondary)' } }, tr('Local SQLite outbox:', 'Boîte d’envoi SQLite locale :')),
+                h('strong', {}, tr(`${outboxPending} record(s)`, `${outboxPending} fiche(s)`))
               ),
               h('div', { style: { display: 'flex', justifyContent: 'space-between' } },
-                h('span', { style: { color: 'var(--text-secondary)' } }, 'Schéma actif :'),
+                h('span', { style: { color: 'var(--text-secondary)' } }, tr('Active schema:', 'Schéma actif :')),
                 h('span', { className: 'v1-meta-code-badge' }, 'v3 (Multi-tenant)')
               )
             )
@@ -2459,19 +2524,19 @@
               },
             },
               msIcon('sync', 16),
-              h('span', {}, 'Synchroniser immédiatement')
+              h('span', {}, tr('Sync Now', 'Synchroniser immédiatement'))
             ),
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-secondary',
               onClick: () => {
                 V1.simulateOffline = !V1.simulateOffline;
-                V091.showToast(V1.simulateOffline ? 'Mode hors-ligne simulé activé.' : 'Mode en ligne rétabli.', 'info');
+                V091.showToast(V1.simulateOffline ? tr('Simulated offline mode enabled.', 'Mode hors-ligne simulé activé.') : tr('Network connection restored.', 'Mode en ligne rétabli.'), 'info');
                 renderApp();
               },
             },
               msIcon(isSimulating ? 'cloud' : 'cloud_off', 16),
-              h('span', {}, isSimulating ? 'Rétablir le réseau' : 'Simuler hors ligne')
+              h('span', {}, isSimulating ? tr('Restore Network', 'Rétablir le réseau') : tr('Simulate Offline', 'Simuler hors ligne'))
             )
           )
         )
@@ -2480,28 +2545,28 @@
       /* Queue Items Details Panel */
       h('div', { className: 'v1-panel', style: { padding: '24px' } },
         h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' } },
-          h('h2', { style: { fontSize: '1.0625rem', fontWeight: '700' } }, 'Détail des Fiches en Attente de Transmission'),
-          h('span', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } }, `${qLen} élément(s) en mémoire locale`)
+          h('h2', { style: { fontSize: '1.0625rem', fontWeight: '700' } }, tr('Pending Offline Queue', 'Détail des Fiches en Attente de Transmission')),
+          h('span', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } }, tr(`${qLen} item(s) saved locally`, `${qLen} élément(s) en mémoire locale`))
         ),
         qLen === 0 ?
           h('div', { style: { textAlign: 'center', padding: '36px 16px', color: 'var(--text-secondary)' } },
             msIcon('cloud_done', 40),
-            h('p', { style: { fontSize: '0.9375rem', fontWeight: '600', marginTop: '10px' } }, 'Toutes vos données sont à jour.'),
-            h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-muted)' } }, 'Aucun enregistrement en attente dans la file déconnectée.')
+            h('p', { style: { fontSize: '0.9375rem', fontWeight: '600', marginTop: '10px' } }, tr('All data synced.', 'Toutes vos données sont à jour.')),
+            h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-muted)' } }, tr('No pending entries remain in the offline queue.', 'Aucun enregistrement en attente dans la file déconnectée.'))
           ) :
           h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px' } },
             V1.offlineQueue.map((item, qIdx) =>
-              h('div', { key: qIdx, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-input)' } },
+              h('div', { key: qIdx, style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', background: 'var(--bg-input)' } },
                 h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
                   msIcon('description', 20),
                   h('div', {},
-                    h('strong', { style: { fontSize: '0.875rem' } }, item.task_code || `Tâche #${item.task_id || qIdx + 1}`),
+                    h('strong', { style: { fontSize: '0.875rem' } }, item.task_code || `${tr('Task', 'Tâche')} #${item.task_id || qIdx + 1}`),
                     h('p', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', margin: '2px 0 0' } },
-                      `Enregistré le ${item.created_at || 'récemment'} · Participants : ${(item.women_count || 0) + (item.men_count || 0)}`
+                      tr(`Saved ${item.created_at || 'recently'}, Participants: ${(item.women_count || 0) + (item.men_count || 0)}`, `Enregistré le ${item.created_at || 'récemment'}, Participants : ${(item.women_count || 0) + (item.men_count || 0)}`)
                     )
                   )
                 ),
-                h('span', { className: 'v1-badge' }, 'EN ATTENTE')
+                h('span', { className: 'v1-badge' }, tr('PENDING', 'EN ATTENTE'))
               )
             )
           )
@@ -2515,7 +2580,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Résilience terrain'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Field Storage', 'Résilience terrain')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_offline_vault'))
         ),
@@ -2527,20 +2592,23 @@
           msIcon(V091.vaultUnlocked ? 'cloud_done' : 'lock', 32),
           h('div', {},
             h('h2', { style: { fontSize: '1.25rem', fontWeight: '700' } },
-              V091.vaultUnlocked ? 'Coffre-fort hors ligne déverrouillé' : 'Déverrouiller le coffre-fort hors ligne'
+              V091.vaultUnlocked ? tr('Offline Vault Unlocked', 'Coffre-fort hors ligne déverrouillé') : tr('Offline Vault Access', 'Accès au coffre-fort hors ligne')
             ),
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-              'Chiffrement AES-GCM 256 bits avec dérivation PBKDF2 (310 000 itérations). Aucune donnée en clair ne persiste hors session.'
+              tr(
+                '256-bit AES-GCM encryption with PBKDF2 key derivation (310,000 iterations). No plaintext data stays on disk outside your session.',
+                'Chiffrement AES-GCM 256 bits avec dérivation PBKDF2 (310 000 itérations). Aucune donnée en clair ne persiste hors session.'
+              )
             )
           )
         ),
         !V091.vaultUnlocked ? h('div', {},
           h('div', { className: 'v1-field', style: { marginBottom: '16px' } },
-            h('label', { className: 'v1-field-label' }, 'Phrase secrète du coffre-fort (12 caractères minimum)'),
+            h('label', { className: 'v1-field-label' }, tr('Vault passphrase (minimum 12 characters)', 'Phrase secrète du coffre-fort (12 caractères minimum)')),
             h('input', {
               type: 'password',
               className: 'v1-input',
-              placeholder: 'Saisir la phrase secrète...',
+              placeholder: tr('Enter passphrase...', 'Saisir la phrase secrète...'),
               value: V091.vaultPassphrase,
               onInput: e => { V091.vaultPassphrase = e.target.value; },
             })
@@ -2550,23 +2618,23 @@
             className: 'v1-btn v1-btn-primary',
             onClick: () => {
               if (V091.vaultPassphrase.length < 12) {
-                V091.showToast('La phrase secrète doit comporter au moins 12 caractères.', 'error');
+                V091.showToast(tr('Passphrase must have at least 12 characters.', 'La phrase secrète doit comporter au moins 12 caractères.'), 'error');
                 return;
               }
               V091.vaultUnlocked = true;
-              V091.vaultStatusMessage = 'Coffre-fort initialisé et prêt pour la saisie sans internet.';
+              V091.vaultStatusMessage = tr('Vault initialized for offline entry.', 'Coffre-fort initialisé et prêt pour la saisie sans internet.');
               renderApp();
             },
           },
             msIcon('lock_open', 18),
-            h('span', {}, 'Ouvrir / Préparer le coffre-fort')
+            h('span', {}, tr('Unlock Vault', 'Ouvrir / Préparer le coffre-fort'))
           )
         ) : h('div', {},
           h('div', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)', marginBottom: '16px' } },
-            'Coffre-fort actif · Saisie hors ligne sécurisée'
+            tr('Vault Active for Offline Entry', 'Coffre-fort actif pour saisie hors ligne')
           ),
           h('p', { style: { fontSize: '0.875rem', marginBottom: '16px' } },
-            `Enregistrements actuellement en file d'attente : ${V1.offlineQueue.length} fiches.`
+            tr(`Records currently queued: ${V1.offlineQueue.length}.`, `Enregistrements actuellement en file d'attente : ${V1.offlineQueue.length} fiches.`)
           ),
           h('button', {
             type: 'button',
@@ -2576,14 +2644,14 @@
               V091.vaultPassphrase = '';
               renderApp();
             },
-          }, 'Verrouiller le coffre-fort')
+          }, tr('Lock Vault', 'Verrouiller le coffre-fort'))
         )
       )
     );
   }
 
   /* --------------------------------------------------------------------------
-     7. SYNCHRONIZE OFFLINE QUEUE (Synchroniser la file hors ligne)
+     7. SYNCHRONIZE OFFLINE QUEUE
      -------------------------------------------------------------------------- */
   function renderOfflineSyncWorkspace() {
     return h('div', { className: 'v1-workspace-fade' },
@@ -2591,7 +2659,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Synchronisation'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Sync', 'Synchronisation')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_offline_sync'))
         ),
@@ -2601,9 +2669,9 @@
       h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
           h('div', {},
-            h('h2', { style: { fontSize: '1.125rem', fontWeight: '600' } }, 'Synchronisation Locale → Centrale'),
+            h('h2', { style: { fontSize: '1.125rem', fontWeight: '600' } }, tr('Local to Central Sync', 'Synchronisation Locale vers Centrale')),
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-              `${V1.offlineQueue.length} fiches dans le cache du navigateur · ${V1.data?.sync?.outbox?.pending || 0} fiches dans la boîte d'envoi SQLite.`
+              tr(`${V1.offlineQueue.length} item(s) in browser cache, ${V1.data?.sync?.outbox?.pending || 0} item(s) in SQLite outbox.`, `${V1.offlineQueue.length} fiches dans le cache du navigateur, ${V1.data?.sync?.outbox?.pending || 0} fiches dans la boîte d'envoi SQLite.`)
             )
           ),
           h('div', { style: { display: 'flex', gap: '8px' } },
@@ -2615,7 +2683,7 @@
               },
             },
               msIcon('sync', 18),
-              h('span', {}, 'Synchroniser maintenant')
+              h('span', {}, tr('Sync Now', 'Synchroniser maintenant'))
             )
           )
         )
@@ -2624,18 +2692,18 @@
       /* Queue list */
       h('div', { className: 'v1-panel' },
         h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, 'File d’attente locale hors ligne'),
-          h('span', { className: 'v1-badge' }, `${V1.offlineQueue.length} éléments`)
+          h('span', { className: 'v1-chart-title' }, tr('Local Offline Queue', 'File d’attente locale hors ligne')),
+          h('span', { className: 'v1-badge' }, tr(`${V1.offlineQueue.length} items`, `${V1.offlineQueue.length} éléments`))
         ),
         V1.offlineQueue.length === 0 ? h('p', { style: { padding: '24px', color: 'var(--text-secondary)', textAlign: 'center' } },
-          'La file d’attente est vide. Toutes les fiches saisies ont été enregistrées sur le serveur central.'
+          tr('The offline queue is empty. The central server stores all entered records.', 'La file d’attente est vide. Toutes les fiches saisies sont enregistrées sur le serveur central.')
         ) : h('ul', { style: { listStyle: 'none', padding: 0 } },
           V1.offlineQueue.map((item, idx) =>
             h('li', { style: { display: 'flex', justifyContent: 'space-between', padding: '12px', borderBottom: '1px solid var(--border-subtle)' } },
               h('div', {},
-                h('strong', {}, item.taskTitle || item.task_id || `Élément #${idx + 1}`),
+                h('strong', {}, item.taskTitle || item.task_id || `${tr('Item', 'Élément')} #${idx + 1}`),
                 h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } },
-                  `Date : ${item.event_date || 'N/A'} · Participants : ${item.total || 0}`
+                  tr(`Date: ${item.event_date || 'N/A'}, Participants: ${item.total || 0}`, `Date : ${item.event_date || 'N/A'}, Participants : ${item.total || 0}`)
                 )
               ),
               h('button', {
@@ -2646,7 +2714,7 @@
                   localStorage.setItem('apse-v1-offline-queue', JSON.stringify(V1.offlineQueue));
                   renderApp();
                 },
-              }, 'Retirer')
+              }, tr('Remove', 'Retirer'))
             )
           )
         )
@@ -2679,12 +2747,21 @@
         code: V091.planningYear,
         start: '2026-09-01',
         end: '2027-08-31',
-        phase: 'Baseline, installation APSE, costing et lancement contrôlé',
-        milestone: 'Baseline sept.-nov. 2026 ; cibles et budget validés',
+        phase: tr('Baseline, APSE setup, costing, and controlled launch', 'Baseline, installation APSE, costing et lancement contrôlé'),
+        milestone: tr('Baseline Sept to Nov 2026, validated targets and budget', 'Baseline sept.-nov. 2026, cibles et budget validés'),
         roadmap: [
-          'Axes 1, 2 et 4 : consolider les approches existantes de guérison, réconciliation, transformation non violente et droits humains.\nAxe 3 : familiariser avec l’écologie intégrale, analyser les besoins décentralisés et identifier des projets pilotes réalistes.\nAxe 5 : mettre en place les conditions institutionnelles, plan d’action et budget disponibles, dispositif APSE minimum.',
-          'Communiquer et vulgariser le Plan ; préciser les responsabilités ; établir ou actualiser les données de référence ; élaborer les plans d’action et budgets annuels ; harmoniser les outils prioritaires ; cartographier partenaires et ressources disponibles.',
-          'Plan diffusé et compris ; Responsabilités attribuées ; Plan d’action et budget 2026 disponibles ; Valeurs de référence prioritaires établies ; Outils essentiels harmonisés ; Mécanisme de suivi fonctionnel ; Premières initiatives sélectionnées.'
+          tr(
+            'Axes 1, 2, and 4: strengthen existing healing, reconciliation, non-violent conflict transformation, and human rights work.\nAxis 3: introduce integral ecology, assess local needs, and select realistic pilot projects.\nAxis 5: put institutional conditions, annual plan, budget, and core APSE tools in place.',
+            'Axes 1, 2 et 4 : consolider les approches existantes de guérison, réconciliation, transformation non violente et droits humains.\nAxe 3 : familiariser avec l’écologie intégrale, analyser les besoins décentralisés et identifier des projets pilotes réalistes.\nAxe 5 : mettre en place les conditions institutionnelles, plan d’action et budget disponibles, dispositif APSE minimum.'
+          ),
+          tr(
+            'Share the Strategic Plan, assign responsibilities, set or update baseline data, prepare annual plans and budgets, align priority tools, and map partners and resources.',
+            'Communiquer et vulgariser le Plan, préciser les responsabilités, établir ou actualiser les données de référence, élaborer les plans d’action et budgets annuels, harmoniser les outils prioritaires, cartographier partenaires et ressources disponibles.'
+          ),
+          tr(
+            'Plan understood by teams, responsibilities assigned, 2026 action plan and budget ready, priority baselines set, core tools aligned, tracking workflow active, first pilots selected.',
+            'Plan diffusé et compris, responsabilités attribuées, plan d’action et budget 2026 disponibles, valeurs de référence prioritaires établies, outils essentiels harmonisés, mécanisme de suivi fonctionnel, premières initiatives sélectionnées.'
+          )
         ]
       },
       axes: [
@@ -2701,7 +2778,7 @@
     const yearData = data.year || {};
     const operationalLines = data.operational_lines || [];
     const annualTasks = data.annual_tasks || [];
-    const lang = V1.lang || 'fr';
+    const lang = V1.lang || 'en';
 
     const totalMillions = operationalLines.reduce((sum, x) => sum + Number(x.indicativeMillionsRWF?.[V091.planningYear] || 0), 0);
 
@@ -2734,7 +2811,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Horizon Quinquennal 2026–2031'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Five-Year Plan 2026-2031', 'Horizon Quinquennal 2026-2031')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_ps_planning'))
         ),
@@ -2742,7 +2819,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_ps_planning')),
             h('p', { className: 'v1-page-subtitle' },
-              `Plan Stratégique 2026–2031 : 5 axes, 13 résultats, 15 interventions, 25 lignes indicatives et 33 tâches annuelles prioritaires.`
+              tr(
+                'Strategic Plan 2026-2031: 5 axes, 13 outcomes, 15 interventions, 25 indicative budget lines, and 33 annual priority tasks.',
+                'Plan Stratégique 2026-2031 : 5 axes, 13 résultats, 15 interventions, 25 lignes indicatives et 33 tâches annuelles prioritaires.'
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
@@ -2755,7 +2835,7 @@
               }
             },
               msIcon('info', 18),
-              h('span', {}, V091.planningShowRoadmap ? 'Masquer la feuille de route' : 'Feuille de route & Jalons')
+              h('span', {}, V091.planningShowRoadmap ? tr('Hide Roadmap', 'Masquer la feuille de route') : tr('Roadmap & Milestones', 'Feuille de route & Jalons'))
             ),
             h('button', {
               type: 'button',
@@ -2775,38 +2855,38 @@
               },
             },
               msIcon('add', 18),
-              h('span', {}, 'Préparer un plan annuel (F03)')
+              h('span', {}, tr('Prepare Annual Plan (F03)', 'Préparer un plan annuel (F03)'))
             )
           )
         )
       ),
 
       /* Pastoral Year Phase Banner */
-      h('div', { className: 'v1-panel', style: { marginBottom: '20px', padding: '16px 20px', borderRadius: '12px', background: 'var(--bg-canvas)' } },
+      h('div', { className: 'v1-panel', style: { marginBottom: '20px', padding: '16px 20px', borderRadius: 'var(--radius-sm)', background: 'var(--bg-canvas)' } },
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' } },
           h('div', { style: { flex: '1 1 260px', minWidth: '240px' } },
             h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' } },
-              h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', whiteSpace: 'nowrap' } }, `${V091.planningYear} · ${yearData.start} au ${yearData.end}`),
-              h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', whiteSpace: 'nowrap' } }, yearData.phase || 'Phase active'),
-              V091.planningLoading ? h('span', { className: 'v1-badge' }, 'Chargement API...') : null
+              h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', whiteSpace: 'nowrap' } }, `${V091.planningYear} (${yearData.start} ${tr('to', 'au')} ${yearData.end})`),
+              h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', whiteSpace: 'nowrap' } }, yearData.phase || tr('Active Phase', 'Phase active')),
+              V091.planningLoading ? h('span', { className: 'v1-badge' }, tr('Loading...', 'Chargement API...')) : null
             ),
             h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 } },
-              h('strong', {}, 'Jalon clé : '), yearData.milestone || 'Cibles et budgets validés'
+              h('strong', {}, tr('Key milestone: ', 'Jalon clé : ')), yearData.milestone || tr('Targets and budgets approved', 'Cibles et budgets validés')
             )
           ),
           h('div', { style: { flexShrink: 0, textAlign: 'right' } },
-            h('span', { style: { fontSize: '0.6875rem', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block' } }, 'Enveloppe PS approuvée'),
+            h('span', { style: { fontSize: '0.6875rem', textTransform: 'uppercase', color: 'var(--text-muted)', display: 'block' } }, tr('Approved SP Budget', 'Enveloppe PS approuvée')),
             h('strong', { style: { fontSize: '1.25rem', color: 'var(--color-success)' } }, `${totalMillions.toLocaleString()} M RWF`)
           )
         ),
 
         /* Optional Expanded Roadmap View */
         V091.planningShowRoadmap && Array.isArray(yearData.roadmap) ? h('div', { style: { marginTop: '14px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)' } },
-          h('strong', { style: { fontSize: '0.875rem', display: 'block', marginBottom: '8px' } }, 'Feuille de route stratégique diocésaine :'),
+          h('strong', { style: { fontSize: '0.875rem', display: 'block', marginBottom: '8px' } }, tr('Diocesan Strategic Roadmap:', 'Feuille de route stratégique diocésaine :')),
           h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
             yearData.roadmap.map((stepText, sIdx) =>
               h('div', { key: sIdx, style: { display: 'flex', gap: '8px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-                h('span', { style: { fontWeight: '700', color: 'var(--color-primary)' } }, `Étape ${sIdx + 1} :`),
+                h('span', { style: { fontWeight: '700', color: 'var(--color-link)' } }, `${tr('Step', 'Étape')} ${sIdx + 1}:`),
                 h('span', { style: { whiteSpace: 'pre-line' } }, stepText)
               )
             )
@@ -2822,7 +2902,7 @@
             h('input', {
               type: 'search',
               className: 'v1-tasks-search-input',
-              placeholder: 'Rechercher par code, intitulé, indicateur, district...',
+              placeholder: tr('Search by code, title, indicator, or district...', 'Rechercher par code, intitulé, indicateur, district...'),
               value: V091.planningSearch,
               onInput: e => {
                 V091.planningSearch = e.target.value;
@@ -2841,7 +2921,7 @@
               },
             },
               msIcon('iconsax_sort', 19),
-              h('span', {}, planningActiveFilters > 0 ? `Filtres (${planningActiveFilters})` : 'Filtres')
+              h('span', {}, planningActiveFilters > 0 ? `${tr('Filters', 'Filtres')} (${planningActiveFilters})` : tr('Filters', 'Filtres'))
             ),
             h('button', {
               type: 'button',
@@ -2852,7 +2932,7 @@
               },
             },
               msIcon('iconsax_clipboard_tick', 18),
-              h('span', {}, 'Tâches annuelles')
+              h('span', {}, tr('Annual Tasks', 'Tâches annuelles'))
             )
           )
         )
@@ -2861,77 +2941,83 @@
       /* Filter popover (theme-adaptive, same abstraction as Tasks / Approvals) */
       h('div', {
         className: 'v1-context-filters v1-cu-filter-popover' + (V091.planningFilterOpen ? ' is-open' : ''),
-        onClick: e => e.stopPropagation(),
+        onClick: e => {
+          e.stopPropagation();
+          if (V091.openDropdownId && !(e.target.closest && e.target.closest('.v1-figma-dropdown-wrap'))) {
+            V091.openDropdownId = null;
+            if (typeof renderApp === 'function') renderApp();
+          }
+        },
       },
         h('div', { className: 'v1-cu-filter-header' },
           h('div', { className: 'v1-cu-filter-title-wrap' },
-            h('strong', { className: 'v1-cu-filter-title' }, 'Filtres'),
+            h('strong', { className: 'v1-cu-filter-title' }, tr('Filters', 'Filtres')),
             h('span', { className: 'v1-cu-filter-info' }, msIcon('info', 14))
           ),
           h('button', {
             type: 'button',
             className: 'v1-cu-filter-close-btn',
             onClick: () => { V091.planningFilterOpen = false; renderApp(); },
-          }, h('span', {}, 'Fermer'), msIcon('close', 14))
+          }, h('span', {}, tr('Close', 'Fermer')), msIcon('close', 14))
         ),
         h('div', { className: 'v1-ps-filter-grid' },
           h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-            h('label', { className: 'v1-field-label' }, 'Année pastorale'),
+            h('label', { className: 'v1-field-label' }, tr('Pastoral Year', 'Année pastorale')),
             V091.renderFigmaDropdown({
               id: 'ps-year',
               value: V091.planningYear,
               width: '100%',
-              options: ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) => ({ value: ap, label: `${ap} (${2026 + idx}–${2027 + idx})` })),
+              options: ['AP1', 'AP2', 'AP3', 'AP4', 'AP5'].map((ap, idx) => ({ value: ap, label: `${ap} (${2026 + idx}-${2027 + idx})` })),
               onChange: val => { V091.planningYear = val; },
             })
           ),
           h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-            h('label', { className: 'v1-field-label' }, 'Public du plan'),
+            h('label', { className: 'v1-field-label' }, tr('Plan Audience', 'Public du plan')),
             V091.renderFigmaDropdown({
               id: 'ps-audience',
               value: V091.planningAudience,
               width: '100%',
               options: [
-                { value: 'STAFF', label: 'Personnel CDJP Diocèse' },
-                { value: 'CPJP', label: 'Comités Paroissiaux CPJP' },
+                { value: 'STAFF', label: tr('Diocese CDJP Staff', 'Personnel CDJP Diocèse') },
+                { value: 'CPJP', label: tr('CPJP Parish Committees', 'Comités Paroissiaux CPJP') },
               ],
               onChange: val => { V091.planningAudience = val; },
             })
           ),
           h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-            h('label', { className: 'v1-field-label' }, 'Axe stratégique'),
+            h('label', { className: 'v1-field-label' }, tr('Strategic Axis', 'Axe stratégique')),
             V091.renderFigmaDropdown({
               id: 'ps-axis',
               value: V091.planningFilterAxis,
               width: '100%',
               options: [
-                { value: 'ALL', label: 'Tous les axes (5)' },
-                { value: 'A1', label: 'A1 · Guérison & Réconciliation' },
-                { value: 'A2', label: 'A2 · Résolution des conflits' },
-                { value: 'A3', label: 'A3 · Justice écologique' },
-                { value: 'A4', label: 'A4 · Droits humains' },
-                { value: 'A5', label: 'A5 · Renforcement institutionnel' },
+                { value: 'ALL', label: tr('All Axes (5)', 'Tous les axes (5)') },
+                { value: 'A1', label: tr('A1: Healing & Reconciliation', 'A1 : Guérison & Réconciliation') },
+                { value: 'A2', label: tr('A2: Conflict Resolution', 'A2 : Résolution des conflits') },
+                { value: 'A3', label: tr('A3: Ecological Justice', 'A3 : Justice écologique') },
+                { value: 'A4', label: tr('A4: Human Rights', 'A4 : Droits humains') },
+                { value: 'A5', label: tr('A5: Governance & MEL', 'A5 : Renforcement institutionnel') },
               ],
               onChange: val => { V091.planningFilterAxis = val; },
             })
           ),
           h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-            h('label', { className: 'v1-field-label' }, 'Type d’élément'),
+            h('label', { className: 'v1-field-label' }, tr('Item Type', 'Type d’élément')),
             V091.renderFigmaDropdown({
               id: 'ps-type',
               value: V091.planningFilterType,
               width: '100%',
               options: [
-                { value: 'ALL', label: `Tous (${allItems.length})` },
-                { value: 'TASK', label: `Tâches annuelles (${annualTasks.length})` },
-                { value: 'LINE', label: `Lignes indicatives (${operationalLines.length})` },
+                { value: 'ALL', label: `${tr('All', 'Tous')} (${allItems.length})` },
+                { value: 'TASK', label: `${tr('Annual Tasks', 'Tâches annuelles')} (${annualTasks.length})` },
+                { value: 'LINE', label: `${tr('Indicative Lines', 'Lignes indicatives')} (${operationalLines.length})` },
               ],
               onChange: val => { V091.planningFilterType = val; },
             })
           )
         ),
         h('div', { className: 'v1-cu-filter-footer' },
-          h('span', { className: 'v1-field-helper', style: { margin: 0 } }, `${filteredItems.length} élément(s) affiché(s)`),
+          h('span', { className: 'v1-field-helper', style: { margin: 0 } }, tr(`${filteredItems.length} item(s) shown`, `${filteredItems.length} élément(s) affiché(s)`)),
           h('button', {
             type: 'button',
             className: 'v1-cu-clear-all-btn',
@@ -2941,24 +3027,24 @@
               V091.planningSearch = '';
               renderApp();
             },
-          }, 'Tout effacer')
+          }, tr('Clear All', 'Tout effacer'))
         )
       ),
 
       h('div', { className: 'v1-ps-active-chips' },
-        h('span', { className: 'v1-badge' }, `${V091.planningYear} · ${yearData.start || ''} → ${yearData.end || ''}`),
-        h('span', { className: 'v1-badge' }, V091.planningAudience === 'STAFF' ? 'Personnel CDJP Diocèse' : 'Comités Paroissiaux CPJP'),
-        V091.planningFilterAxis !== 'ALL' ? h('span', { className: 'v1-badge' }, `Axe ${V091.planningFilterAxis}`) : null,
-        V091.planningFilterType !== 'ALL' ? h('span', { className: 'v1-badge' }, V091.planningFilterType === 'TASK' ? 'Tâches annuelles' : 'Lignes indicatives') : null
+        h('span', { className: 'v1-badge' }, `${V091.planningYear}: ${yearData.start || ''} ${tr('to', 'au')} ${yearData.end || ''}`),
+        h('span', { className: 'v1-badge' }, V091.planningAudience === 'STAFF' ? tr('Diocese CDJP Staff', 'Personnel CDJP Diocèse') : tr('CPJP Parish Committees', 'Comités Paroissiaux CPJP')),
+        V091.planningFilterAxis !== 'ALL' ? h('span', { className: 'v1-badge' }, `${tr('Axis', 'Axe')} ${V091.planningFilterAxis}`) : null,
+        V091.planningFilterType !== 'ALL' ? h('span', { className: 'v1-badge' }, V091.planningFilterType === 'TASK' ? tr('Annual Tasks', 'Tâches annuelles') : tr('Indicative Lines', 'Lignes indicatives')) : null
       ),
       /* Strategic Axes Sections with Rich Cards Grid */
       filteredItems.length === 0 ? h('div', { className: 'v1-panel', style: { padding: '40px', textAlign: 'center', color: 'var(--text-secondary)' } },
         msIcon('search_off', 32),
-        h('p', { style: { marginTop: '12px' } }, 'Aucune activité planifiée ne correspond à vos filtres de recherche pour cette année et ce public.')
+        h('p', { style: { marginTop: '12px' } }, tr('No planned activities match your filters for this year and audience.', 'Aucune activité planifiée ne correspond à vos filtres de recherche pour cette année et ce public.'))
       ) : (data.axes || []).map(axis => {
         const axisItems = filteredItems.filter(x => x.axis === axis.code);
         if (axisItems.length === 0) return null;
-        const axisTitle = (axis.labels && (axis.labels[lang] || axis.labels.fr || axis.labels.en || axis.labels.rw || axis.labels.sw)) || axis.label || axis.code;
+        const axisTitle = (axis.labels && (axis.labels[lang] || axis.labels.en || axis.labels.fr || axis.labels.rw || axis.labels.sw)) || axis.label || axis.code;
 
         return h('section', { key: axis.code, style: { marginBottom: '32px' } },
           h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', borderBottom: '2px solid var(--border-subtle)', paddingBottom: '8px' } },
@@ -2966,18 +3052,18 @@
               h('span', { className: 'v1-meta-code-badge', style: { fontSize: '0.875rem', padding: '3px 8px' } }, axis.code),
               h('h2', { style: { fontSize: '1.125rem', fontWeight: '700', color: 'var(--text-primary)', margin: 0 } }, axisTitle)
             ),
-            h('span', { className: 'v1-badge' }, `${axisItems.length} activité${axisItems.length > 1 ? 's' : ''}`)
+            h('span', { className: 'v1-badge' }, `${axisItems.length} ${axisItems.length > 1 ? tr('activities', 'activités') : tr('activity', 'activité')}`)
           ),
 
           /* Cards Grid */
           h('div', { className: 'v1-planning-cards-grid' },
             axisItems.map(item => {
-              const itemTitle = (item.labels && (item.labels[lang] || item.labels.fr || item.labels.en || item.labels.rw || item.labels.sw)) || item.code;
+              const itemTitle = (item.labels && (item.labels[lang] || item.labels.en || item.labels.fr || item.labels.rw || item.labels.sw)) || item.code;
               const isLine = !!item.indicativeMillionsRWF;
-              const expectedText = (item.expected && (item.expected[lang] || item.expected.fr || item.expected.en)) || '';
-              const indicatorText = (item.indicator && (item.indicator[lang] || item.indicator.fr || item.indicator.en)) || '';
-              const budgetText = item.budgetRWF ? Number(item.budgetRWF).toLocaleString() + ' RWF' : (item.indicativeMillionsRWF ? (item.indicativeMillionsRWF[V091.planningYear] || Object.values(item.indicativeMillionsRWF)[0]) + ' M RWF' : '—');
-              const fundersList = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP (Misereor)', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ') || 'Fonds propres CDJP';
+              const expectedText = (item.expected && (item.expected[lang] || item.expected.en || item.expected.fr)) || '';
+              const indicatorText = (item.indicator && (item.indicator[lang] || item.indicator.en || item.indicator.fr)) || '';
+              const budgetText = item.budgetRWF ? Number(item.budgetRWF).toLocaleString() + ' RWF' : (item.indicativeMillionsRWF ? (item.indicativeMillionsRWF[V091.planningYear] || Object.values(item.indicativeMillionsRWF)[0]) + ' M RWF' : 'N/A');
+              const fundersList = Object.keys(item.fundingMarks || {}).map(k => ({ I: 'FP (Misereor)', J: 'AGIAMONDO', K: 'Missio' }[k] || k)).join(', ') || tr('CDJP Own Funds', 'Fonds propres CDJP');
 
               return h('article', { key: item.code, className: 'v1-panel v1-card-interactive', style: { padding: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' } },
                 h('div', {},
@@ -2985,8 +3071,8 @@
                   h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
                     h('div', { style: { display: 'flex', gap: '6px', alignItems: 'center' } },
                       h('span', { className: 'v1-meta-code-badge' }, item.code),
-                      h('span', { className: 'v1-badge', style: isLine ? { background: 'rgba(138, 43, 226, 0.1)', color: '#6A1B9A' } : { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } },
-                        isLine ? 'Ligne PS' : 'Tâche PAO'
+                      h('span', { className: 'v1-badge', style: isLine ? { background: 'var(--tag-purple-bg)', color: 'var(--tag-purple-text)' } : { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' } },
+                        isLine ? tr('SP Line', 'Ligne PS') : tr('Annual Task', 'Tâche PAO')
                       )
                     ),
                     h('span', { style: { fontSize: '0.75rem', color: 'var(--text-muted)' } },
@@ -3010,11 +3096,11 @@
                   ) : null,
 
                   /* Metadata Chips */
-                  h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '12px' } },
-                    h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('payments', 12), budgetText),
-                    h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('place', 12), item.locations || '4 districts'),
-                    item.responsibleSource ? h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('person', 12), item.responsibleSource) : null,
-                    fundersList ? h('span', { className: 'v1-badge', style: { background: 'var(--bg-canvas)', display: 'inline-flex', alignItems: 'center', gap: '4px' } }, msIcon('handshake', 12), fundersList) : null
+                  h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '12px' } },
+                    h('span', { className: 'v1-badge neutral' }, msIcon('payments', 12), budgetText),
+                    h('span', { className: 'v1-badge neutral' }, msIcon('place', 12), item.locations || tr('4 districts', '4 districts')),
+                    item.responsibleSource ? h('span', { className: 'v1-badge info' }, msIcon('person', 12), item.responsibleSource) : null,
+                    fundersList ? h('span', { className: 'v1-badge neutral' }, msIcon('handshake', 12), fundersList) : null
                   )
                 ),
 
@@ -3023,20 +3109,20 @@
                   h('button', {
                     type: 'button',
                     className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                    title: 'Voir tous les détails et métadonnées de cette activité',
+                    title: tr('View full activity details and metadata', 'Voir tous les détails et métadonnées de cette activité'),
                     onClick: () => V091.showPlanningItemModal(item, yearData),
                   },
                     msIcon('info', 14),
-                    h('span', {}, 'Détails')
+                    h('span', {}, tr('Details', 'Détails'))
                   ),
                   h('button', {
                     type: 'button',
                     className: 'v1-btn v1-btn-sm v1-btn-primary',
-                    title: 'Préparer cette activité dans le formulaire F03',
+                    title: tr('Prepare this activity in Form F03', 'Préparer cette activité dans le formulaire F03'),
                     onClick: () => V091.preparePlanningActivity(item, yearData),
                   },
                     msIcon('content_copy', 14),
-                    h('span', {}, 'Préparer cette activité (F03)')
+                    h('span', {}, tr('Prepare Activity (F03)', 'Préparer cette activité (F03)'))
                   )
                 )
               );
@@ -3062,7 +3148,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Administration institutionnelle'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Administration', 'Administration institutionnelle')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_metadata'))
         ),
@@ -3070,7 +3156,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_metadata')),
             h('p', { className: 'v1-page-subtitle' },
-              'Gestion des 18 référentiels de métadonnées avec libellés en 4 langues (RW, FR, EN, SW) et audit de chaque version.'
+              tr(
+                'Manage all 18 metadata registries across 4 languages (RW, FR, EN, SW) with version tracking.',
+                'Gestion des 18 référentiels de métadonnées avec libellés en 4 langues (RW, FR, EN, SW) et audit de chaque version.'
+              )
             )
           )
         )
@@ -3087,7 +3176,7 @@
           },
             h('strong', { style: { textTransform: 'capitalize' } }, cat.replace(/_/g, ' ')),
             h('p', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' } },
-              'Référentiel versionné avec vérification des conflits.'
+              tr('Versioned registry with conflict checks.', 'Référentiel versionné avec vérification des conflits.')
             )
           )
         )
@@ -3096,7 +3185,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     10. RECORD FEEDBACK (Retours sur les dossiers — Figma Node 18:49)
+     10. RECORD FEEDBACK
      -------------------------------------------------------------------------- */
   function renderFeedbackWorkspace() {
     // 1. Fetch live feedback inbox if not cached
@@ -3114,12 +3203,12 @@
 
     const inboxList = V091.inboxData?.inbox?.feedback || V091.inboxData?.feedback || [];
     const recipientOptions = [
-      { value: 'AUTHOR', label: 'Auteur (Enquêteur / CPJP)' },
-      { value: 'VERIFICATION', label: 'Coordinateur opérationnel' },
-      { value: 'FINANCE', label: 'Responsable financier & RH' },
-      { value: 'MEL', label: 'Responsable Suivi & Évaluation' },
-      { value: 'APPROVAL', label: 'Directeur diocésain' },
-      { value: 'ALL', label: 'Tout le circuit d’approbation' },
+      { value: 'AUTHOR', label: tr('Author (Field Officer / CPJP)', 'Auteur (Enquêteur / CPJP)') },
+      { value: 'VERIFICATION', label: tr('Operations Coordinator', 'Coordinateur opérationnel') },
+      { value: 'FINANCE', label: tr('Finance & HR Officer', 'Responsable financier & RH') },
+      { value: 'MEL', label: tr('MEL Officer', 'Responsable Suivi & Évaluation') },
+      { value: 'APPROVAL', label: tr('Diocesan Director', 'Directeur diocésain') },
+      { value: 'ALL', label: tr('Full Approval Chain', 'Tout le circuit d’approbation') },
     ];
 
     return h('div', {
@@ -3135,7 +3224,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Échanges internes & Contrôle'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Internal Review & QA', 'Échanges internes & Contrôle')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_feedback'))
         ),
@@ -3143,7 +3232,10 @@
           h('div', { className: 'v1-feedback-heading-wrap' },
             h('h1', { className: 'v1-page-title' }, L('nav_feedback')),
             h('p', { className: 'v1-page-subtitle' },
-              'Boîte de réception des retours et messages chiffrés par dossier entre auteurs, coordinateurs, comptables et direction.'
+              tr(
+                'Exchange encrypted review notes by record across field staff, coordinators, finance, and management.',
+                'Boîte de réception des retours et messages chiffrés par dossier entre auteurs, coordinateurs, comptables et direction.'
+              )
             )
           )
         )
@@ -3152,18 +3244,18 @@
       /* Compose / Send Feedback Panel (Figma Node 18:70) */
       h('div', { className: 'v1-panel v1-feedback-compose-card' },
         h('h2', { className: 'v1-feedback-compose-title' },
-          'Rédiger une observation ou demande de correction sur un dossier'
+          tr('New Review Note or Correction Request', 'Rédiger une observation ou demande de correction')
         ),
         h('div', { className: 'v1-feedback-controls-row' },
           h('input', {
             className: 'v1-input v1-feedback-ref-input',
-            placeholder: 'Référence du dossier (ex. rec-f07-butare-01)...',
+            placeholder: tr('Record code (for example, rec-f07-butare-01)...', 'Référence du dossier (ex. rec-f07-butare-01)...'),
             value: V091.selectedRecordForFeedback || '',
             onInput: e => { V091.selectedRecordForFeedback = e.target.value; },
           }),
           V091.renderFigmaDropdown({
             id: 'feedback-recipient',
-            prefix: 'Niveau',
+            prefix: tr('Level', 'Niveau'),
             value: V091.feedbackRecipient || 'AUTHOR',
             options: recipientOptions,
             width: '296px',
@@ -3175,7 +3267,7 @@
           h('textarea', {
             className: 'v1-textarea v1-feedback-textarea',
             rows: 3,
-            placeholder: 'Rédiger une observation confidentielle avec justification précise...',
+            placeholder: tr('Write a confidential review note with clear reasons...', 'Rédiger une observation confidentielle avec justification précise...'),
             value: V091.feedbackText,
             onInput: e => { V091.feedbackText = e.target.value; },
           }),
@@ -3185,7 +3277,7 @@
               className: 'v1-btn v1-btn-primary v1-feedback-send-btn',
               onClick: () => {
                 if (!V091.feedbackText.trim()) {
-                  V091.showToast("Veuillez saisir un texte d'observation.", 'error');
+                  V091.showToast(tr('Please enter a review note.', "Veuillez saisir un texte d'observation."), 'error');
                   return;
                 }
                 const rec = V091.selectedRecordForFeedback || 'rec-f44-q1-gakoma';
@@ -3194,11 +3286,11 @@
                   text: V091.feedbackText,
                   recipient: V091.feedbackRecipient,
                 }).then(() => {
-                  V091.showToast('✓ Message interne enregistré avec succès.', 'info');
+                  V091.showToast(tr('Internal review note saved.', 'Message interne enregistré avec succès.'), 'info');
                   V091.feedbackText = '';
                   V091.inboxData = null; // force reload
                   renderApp();
-                }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
+                }).catch(err => V091.showToast(tr('Error: ', 'Erreur : ') + err.message, 'error'));
               },
             },
               h('span', { className: 'v1-feedback-send-icon-wrap' },
@@ -3210,7 +3302,7 @@
                   className: 'v1-figma-send-img',
                 })
               ),
-              h('span', {}, 'Transmettre')
+              h('span', {}, tr('Send Note', 'Transmettre'))
             )
           )
         )
@@ -3219,8 +3311,8 @@
       /* Inbox Feedbacks List (Figma Node 18:93) */
       h('div', { className: 'v1-panel v1-feedback-threads-card' },
         h('div', { className: 'v1-feedback-threads-header' },
-          h('span', { className: 'v1-feedback-threads-title' }, 'Fils de discussion actifs sur les dossiers'),
-          h('span', { className: 'v1-feedback-count-badge' }, `${inboxList.length || 2} échanges récents`)
+          h('span', { className: 'v1-feedback-threads-title' }, tr('Active Record Review Threads', 'Fils de discussion actifs sur les dossiers')),
+          h('span', { className: 'v1-feedback-count-badge' }, tr(`${inboxList.length || 2} recent notes`, `${inboxList.length || 2} échanges récents`))
         ),
         h('div', { className: 'v1-feedback-threads-list' },
           inboxList.length > 0 ? inboxList.map((f, fIdx) =>
@@ -3233,10 +3325,10 @@
               },
             },
               h('div', { className: 'v1-feedback-thread-top' },
-                h('strong', { className: 'v1-feedback-thread-actor' }, `${f.actor} → ${f.recipient}`),
+                h('strong', { className: 'v1-feedback-thread-actor' }, `${f.actor} ${tr('to', 'vers')} ${f.recipient}`),
                 h('div', { className: 'v1-feedback-thread-meta' },
-                  h('span', { className: 'v1-feedback-code-pill' }, f.recordCode || f.record_id || 'Dossier'),
-                  h('span', { className: 'v1-feedback-thread-time' }, f.time ? f.time.slice(0, 16).replace('T', ' ') : 'Récent')
+                  h('span', { className: 'v1-feedback-code-pill' }, f.recordCode || f.record_id || tr('Record', 'Dossier')),
+                  h('span', { className: 'v1-feedback-thread-time' }, f.time ? f.time.slice(0, 16).replace('T', ' ') : tr('Recent', 'Récent'))
                 )
               ),
               h('p', { className: 'v1-feedback-thread-body' }, f.body?.text || f.text)
@@ -3244,26 +3336,32 @@
           ) : [
             h('div', { key: 'sample-1', className: 'v1-feedback-thread-card' },
               h('div', { className: 'v1-feedback-thread-top' },
-                h('strong', { className: 'v1-feedback-thread-actor' }, 'Théophile Habimana (MEL) → Auteur'),
+                h('strong', { className: 'v1-feedback-thread-actor' }, tr('Theophile Habimana (MEL) to Author', 'Théophile Habimana (MEL) vers Auteur')),
                 h('div', { className: 'v1-feedback-thread-meta' },
                   h('span', { className: 'v1-feedback-code-pill' }, 'rec-f44-q1-gakoma'),
                   h('span', { className: 'v1-feedback-thread-time' }, '2026-10-26 14:30')
                 )
               ),
               h('p', { className: 'v1-feedback-thread-body' },
-                'Merci au comité CPJP Gakoma pour ce rapport Q1 très complet. Vérifiez la pièce jointe de la centrale Kizenga avant validation MEL.'
+                tr(
+                  'Thank you to CPJP Gakoma for the Q1 report. Check the Kizenga centrale attachment before MEL validation.',
+                  'Merci au comité CPJP Gakoma pour ce rapport Q1 complet. Vérifiez la pièce jointe de la centrale Kizenga avant validation MEL.'
+                )
               )
             ),
             h('div', { key: 'sample-2', className: 'v1-feedback-thread-card' },
               h('div', { className: 'v1-feedback-thread-top' },
-                h('strong', { className: 'v1-feedback-thread-actor' }, 'Emmanuel Nsabimana (Coordination) → Finance'),
+                h('strong', { className: 'v1-feedback-thread-actor' }, tr('Emmanuel Nsabimana (Coordination) to Finance', 'Emmanuel Nsabimana (Coordination) vers Finance')),
                 h('div', { className: 'v1-feedback-thread-meta' },
                   h('span', { className: 'v1-feedback-code-pill' }, 'rec-f07-butare-01'),
                   h('span', { className: 'v1-feedback-thread-time' }, '2026-10-25 10:15')
                 )
               ),
               h('p', { className: 'v1-feedback-thread-body' },
-                'Rapport d’atelier de médiation validé sur le fond. Paiement des indemnités de déplacement autorisé selon barème diocésain.'
+                tr(
+                  'Mediation workshop report approved on content. Finance can release travel allowances per the diocesan rate.',
+                  'Rapport d’atelier de médiation validé sur le fond. Paiement des indemnités de déplacement autorisé selon le barème diocésain.'
+                )
               )
             )
           ]
@@ -3307,7 +3405,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Portefeuille d’activités'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Activity Portfolio', 'Portefeuille d’activités')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_projects_ops'))
         ),
@@ -3315,7 +3413,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_projects_ops')),
             h('p', { className: 'v1-page-subtitle' },
-              'Suivi du portefeuille opérationnel : classification (Projet / Programme / Opérationnel), partenaires, volets et 4 KPIs de performance.'
+              tr(
+                'Track portfolio work types (Project, Program, Operational), funding partners, work streams, and 4 performance KPIs.',
+                'Suivi du portefeuille opérationnel : classification (Projet, Programme, Opérationnel), partenaires, volets et 4 KPIs de performance.'
+              )
             )
           )
         )
@@ -3324,43 +3425,43 @@
       /* 4 Performance KPIs Grid */
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'EFF-01 : Efficacité des produits'),
+          h('span', { className: 'v1-kpi-label' }, tr('EFF-01: Output Achievement Rate', 'EFF-01 : Efficacité des produits')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, effVal),
-          h('span', { className: 'v1-kpi-sub' }, `${perfs.length ? perfs.length : 48} outputs validés`)
+          h('span', { className: 'v1-kpi-sub' }, `${perfs.length ? perfs.length : 48} ${tr('validated outputs', 'outputs validés')}`)
         ),
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'EFI-01 : Coût réel par produit'),
+          h('span', { className: 'v1-kpi-label' }, tr('EFI-01: Actual Cost per Output', 'EFI-01 : Coût réel par produit')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, efi1Val),
-          h('span', { className: 'v1-kpi-sub' }, 'Dépenses F19 / Outputs F07')
+          h('span', { className: 'v1-kpi-sub' }, tr('F19 expenses divided by F07 outputs', 'Dépenses F19 / Outputs F07'))
         ),
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'EFI-02 : Coût unitaire prévu'),
+          h('span', { className: 'v1-kpi-label' }, tr('EFI-02: Planned Unit Cost', 'EFI-02 : Coût unitaire prévu')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, efi2Val),
-          h('span', { className: 'v1-kpi-sub' }, 'Budget prévu F03 / Cible F03')
+          h('span', { className: 'v1-kpi-sub' }, tr('F03 planned budget divided by F03 target', 'Budget prévu F03 / Cible F03'))
         ),
         h('div', { className: 'v1-kpi-card' },
-          h('span', { className: 'v1-kpi-label' }, 'FIN-01 : Exécution budgétaire'),
+          h('span', { className: 'v1-kpi-label' }, tr('FIN-01: Budget Execution Rate', 'FIN-01 : Exécution budgétaire')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, finVal),
-          h('span', { className: 'v1-kpi-sub' }, `${totSpent.toLocaleString()} / ${totBud ? totBud.toLocaleString() : '4 600 000'} RWF`)
+          h('span', { className: 'v1-kpi-sub' }, `${totSpent.toLocaleString()} / ${totBud ? totBud.toLocaleString() : '4,600,000'} RWF`)
         )
       ),
 
       /* Group Summary Table */
       h('div', { className: 'v1-panel', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, 'Portefeuille consolidé par type de travail'),
-          h('span', { className: 'v1-badge' }, 'Données approuvées')
+          h('span', { className: 'v1-chart-title' }, tr('Consolidated Portfolio by Work Type', 'Portefeuille consolidé par type de travail')),
+          h('span', { className: 'v1-badge' }, tr('Approved Data', 'Données approuvées'))
         ),
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Projet / Operational'),
-              h('th', {}, 'Plans approuvés'),
-              h('th', {}, 'Activités approuvées'),
-              h('th', {}, 'Budget approuvé'),
-              h('th', {}, 'Dépenses réelles'),
-              h('th', {}, 'Partenaires'),
-              h('th', {}, 'Volets CPJP')
+              h('th', {}, tr('Project / Operational', 'Projet / Opérationnel')),
+              h('th', {}, tr('Approved Plans', 'Plans approuvés')),
+              h('th', {}, tr('Approved Activities', 'Activités approuvées')),
+              h('th', {}, tr('Approved Budget', 'Budget approuvé')),
+              h('th', {}, tr('Actual Spending', 'Dépenses réelles')),
+              h('th', {}, tr('Partners', 'Partenaires')),
+              h('th', {}, tr('CPJP Streams', 'Volets CPJP'))
             )
           ),
           h('tbody', {},
@@ -3371,30 +3472,30 @@
                 h('td', {}, String(g.approvedActivities || 0)),
                 h('td', {}, Number(g.approvedBudgetRWF || 0).toLocaleString() + ' RWF'),
                 h('td', {}, Number(g.spentRWF || 0).toLocaleString() + ' RWF'),
-                h('td', {}, (g.partners || []).join(', ') || 'Diocèse'),
+                h('td', {}, (g.partners || []).join(', ') || tr('Diocese', 'Diocèse')),
                 h('td', {}, Object.entries(g.volets || {}).map(([k, v]) => {
                   const norm = (typeof window !== 'undefined' && typeof window.normalizeVolet === 'function') ? window.normalizeVolet(k) : null;
                   return `${norm ? norm.labelText : k}: ${v}`;
-                }).join('; ') || 'Tous volets')
+                }).join(', ') || tr('All streams', 'Tous les volets'))
               )
             ) : [
               h('tr', { key: 'group-1' },
                 h('td', {}, h('strong', {}, 'PRJ-ISANAMITIMA')),
                 h('td', {}, '1'),
                 h('td', {}, '4'),
-                h('td', {}, '18 500 000 RWF'),
-                h('td', {}, '4 120 000 RWF'),
+                h('td', {}, '18,500,000 RWF'),
+                h('td', {}, '4,120,000 RWF'),
                 h('td', {}, 'MISEREOR, CARITAS'),
-                h('td', {}, 'Volet 1 (CEA) : 12; Volet 2 (Médiation) : 8')
+                h('td', {}, tr('Healing & Reconciliation: 12, Mediators: 8', 'Guérison : 12, Médiateurs : 8'))
               ),
               h('tr', { key: 'group-2' },
                 h('td', {}, h('strong', {}, 'PLAN-2026-CPJP-GAKOMA')),
                 h('td', {}, '1'),
                 h('td', {}, '1'),
-                h('td', {}, '3 200 000 RWF'),
-                h('td', {}, '800 000 RWF'),
+                h('td', {}, '3,200,000 RWF'),
+                h('td', {}, '800,000 RWF'),
                 h('td', {}, 'DIOCESE_BUTARE'),
-                h('td', {}, 'Volet 3 (Parajuriste) : 6; Volet 4 (Jeunes) : 4')
+                h('td', {}, tr('Paralegals: 6, Youth Work: 4', 'Parajuristes : 6, Jeunes : 4'))
               )
             ]
           )
@@ -3404,18 +3505,18 @@
       /* Performance Indicator Table */
       h('div', { className: 'v1-panel' },
         h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, 'Indicateurs de performance détaillée par dossier (RBM)'),
-          h('span', { className: 'v1-badge' }, 'Norme RBM V8')
+          h('span', { className: 'v1-chart-title' }, tr('RBM Performance Indicators by Record', 'Indicateurs de performance détaillée par dossier (RBM)')),
+          h('span', { className: 'v1-badge' }, tr('RBM V8 Standard', 'Norme RBM V8'))
         ),
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Dossier Plan'),
-              h('th', {}, 'Code Indicateur'),
-              h('th', {}, 'EFF-01 Atteinte %'),
-              h('th', {}, 'EFI-01 Coût réel'),
-              h('th', {}, 'EFI-02 Coût prévu'),
-              h('th', {}, 'FIN-01 Exécution %')
+              h('th', {}, tr('Plan Record', 'Dossier Plan')),
+              h('th', {}, tr('Indicator Code', 'Code Indicateur')),
+              h('th', {}, tr('EFF-01 Achievement %', 'EFF-01 Atteinte %')),
+              h('th', {}, tr('EFI-01 Actual Cost', 'EFI-01 Coût réel')),
+              h('th', {}, tr('EFI-02 Planned Cost', 'EFI-02 Coût prévu')),
+              h('th', {}, tr('FIN-01 Execution %', 'FIN-01 Exécution %'))
             )
           ),
           h('tbody', {},
@@ -3433,8 +3534,8 @@
                 h('td', {}, h('strong', {}, 'rec-f03-ap1-001')),
                 h('td', {}, 'KPI-A1-R1'),
                 h('td', {}, '100.0%'),
-                h('td', {}, '85 833 RWF'),
-                h('td', {}, '95 833 RWF'),
+                h('td', {}, '85,833 RWF'),
+                h('td', {}, '95,833 RWF'),
                 h('td', {}, '89.6%')
               )
             ]
@@ -3445,7 +3546,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     12. EVALUATION OF STAFF ACHIEVEMENTS (Évaluation des réalisations F05/F43/F04/F03)
+     12. STAFF PERFORMANCE (F05 / F43 / F04 / F03)
      -------------------------------------------------------------------------- */
   function renderStaffEvalWorkspace() {
     // 1. Fetch live staff assignments performance
@@ -3469,7 +3570,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Ressources Humaines'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Human Resources', 'Ressources Humaines')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_staff_eval'))
         ),
@@ -3477,7 +3578,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_staff_eval')),
             h('p', { className: 'v1-page-subtitle' },
-              'Évaluation objective des réalisations du personnel : comparaison des assignations (F05, F43, F04, F03) avec les rapports approuvés (F07).'
+              tr(
+                'Compare assigned activities (F05, F43, F04, F03) against approved activity reports (F07).',
+                'Évaluation des réalisations du personnel : comparaison des assignations (F05, F43, F04, F03) avec les rapports approuvés (F07).'
+              )
             )
           )
         )
@@ -3486,10 +3590,10 @@
       /* Level selector */
       h('div', { className: 'v1-segmented', style: { marginBottom: '20px', width: 'fit-content' } },
         [
-          ['F05', 'Hebdomadaire (F05)'],
-          ['F43', 'Mensuel (F43)'],
-          ['F04', 'Trimestriel (F04)'],
-          ['F03', 'Annuel (F03)'],
+          ['F05', tr('Weekly (F05)', 'Hebdomadaire (F05)')],
+          ['F43', tr('Monthly (F43)', 'Mensuel (F43)')],
+          ['F04', tr('Quarterly (F04)', 'Trimestriel (F04)')],
+          ['F03', tr('Annual (F03)', 'Annuel (F03)')],
         ].map(([lvl, lbl]) =>
           h('button', {
             type: 'button',
@@ -3503,19 +3607,19 @@
       /* Performance matrix table */
       h('div', { className: 'v1-panel' },
         h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, `Assignations et Réalisations (${V091.staffEvalLevel})`),
-          h('span', { className: 'v1-badge' }, `${assignments.length} assignation${assignments.length > 1 ? 's' : ''}`)
+          h('span', { className: 'v1-chart-title' }, `${tr('Assignments & Completion', 'Assignations et Réalisations')} (${V091.staffEvalLevel})`),
+          h('span', { className: 'v1-badge' }, `${assignments.length} ${assignments.length === 1 ? tr('assignment', 'assignation') : tr('assignments', 'assignations')}`)
         ),
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Responsable (Poste)'),
-              h('th', {}, 'Axe / AP'),
-              h('th', {}, 'Activité assignée'),
-              h('th', {}, 'Échéance'),
-              h('th', {}, 'Rapports approuvés'),
-              h('th', {}, 'Preuves vérifiées'),
-              h('th', {}, 'Taux d’atteinte EFF-01')
+              h('th', {}, tr('Owner (Role)', 'Responsable (Poste)')),
+              h('th', {}, tr('Axis / Year', 'Axe / AP')),
+              h('th', {}, tr('Assigned Activity', 'Activité assignée')),
+              h('th', {}, tr('Due Date', 'Échéance')),
+              h('th', {}, tr('Approved Reports', 'Rapports approuvés')),
+              h('th', {}, tr('Verified Evidence', 'Preuves vérifiées')),
+              h('th', {}, tr('EFF-01 Achievement', 'Taux d’atteinte EFF-01'))
             )
           ),
           h('tbody', {},
@@ -3523,30 +3627,30 @@
               h('tr', { key: aIdx },
                 h('td', {}, h('strong', {}, a.owner)),
                 h('td', {}, [a.axis, a.ap].filter(Boolean).join(' / ') || 'A1 / AP1'),
-                h('td', {}, a.title || 'Activité planifiée'),
-                h('td', {}, a.deadline || '—'),
+                h('td', {}, a.title || tr('Planned activity', 'Activité planifiée')),
+                h('td', {}, a.deadline || 'N/A'),
                 h('td', {}, String(a.approvedReports || 0)),
                 h('td', {}, String(a.evidenceReports || 0)),
                 h('td', {},
                   h('span', { className: 'v1-badge', style: (a.achievementPercent || 0) >= 90 ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' } : {} },
-                    a.achievementPercent != null ? a.achievementPercent.toFixed(1) + '%' : 'Indisponible'
+                    a.achievementPercent != null ? a.achievementPercent.toFixed(1) + '%' : tr('Unavailable', 'Indisponible')
                   )
                 )
               )
             ) : [
               h('tr', { key: 'staff-1' },
-                h('td', {}, h('strong', {}, 'Théophile Habimana (MEL)')),
+                h('td', {}, h('strong', {}, tr('Theophile Habimana (MEL)', 'Théophile Habimana (MEL)'))),
                 h('td', {}, 'A1 / AP1'),
-                h('td', {}, 'Supervision des groupes Isanamitima à Ste Thérèse'),
+                h('td', {}, tr('Supervision of Isanamitima groups at Ste Therese', 'Supervision des groupes Isanamitima à Ste Thérèse')),
                 h('td', {}, '2026-10-18'),
                 h('td', {}, '1'),
                 h('td', {}, '1'),
                 h('td', {}, h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, '100.0%'))
               ),
               h('tr', { key: 'staff-2' },
-                h('td', {}, h('strong', {}, 'Emmanuel Nsabimana (Coordination)')),
+                h('td', {}, h('strong', {}, tr('Emmanuel Nsabimana (Coordination)', 'Emmanuel Nsabimana (Coordination)'))),
                 h('td', {}, 'A2 / AP1'),
-                h('td', {}, 'Formation des comités de médiation paroissiaux'),
+                h('td', {}, tr('Training of parish mediation committees', 'Formation des comités de médiation paroissiaux')),
                 h('td', {}, '2026-11-15'),
                 h('td', {}, '1'),
                 h('td', {}, '1'),
@@ -3556,16 +3660,19 @@
           )
         ),
         h('p', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', padding: '12px 16px', margin: 0, borderTop: '1px solid var(--border-subtle)' } },
-          'Règle institutionnelle : Un seul niveau de planification ; rapports approuvés uniquement. Une donnée absente ne vaut pas zéro.'
+          tr(
+            'Institutional rule: APSE compares one planning level at a time using approved reports only. Missing values never count as zero.',
+            'Règle institutionnelle : un seul niveau de planification, rapports approuvés uniquement. Une donnée absente ne vaut pas zéro.'
+          )
         )
       )
     );
   }
 
   /* --------------------------------------------------------------------------
-     13. CREATE / SHARE FORM (Créer / partager un formulaire — Custom Collections)
+     13. FORM BUILDER & SAVED COLLECTIONS
      -------------------------------------------------------------------------- */
-    function renderCreateFormWorkspace() {
+  function renderCreateFormWorkspace() {
     const curForm = V091.formsList[V091.activeFormIndex] || V091.formsList[0];
     if (!curForm.questions) curForm.questions = [];
 
@@ -3576,7 +3683,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Administration MEL'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('MEL Administration', 'Administration MEL')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_create_form'))
         ),
@@ -3584,7 +3691,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_create_form')),
             h('p', { className: 'v1-page-subtitle' },
-              'Concepteur visuel de formulaires type Google Forms : création par blocs, duplication en 1 clic et historique des modèles créés au fil du temps.'
+              tr(
+                'Build custom collection forms block by block, duplicate templates in one click, and publish active versions.',
+                'Concepteur visuel de formulaires : création par blocs, duplication en 1 clic et historique des modèles.'
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
@@ -3597,7 +3707,7 @@
               },
             },
               msIcon('edit_note', 18),
-              h('span', {}, 'Concepteur visuel')
+              h('span', {}, tr('Form Builder', 'Concepteur visuel'))
             ),
             h('button', {
               type: 'button',
@@ -3608,7 +3718,7 @@
               },
             },
               msIcon('folder_copy', 18),
-              h('span', {}, `Historique des formulaires (${V091.formsList.length})`)
+              h('span', {}, `${tr('Saved Forms', 'Historique des formulaires')} (${V091.formsList.length})`)
             )
           )
         )
@@ -3619,36 +3729,37 @@
     );
   }
 
-  /* Sub-view: Google Forms Style Visual Builder */
+  /* Sub-view: Visual Form Builder */
   function renderGoogleFormsBuilder(form) {
-    const frTitle = form.title?.fr || form.title || 'Formulaire sans titre';
-    const formDesc = form.description || '';
+    const activeLangKey = (V1.lang === 'fr' ? 'fr' : 'en');
+    const formTitleText = (typeof form.title === 'object' ? localize(form.title) : form.title) || tr('Untitled Form', 'Formulaire sans titre');
+    const formDescText = (typeof form.description === 'object' ? localize(form.description) : form.description) || '';
 
     return h('div', { className: 'gf-wrapper' },
       /* Top Bar: Action Buttons & Duplication */
       h('div', { className: 'gf-builder-toolbar' },
         h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
-          h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: '#fff' } }, form.code),
-          h('span', { className: 'v1-badge' }, form.status === 'ACTIVE' ? 'ACTIF' : 'BROUILLON')
+          h('span', { className: 'v1-badge', style: { background: 'var(--color-primary)', color: 'var(--color-primary-fg)' } }, form.code),
+          h('span', { className: 'v1-badge' }, form.status === 'ACTIVE' ? tr('ACTIVE', 'ACTIF') : tr('DRAFT', 'BROUILLON'))
         ),
         h('div', { className: 'gf-builder-toolbar-actions' },
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-sm v1-btn-secondary',
-            title: 'Dupliquer ce formulaire intégralement pour en créer un nouveau',
+            title: tr('Duplicate this form to create a new template', 'Dupliquer ce formulaire intégralement pour en créer un nouveau'),
             onClick: () => V091.duplicateForm(form.id),
           },
             msIcon('content_copy', 16),
-            h('span', {}, 'Dupliquer ce formulaire')
+            h('span', {}, tr('Duplicate Form', 'Dupliquer ce formulaire'))
           ),
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-sm v1-btn-secondary',
-            title: 'Tester l\'aperçu du formulaire tel que les répondants le voient',
+            title: tr('Preview the form as field respondents see it', "Tester l'aperçu du formulaire tel que les répondants le voient"),
             onClick: () => renderFormPreviewModal(form),
           },
             msIcon('visibility', 16),
-            h('span', {}, 'Aperçu répondant')
+            h('span', {}, tr('Preview', 'Aperçu répondant'))
           ),
           h('button', {
             type: 'button',
@@ -3657,7 +3768,7 @@
               const schema = {
                 code: form.code,
                 label: form.title,
-                defaultLanguage: 'fr',
+                defaultLanguage: activeLangKey,
                 audienceRoles: form.audienceRoles || ['APSE_CPJP'],
                 unitPaths: ['/LocalRoot01'],
                 sensitive: form.sensitive || false,
@@ -3665,36 +3776,39 @@
               };
               apiV1('/collections', 'POST', schema).then(res => {
                 form.status = 'ACTIVE';
-                V091.showToast(`✓ Formulaire [${res.code || form.code}] publié avec succès !`, 'info');
+                V091.showToast(tr(`Form [${res.code || form.code}] published.`, `Formulaire [${res.code || form.code}] publié avec succès !`), 'info');
                 renderApp();
               }).catch(err => {
-                V091.showToast('Erreur publication : ' + err.message, 'error');
+                V091.showToast(tr('Publish error: ', 'Erreur publication : ') + err.message, 'error');
               });
             },
           },
             msIcon('check_circle', 16),
-            h('span', {}, 'Publier le formulaire immuable')
+            h('span', {}, tr('Publish Form', 'Publier le formulaire immuable'))
           )
         )
       ),
 
-      /* Google Forms Header Card */
+      /* Form Header Card */
       h('div', { className: 'gf-header-card' },
         h('div', { className: 'gf-header-accent' }),
         h('input', {
           className: 'gf-form-title-input',
-          placeholder: 'Titre du formulaire',
-          value: frTitle,
+          placeholder: tr('Form title', 'Titre du formulaire'),
+          value: formTitleText,
           onInput: e => {
-            if (typeof form.title === 'object') form.title.fr = e.target.value;
+            if (typeof form.title === 'object' && form.title !== null) form.title[activeLangKey] = e.target.value;
             else form.title = e.target.value;
           },
         }),
         h('textarea', {
           className: 'gf-form-desc-input',
-          placeholder: 'Description du formulaire ou instructions destinées aux enquêteurs...',
-          value: formDesc,
-          onInput: e => { form.description = e.target.value; },
+          placeholder: tr('Form description or instructions for data collectors...', 'Description du formulaire ou instructions destinées aux enquêteurs...'),
+          value: formDescText,
+          onInput: e => {
+            if (typeof form.description === 'object' && form.description !== null) form.description[activeLangKey] = e.target.value;
+            else form.description = e.target.value;
+          },
         }),
         h('div', { className: 'gf-header-meta', style: { display: 'flex', gap: '14px', alignItems: 'center', marginTop: '14px', paddingTop: '12px', borderTop: '1px solid var(--border-subtle)', flexWrap: 'wrap' } },
           h('label', { style: { display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8125rem', cursor: 'pointer' } },
@@ -3703,50 +3817,53 @@
               checked: form.sensitive,
               onChange: e => { form.sensitive = e.target.checked; renderApp(); },
             }),
-            h('span', {}, 'Dossier sensible / Protection des victimes (RGPD / Église)')
+            h('span', {}, tr('Sensitive case protection (no victim names in analytics)', 'Dossier sensible / Protection des victimes (RGPD / Église)'))
           ),
           h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)' } },
-            `Rôles cibles : ${(form.audienceRoles || ['APSE_CPJP']).join(', ')}`
+            `${tr('Target roles:', 'Rôles cibles :')} ${(form.audienceRoles || ['APSE_CPJP']).join(', ')}`
           )
         )
       ),
 
-      /* Google Forms Question Cards */
+      /* Question Cards */
       (form.questions || []).map((q, qIdx) => {
-        const qTitle = q.label?.fr || q.label || q.title || `Question #${qIdx + 1}`;
+        const qTitle = (typeof q.label === 'object' ? localize(q.label) : q.label) || q.title || `${tr('Question', 'Question')} #${qIdx + 1}`;
         const qType = q.type || 'TEXT';
+        const qOptsRaw = Array.isArray(q.options) ? q.options : (q.options && typeof q.options === 'object' ? (q.options[activeLangKey] || q.options.en || q.options.fr || []) : ['Option 1', 'Option 2']);
+        const minLabelText = typeof q.minLabel === 'object' ? localize(q.minLabel) : q.minLabel;
+        const maxLabelText = typeof q.maxLabel === 'object' ? localize(q.maxLabel) : q.maxLabel;
 
         return h('div', { className: 'gf-question-card', key: q.id || qIdx },
           /* Top row: Question Title + Question Type Selector */
           h('div', { className: 'gf-q-top-row' },
             h('input', {
               className: 'gf-q-title-input',
-              placeholder: 'Intitulé de la question...',
+              placeholder: tr('Question prompt...', 'Intitulé de la question...'),
               value: qTitle,
               onInput: e => {
-                if (typeof q.label === 'object') q.label.fr = e.target.value;
+                if (typeof q.label === 'object' && q.label !== null) q.label[activeLangKey] = e.target.value;
                 else q.label = e.target.value;
               },
             }),
             V091.renderFigmaDropdown({
               id: 'gf-qtype-' + qIdx,
-              prefix: 'Type',
+              prefix: tr('Type', 'Type'),
               value: qType,
               width: '230px',
               options: [
-                { value: 'TEXT', label: 'Texte court' },
-                { value: 'LONG_TEXT', label: 'Paragraphe' },
-                { value: 'RADIO', label: 'Choix multiple' },
-                { value: 'CHECKBOX', label: 'Cases à cocher' },
-                { value: 'DROPDOWN', label: 'Liste déroulante' },
-                { value: 'SCALE_1_5', label: 'Échelle linéaire (1 à 5)' },
-                { value: 'NUMBER', label: 'Nombre' },
-                { value: 'DATE', label: 'Date' },
-                { value: 'FILE', label: 'Importation de document' },
+                { value: 'TEXT', label: tr('Short Text', 'Texte court') },
+                { value: 'LONG_TEXT', label: tr('Paragraph', 'Paragraphe') },
+                { value: 'RADIO', label: tr('Multiple Choice', 'Choix multiple') },
+                { value: 'CHECKBOX', label: tr('Checkboxes', 'Cases à cocher') },
+                { value: 'DROPDOWN', label: tr('Dropdown', 'Liste déroulante') },
+                { value: 'SCALE_1_5', label: tr('Scale (1 to 5)', 'Échelle linéaire (1 à 5)') },
+                { value: 'NUMBER', label: tr('Number', 'Nombre') },
+                { value: 'DATE', label: tr('Date', 'Date') },
+                { value: 'FILE', label: tr('File Upload', 'Importation de document') },
               ],
               onChange: nextType => {
                 q.type = nextType;
-                if (['RADIO', 'CHECKBOX', 'DROPDOWN'].includes(q.type) && (!q.options || !q.options.length)) {
+                if (['RADIO', 'CHECKBOX', 'DROPDOWN'].includes(q.type) && (!q.options || (Array.isArray(q.options) && !q.options.length))) {
                   q.options = ['Option 1', 'Option 2', 'Option 3'];
                 }
                 renderApp();
@@ -3757,21 +3874,34 @@
           /* Body: Options for choice types or scale */
           ['RADIO', 'CHECKBOX', 'DROPDOWN'].includes(qType) ?
             h('div', { className: 'gf-options-list' },
-              (q.options || ['Option 1', 'Option 2']).map((opt, oIdx) =>
+              qOptsRaw.map((opt, oIdx) =>
                 h('div', { className: 'gf-option-row', key: oIdx },
                   qType === 'RADIO' ? h('div', { className: 'gf-bullet-radio' }) :
                   (qType === 'CHECKBOX' ? h('div', { className: 'gf-bullet-checkbox' }) : h('span', { style: { fontSize: '0.8125rem', color: 'var(--text-muted)' } }, `${oIdx + 1}.`)),
                   h('input', {
                     className: 'gf-option-input',
                     value: opt,
-                    onInput: e => { q.options[oIdx] = e.target.value; },
+                    onInput: e => {
+                      if (Array.isArray(q.options)) {
+                        q.options[oIdx] = e.target.value;
+                      } else if (q.options && typeof q.options === 'object') {
+                        if (!Array.isArray(q.options[activeLangKey])) q.options[activeLangKey] = [...qOptsRaw];
+                        q.options[activeLangKey][oIdx] = e.target.value;
+                      }
+                    },
                   }),
-                  (q.options || []).length > 1 ? h('button', {
+                  qOptsRaw.length > 1 ? h('button', {
                     type: 'button',
                     className: 'gf-option-del-btn',
-                    title: 'Supprimer l\'option',
+                    title: tr('Remove option', "Supprimer l'option"),
                     onClick: () => {
-                      q.options.splice(oIdx, 1);
+                      if (Array.isArray(q.options)) {
+                        q.options.splice(oIdx, 1);
+                      } else if (q.options && typeof q.options === 'object') {
+                        const list = Array.isArray(q.options[activeLangKey]) ? q.options[activeLangKey] : [...qOptsRaw];
+                        list.splice(oIdx, 1);
+                        q.options[activeLangKey] = list;
+                      }
                       renderApp();
                     },
                   }, '×') : null
@@ -3779,19 +3909,24 @@
               ),
               h('button', {
                 type: 'button',
-                style: { alignSelf: 'flex-start', background: 'transparent', border: 0, color: 'var(--color-primary)', fontSize: '0.8125rem', fontWeight: '600', cursor: 'pointer', padding: '4px 0', marginTop: '4px' },
+                style: { alignSelf: 'flex-start', background: 'transparent', border: 0, color: 'var(--color-link)', fontSize: '0.8125rem', fontWeight: '600', cursor: 'pointer', padding: '4px 0', marginTop: '4px' },
                 onClick: () => {
                   if (!q.options) q.options = [];
-                  q.options.push(`Option ${q.options.length + 1}`);
+                  if (Array.isArray(q.options)) {
+                    q.options.push(`Option ${q.options.length + 1}`);
+                  } else if (typeof q.options === 'object') {
+                    if (!Array.isArray(q.options[activeLangKey])) q.options[activeLangKey] = [...qOptsRaw];
+                    q.options[activeLangKey].push(`Option ${q.options[activeLangKey].length + 1}`);
+                  }
                   renderApp();
                 },
-              }, '+ Ajouter une option')
+              }, tr('+ Add Option', '+ Ajouter une option'))
             ) :
           qType === 'SCALE_1_5' ?
             h('div', { className: 'gf-scale-row' },
               h('div', { className: 'gf-scale-labels' },
-                h('span', { className: 'gf-scale-label gf-scale-label-min' }, q.minLabel ? `1 (${q.minLabel})` : '1 (Faible)'),
-                h('span', { className: 'gf-scale-label gf-scale-label-max' }, q.maxLabel ? `5 (${q.maxLabel})` : '5 (Remarquable)')
+                h('span', { className: 'gf-scale-label gf-scale-label-min' }, minLabelText ? `1 (${minLabelText})` : tr('1 (Low)', '1 (Faible)')),
+                h('span', { className: 'gf-scale-label gf-scale-label-max' }, maxLabelText ? `5 (${maxLabelText})` : tr('5 (High)', '5 (Remarquable)'))
               ),
               h('div', { className: 'gf-scale-numbers' },
                 [1, 2, 3, 4, 5].map(n =>
@@ -3803,12 +3938,12 @@
               )
             ) :
           qType === 'FILE' ?
-            h('div', { style: { padding: '16px', border: '1px dashed var(--border-strong)', borderRadius: '8px', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8125rem' } },
+            h('div', { style: { padding: '16px', border: '1px dashed var(--border-strong)', borderRadius: 'var(--radius-sm)', textAlign: 'center', color: 'var(--text-secondary)', fontSize: '0.8125rem' } },
               msIcon('upload_file', 24),
-              h('div', { style: { marginTop: '4px' } }, 'Bouton d\'import de justificatif ou fichier média (PDF, DOCX, JPG, PNG)')
+              h('div', { style: { marginTop: '4px' } }, tr('Supporting file upload field (PDF, DOCX, JPG, PNG)', "Bouton d'import de justificatif ou fichier média (PDF, DOCX, JPG, PNG)"))
             ) :
           h('div', { style: { padding: '8px 0', borderBottom: '1px dashed var(--border-subtle)', color: 'var(--text-muted)', fontSize: '0.8125rem' } },
-            qType === 'TEXT' ? 'Ligne de texte court...' : (qType === 'LONG_TEXT' ? 'Zone de paragraphe multi-lignes...' : (qType === 'NUMBER' ? 'Valeur numérique...' : 'Sélecteur de date...'))
+            qType === 'TEXT' ? tr('Short text answer...', 'Ligne de texte court...') : (qType === 'LONG_TEXT' ? tr('Long paragraph answer...', 'Zone de paragraphe multi-lignes...') : (qType === 'NUMBER' ? tr('Numeric value...', 'Valeur numérique...') : tr('Date picker...', 'Sélecteur de date...')))
           ),
 
           /* Bottom toolbar: Duplicate question, Delete, Required toggle */
@@ -3818,13 +3953,13 @@
               h('button', {
                 type: 'button',
                 className: 'gf-icon-action-btn',
-                title: 'Dupliquer cette question',
+                title: tr('Duplicate question', 'Dupliquer cette question'),
                 onClick: () => {
                   const clonedQ = JSON.parse(JSON.stringify(q));
                   clonedQ.id = 'q_' + Date.now();
                   clonedQ.code = (q.code || 'q') + '_copy';
                   form.questions.splice(qIdx + 1, 0, clonedQ);
-                  V091.showToast('Question dupliquée', 'info');
+                  V091.showToast(tr('Question duplicated', 'Question dupliquée'), 'info');
                   renderApp();
                 },
               },
@@ -3833,7 +3968,7 @@
               h('button', {
                 type: 'button',
                 className: 'gf-icon-action-btn del',
-                title: 'Supprimer cette question',
+                title: tr('Delete question', 'Supprimer cette question'),
                 onClick: () => {
                   form.questions.splice(qIdx, 1);
                   renderApp();
@@ -3848,14 +3983,14 @@
                   checked: q.required || false,
                   onChange: e => { q.required = e.target.checked; renderApp(); },
                 }),
-                h('span', {}, 'Obligatoire')
+                h('span', {}, tr('Required', 'Obligatoire'))
               )
             )
           )
         );
       }),
 
-      /* Floating / Bottom Action Bar: Add Question, Preview, Save */
+      /* Bottom Action Bar: Add Question */
       h('div', { style: { display: 'flex', justifyContent: 'center', gap: '12px', padding: '16px 0' } },
         h('button', {
           type: 'button',
@@ -3865,7 +4000,7 @@
             form.questions.push({
               id: 'q_' + Date.now(),
               code: `q${nextIdx}_field`,
-              label: { fr: `Question #${nextIdx}` },
+              label: { fr: `Question #${nextIdx}`, en: `Question #${nextIdx}` },
               type: 'TEXT',
               required: false,
             });
@@ -3873,13 +4008,13 @@
           },
         },
           msIcon('add_circle', 18),
-          h('span', {}, 'Ajouter une question')
+          h('span', {}, tr('Add Question', 'Ajouter une question'))
         )
       )
     );
   }
 
-  /* Sub-view: Forms Created Over Time (Gallery with Search & 1-Click Duplication) */
+  /* Sub-view: Saved Forms Gallery */
   function renderFormsGallery() {
     const q = (V091.formsSearch || '').toLowerCase();
     const filter = V091.formsFilter || 'ALL';
@@ -3889,7 +4024,8 @@
       if (filter === 'DRAFT' && f.status !== 'DRAFT') return false;
       if (q) {
         const titleStr = typeof f.title === 'object' ? Object.values(f.title).join(' ') : String(f.title);
-        if (!`${f.code} ${titleStr} ${f.description}`.toLowerCase().includes(q)) return false;
+        const descStr = typeof f.description === 'object' ? Object.values(f.description).join(' ') : String(f.description || '');
+        if (!`${f.code} ${titleStr} ${descStr}`.toLowerCase().includes(q)) return false;
       }
       return true;
     });
@@ -3902,7 +4038,7 @@
             h('span', { className: 'v1-search-icon' }, msIcon('search', 18)),
             h('input', {
               className: 'v1-search-input',
-              placeholder: 'Rechercher un formulaire par titre ou code...',
+              placeholder: tr('Search forms by title or code...', 'Rechercher un formulaire par titre ou code...'),
               value: V091.formsSearch,
               onInput: e => { V091.formsSearch = e.target.value; renderApp(); },
             })
@@ -3911,9 +4047,9 @@
         h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
           h('div', { className: 'v1-segmented' },
             [
-              ['ALL', 'Tous'],
-              ['ACTIVE', 'Actifs'],
-              ['DRAFT', 'Brouillons'],
+              ['ALL', tr('All', 'Tous')],
+              ['ACTIVE', tr('Active', 'Actifs')],
+              ['DRAFT', tr('Drafts', 'Brouillons')],
             ].map(([st, lbl]) =>
               h('button', {
                 key: st,
@@ -3931,24 +4067,24 @@
                 id: 'c_form_' + Date.now().toString().slice(-4),
                 code: 'C_CUSTOM_' + Math.floor(100 + Math.random() * 900),
                 title: { fr: 'Nouveau formulaire personnalisé', en: 'New Custom Form', rw: 'Ifishi nshya', sw: 'Fomu mpya' },
-                description: 'Description des objectifs de la collecte...',
+                description: { en: 'Describe the purpose of this form...', fr: 'Description des objectifs de la collecte...' },
                 audienceRoles: ['APSE_CPJP'],
                 sensitive: false,
                 updatedAt: new Date().toISOString().slice(0, 10),
                 status: 'DRAFT',
                 questions: [
-                  { id: 'q1', code: 'q1_title', label: { fr: 'Question initiale' }, type: 'TEXT', required: true }
+                  { id: 'q1', code: 'q1_title', label: { fr: 'Question initiale', en: 'First Question' }, type: 'TEXT', required: true }
                 ]
               };
               V091.formsList.unshift(newForm);
               V091.activeFormIndex = 0;
               V091.activeFormTab = 'builder';
-              V091.showToast('Nouveau formulaire créé dans le concepteur', 'info');
+              V091.showToast(tr('New form created in builder', 'Nouveau formulaire créé dans le concepteur'), 'info');
               renderApp();
             },
           },
             msIcon('add', 18),
-            h('span', {}, 'Nouveau formulaire vierge')
+            h('span', {}, tr('New Blank Form', 'Nouveau formulaire vierge'))
           )
         )
       ),
@@ -3956,43 +4092,44 @@
       /* Forms Cards Grid */
       h('div', { className: 'gf-gallery-grid' },
         filteredForms.map((f, fIdx) => {
-          const frTitle = f.title?.fr || f.title || f.code;
+          const fTitle = (typeof f.title === 'object' ? localize(f.title) : f.title) || f.code;
+          const fDesc = (typeof f.description === 'object' ? localize(f.description) : f.description) || tr('No description', 'Aucune description');
           const qCount = (f.questions || []).length;
 
           return h('div', { className: 'gf-gallery-card', key: f.id || fIdx },
             h('div', {},
               h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' } },
                 h('span', { className: 'v1-meta-code-badge' }, f.code),
-                h('span', { className: 'v1-badge', style: f.status === 'ACTIVE' ? { background: 'rgba(30, 58, 47, 0.1)', color: '#1E3A2F' } : {} },
-                  f.status === 'ACTIVE' ? 'ACTIF' : 'BROUILLON'
+                h('span', { className: 'v1-badge', style: f.status === 'ACTIVE' ? { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' } : {} },
+                  f.status === 'ACTIVE' ? tr('ACTIVE', 'ACTIF') : tr('DRAFT', 'BROUILLON')
                 )
               ),
-              h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'block', marginBottom: '6px' } }, frTitle),
+              h('strong', { style: { fontSize: '1rem', color: 'var(--text-primary)', display: 'block', marginBottom: '6px' } }, fTitle),
               h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', lineHeight: '1.4', margin: '0 0 10px' } },
-                (f.description || 'Aucune description').slice(0, 95) + ((f.description || '').length > 95 ? '...' : '')
+                fDesc.slice(0, 95) + (fDesc.length > 95 ? '...' : '')
               ),
               h('div', { style: { fontSize: '0.75rem', color: 'var(--text-muted)', display: 'flex', gap: '8px', flexWrap: 'wrap' } },
-                h('span', {}, `${qCount} question${qCount > 1 ? 's' : ''}`),
-                h('span', {}, '·'),
-                h('span', {}, `Mis à jour le ${f.updatedAt || 'récent'}`)
+                h('span', {}, `${qCount} ${qCount === 1 ? tr('question', 'question') : tr('questions', 'questions')}`),
+                h('span', {}, ','),
+                h('span', {}, `${tr('Updated', 'Mis à jour le')} ${f.updatedAt || tr('recently', 'récent')}`)
               )
             ),
 
-            /* Card Actions: Duplicate (Key Request!), Edit, Preview */
+            /* Card Actions */
             h('div', { style: { display: 'flex', gap: '6px', borderTop: '1px solid var(--border-subtle)', paddingTop: '12px', flexWrap: 'wrap' } },
               h('button', {
                 type: 'button',
                 className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                title: 'Dupliquer ce formulaire avec toutes ses questions',
+                title: tr('Duplicate this form with all questions', 'Dupliquer ce formulaire avec toutes ses questions'),
                 onClick: () => V091.duplicateForm(f.id),
               },
                 msIcon('content_copy', 14),
-                h('span', {}, 'Dupliquer')
+                h('span', {}, tr('Duplicate', 'Dupliquer'))
               ),
               h('button', {
                 type: 'button',
                 className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                title: 'Ouvrir dans le concepteur visuel',
+                title: tr('Edit in visual builder', 'Ouvrir dans le concepteur visuel'),
                 onClick: () => {
                   V091.activeFormIndex = V091.formsList.findIndex(item => item.id === f.id);
                   if (V091.activeFormIndex === -1) V091.activeFormIndex = 0;
@@ -4001,16 +4138,16 @@
                 },
               },
                 msIcon('edit', 14),
-                h('span', {}, 'Modifier')
+                h('span', {}, tr('Edit', 'Modifier'))
               ),
               h('button', {
                 type: 'button',
                 className: 'v1-btn v1-btn-sm v1-btn-secondary',
-                title: 'Tester l\'aperçu répondant',
+                title: tr('Preview respondent view', "Tester l'aperçu répondant"),
                 onClick: () => renderFormPreviewModal(f),
               },
                 msIcon('visibility', 14),
-                h('span', {}, 'Aperçu')
+                h('span', {}, tr('Preview', 'Aperçu'))
               )
             )
           );
@@ -4021,22 +4158,28 @@
 
   /* In-App Modal Form Preview for Respondents */
   function renderFormPreviewModal(form) {
-    const frTitle = form.title?.fr || form.title || form.code;
+    const activeLangKey = (V1.lang === 'fr' ? 'fr' : 'en');
+    const fTitle = (typeof form.title === 'object' ? localize(form.title) : form.title) || form.code;
+    const fDesc = (typeof form.description === 'object' ? localize(form.description) : form.description) || tr('Respondent preview of this form.', "Voici l'interface telle qu'elle sera présentée aux enquêteurs.");
+    const previewValues = {};
     V091.showModal({
-      title: 'Aperçu du formulaire : ' + frTitle,
-      subtitle: form.description || 'Voici l\'interface telle qu\'elle sera présentée aux enquêteurs.',
+      title: tr('Form Preview: ', 'Aperçu du formulaire : ') + fTitle,
+      subtitle: fDesc,
       icon: 'dynamic_form',
       maxWidth: '720px',
-      content: h('div', { className: 'gf-preview-container', style: { display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '100%', boxSizing: 'border-box' } },
-        (form.questions || []).map((q, idx) =>
-          h('div', { key: idx, className: 'gf-preview-card', style: { padding: '14px 12px', border: '1px solid var(--border-subtle)', borderRadius: '8px', background: 'var(--bg-input)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'hidden' } },
+      content: () => h('div', { className: 'gf-preview-container', style: { display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '100%', boxSizing: 'border-box' } },
+        (form.questions || []).map((q, idx) => {
+          const qOpts = Array.isArray(q.options) ? q.options : (q.options && typeof q.options === 'object' ? (q.options[activeLangKey] || q.options.en || q.options.fr || []) : []);
+          const minLabelText = typeof q.minLabel === 'object' ? localize(q.minLabel) : q.minLabel;
+          const maxLabelText = typeof q.maxLabel === 'object' ? localize(q.maxLabel) : q.maxLabel;
+          return h('div', { key: idx, className: 'gf-preview-card', style: { padding: '14px 12px', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', background: 'var(--bg-input)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflow: 'visible' } },
             h('label', { style: { fontWeight: '600', fontSize: '0.875rem', display: 'block', marginBottom: '8px', wordBreak: 'break-word', overflowWrap: 'break-word' } },
-              `${idx + 1}. ${q.label?.fr || q.label || q.title || 'Question'}`,
+              `${idx + 1}. ${(typeof q.label === 'object' ? localize(q.label) : q.label) || q.title || 'Question'}`,
               q.required ? h('span', { style: { color: 'var(--color-danger)', marginLeft: '4px' } }, '*') : null
             ),
             q.type === 'RADIO' ?
               h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
-                (q.options || []).map((opt, oIdx) =>
+                qOpts.map((opt, oIdx) =>
                   h('label', { key: oIdx, style: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8125rem', cursor: 'pointer', wordBreak: 'break-word' } },
                     h('input', { type: 'radio', name: 'preview_' + idx, style: { flexShrink: 0 } }),
                     h('span', {}, opt)
@@ -4045,7 +4188,7 @@
               ) :
             q.type === 'CHECKBOX' ?
               h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px' } },
-                (q.options || []).map((opt, oIdx) =>
+                qOpts.map((opt, oIdx) =>
                   h('label', { key: oIdx, style: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8125rem', cursor: 'pointer', wordBreak: 'break-word' } },
                     h('input', { type: 'checkbox', style: { flexShrink: 0 } }),
                     h('span', {}, opt)
@@ -4053,15 +4196,22 @@
                 )
               ) :
             q.type === 'DROPDOWN' ?
-              h('select', { className: 'v1-select', style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } },
-                h('option', { value: '' }, '-- Sélectionner une option --'),
-                (q.options || []).map((opt, oIdx) => h('option', { key: oIdx, value: opt }, opt))
-              ) :
+              V091.renderFigmaDropdown({
+                id: 'gf-preview-' + idx,
+                value: previewValues[idx] !== undefined ? previewValues[idx] : '',
+                placeholder: tr('-- Select an option --', '-- Sélectionner une option --'),
+                width: '100%',
+                options: [
+                  { value: '', label: tr('-- Select an option --', '-- Sélectionner une option --') },
+                  ...qOpts.map(opt => ({ value: opt, label: opt })),
+                ],
+                onChange: val => { previewValues[idx] = val; },
+              }) :
             q.type === 'SCALE_1_5' ?
               h('div', { className: 'gf-scale-row' },
                 h('div', { className: 'gf-scale-labels' },
-                  h('span', { className: 'gf-scale-label gf-scale-label-min' }, q.minLabel ? `1 (${q.minLabel})` : '1 (Faible)'),
-                  h('span', { className: 'gf-scale-label gf-scale-label-max' }, q.maxLabel ? `5 (${q.maxLabel})` : '5 (Remarquable)')
+                  h('span', { className: 'gf-scale-label gf-scale-label-min' }, minLabelText ? `1 (${minLabelText})` : tr('1 (Low)', '1 (Faible)')),
+                  h('span', { className: 'gf-scale-label gf-scale-label-max' }, maxLabelText ? `5 (${maxLabelText})` : tr('5 (High)', '5 (Remarquable)'))
                 ),
                 h('div', { className: 'gf-scale-numbers' },
                   [1, 2, 3, 4, 5].map(n =>
@@ -4073,13 +4223,13 @@
                 )
               ) :
             q.type === 'LONG_TEXT' ?
-              h('textarea', { className: 'v1-textarea', placeholder: 'Saisissez votre réponse ici...', rows: 3, style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } }) :
-              h('input', { className: 'v1-input', type: q.type === 'NUMBER' ? 'number' : (q.type === 'DATE' ? 'date' : 'text'), placeholder: 'Votre réponse...', style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } })
-          )
-        )
+              h('textarea', { className: 'v1-textarea', placeholder: tr('Enter your response...', 'Saisissez votre réponse ici...'), rows: 3, style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } }) :
+              h('input', { className: 'v1-input', type: q.type === 'NUMBER' ? 'number' : (q.type === 'DATE' ? 'date' : 'text'), placeholder: tr('Your answer...', 'Votre réponse...'), style: { width: '100%', maxWidth: '100%', boxSizing: 'border-box' } })
+          );
+        })
       ),
       actions: [
-        { label: 'Fermer l\'aperçu', type: 'primary', onClick: () => V091.closeModal() }
+        { label: tr('Close Preview', "Fermer l'aperçu"), type: 'primary', onClick: () => V091.closeModal() }
       ]
     });
   }
@@ -4101,7 +4251,7 @@
       h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
         h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
         h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-        h('span', { className: 'v1-breadcrumb-item' }, 'Travaux en cours'),
+        h('span', { className: 'v1-breadcrumb-item' }, tr('Work in Progress', 'Travaux en cours')),
         h('span', { className: 'v1-breadcrumb-sep' }, '/'),
         h('span', { className: 'v1-breadcrumb-current' }, L('nav_drafts'))
       ),
@@ -4109,7 +4259,10 @@
         h('div', { className: 'v1-tasks-heading-block' },
           h('h1', { className: 'v1-page-title' }, L('nav_drafts')),
           h('p', { className: 'v1-page-subtitle' },
-            'Brouillons locaux et formulaires en cours de saisie chiffrés sur le serveur.'
+            tr(
+              'Local drafts saved on your device and encrypted drafts stored on the server.',
+              'Brouillons locaux et formulaires en cours de saisie chiffrés sur le serveur.'
+            )
           )
         ),
         h('div', { className: 'v1-tasks-toolbar-row' },
@@ -4118,7 +4271,7 @@
             h('input', {
               type: 'search',
               className: 'v1-tasks-search-input',
-              placeholder: 'Rechercher un brouillon par formulaire ou date...',
+              placeholder: tr('Search drafts by form code or date...', 'Rechercher un brouillon par formulaire ou date...'),
               value: V1.searchQuery || '',
               onInput: e => { V1.searchQuery = e.target.value; renderApp(); },
             })
@@ -4129,20 +4282,20 @@
               className: 'v1-cu-pill-completed active',
             },
               msIcon('iconsax_clipboard_tick', 18),
-              h('span', {}, `${serverDrafts.length + localDraftTasks.length} Brouillons`)
+              h('span', {}, `${serverDrafts.length + localDraftTasks.length} ${tr('Drafts', 'Brouillons')}`)
             )
           )
         )
       ),
 
-      /* Redesigned Draft Cards (Matches My Tasks Card Design 9:34582) */
+      /* Draft Cards */
       (serverDrafts.length + localDraftTasks.length) === 0
         ? h('div', { className: 'v1-panel', style: { padding: '24px', textAlign: 'center', color: 'var(--text-secondary)' } },
-            'Aucun brouillon en cours. Les formulaires en cours de saisie sont sauvegardés automatiquement ici.'
+            tr('No drafts in progress. APSE saves unfinished forms here automatically.', 'Aucun brouillon en cours. Les formulaires en cours de saisie sont sauvegardés automatiquement ici.')
           )
         : h('div', { className: 'v1-task-list' },
             localDraftTasks.map(t => {
-              const subtitleLine = `${t.pastoral_quarter || 'Q1'}  -  ${String(localize(t.axis_labels) || t.axis || '').toUpperCase()}  -  ${String(t.parish_name || t.parish_code || '').toUpperCase()} PARISH`;
+              const subtitleLine = `${t.pastoral_quarter || 'Q1'}, ${String(localize(t.axis_labels) || t.axis || '').toUpperCase()}, ${String(t.parish_name || t.parish_code || '').toUpperCase()} PARISH`;
               return h('article', { className: 'v1-task-card' },
                 h('div', { className: 'v1-task-header-row' },
                   h('div', { className: 'v1-task-check' }, msIcon('description', 16)),
@@ -4157,14 +4310,14 @@
                 ),
                 h('div', { className: 'v1-task-schedule' },
                   msIcon('calendar_today', 14),
-                  h('span', { className: 'v1-tabular' }, `Due ${t.due_date} · Local Browser Draft`)
+                  h('span', { className: 'v1-tabular' }, tr(`Due ${t.due_date}, Local Device Draft`, `Échéance ${t.due_date}, Brouillon local`))
                 ),
                 h('div', { className: 'v1-task-bottom-row' },
                   h('div', { className: 'v1-progress-wrap' },
                     h('div', { className: 'v1-progress-bar' },
                       h('div', { className: 'v1-progress-fill', style: { width: `${t.completion_pct || 25}%` } })
                     ),
-                    h('span', { className: 'v1-progress-stat' }, 'Draft saved on device')
+                    h('span', { className: 'v1-progress-stat' }, tr('Draft saved on device', 'Brouillon enregistré localement'))
                   ),
                   h('div', { className: 'v1-task-action' },
                     h('button', {
@@ -4174,7 +4327,7 @@
                         V1.workspace = 'tasks';
                         openWizardForTask(t, t.latest_log);
                       },
-                    }, h('span', {}, 'Resume Draft'), msIcon('chevron_right', 20))
+                    }, h('span', {}, tr('Resume Draft', 'Reprendre')), msIcon('chevron_right', 20))
                   )
                 )
               );
@@ -4184,8 +4337,8 @@
                 h('div', { className: 'v1-task-header-row' },
                   h('div', { className: 'v1-task-check' }, msIcon('edit_note', 16)),
                   h('div', { className: 'v1-task-title-group' },
-                    h('h3', { className: 'v1-task-title' }, d.payload?.values?.title || `Formulaire ${d.form}`),
-                    h('div', { className: 'v1-task-subtitle-meta' }, `FORM ${d.form}  -  REV ${d.revision || 1}  -  SERVER ENCRYPTED DRAFT`),
+                    h('h3', { className: 'v1-task-title' }, d.payload?.values?.title || `${tr('Form', 'Formulaire')} ${d.form}`),
+                    h('div', { className: 'v1-task-subtitle-meta' }, `${tr('FORM', 'FORMULAIRE')} ${d.form}, REV ${d.revision || 1}, ${tr('SERVER ENCRYPTED DRAFT', 'BROUILLON SERVEUR CHIFFRÉ')}`),
                     h('div', { className: 'v1-task-status-badges' },
                       renderLozenge('Saved Draft', 'GOOD', 'description'),
                       renderLozenge(`Rev ${d.revision || 1}`, 'neutral')
@@ -4194,14 +4347,14 @@
                 ),
                 h('div', { className: 'v1-task-schedule' },
                   msIcon('calendar_today', 14),
-                  h('span', { className: 'v1-tabular' }, `Event Date: ${d.payload?.event_date || 'N/A'} · Updated: ${d.updated ? d.updated.slice(0, 16).replace('T', ' ') : 'N/A'}`)
+                  h('span', { className: 'v1-tabular' }, `${tr('Event Date', 'Date')} : ${d.payload?.event_date || 'N/A'}, ${tr('Updated', 'Mis à jour')} : ${d.updated ? d.updated.slice(0, 16).replace('T', ' ') : 'N/A'}`)
                 ),
                 h('div', { className: 'v1-task-bottom-row' },
                   h('div', { className: 'v1-progress-wrap' },
                     h('div', { className: 'v1-progress-bar' },
                       h('div', { className: 'v1-progress-fill', style: { width: '50%' } })
                     ),
-                    h('span', { className: 'v1-progress-stat' }, `Encrypted draft (${d.form})`)
+                    h('span', { className: 'v1-progress-stat' }, `${tr('Encrypted draft', 'Brouillon chiffré')} (${d.form})`)
                   ),
                   h('div', { className: 'v1-task-action' },
                     h('button', {
@@ -4213,7 +4366,7 @@
                         V1.workspace = 'seizure';
                         renderApp();
                       },
-                    }, h('span', {}, 'Ouvrir'), msIcon('chevron_right', 20))
+                    }, h('span', {}, tr('Open', 'Ouvrir')), msIcon('chevron_right', 20))
                   )
                 )
               )
@@ -4223,7 +4376,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     15. PS DASHBOARD (Tableau de bord PS — D01–D13, 35 KPIs, alertes)
+     15. STRATEGIC DASHBOARD (D01-D13, 35 KPIs, alerts)
      -------------------------------------------------------------------------- */
   function renderPSDashboardWorkspace() {
     return h('div', { className: 'v1-workspace-fade' },
@@ -4231,7 +4384,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Pilotage Stratégique'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Strategy', 'Pilotage Stratégique')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_ps_dashboard'))
         ),
@@ -4242,7 +4395,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     16. ASSISTANT & CONTROLS (Assistant et contrôles qualité)
+     16. QUALITY & WRITING ASSISTANT
      -------------------------------------------------------------------------- */
   function renderAssistantWorkspace() {
     // 1. Fetch assistant status
@@ -4266,7 +4419,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Assurance Qualité & Rédaction'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Quality Assurance', 'Assurance Qualité & Rédaction')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_assistant'))
         ),
@@ -4274,36 +4427,42 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_assistant')),
             h('p', { className: 'v1-page-subtitle' },
-              'Contrôles structurels déterministes hors ligne et assistant de rédaction (grammaire, traduction, synthèse) sans transfert vers un cloud externe.'
+              tr(
+                'Run offline validation checks and get local writing help for grammar, translation, and summaries.',
+                'Contrôles structurels hors ligne et assistant de rédaction (grammaire, traduction, synthèse) sans transfert vers un cloud externe.'
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
             h('span', { className: 'v1-badge', style: isAiConfigured ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' } : {} },
-              isAiConfigured ? 'IA Locale Active' : 'Contrôles Déterministes Actifs'
+              isAiConfigured ? tr('Local AI Ready', 'IA Locale Active') : tr('Rule Checks Active', 'Contrôles Déterministes Actifs')
             )
           )
         )
       ),
 
       /* Security & Privacy Notice */
-      h('div', { className: 'v1-panel', style: { padding: '14px 18px', marginBottom: '20px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+      h('div', { className: 'v1-panel', style: { padding: '14px 18px', marginBottom: '20px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)' } },
         h('p', { style: { fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0 } },
-          'Confidentialité stricte : Les données sensibles et identifiants de personnes protégées ne sont jamais transmis au modèle d’assistance. Toute suggestion doit faire l’objet d’une relecture humaine avant application.'
+          tr(
+            'Strict privacy: APSE never sends protected personal data or case identifiers to writing tools. Staff must review every suggestion before applying it.',
+            'Confidentialité stricte : les données sensibles et identifiants de personnes protégées ne sont jamais transmis à l’assistant. Chaque suggestion exige une relecture humaine avant application.'
+          )
         )
       ),
 
       /* Controls Checklist Panel */
       h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
-        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, 'Contrôles de cohérence & conformité V8'),
+        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, tr('V8 Consistency & Compliance Checks', 'Contrôles de cohérence & conformité V8')),
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
           (V091.assistantResults?.checks || [
-            { code: 'REQUIRED_FIELDS', status: 'PASS', title: 'Champs obligatoires du formulaire', detail: 'Vérification de la présence de tous les champs obligatoires selon le catalogue.' },
-            { code: 'PASTORAL_CALENDAR', status: 'PASS', title: 'Calendrier pastoral PS 2026–2031 (AP1–AP5)', detail: 'Vérification des bornes de dates 1 Sept 2026 à 31 Août 2031.' },
-            { code: 'V8_SENSITIVITY_DNH_CNV', status: 'PASS', title: 'Standard V8 : Noms collégiaux & Sensibilité CNV/DNH/Trauma', detail: 'Présence des binômes (2 noms) ou comité (7 noms) et cases Do No Harm / CNV cochées.' },
-            { code: 'GENDER_DISABILITY_MATH', status: 'PASS', title: 'Désagrégation Genre & Handicap', detail: 'Total = Femmes + Hommes + Non déclaré, Handicap <= Total.' },
-            { code: 'PRIVACY_PROTECTION', status: 'PASS', title: 'Protection des données sensibles', detail: 'Aucun identifiant privé de victime dans les fiches partagées.' },
+            { code: 'REQUIRED_FIELDS', status: 'PASS', title: tr('Required Form Fields', 'Champs obligatoires du formulaire'), detail: tr('Confirms all required fields for the selected form are complete.', 'Vérifie la présence de tous les champs obligatoires selon le catalogue.') },
+            { code: 'PASTORAL_CALENDAR', status: 'PASS', title: tr('Pastoral Calendar 2026-2031 (AP1-AP5)', 'Calendrier pastoral PS 2026-2031 (AP1-AP5)'), detail: tr('Checks dates against the Sept 1, 2026 to Aug 31, 2031 plan window.', 'Vérifie les dates entre le 1er sept. 2026 et le 31 août 2031.') },
+            { code: 'V8_SENSITIVITY_DNH_CNV', status: 'PASS', title: tr('Joint Sign-off & Do No Harm Checks', 'Standard V8 : Noms collégiaux & Sensibilité CNV/DNH/Trauma'), detail: tr('Requires pair names (2) or committee names (7) and completed Do No Harm and NVC checks.', 'Vérifie les binômes (2 noms) ou comités (7 noms) et les cases DNH / CNV.') },
+            { code: 'GENDER_DISABILITY_MATH', status: 'PASS', title: tr('Gender & Disability Counts', 'Désagrégation Genre & Handicap'), detail: tr('Confirms Total equals Women + Men + Undeclared and Disability count does not exceed Total.', 'Total = Femmes + Hommes + Non déclaré, Handicap <= Total.') },
+            { code: 'PRIVACY_PROTECTION', status: 'PASS', title: tr('Sensitive Case Privacy', 'Protection des données sensibles'), detail: tr('Confirms shared records contain no private victim identifiers.', 'Aucun identifiant privé de victime dans les fiches partagées.') },
           ]).map((c, cIdx) =>
-            h('div', { key: cIdx, style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+            h('div', { key: cIdx, style: { display: 'flex', gap: '12px', alignItems: 'flex-start', padding: '12px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' } },
               msIcon(c.status === 'PASS' ? 'check_circle' : 'warning', 20),
               h('div', {},
                 h('strong', { style: { fontSize: '0.875rem' } }, c.title),
@@ -4316,22 +4475,22 @@
 
       /* Writing Assistant Box with Task Selector */
       h('div', { className: 'v1-panel', style: { padding: '24px' } },
-        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', margin: '0 0 16px' } }, 'Outils d’assistance rédactionnelle'),
+        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', margin: '0 0 16px' } }, tr('Writing & Translation Tools', 'Outils d’assistance rédactionnelle')),
         h('div', { className: 'v1-assistant-toolbar', style: { display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' } },
-          h('label', { style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } }, 'Sélectionner l’utilitaire d’assistance :'),
+          h('label', { style: { fontSize: '0.75rem', fontWeight: '600', color: 'var(--text-secondary)' } }, tr('Select tool:', 'Sélectionner l’utilitaire d’assistance :')),
           h('div', { className: 'v1-assistant-controls' },
             V091.renderFigmaDropdown({
               id: 'assistant-task',
-              prefix: 'Utilitaire',
+              prefix: tr('Tool', 'Utilitaire'),
               value: V091.assistantTask || 'controls',
               width: '340px',
               options: [
-                { value: 'controls', label: 'Contrôle structurel du dossier' },
-                { value: 'grammar', label: 'Correction grammaire & style' },
-                { value: 'translate', label: 'Traduction multilingue (FR/RW/EN/SW)' },
-                { value: 'summarise', label: 'Synthèse exécutive & Résumé' },
-                { value: 'planning', label: 'Cohérence avec le Plan Stratégique' },
-                { value: 'report', label: 'Structuration de rapport d’activité' },
+                { value: 'controls', label: tr('Record completeness check', 'Contrôle structurel du dossier') },
+                { value: 'grammar', label: tr('Grammar & clarity check', 'Correction grammaire & style') },
+                { value: 'translate', label: tr('Translate (EN / FR / RW / SW)', 'Traduction multilingue (FR/RW/EN/SW)') },
+                { value: 'summarise', label: tr('Executive summary', 'Synthèse exécutive & Résumé') },
+                { value: 'planning', label: tr('Strategic Plan alignment', 'Cohérence avec le Plan Stratégique') },
+                { value: 'report', label: tr('Structure activity report', 'Structuration de rapport d’activité') },
               ],
               onChange: nextTask => { V091.assistantTask = nextTask; renderApp(); },
             }),
@@ -4349,34 +4508,34 @@
                 }).then(res => {
                   V091.assistantResults = res;
                   renderApp();
-                }).catch(err => V091.showToast('Erreur assistant : ' + err.message, 'error'));
+                }).catch(err => V091.showToast(tr('Assistant error: ', 'Erreur assistant : ') + err.message, 'error'));
               }
             },
               msIcon('psychology', 18),
-              h('span', {}, 'Analyser & Proposer')
+              h('span', {}, tr('Run Check', 'Analyser & Proposer'))
             )
           )
         ),
         h('textarea', {
           className: 'v1-textarea',
           rows: 4,
-          placeholder: "Collez ici votre texte pour vérification de grammaire, clarté, traduction ou analyse d'alignement...",
+          placeholder: tr('Paste draft text here to check grammar, clarity, translation, or strategic alignment...', "Collez ici votre texte pour vérification de grammaire, clarté, traduction ou analyse d'alignement..."),
           value: V091.assistantText,
           onInput: e => { V091.assistantText = e.target.value; },
           style: { marginBottom: '14px' },
         }),
-        V091.assistantResults?.suggestion ? h('div', { style: { padding: '16px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
+        V091.assistantResults?.suggestion ? h('div', { style: { padding: '16px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' } },
           h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' } },
-            h('strong', { style: { color: 'var(--color-success)' } }, '✓ Proposition générée (Relecture requise) :'),
+            h('strong', { style: { color: 'var(--color-success)' } }, tr('Suggested Draft (Review required):', 'Proposition générée (Relecture requise) :')),
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-sm v1-btn-primary',
               onClick: () => {
                 V091.assistantText = V091.assistantResults.suggestion.proposed_text || V091.assistantResults.suggestion;
-                V091.showToast('✓ Proposition appliquée au texte.', 'info');
+                V091.showToast(tr('Suggestion applied.', 'Proposition appliquée au texte.'), 'info');
                 renderApp();
               }
-            }, 'Appliquer après relecture')
+            }, tr('Apply After Review', 'Appliquer après relecture'))
           ),
           h('p', { style: { margin: 0, fontSize: '0.875rem', lineHeight: 1.5, color: 'var(--text-primary)' } },
             V091.assistantResults.suggestion.proposed_text || JSON.stringify(V091.assistantResults.suggestion)
@@ -4387,7 +4546,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     17. CONTACTS (Contacts & Annuaires du personnel)
+     17. CONTACTS & DIRECTORY
      -------------------------------------------------------------------------- */
   function renderContactsWorkspace() {
     // 1. Fetch live contacts & structure data
@@ -4404,12 +4563,12 @@
     }
 
     const contactsList = V091.contactsData?.contacts || [
-      { name: 'Abbé Janvier Nduwayezu', role: 'Directeur CDJP Butare', phone: '+250 788 301 101', email: 'direction.cdjp@diocesebutare.org.rw', office: 'Siège CDJP Cathédrale Huye' },
-      { name: 'Emmanuel Nsabimana', role: 'Coordinateur CDJP', phone: '+250 788 302 202', email: 'coordination.cdjp@diocesebutare.org.rw', office: 'Bureau Coordination Huye' },
-      { name: 'Théophile Habimana', role: 'Chargé APSE MEL & Communication', phone: '+250 788 303 303', email: 'mel.cdjp@diocesebutare.org.rw', office: 'Unité MEL & Communication' },
-      { name: 'Marceline Mukandayisenga', role: 'Comptable / Finance & RH', phone: '+250 788 304 404', email: 'finance.cdjp@diocesebutare.org.rw', office: 'Comptabilité & RH' },
-      { name: 'Ruth Kamanzi', role: 'Assistante Technique / Coopération', phone: '+250 788 305 505', email: 'cooperation.cdjp@diocesebutare.org.rw', office: 'Appui Technique & Partenariats' },
-      { name: 'Emmanuel Uwimana', role: 'Chauffeur & Logistique terrain', phone: '+250 788 306 606', email: 'logistique.cdjp@diocesebutare.org.rw', office: 'Charroi & Logistique missions' },
+      { name: 'Fr. Janvier Nduwayezu', role: tr('Diocesan Director, CDJP Butare', 'Directeur CDJP Butare'), phone: '+250 788 301 101', email: 'direction.cdjp@diocesebutare.org.rw', office: tr('CDJP Head Office, Huye Cathedral', 'Siège CDJP Cathédrale Huye') },
+      { name: 'Emmanuel Nsabimana', role: tr('CDJP Coordinator', 'Coordinateur CDJP'), phone: '+250 788 302 202', email: 'coordination.cdjp@diocesebutare.org.rw', office: tr('Coordination Office, Huye', 'Bureau Coordination Huye') },
+      { name: 'Theophile Habimana', role: tr('APSE MEL & Communications Officer', 'Chargé APSE MEL & Communication'), phone: '+250 788 303 303', email: 'mel.cdjp@diocesebutare.org.rw', office: tr('MEL & Communications Unit', 'Unité MEL & Communication') },
+      { name: 'Marceline Mukandayisenga', role: tr('Accountant / Finance & HR', 'Comptable / Finance & RH'), phone: '+250 788 304 404', email: 'finance.cdjp@diocesebutare.org.rw', office: tr('Finance & HR Office', 'Comptabilité & RH') },
+      { name: 'Ruth Kamanzi', role: tr('Technical Assistant / Partnerships', 'Assistante Technique / Coopération'), phone: '+250 788 305 505', email: 'cooperation.cdjp@diocesebutare.org.rw', office: tr('Technical Support & Partnerships', 'Appui Technique & Partenariats') },
+      { name: 'Emmanuel Uwimana', role: tr('Driver & Field Logistics', 'Chauffeur & Logistique terrain'), phone: '+250 788 306 606', email: 'logistique.cdjp@diocesebutare.org.rw', office: tr('Fleet & Field Logistics', 'Charroi & Logistique missions') },
     ];
 
     return h('div', { className: 'v1-workspace-fade' },
@@ -4417,7 +4576,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Annuaire Institutionnel'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Staff Directory', 'Annuaire Institutionnel')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_contacts'))
         ),
@@ -4425,7 +4584,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_contacts')),
             h('p', { className: 'v1-page-subtitle' },
-              'Annuaire officiel du personnel diocésain CDJP et coordonnées des canaux de communication d’urgence.'
+              tr(
+                'Official directory for diocesan CDJP staff and direct field coordination contacts.',
+                'Annuaire officiel du personnel diocésain CDJP et coordonnées des canaux de communication.'
+              )
             )
           )
         )
@@ -4437,35 +4599,35 @@
           h('div', { key: cIdx, className: 'v1-panel v1-card-interactive v1-contact-card', style: { gridColumn: 'span 16', padding: '20px' } },
             h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' } },
               h('div', {},
-                h('strong', { style: { fontSize: '1.0625rem', color: 'var(--text-primary)', display: 'block' } }, c.full_name || c.name || c.fullname || 'Personnel CDJP'),
-                h('span', { className: 'v1-badge', style: { marginTop: '4px', marginBottom: '12px' } }, c.position_title || c.role || c.position || c.position_code || 'Poste institutionnel')
+                h('strong', { style: { fontSize: '1.0625rem', color: 'var(--text-primary)', display: 'block' } }, c.full_name || c.name || c.fullname || tr('CDJP Staff', 'Personnel CDJP')),
+                h('span', { className: 'v1-badge', style: { marginTop: '4px', marginBottom: '12px' } }, c.position_title || c.role || c.position || c.position_code || tr('Staff Role', 'Poste institutionnel'))
               ),
               msIcon('contacts', 24)
             ),
-            /* Contact Details: 2-Column Key/Value Grid with Horizontally Aligned Labels & Values */
+            /* Contact Details */
             h('div', { className: 'v1-contact-info-list' },
               h('div', { className: 'v1-contact-row' },
                 h('div', { className: 'v1-contact-label' },
                   msIcon('phone', 14),
-                  h('strong', {}, 'Téléphone :')
+                  h('strong', {}, tr('Phone:', 'Téléphone :'))
                 ),
                 h('div', { className: 'v1-contact-value v1-contact-phone' },
-                  h('a', { href: `tel:${c.phone}` }, c.phone || 'Non renseigné')
+                  h('a', { href: `tel:${c.phone}` }, c.phone || tr('Not provided', 'Non renseigné'))
                 )
               ),
               h('div', { className: 'v1-contact-row' },
                 h('div', { className: 'v1-contact-label' },
                   msIcon('mail', 14),
-                  h('strong', {}, 'Email :')
+                  h('strong', {}, tr('Email:', 'Email :'))
                 ),
                 h('div', { className: 'v1-contact-value v1-contact-email' },
-                  h('a', { href: `mailto:${c.email}`, title: c.email || '' }, c.email || 'Non renseigné')
+                  h('a', { href: `mailto:${c.email}`, title: c.email || '' }, c.email || tr('Not provided', 'Non renseigné'))
                 )
               ),
               c.office ? h('div', { className: 'v1-contact-row' },
                 h('div', { className: 'v1-contact-label' },
                   msIcon('place', 14),
-                  h('strong', {}, 'Bureau :')
+                  h('strong', {}, tr('Office:', 'Bureau :'))
                 ),
                 h('div', { className: 'v1-contact-value v1-contact-office' },
                   c.office
@@ -4479,7 +4641,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     18. DATA STRUCTURE & FLOW (Structure et flux des données)
+     18. ORG & DATA FLOW
      -------------------------------------------------------------------------- */
   function renderDataStructureWorkspace() {
     // 1. Fetch live structure
@@ -4497,11 +4659,31 @@
 
     const struct = V091.contactsData || {};
     const flowSteps = struct.data_flow_steps || [
-      { step: 1, label: '1. Collecte terrain (CEB & Centrale CCJP)', detail: 'Saisie ou fiche manuelle avec référence (origin_ceb, manual_source_ref, manual_source_date) en binôme (2 noms).' },
-      { step: 2, label: '2. Revue collégiale Paroisse (Comité CPJP)', detail: 'Vérification par le comité CPJP (6 membres + Aumônier = 7 noms) et transmission au système CDJP.' },
-      { step: 3, label: '3. Validation méthodologique (CDJP MEL)', detail: 'Contrôle de complétude, désagrégation genre/âge/handicap, conformité DNH/CNV et pièces justificatives.' },
-      { step: 4, label: '4. Vérification opérationnelle (Coordinateur CDJP)', detail: 'Vérification indépendante de la cohérence avec le plan annuel/trimestriel/mensuel/hebdomadaire.' },
-      { step: 5, label: '5. Approbation finale (Directeur CDJP)', detail: 'Approbation finale indépendante. Seules les données approuvées alimentent les rapports R01–R13 et le tableau de bord PS.' },
+      {
+        step: 1,
+        labels: { en: '1. Field Collection (CEB & Centrale CCJP)', fr: '1. Collecte terrain (CEB & Centrale CCJP)' },
+        details: { en: 'Field teams record activity data or paper register details (origin_ceb, manual_source_ref, manual_source_date) with pair sign-off (2 names).', fr: 'Saisie ou fiche manuelle avec référence (origin_ceb, manual_source_ref, manual_source_date) en binôme (2 noms).' },
+      },
+      {
+        step: 2,
+        labels: { en: '2. Parish Committee Review (CPJP)', fr: '2. Revue collégiale Paroisse (Comité CPJP)' },
+        details: { en: 'The CPJP committee (6 members and parish chaplain, 7 names total) verifies entries before submitting to CDJP.', fr: 'Vérification par le comité CPJP (6 membres + Aumônier = 7 noms) et transmission au système CDJP.' },
+      },
+      {
+        step: 3,
+        labels: { en: '3. MEL Methodological Validation', fr: '3. Validation méthodologique (CDJP MEL)' },
+        details: { en: 'MEL staff check completeness, gender/age/disability breakdowns, Do No Harm compliance, and supporting evidence.', fr: 'Contrôle de complétude, désagrégation genre/âge/handicap, conformité DNH/CNV et pièces justificatives.' },
+      },
+      {
+        step: 4,
+        labels: { en: '4. Operations Coordinator Check', fr: '4. Vérification opérationnelle (Coordinateur CDJP)' },
+        details: { en: 'The Coordinator checks alignment with approved annual, quarterly, monthly, and weekly plans.', fr: 'Vérification indépendante de la cohérence avec les plans annuels, trimestriels, mensuels et hebdomadaires.' },
+      },
+      {
+        step: 5,
+        labels: { en: '5. Final Approval (CDJP Director)', fr: '5. Approbation finale (Directeur CDJP)' },
+        details: { en: 'The Director issues final sign-off. Only approved records populate reports R01-R13 and the Strategic Plan dashboard.', fr: 'Approbation finale indépendante. Seules les données approuvées alimentent les rapports R01-R13 et le tableau de bord PS.' },
+      },
     ];
 
     return h('div', { className: 'v1-workspace-fade' },
@@ -4509,7 +4691,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Architecture Institutionnelle'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('Governance Structure', 'Architecture Institutionnelle')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_data_structure'))
         ),
@@ -4517,25 +4699,28 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_data_structure')),
             h('p', { className: 'v1-page-subtitle' },
-              `Architecture à 27 Paroisses (CPJP), 101 Centrales (CCJP), plus de 540 CEB et circuit à 5 étapes de validation.`
+              tr(
+                '27 Parishes (CPJP), 101 Centrales (CCJP), over 540 Basic Ecclesial Communities (CEB), and a 5-stage approval workflow.',
+                'Architecture à 27 Paroisses (CPJP), 101 Centrales (CCJP), plus de 540 CEB et circuit à 5 étapes de validation.'
+              )
             )
           )
         )
       ),
 
       /* Rules of Governance Banner */
-      h('div', { className: 'v1-panel', style: { padding: '16px 20px', marginBottom: '24px', background: 'var(--bg-canvas)', borderRadius: '12px' } },
-        h('strong', { style: { fontSize: '0.9375rem', display: 'block', marginBottom: '6px' } }, 'Règles de gouvernance & Lignes institutionnelles :'),
-        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
-          h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Trait plein (solid line) = Hiérarchie d’autorité : '), 'Responsabilité de ligne directe avec autorité d’approbation et de signature légale.'),
-          h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Pointillés (dashed line) = Collaboration technique : '), 'Appui méthodologique et partenarial ; ne confère pas de droit d’approbation institutionnelle.'),
-          h('div', {}, '— ', h('strong', { style: { color: 'var(--text-primary)' } }, 'Collecte manuelle décentralisée : '), 'CEB → Centrale si nécessaire → Paroisse CPJP : collecte sur papier/registre. La CPJP saisit ensuite numériquement dans APSE.')
+      h('div', { className: 'v1-panel', style: { padding: '16px 20px', marginBottom: '24px', background: 'var(--bg-canvas)', borderRadius: 'var(--radius-sm)' } },
+        h('strong', { style: { fontSize: '0.9375rem', display: 'block', marginBottom: '8px' } }, tr('Governance & Reporting Rules:', 'Règles de gouvernance & Lignes institutionnelles :')),
+        h('div', { style: { display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.8125rem', color: 'var(--text-secondary)' } },
+          h('div', {}, h('strong', { style: { color: 'var(--text-primary)' } }, tr('Solid line (Authority): ', 'Trait plein (Autorité) : ')), tr('Direct reporting line with formal approval and sign-off power.', 'Responsabilité hiérarchique directe avec autorité d’approbation et de signature.')),
+          h('div', {}, h('strong', { style: { color: 'var(--text-primary)' } }, tr('Dashed line (Technical collaboration): ', 'Pointillés (Collaboration technique) : ')), tr('Technical guidance and partner coordination without institutional sign-off authority.', 'Appui méthodologique et partenarial sans droit d’approbation institutionnelle.')),
+          h('div', {}, h('strong', { style: { color: 'var(--text-primary)' } }, tr('Field-to-parish collection: ', 'Collecte manuelle décentralisée : ')), tr('CEB communities and CCJP centrales collect paper registers first, then parish CPJP teams enter records into APSE.', 'Les CEB et Centrales CCJP tiennent les registres papier, puis le comité paroissial CPJP saisit les données dans APSE.'))
         )
       ),
 
       /* 5 Data Flow Steps */
       h('div', { className: 'v1-panel', style: { padding: '24px', marginBottom: '24px' } },
-        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, 'Circuit officiel de remontée et de validation des données'),
+        h('h2', { style: { fontSize: '1.125rem', fontWeight: '600', marginBottom: '16px' } }, tr('Official Data Submission & Approval Workflow', 'Circuit officiel de remontée et de validation des données')),
         h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
           flowSteps.map((s, idx) =>
             h('div', {
@@ -4547,14 +4732,14 @@
                 gap: '8px',
                 padding: '16px 20px',
                 background: 'var(--bg-canvas)',
-                borderRadius: '12px',
+                borderRadius: 'var(--radius-sm)',
               }
             },
               h('div', { style: { display: 'flex', alignItems: 'center', gap: '8px' } },
-                h('span', { className: 'v1-badge', style: { background: 'var(--color-primary-bg)', color: 'var(--color-primary)', fontWeight: '700', padding: '4px 10px', fontSize: '0.75rem' } }, `Étape ${s.step || idx + 1}`)
+                h('span', { className: 'v1-badge', style: { background: 'var(--tag-info-bg)', color: 'var(--tag-info-text)', fontWeight: '600', padding: '4px 10px', fontSize: '0.75rem' } }, `${tr('Stage', 'Étape')} ${s.step || idx + 1}`)
               ),
-              h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)', display: 'block' } }, s.label),
-              h('p', { style: { color: 'var(--text-secondary)', fontSize: '0.8125rem', lineHeight: '1.45', margin: 0 } }, s.detail)
+              h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)', display: 'block' } }, (s.labels ? localize(s.labels) : null) || s.label),
+              h('p', { style: { color: 'var(--text-secondary)', fontSize: '0.8125rem', lineHeight: '1.45', margin: 0 } }, (s.details ? localize(s.details) : null) || s.detail)
             )
           )
         )
@@ -4563,7 +4748,7 @@
   }
 
   /* --------------------------------------------------------------------------
-     19. TIMESHEETS (Feuilles de temps F31 / F32)
+     19. TIMESHEETS (F31 / F32)
      -------------------------------------------------------------------------- */
   function renderTimesheetsWorkspace() {
     const cacheKey = V091.timesheetIncludeDrafts ? 'drafts_1' : 'drafts_0';
@@ -4582,10 +4767,10 @@
     }
 
     const fallbackRows = [
-      { date: '2026-10-21', form: 'F31', agent: 'Théophile Habimana', axis: 'A1 / PRJ-ISANAMITIMA', title: 'Vérification qualité CPJP Butare & formation parajuristes', hours: '08.0', state: 'APPROVED' },
-      { date: '2026-10-22', form: 'F31', agent: 'Emmanuel Nsabimana', axis: 'A2 / OPERATIONAL', title: 'Supervision commission diocésaine et revue F04', hours: '07.5', state: 'APPROVED' },
-      { date: '2026-10-23', form: 'F31', agent: 'Marceline Mukandayisenga', axis: 'A5 / OPERATIONAL', title: 'Rapprochement comptable F19 et clôture Q1', hours: '08.0', state: 'APPROVED' },
-      { date: '2026-10-25', form: 'F32', agent: 'Emmanuel Uwimana', axis: 'A5 / OPERATIONAL', title: 'Congé annuel récupérateur missions terrain', hours: '16.0', state: 'APPROVED' },
+      { date: '2026-10-21', form: 'F31', agent: tr('Theophile Habimana', 'Théophile Habimana'), axis: 'A1 / PRJ-ISANAMITIMA', title: tr('Quality review for CPJP Butare and paralegal training', 'Vérification qualité CPJP Butare & formation parajuristes'), hours: '08.0', state: 'APPROVED' },
+      { date: '2026-10-22', form: 'F31', agent: 'Emmanuel Nsabimana', axis: 'A2 / OPERATIONAL', title: tr('Diocesan commission supervision and F04 review', 'Supervision commission diocésaine et revue F04'), hours: '07.5', state: 'APPROVED' },
+      { date: '2026-10-23', form: 'F31', agent: 'Marceline Mukandayisenga', axis: 'A5 / OPERATIONAL', title: tr('F19 financial reconciliation and Q1 closing', 'Rapprochement comptable F19 et clôture Q1'), hours: '08.0', state: 'APPROVED' },
+      { date: '2026-10-25', form: 'F32', agent: 'Emmanuel Uwimana', axis: 'A5 / OPERATIONAL', title: tr('Compensatory leave for field missions', 'Congé annuel récupérateur missions terrain'), hours: '16.0', state: 'APPROVED' },
     ];
 
     const liveEntries = (V091.timesheetData?.entries || []).map(r => {
@@ -4594,14 +4779,14 @@
       const rawOwner = String(v.owner || r.author || '');
       const cleanAgent = (V1.data?.user?.id === rawOwner && V1.data?.user?.name)
         ? V1.data.user.name
-        : (rawOwner.includes(':') ? rawOwner.split(':').pop() : (rawOwner || V1.data?.user?.name || 'Agent CDJP'));
+        : (rawOwner.includes(':') ? rawOwner.split(':').pop() : (rawOwner || V1.data?.user?.name || tr('CDJP Staff', 'Agent CDJP')));
       return {
         id: r.id,
         date: r.event_date || '2026-10-25',
         form: r.form || 'F31',
         agent: cleanAgent,
         axis: `${v.axis || 'A1'} / ${v.project || v.work_type || 'OPERATIONAL'}`,
-        title: v.title || v.activity || v.reason || 'Activité enregistrée',
+        title: v.title || v.activity || v.reason || tr('Recorded activity', 'Activité enregistrée'),
         hours: Number.isFinite(hNum) ? hNum.toFixed(1).padStart(4, '0') : '08.0',
         state: r.state || 'DRAFT',
       };
@@ -4615,7 +4800,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Administration RH'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('HR Administration', 'Administration RH')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_timesheets'))
         ),
@@ -4623,7 +4808,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_timesheets')),
             h('p', { className: 'v1-page-subtitle' },
-              'Feuilles de temps F31 (heures d’activité, max 24h/jour) et F32 (congés). Export XLSX avec format numérique 00.0, Word, CSV et PDF.'
+              tr(
+                'Log F31 activity hours (up to 24 hours per day) and F32 leave requests, with Excel (00.0 format), Word, CSV, and PDF exports.',
+                'Feuilles de temps F31 (heures d’activité, max 24h/jour) et F32 (congés). Export XLSX avec format numérique 00.0, Word, CSV et PDF.'
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
@@ -4640,26 +4828,26 @@
                   title: '',
                 };
                 V091.showModal({
-                  title: 'Enregistrer mes heures (F31 / F32)',
-                  subtitle: 'Saisie des heures d’activité (F31, max 24h/jour) ou de congé (F32).',
+                  title: tr('Log Timesheet Entry (F31 / F32)', 'Enregistrer mes heures (F31 / F32)'),
+                  subtitle: tr('Record activity hours (F31, maximum 24h/day) or leave hours (F32).', 'Saisie des heures d’activité (F31, max 24h/jour) ou de congé (F32).'),
                   icon: 'more_time',
                   content: () => h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
                     h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' } },
                       h('div', { className: 'v1-field' },
-                        h('label', { className: 'v1-field-label' }, 'Type de feuille'),
+                        h('label', { className: 'v1-field-label' }, tr('Timesheet Type', 'Type de feuille')),
                         V091.renderFigmaDropdown({
                           id: 'ts-form',
                           value: draft.form,
                           width: '100%',
                           options: [
-                            { value: 'F31', label: 'F31 — Heures d’activité' },
-                            { value: 'F32', label: 'F32 — Congé / Absence' },
+                            { value: 'F31', label: tr('F31: Activity Hours', 'F31 : Heures d’activité') },
+                            { value: 'F32', label: tr('F32: Leave / Absence', 'F32 : Congé / Absence') },
                           ],
                           onChange: val => { draft.form = val; },
                         })
                       ),
                       h('div', { className: 'v1-field' },
-                        h('label', { className: 'v1-field-label' }, 'Date (Calendrier AP1–AP5)'),
+                        h('label', { className: 'v1-field-label' }, tr('Date (AP1-AP5 Calendar)', 'Date (Calendrier AP1-AP5)')),
                         h('input', {
                           type: 'date',
                           className: 'v1-input',
@@ -4668,7 +4856,7 @@
                         })
                       ),
                       h('div', { className: 'v1-field' },
-                        h('label', { className: 'v1-field-label' }, 'Heures (0.5 à 24.0 h)'),
+                        h('label', { className: 'v1-field-label' }, tr('Hours (0.5 to 24.0 h)', 'Heures (0.5 à 24.0 h)')),
                         h('input', {
                           type: 'number',
                           step: '0.5',
@@ -4680,35 +4868,35 @@
                         })
                       ),
                       h('div', { className: 'v1-field' },
-                        h('label', { className: 'v1-field-label' }, 'Axe stratégique'),
+                        h('label', { className: 'v1-field-label' }, tr('Strategic Axis', 'Axe stratégique')),
                         V091.renderFigmaDropdown({
                           id: 'ts-axis',
                           value: draft.axis,
                           width: '100%',
-                          options: ['A1', 'A2', 'A3', 'A4', 'A5'].map(ax => ({ value: ax, label: `Axe ${ax}` })),
+                          options: ['A1', 'A2', 'A3', 'A4', 'A5'].map(ax => ({ value: ax, label: `${tr('Axis', 'Axe')} ${ax}` })),
                           onChange: val => { draft.axis = val; },
                         })
                       )
                     ),
                     h('div', { className: 'v1-field' },
-                      h('label', { className: 'v1-field-label' }, 'Activité réalisée / Motif'),
+                      h('label', { className: 'v1-field-label' }, tr('Activity / Reason', 'Activité réalisée / Motif')),
                       h('input', {
                         type: 'text',
                         className: 'v1-input',
-                        placeholder: 'Ex. Supervision terrain et vérification des fiches CPJP...',
+                        placeholder: tr('For example, field supervision and CPJP record review...', 'Ex. Supervision terrain et vérification des fiches CPJP...'),
                         value: draft.title,
                         onInput: e => { draft.title = e.target.value; },
                       })
                     )
                   ),
                   actions: [
-                    { label: 'Annuler', type: 'secondary', onClick: () => V091.closeModal() },
+                    { label: tr('Cancel', 'Annuler'), type: 'secondary', onClick: () => V091.closeModal() },
                     {
-                      label: 'Enregistrer dans SQLite',
+                      label: tr('Save Timesheet', 'Enregistrer dans SQLite'),
                       type: 'primary',
                       onClick: () => {
                         if (!draft.title.trim()) {
-                          V091.showToast('Veuillez décrire l’activité réalisée.', 'error');
+                          V091.showToast(tr('Please describe the completed activity.', 'Veuillez décrire l’activité réalisée.'), 'error');
                           return;
                         }
                         apiV1('/timesheets', 'POST', {
@@ -4728,9 +4916,9 @@
                             V091.timesheetData = null;
                           }
                           V091.closeModal();
-                          V091.showToast('✓ Feuille de temps enregistrée avec succès.', 'info');
+                          V091.showToast(tr('Timesheet entry saved.', 'Feuille de temps enregistrée avec succès.'), 'info');
                           renderApp();
-                        }).catch(err => V091.showToast('Erreur : ' + err.message, 'error'));
+                        }).catch(err => V091.showToast(tr('Error: ', 'Erreur : ') + err.message, 'error'));
                       }
                     }
                   ]
@@ -4738,7 +4926,7 @@
               },
             },
               msIcon('add', 18),
-              h('span', {}, 'Enregistrer mes heures (F31/F32)')
+              h('span', {}, tr('Log Hours (F31/F32)', 'Enregistrer mes heures (F31/F32)'))
             ),
             h('button', {
               type: 'button',
@@ -4748,7 +4936,7 @@
               },
             },
               msIcon('download', 18),
-              h('span', {}, 'Export Excel (.xlsx 00.0)')
+              h('span', {}, tr('Export Excel (.xlsx)', 'Export Excel (.xlsx 00.0)'))
             )
           )
         )
@@ -4756,19 +4944,19 @@
 
       summary ? h('div', { className: 'v1-kpi-grid', style: { marginBottom: '20px' } },
         h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
-          h('span', { className: 'v1-kpi-label' }, 'Total Heures F31'),
+          h('span', { className: 'v1-kpi-label' }, tr('Total F31 Hours', 'Total Heures F31')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, `${Number(summary.total_hours || 0).toFixed(1)} h`),
-          h('span', { className: 'v1-kpi-sub' }, `${summary.count || displayRows.length} entrées`)
+          h('span', { className: 'v1-kpi-sub' }, `${summary.count || displayRows.length} ${tr('entries', 'entrées')}`)
         ),
         h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
-          h('span', { className: 'v1-kpi-label' }, 'Heures Approuvées'),
+          h('span', { className: 'v1-kpi-label' }, tr('Approved Hours', 'Heures Approuvées')),
           h('span', { className: 'v1-kpi-val v1-tabular', style: { color: 'var(--color-success)' } }, `${Number(summary.approved_hours || 0).toFixed(1)} h`),
-          h('span', { className: 'v1-kpi-sub' }, `Brouillons : ${Number(summary.draft_hours || 0).toFixed(1)} h`)
+          h('span', { className: 'v1-kpi-sub' }, `${tr('Drafts:', 'Brouillons :')} ${Number(summary.draft_hours || 0).toFixed(1)} h`)
         ),
         h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
-          h('span', { className: 'v1-kpi-label' }, 'Congés & Absences (F32)'),
+          h('span', { className: 'v1-kpi-label' }, tr('Leave & Absence (F32)', 'Congés & Absences (F32)')),
           h('span', { className: 'v1-kpi-val v1-tabular' }, `${Number(summary.leave_hours || 0).toFixed(1)} h`),
-          h('span', { className: 'v1-kpi-sub' }, `Max journalier : ${Number(summary.max_daily_hours || 8).toFixed(1)} h / 24.0 h`)
+          h('span', { className: 'v1-kpi-sub' }, `${tr('Daily max:', 'Max journalier :')} ${Number(summary.max_daily_hours || 8).toFixed(1)} / 24.0 h`)
         )
       ) : null,
 
@@ -4784,7 +4972,7 @@
               renderApp();
             },
           }),
-          h('span', {}, 'Inclure les brouillons en cours (Par défaut : approuvés uniquement)')
+          h('span', {}, tr('Include open drafts (default shows approved entries only)', 'Inclure les brouillons en cours (Par défaut : approuvés uniquement)'))
         )
       ),
 
@@ -4793,13 +4981,13 @@
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Date'),
-              h('th', {}, 'Formulaire'),
-              h('th', {}, 'Agent'),
-              h('th', {}, 'Axe / Projet'),
-              h('th', {}, 'Activité réalisée'),
-              h('th', {}, 'Heures'),
-              h('th', {}, 'Statut')
+              h('th', {}, tr('Date', 'Date')),
+              h('th', {}, tr('Form', 'Formulaire')),
+              h('th', {}, tr('Staff Member', 'Agent')),
+              h('th', {}, tr('Axis / Project', 'Axe / Projet')),
+              h('th', {}, tr('Activity', 'Activité réalisée')),
+              h('th', {}, tr('Hours', 'Heures')),
+              h('th', {}, tr('Status', 'Statut'))
             )
           ),
           h('tbody', {},
@@ -4826,19 +5014,19 @@
   }
 
   /* --------------------------------------------------------------------------
-     20. MEL ADMINISTRATION (Administration MEL — Audit, Holds >=365d, Accounts)
+     20. MEL ADMINISTRATION (Audit, Retention, Local Accounts)
      -------------------------------------------------------------------------- */
   function openMelCreateAccountModal(existingAccount = null) {
     const parishes = V1.data?.parishes || [];
     const roleOptions = [
-      { code: 'APSE_MEL', label: 'APSE_MEL — Chargé MEL & Administration' },
-      { code: 'APSE_DIRECTION', label: 'APSE_DIRECTION — Directeur Diocésain CDJP' },
-      { code: 'APSE_COORDINATION', label: 'APSE_COORDINATION — Coordinateur Opérationnel' },
-      { code: 'APSE_FINANCE', label: 'APSE_FINANCE — Comptable / Finance & RH' },
-      { code: 'APSE_STAFF', label: 'APSE_STAFF — Personnel Technique Diocésain' },
-      { code: 'APSE_CPJP', label: 'APSE_CPJP — Comité Paroissial Justice & Paix' },
-      { code: 'APSE_PARISH_REPORTER', label: 'APSE_PARISH_REPORTER — Rapporteur Paroissial' },
-      { code: 'APSE_CCJP', label: 'APSE_CCJP — Collecteur Centrale / CEB' },
+      { code: 'APSE_MEL', label: tr('APSE_MEL: MEL & Admin Officer', 'APSE_MEL : Chargé MEL & Administration') },
+      { code: 'APSE_DIRECTION', label: tr('APSE_DIRECTION: CDJP Diocesan Director', 'APSE_DIRECTION : Directeur Diocésain CDJP') },
+      { code: 'APSE_COORDINATION', label: tr('APSE_COORDINATION: Operations Coordinator', 'APSE_COORDINATION : Coordinateur Opérationnel') },
+      { code: 'APSE_FINANCE', label: tr('APSE_FINANCE: Accountant / Finance & HR', 'APSE_FINANCE : Comptable / Finance & RH') },
+      { code: 'APSE_STAFF', label: tr('APSE_STAFF: Diocesan Technical Staff', 'APSE_STAFF : Personnel Technique Diocésain') },
+      { code: 'APSE_CPJP', label: tr('APSE_CPJP: CPJP Parish Committee', 'APSE_CPJP : Comité Paroissial Justice & Paix') },
+      { code: 'APSE_PARISH_REPORTER', label: tr('APSE_PARISH_REPORTER: Parish Reporter', 'APSE_PARISH_REPORTER : Rapporteur Paroissial') },
+      { code: 'APSE_CCJP', label: tr('APSE_CCJP: Centrale / CEB Collector', 'APSE_CCJP : Collecteur Centrale / CEB') },
     ];
     const formState = {
       username: existingAccount ? existingAccount.username : '',
@@ -4856,11 +5044,11 @@
       const pcode = isParish ? (formState.parish_code || 'PAR-01') : null;
 
       if (!uname || uname.length < 3) {
-        V091.showToast('L’identifiant doit comporter entre 3 et 60 caractères (lettres, chiffres, ., _, -).', 'error');
+        V091.showToast(tr('Username must be 3 to 60 characters (letters, digits, ., _, -).', 'L’identifiant doit comporter entre 3 et 60 caractères (lettres, chiffres, ., _, -).'), 'error');
         return;
       }
       if (!pass || pass.length < 6) {
-        V091.showToast('Le mot de passe doit comporter au moins 6 caractères.', 'error');
+        V091.showToast(tr('Password must be at least 6 characters.', 'Le mot de passe doit comporter au moins 6 caractères.'), 'error');
         return;
       }
       try {
@@ -4890,41 +5078,41 @@
         V091.closeModal();
         V091.showToast(
           signInAfter
-            ? `✓ Compte [${uname}] créé et connecté !`
-            : `✓ Compte local [${uname}] enregistré avec succès.`,
+            ? tr(`Account [${uname}] created and signed in.`, `Compte [${uname}] créé et connecté !`)
+            : tr(`Local account [${uname}] saved.`, `Compte local [${uname}] enregistré avec succès.`),
           'info'
         );
         renderApp();
       } catch (err) {
-        V091.showToast('Erreur : ' + err.message, 'error');
+        V091.showToast(tr('Error: ', 'Erreur : ') + err.message, 'error');
       }
     };
 
     V091.showModal({
-      title: existingAccount ? `Modifier / Réinitialiser [${existingAccount.username}]` : 'Créer un compte utilisateur local',
-      subtitle: 'Création et gestion des identifiants locaux chiffrés (PBKDF2-HMAC-SHA256) avec rôle et périmètre paroissial.',
+      title: existingAccount ? tr(`Edit Account [${existingAccount.username}]`, `Modifier / Réinitialiser [${existingAccount.username}]`) : tr('New Local User Account', 'Créer un compte utilisateur local'),
+      subtitle: tr('Create and manage encrypted local accounts (PBKDF2-HMAC-SHA256) with role and parish scope.', 'Création et gestion des identifiants locaux chiffrés (PBKDF2-HMAC-SHA256) avec rôle et périmètre paroissial.'),
       icon: 'person_add',
       content: () => {
         const isParishRole = ['APSE_CPJP', 'APSE_PARISH_REPORTER', 'APSE_CCJP'].includes(formState.role);
         return h('div', { style: { display: 'flex', flexDirection: 'column', gap: '12px' } },
           h('div', { style: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' } },
             h('div', { className: 'v1-field' },
-              h('label', { className: 'v1-field-label' }, 'Identifiant (3–60 caractères)'),
+              h('label', { className: 'v1-field-label' }, tr('Username (3-60 characters)', 'Identifiant (3-60 caractères)')),
               h('input', {
                 id: 'mel-acc-username',
                 className: 'v1-input',
-                placeholder: 'ex: save_reporter_01',
+                placeholder: tr('e.g. save_reporter_01', 'ex: save_reporter_01'),
                 disabled: Boolean(existingAccount),
                 value: formState.username,
                 onInput: e => { formState.username = e.target.value; },
               })
             ),
             h('div', { className: 'v1-field' },
-              h('label', { className: 'v1-field-label' }, 'Nom complet / Intitulé'),
+              h('label', { className: 'v1-field-label' }, tr('Full Name / Label', 'Nom complet / Intitulé')),
               h('input', {
                 id: 'mel-acc-fullname',
                 className: 'v1-input',
-                placeholder: 'ex: Jean Bosco (CPJP Save)',
+                placeholder: tr('e.g. Jean Bosco (CPJP Save)', 'ex: Jean Bosco (CPJP Save)'),
                 value: formState.full_name,
                 onInput: e => { formState.full_name = e.target.value; },
               })
@@ -4932,7 +5120,7 @@
           ),
           h('div', { className: 'v1-field' },
             h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
-              h('label', { className: 'v1-field-label' }, 'Mot de passe (6 caractères minimum, 12+ recommandé)'),
+              h('label', { className: 'v1-field-label' }, tr('Password (min 6 characters, 12+ recommended)', 'Mot de passe (6 caractères minimum, 12+ recommandé)')),
               h('button', {
                 type: 'button',
                 className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -4943,20 +5131,20 @@
                   if (el) el.value = formState.password;
                   renderApp();
                 },
-              }, 'Utiliser mot de passe standard (apse2026_butare)')
+              }, tr('Use standard password (apse2026_butare)', 'Utiliser mot de passe standard (apse2026_butare)'))
             ),
             h('input', {
               id: 'mel-acc-password',
               className: 'v1-input',
               type: 'password',
-              placeholder: 'Saisir le mot de passe...',
+              placeholder: tr('Enter password...', 'Saisir le mot de passe...'),
               value: formState.password,
               onInput: e => { formState.password = e.target.value; },
             })
           ),
           h('div', { style: { display: 'grid', gridTemplateColumns: isParishRole ? '1fr 1fr' : '1fr', gap: '12px' } },
             h('div', { className: 'v1-field' },
-              h('label', { className: 'v1-field-label' }, 'Rôle institutionnel RBAC'),
+              h('label', { className: 'v1-field-label' }, tr('Institutional Role (RBAC)', 'Rôle institutionnel RBAC')),
               V091.renderFigmaDropdown({
                 id: 'mel-acc-role',
                 value: formState.role,
@@ -4973,13 +5161,13 @@
               })
             ),
             isParishRole ? h('div', { className: 'v1-field' },
-              h('label', { className: 'v1-field-label' }, 'Paroisse assignée (CPJP)'),
+              h('label', { className: 'v1-field-label' }, tr('Assigned Parish (CPJP)', 'Paroisse assignée (CPJP)')),
               V091.renderFigmaDropdown({
                 id: 'mel-acc-parish',
                 value: formState.parish_code || 'PAR-03',
                 width: '100%',
-                options: (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale' }, { code: 'PAR-24', name: 'Kibeho' }])
-                  .map(p => ({ value: p.code, label: `${p.code} — ${p.name}` })),
+                options: (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathedrale' }, { code: 'PAR-24', name: 'Kibeho' }])
+                  .map(p => ({ value: p.code, label: `${p.code}: ${p.name}` })),
                 onChange: val => { formState.parish_code = val; },
               })
             ) : null
@@ -4987,9 +5175,9 @@
         );
       },
       actions: [
-        { label: 'Annuler', type: 'secondary', onClick: () => V091.closeModal() },
-        { label: existingAccount ? 'Enregistrer' : 'Créer le compte', type: 'secondary', onClick: () => submitCreate(false) },
-        { label: existingAccount ? 'Enregistrer & Se connecter' : 'Créer & Se connecter', type: 'primary', onClick: () => submitCreate(true) },
+        { label: tr('Cancel', 'Annuler'), type: 'secondary', onClick: () => V091.closeModal() },
+        { label: existingAccount ? tr('Save', 'Enregistrer') : tr('Create Account', 'Créer le compte'), type: 'secondary', onClick: () => submitCreate(false) },
+        { label: existingAccount ? tr('Save & Sign In', 'Enregistrer & Se connecter') : tr('Create & Sign In', 'Créer & Se connecter'), type: 'primary', onClick: () => submitCreate(true) },
       ],
     });
   }
@@ -5046,7 +5234,7 @@
         h('nav', { className: 'v1-breadcrumbs', 'aria-label': 'Breadcrumb' },
           h('span', { className: 'v1-breadcrumb-item' }, 'CDJP Butare'),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
-          h('span', { className: 'v1-breadcrumb-item' }, 'Administration du système'),
+          h('span', { className: 'v1-breadcrumb-item' }, tr('System Administration', 'Administration du système')),
           h('span', { className: 'v1-breadcrumb-sep' }, '/'),
           h('span', { className: 'v1-breadcrumb-current' }, L('nav_mel_admin'))
         ),
@@ -5054,7 +5242,10 @@
           h('div', {},
             h('h1', { className: 'v1-page-title' }, L('nav_mel_admin')),
             h('p', { className: 'v1-page-subtitle' },
-              'Console d’administration MEL : audit append-only HMAC-SHA256, conservation légale (>= 365j), corbeille (>= 90j) et gestion des comptes locaux.'
+              tr(
+                'Manage local user accounts, inspect the HMAC-SHA256 audit log, and review legal retention rules (365+ days hold, 90+ days trash).',
+                'Console d’administration MEL : audit append-only HMAC-SHA256, conservation légale (365+ jours), corbeille (90+ jours) et gestion des comptes locaux.'
+              )
             )
           ),
           h('div', { className: 'v1-header-actions' },
@@ -5067,7 +5258,7 @@
               },
             },
               msIcon('sync', 18),
-              h('span', {}, 'Rafraîchir')
+              h('span', {}, tr('Refresh', 'Rafraîchir'))
             ),
             h('button', {
               type: 'button',
@@ -5075,7 +5266,7 @@
               onClick: () => openMelCreateAccountModal(null),
             },
               msIcon('add', 18),
-              h('span', {}, 'Créer un compte local')
+              h('span', {}, tr('Create Local Account', 'Créer un compte local'))
             )
           )
         )
@@ -5084,37 +5275,37 @@
       /* 3 Metric cards */
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
-          h('span', { className: 'v1-kpi-label' }, 'Intégrité de la chaîne d’audit'),
-          h('span', { className: 'v1-kpi-val', style: { color: 'var(--color-success)' } }, '✓ VÉRIFIÉE'),
-          h('span', { className: 'v1-kpi-sub' }, `Chaîne HMAC append-only (${auditLogs.length} événements récents)`)
+          h('span', { className: 'v1-kpi-label' }, tr('Audit Chain Integrity', 'Intégrité de la chaîne d’audit')),
+          h('span', { className: 'v1-kpi-val', style: { color: 'var(--color-success)' } }, tr('VERIFIED', 'VÉRIFIÉE')),
+          h('span', { className: 'v1-kpi-sub' }, `${tr('Append-only HMAC chain', 'Chaîne HMAC append-only')} (${auditLogs.length} ${tr('recent events', 'événements récents')})`)
         ),
         h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
-          h('span', { className: 'v1-kpi-label' }, 'Comptes locaux enregistrés'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, `${activeAccountsCount} actifs`),
-          h('span', { className: 'v1-kpi-sub' }, `Compte actif : ${V1.data?.user?.name || currentActiveKey}`)
+          h('span', { className: 'v1-kpi-label' }, tr('Registered Local Accounts', 'Comptes locaux enregistrés')),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, `${activeAccountsCount} ${tr('active', 'actifs')}`),
+          h('span', { className: 'v1-kpi-sub' }, `${tr('Active account:', 'Compte actif :')} ${V1.data?.user?.name || currentActiveKey}`)
         ),
         h('div', { className: 'v1-kpi-card', style: { display: 'flex', flexDirection: 'column', gap: '4px' } },
-          h('span', { className: 'v1-kpi-label' }, 'Conservation & Corbeille'),
-          h('span', { className: 'v1-kpi-val v1-tabular' }, '≥ 365j / ≥ 90j'),
-          h('span', { className: 'v1-kpi-sub' }, 'Aucune purge automatique · Restauration MEL')
+          h('span', { className: 'v1-kpi-label' }, tr('Retention & Trash Policy', 'Conservation & Corbeille')),
+          h('span', { className: 'v1-kpi-val v1-tabular' }, tr('365+ d / 90+ d', '365+ j / 90+ j')),
+          h('span', { className: 'v1-kpi-sub' }, tr('No automatic purge. MEL can restore items.', 'Aucune purge automatique. Restauration MEL possible.'))
         )
       ),
 
       /* Local Accounts Management Table */
       h('div', { className: 'v1-panel', style: { marginBottom: '24px' } },
         h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, `Comptes utilisateurs locaux (${localAccounts.length})`),
-          h('span', { className: 'v1-badge' }, 'PBKDF2-HMAC-SHA256 · accounts.enc')
+          h('span', { className: 'v1-chart-title' }, `${tr('Local User Accounts', 'Comptes utilisateurs locaux')} (${localAccounts.length})`),
+          h('span', { className: 'v1-badge' }, 'PBKDF2-HMAC-SHA256 (accounts.enc)')
         ),
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Identifiant'),
-              h('th', {}, 'Nom complet'),
-              h('th', {}, 'Rôles RBAC'),
-              h('th', {}, 'Périmètre / Paroisse'),
-              h('th', {}, 'Statut'),
-              h('th', {}, 'Actions de gestion')
+              h('th', {}, tr('Username', 'Identifiant')),
+              h('th', {}, tr('Full Name', 'Nom complet')),
+              h('th', {}, tr('RBAC Roles', 'Rôles RBAC')),
+              h('th', {}, tr('Scope / Parish', 'Périmètre / Paroisse')),
+              h('th', {}, tr('Status', 'Statut')),
+              h('th', {}, tr('Actions', 'Actions de gestion'))
             )
           ),
           h('tbody', {},
@@ -5124,14 +5315,14 @@
                 h('td', {}, h('strong', { style: { fontFamily: 'var(--font-mono)', fontSize: '0.8125rem' } }, acc.username)),
                 h('td', {}, acc.full_name || acc.username),
                 h('td', {}, (acc.roles || []).map(r => h('span', { key: r, className: 'v1-badge', style: { marginRight: '4px' } }, r))),
-                h('td', {}, acc.parish_code ? `Paroisse ${acc.parish_code}` : 'Diocèse (27 Paroisses)'),
+                h('td', {}, acc.parish_code ? `${tr('Parish', 'Paroisse')} ${acc.parish_code}` : tr('Diocese (27 Parishes)', 'Diocèse (27 Paroisses)')),
                 h('td', {},
                   h('span', {
                     className: 'v1-badge',
                     style: acc.active
-                      ? { background: 'var(--color-success-bg)', color: 'var(--color-success)' }
-                      : { background: 'var(--color-danger-bg)', color: 'var(--color-danger)' },
-                  }, isCurrent ? 'CONNECTÉ' : (acc.active ? 'ACTIF' : 'DÉSACTIVÉ'))
+                      ? { background: 'var(--tag-success-bg)', color: 'var(--tag-success-text)' }
+                      : { background: 'var(--tag-danger-bg)', color: 'var(--tag-danger-text)' },
+                  }, isCurrent ? tr('ACTIVE SESSION', 'CONNECTÉ') : (acc.active ? tr('ACTIVE', 'ACTIF') : tr('DISABLED', 'DÉSACTIVÉ')))
                 ),
                 h('td', {},
                   h('div', { style: { display: 'flex', gap: '6px', flexWrap: 'wrap' } },
@@ -5143,18 +5334,18 @@
                           await apiV1('/v1/persona', 'POST', { persona_key: acc.username });
                           if (window.resetAccountScopedState) window.resetAccountScopedState();
                           await loadBootstrap();
-                          V091.showToast(`✓ Connecté sur le compte [${acc.username}].`, 'info');
+                          V091.showToast(tr(`Signed in as [${acc.username}].`, `Connecté sur le compte [${acc.username}].`), 'info');
                           renderApp();
                         } catch (err) {
-                          V091.showToast('Erreur : ' + err.message, 'error');
+                          V091.showToast(tr('Error: ', 'Erreur : ') + err.message, 'error');
                         }
                       },
-                    }, 'Activer session') : null,
+                    }, tr('Activate Session', 'Activer session')) : null,
                     h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-sm v1-btn-secondary',
                       onClick: () => openMelCreateAccountModal(acc),
-                    }, 'Modifier / MDP'),
+                    }, tr('Edit / Password', 'Modifier / MDP')),
                     h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-sm v1-btn-secondary',
@@ -5166,13 +5357,13 @@
                           });
                           V091.melAdminData = null;
                           await loadBootstrap();
-                          V091.showToast(`✓ Statut du compte [${acc.username}] mis à jour.`, 'info');
+                          V091.showToast(tr(`Updated account [${acc.username}].`, `Statut du compte [${acc.username}] mis à jour.`), 'info');
                           renderApp();
                         } catch (err) {
-                          V091.showToast('Erreur : ' + err.message, 'error');
+                          V091.showToast(tr('Error: ', 'Erreur : ') + err.message, 'error');
                         }
                       },
-                    }, acc.active ? 'Désactiver' : 'Réactiver'),
+                    }, acc.active ? tr('Disable', 'Désactiver') : tr('Enable', 'Réactiver')),
                     acc.username !== 'mel_diocese' ? h('button', {
                       type: 'button',
                       className: 'v1-btn v1-btn-sm v1-btn-ghost',
@@ -5185,13 +5376,13 @@
                           });
                           V091.melAdminData = null;
                           await loadBootstrap();
-                          V091.showToast(`✓ Compte [${acc.username}] supprimé.`, 'info');
+                          V091.showToast(tr(`Deleted account [${acc.username}].`, `Compte [${acc.username}] supprimé.`), 'info');
                           renderApp();
                         } catch (err) {
-                          V091.showToast('Erreur : ' + err.message, 'error');
+                          V091.showToast(tr('Error: ', 'Erreur : ') + err.message, 'error');
                         }
                       },
-                    }, 'Supprimer') : null
+                    }, tr('Delete', 'Supprimer')) : null
                   )
                 )
               );
@@ -5203,18 +5394,18 @@
       /* Audit log table */
       h('div', { className: 'v1-panel' },
         h('div', { className: 'v1-chart-header' },
-          h('span', { className: 'v1-chart-title' }, 'Journal d’audit des actions récentes'),
+          h('span', { className: 'v1-chart-title' }, tr('Recent Audit Log', 'Journal d’audit des actions récentes')),
           h('span', { className: 'v1-badge' }, 'HMAC-SHA256')
         ),
         h('table', { className: 'v1-data-table' },
           h('thead', {},
             h('tr', {},
-              h('th', {}, 'Seq'),
-              h('th', {}, 'Date / Heure'),
-              h('th', {}, 'Acteur'),
-              h('th', {}, 'Action'),
-              h('th', {}, 'Objet'),
-              h('th', {}, 'HMAC Digest')
+              h('th', {}, tr('Seq', 'Seq')),
+              h('th', {}, tr('Timestamp', 'Date / Heure')),
+              h('th', {}, tr('Actor', 'Acteur')),
+              h('th', {}, tr('Action', 'Action')),
+              h('th', {}, tr('Object', 'Objet')),
+              h('th', {}, tr('HMAC Digest', 'HMAC Digest'))
             )
           ),
           h('tbody', {},

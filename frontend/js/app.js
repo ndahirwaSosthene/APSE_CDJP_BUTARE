@@ -1,10 +1,10 @@
 'use strict';
 /* ==========================================================================
-   APSE v1.0 Unified Design System Frontend
-   - IBM Carbon Desktop Grid (16-col), Breadcrumbs, Forms & Data Viz
-   - Atlassian Typography (Inter + IBM Plex Mono tabular-nums), Lozenges & Light/Dark Themes
-   - Material Symbols Outlined Iconography (16px / 20px / 24px)
-   - Shopify Polaris Resource Cards & Cisco Momentum Slide-Up Bottom Sheets (< 768px)
+   APSE v2.0 Unified Architectural Design System Frontend
+   - Kargul Studio Architectural Bento Grid (16-col), Breadcrumbs, Forms & Data Viz
+   - Geist & Geist Mono ("salt" 1, tabular-nums), Capsule Lozenges & 4 Themes
+   - Precision 24x24 Geometric Vector Iconography (12px–48px)
+   - Responsive Mobile Drawer (< 1024px) & Slide-Up Bottom Sheets (< 768px)
    ========================================================================== */
 
 const V1 = {
@@ -60,211 +60,190 @@ const V1 = {
   addTaskMenuOpen: false,
 };
 
-/* Section 4: APSE Iconography System (24x24 viewBox)
-   - Supports rich multi-node SVGs (Hugeicons, Lucide, Remix Icon, Tabler)
-   - Preserves backward compatibility with Material Symbols single-path fallbacks
+/* Section 4: APSE v2 Precision Vector Iconography System (24x24 Grid)
+   - Uniform 1.5px geometric monoline stroke, sharp square caps & miter joins
+   - 100% vector coverage across all 19 modules, wizard volets, toolbars & states
 */
+const APSE_ICON_G = '<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="miter">';
+
 const APSE_ICON_SVGS = {
-  // 1. My Space / Tasks (Hugeicons TaskDaily01Icon)
-  tasks: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14.496 2h-5a1.5 1.5 0 0 0 0 3h5a1.5 1.5 0 0 0 0-3"/><path d="M15.996 3.5c1.554.047 2.48.22 3.121.862c.88.878.88 2.292.88 5.12V16c0 2.828 0 4.242-.88 5.121c-.878.879-2.293.879-5.12.879h-4c-2.83 0-4.244 0-5.122-.879S3.996 18.828 3.996 16V9.483c0-2.828 0-4.243.879-5.121c.641-.642 1.568-.815 3.121-.862"/><path d="m7.496 11l1 1l2-2.5M13.5 17h3m-3-6h3m-7.875 6H8.5m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g>',
-  task_alt: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14.496 2h-5a1.5 1.5 0 0 0 0 3h5a1.5 1.5 0 0 0 0-3"/><path d="M15.996 3.5c1.554.047 2.48.22 3.121.862c.88.878.88 2.292.88 5.12V16c0 2.828 0 4.242-.88 5.121c-.878.879-2.293.879-5.12.879h-4c-2.83 0-4.244 0-5.122-.879S3.996 18.828 3.996 16V9.483c0-2.828 0-4.243.879-5.121c.641-.642 1.568-.815 3.121-.862"/><path d="m7.496 11l1 1l2-2.5M13.5 17h3m-3-6h3m-7.875 6H8.5m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g>',
-  my_space: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14.496 2h-5a1.5 1.5 0 0 0 0 3h5a1.5 1.5 0 0 0 0-3"/><path d="M15.996 3.5c1.554.047 2.48.22 3.121.862c.88.878.88 2.292.88 5.12V16c0 2.828 0 4.242-.88 5.121c-.878.879-2.293.879-5.12.879h-4c-2.83 0-4.244 0-5.122-.879S3.996 18.828 3.996 16V9.483c0-2.828 0-4.243.879-5.121c.641-.642 1.568-.815 3.121-.862"/><path d="m7.496 11l1 1l2-2.5M13.5 17h3m-3-6h3m-7.875 6H8.5m.25 0a.25.25 0 1 1-.5 0a.25.25 0 0 1 .5 0"/></g>',
+  // 1. My Space / Tasks / Checklists
+  tasks: APSE_ICON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8 11.5 1.5 1.5 3-3"/><path d="M14 11.5h2.5"/><path d="M8 16h8.5"/></g>',
+  task_alt: APSE_ICON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8 11.5 1.5 1.5 3-3"/><path d="M14 11.5h2.5"/><path d="M8 16h8.5"/></g>',
+  my_space: APSE_ICON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8 11.5 1.5 1.5 3-3"/><path d="M14 11.5h2.5"/><path d="M8 16h8.5"/></g>',
+  assignment: APSE_ICON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8.5 13 2 2 4.5-4.5"/></g>',
+  iconsax_clipboard_tick: APSE_ICON_G + '<path d="M9 2.5h6v3H9z"/><path d="M9 4H5v17h14V4h-4"/><path d="m8.5 13 2 2 4.5-4.5"/></g>',
+  check_box: APSE_ICON_G + '<rect x="3.5" y="3.5" width="17" height="17"/><path d="m8 12.2 2.8 2.8 5.4-5.5"/></g>',
 
-  // 2. Seizure / Field Data Entry (Hugeicons TableImportIcon)
-  seizure: '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8M3 10h18M10 3v18m9 1v-6m3 3l-3-3l-3 3"/>',
-  edit_note: '<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v8M3 10h18M10 3v18m9 1v-6m3 3l-3-3l-3 3"/>',
+  // 2. Seizure / Field Data Entry
+  seizure: APSE_ICON_G + '<path d="M13 20H3V4h18v8.5"/><path d="M3 9h18"/><path d="M9 4v16"/><path d="M18.5 21v-6"/><path d="m16 17.5 2.5-2.5 2.5 2.5"/></g>',
+  edit_note: APSE_ICON_G + '<path d="M13 20H3V4h18v8.5"/><path d="M3 9h18"/><path d="M9 4v16"/><path d="M18.5 21v-6"/><path d="m16 17.5 2.5-2.5 2.5 2.5"/></g>',
 
-  // 3. Drafts in progress (Lucide notepad-text-dashed)
-  drafts: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4"/><path d="M12 2v4"/><path d="M16 2v4"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 12v2"/><path d="M20 18v2a2 2 0 0 1-2 2h-1"/><path d="M13 22h-2"/><path d="M7 22H6a2 2 0 0 1-2-2v-2"/><path d="M4 14v-2"/><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M8 10h6"/><path d="M8 14h8"/></g>',
-  pending_actions: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M8 2v4"/><path d="M12 2v4"/><path d="M16 2v4"/><path d="M16 4h2a2 2 0 0 1 2 2v2"/><path d="M20 12v2"/><path d="M20 18v2a2 2 0 0 1-2 2h-1"/><path d="M13 22h-2"/><path d="M7 22H6a2 2 0 0 1-2-2v-2"/><path d="M4 14v-2"/><path d="M4 8V6a2 2 0 0 1 2-2h2"/><path d="M8 10h6"/><path d="M8 14h8"/></g>',
+  // 3. Drafts in progress
+  drafts: APSE_ICON_G + '<path d="M5 7V3.5h3.5"/><path d="M12 3.5h3"/><path d="M19 7V3.5h-1"/><path d="M19 10.5v3"/><path d="M19 17v3.5h-3"/><path d="M12 20.5H9"/><path d="M5 17v3.5h1"/><path d="M5 10.5v3"/><path d="M8.5 9.5h7"/><path d="M8.5 13.5h7"/><path d="M8.5 17h4.5"/></g>',
+  pending_actions: APSE_ICON_G + '<path d="M5 7V3.5h3.5"/><path d="M12 3.5h3"/><path d="M19 7V3.5h-1"/><path d="M19 10.5v3"/><path d="M19 17v3.5h-3"/><path d="M12 20.5H9"/><path d="M5 17v3.5h1"/><path d="M5 10.5v3"/><path d="M8.5 9.5h7"/><path d="M8.5 13.5h7"/><path d="M8.5 17h4.5"/></g>',
 
-  // 4. Files & Validation / Approvals (Hugeicons FileLike)
-  approvals: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 9.995v4.545c0 3.247 0 4.87.886 5.97.27.334.6 1.01 1.258 1.488.586.425 1.341.425 2.852.425h6.008c1.511 0 2.266 0 2.852-.425.658-.478.988-1.154 1.258-1.488.886-1.1 886-2.723.886-5.97V9.996c0-3.248 0-4.871-.886-5.971-.27-.333-.6-1.01-1.258-1.488C18.174 2.11 17.419 2.11 15.908 2.11h-2.106c-.82 0-1.23 0-1.57.14-.34.14-.61.41-1.15.95l-.94.94c-.54.54-.81.81-1.15.95-.34.14-.75.14-1.57.14H8.092c-1.511 0-2.266 0-2.852.425-.658.478-.988 1.155-1.258 1.488C4 5.124 4 6.748 4 9.995z"/><path d="M10 12l1.5 1.5L15 10"/></g>',
-  rule_folder: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 9.995v4.545c0 3.247 0 4.87.886 5.97.27.334.6 1.01 1.258 1.488.586.425 1.341.425 2.852.425h6.008c1.511 0 2.266 0 2.852-.425.658-.478.988-1.154 1.258-1.488.886-1.1 886-2.723.886-5.97V9.996c0-3.248 0-4.871-.886-5.971-.27-.333-.6-1.01-1.258-1.488C18.174 2.11 17.419 2.11 15.908 2.11h-2.106c-.82 0-1.23 0-1.57.14-.34.14-.61.41-1.15.95l-.94.94c-.54.54-.81.81-1.15.95-.34.14-.75.14-1.57.14H8.092c-1.511 0-2.266 0-2.852.425-.658.478-.988 1.155-1.258 1.488C4 5.124 4 6.748 4 9.995z"/><path d="M10 12l1.5 1.5L15 10"/></g>',
-  files_validation: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 9.995v4.545c0 3.247 0 4.87.886 5.97.27.334.6 1.01 1.258 1.488.586.425 1.341.425 2.852.425h6.008c1.511 0 2.266 0 2.852-.425.658-.478.988-1.154 1.258-1.488.886-1.1 886-2.723.886-5.97V9.996c0-3.248 0-4.871-.886-5.971-.27-.333-.6-1.01-1.258-1.488C18.174 2.11 17.419 2.11 15.908 2.11h-2.106c-.82 0-1.23 0-1.57.14-.34.14-.61.41-1.15.95l-.94.94c-.54.54-.81.81-1.15.95-.34.14-.75.14-1.57.14H8.092c-1.511 0-2.266 0-2.852.425-.658.478-.988 1.155-1.258 1.488C4 5.124 4 6.748 4 9.995z"/><path d="M10 12l1.5 1.5L15 10"/></g>',
+  // 4. Files & Validation / Approvals (Clean sharp Carbon folder-check)
+  approvals: APSE_ICON_G + '<path d="M3 4.5h6.5l2 2H21v13H3z"/><path d="m9 13.2 2.2 2.2 4.3-4.4"/></g>',
+  rule_folder: APSE_ICON_G + '<path d="M3 4.5h6.5l2 2H21v13H3z"/><path d="m9 13.2 2.2 2.2 4.3-4.4"/></g>',
+  files_validation: APSE_ICON_G + '<path d="M3 4.5h6.5l2 2H21v13H3z"/><path d="m9 13.2 2.2 2.2 4.3-4.4"/></g>',
+  fact_check: APSE_ICON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M6.5 9h5"/><path d="M6.5 12.5h5"/><path d="M6.5 16h5"/><path d="m13.5 13.2 1.5 1.5 3-3.2"/></g>',
+  folder_copy: APSE_ICON_G + '<path d="M6 3.5h5.5l1.5 1.5H21v11H6z"/><path d="M3 8.5v11.5h14.5"/></g>',
+  folder_open: APSE_ICON_G + '<path d="M3 19.5V5h6.5l2 2H20v3"/><path d="M3 19.5h15.5L21 10H6.5z"/></g>',
 
-  // 5. PS Dashboard / Analytics (Lucide chart-scatter)
-  analytics: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><circle cx="7.5" cy="7.5" r=".75" fill="currentColor"/><circle cx="18.5" cy="5.5" r=".75" fill="currentColor"/><circle cx="11.5" cy="11.5" r=".75" fill="currentColor"/><circle cx="7.5" cy="16.5" r=".75" fill="currentColor"/><circle cx="17.5" cy="14.5" r=".75" fill="currentColor"/></g>',
-  monitoring: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><circle cx="7.5" cy="7.5" r=".75" fill="currentColor"/><circle cx="18.5" cy="5.5" r=".75" fill="currentColor"/><circle cx="11.5" cy="11.5" r=".75" fill="currentColor"/><circle cx="7.5" cy="16.5" r=".75" fill="currentColor"/><circle cx="17.5" cy="14.5" r=".75" fill="currentColor"/></g>',
-  ps_dashboard: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><circle cx="7.5" cy="7.5" r=".75" fill="currentColor"/><circle cx="18.5" cy="5.5" r=".75" fill="currentColor"/><circle cx="11.5" cy="11.5" r=".75" fill="currentColor"/><circle cx="7.5" cy="16.5" r=".75" fill="currentColor"/><circle cx="17.5" cy="14.5" r=".75" fill="currentColor"/></g>',
+  // 5. Analytics / Monitoring / PS Dashboard
+  analytics: APSE_ICON_G + '<path d="M3.5 3.5v17h17"/><path d="M7.5 17v-4.5"/><path d="M12 17V9.5"/><path d="M16.5 17V7"/><path d="m7.5 9 4.5-2.8 4.5-2.2"/></g>',
+  monitoring: APSE_ICON_G + '<path d="M3.5 3.5v17h17"/><path d="M7.5 17v-4.5"/><path d="M12 17V9.5"/><path d="M16.5 17V7"/><path d="m7.5 9 4.5-2.8 4.5-2.2"/></g>',
+  insights: APSE_ICON_G + '<path d="M3.5 17.5 9 12l3.5 3.5 8-9"/><path d="M16 6.5h4.5V11"/><path d="M3.5 20.5h17"/></g>',
+  ps_dashboard: APSE_ICON_G + '<path d="M3.5 3.5v17h17"/><path d="M7.5 17v-4.5"/><path d="M12 17V9.5"/><path d="M16.5 17V7"/><path d="m7.5 9 4.5-2.8 4.5-2.2"/></g>',
 
-  // 6. Reports & Exports (Tabler database-export)
-  exports: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6c0 1.657 3.582 3 8 3s8-1.343 8-3s-3.582-3-8-3s-8 1.343-8 3"/><path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68-.05 2.454-.144m5.546-2.856v-6"/><path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341-.002 .51-.006"/><path d="M15 18h7"/><path d="M19 15l3 3l-3 3"/></g>',
-  summarize: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6c0 1.657 3.582 3 8 3s8-1.343 8-3s-3.582-3-8-3s-8 1.343-8 3"/><path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68-.05 2.454-.144m5.546-2.856v-6"/><path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341-.002 .51-.006"/><path d="M15 18h7"/><path d="M19 15l3 3l-3 3"/></g>',
-  reports: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 6c0 1.657 3.582 3 8 3s8-1.343 8-3s-3.582-3-8-3s-8 1.343-8 3"/><path d="M4 6v6c0 1.657 3.582 3 8 3c.856 0 1.68-.05 2.454-.144m5.546-2.856v-6"/><path d="M4 12v6c0 1.657 3.582 3 8 3c.171 0 .341-.002 .51-.006"/><path d="M15 18h7"/><path d="M19 15l3 3l-3 3"/></g>',
+  // 6. Reports & Exports
+  exports: APSE_ICON_G + '<path d="M14 3.5H5v17h14v-6"/><path d="M14 3.5v5h5"/><path d="M8.5 11.5h4.5"/><path d="M8.5 15h3"/><path d="M13 18h8"/><path d="m18.5 15.5 2.5 2.5-2.5 2.5"/></g>',
+  summarize: APSE_ICON_G + '<path d="M14 3.5H5v17h14v-6"/><path d="M14 3.5v5h5"/><path d="M8.5 11.5h4.5"/><path d="M8.5 15h3"/><path d="M13 18h8"/><path d="m18.5 15.5 2.5 2.5-2.5 2.5"/></g>',
+  reports: APSE_ICON_G + '<path d="M14 3.5H5v17h14v-6"/><path d="M14 3.5v5h5"/><path d="M8.5 11.5h4.5"/><path d="M8.5 15h3"/><path d="M13 18h8"/><path d="m18.5 15.5 2.5 2.5-2.5 2.5"/></g>',
 
-  // 7. Learning, stories & lessons (Lucide blocks)
-  learning: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></g>',
-  tips_and_updates: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 22V7a1 1 0 0 0-1-1H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5a1 1 0 0 0-1-1H2"/><rect width="8" height="8" x="14" y="2" rx="1"/></g>',
+  // 7. Learning, Stories & Lessons
+  learning: APSE_ICON_G + '<rect x="3" y="10" width="11" height="10.5"/><rect x="3" y="3.5" width="7.5" height="4.5"/><rect x="13" y="3.5" width="8" height="4.5"/><rect x="16" y="10" width="5" height="10.5"/></g>',
+  tips_and_updates: APSE_ICON_G + '<rect x="3" y="10" width="11" height="10.5"/><rect x="3" y="3.5" width="7.5" height="4.5"/><rect x="13" y="3.5" width="8" height="4.5"/><rect x="16" y="10" width="5" height="10.5"/></g>',
 
-  // 8. Create/share form (Lucide form-input)
-  create_form: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M12 12h.01M17 12h.01M7 12h.01"/></g>',
-  post_add: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><path d="M12 12h.01M17 12h.01M7 12h.01"/></g>',
+  // 8. Create / Share Form & Dynamic Forms
+  create_form: APSE_ICON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M3 8.5h18"/><path d="M7 12.5h4"/><path d="M13.5 12.5H17"/><path d="M7 16.5h10"/></g>',
+  post_add: APSE_ICON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M3 8.5h18"/><path d="M7 12.5h4"/><path d="M13.5 12.5H17"/><path d="M7 16.5h10"/></g>',
+  dynamic_form: APSE_ICON_G + '<rect x="3" y="4" width="18" height="16"/><path d="M3 8.5h18"/><path d="M7 12.5h5"/><path d="M7 16.5h10"/><circle cx="15.5" cy="12.5" r="1.2" fill="currentColor" stroke="none"/></g>',
 
-  // 9. Offline Hub (Remix Icon loop-right-line / stroke cycle)
-  offline_hub: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>',
-  cloud_sync: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>',
-  offline_vault: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></g>',
+  // 9. Offline Hub & Cloud Sync
+  offline_hub: APSE_ICON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  cloud_sync: APSE_ICON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  offline_vault: APSE_ICON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  sync: APSE_ICON_G + '<path d="M4.5 10.5A7.5 7.5 0 0 1 17.6 5.4L20 7.5"/><path d="M20 4v3.5h-3.5"/><path d="M19.5 13.5A7.5 7.5 0 0 1 6.4 18.6L4 16.5"/><path d="M4 20v-3.5h3.5"/></g>',
+  cloud: APSE_ICON_G + '<path d="M7 18.5h10.5a4 4 0 0 0 .6-7.9A5.5 5.5 0 0 0 7.3 9.2 4.5 4.5 0 0 0 7 18.5Z"/></g>',
+  cloud_done: APSE_ICON_G + '<path d="M7 18.5h10.5a4 4 0 0 0 .6-7.9A5.5 5.5 0 0 0 7.3 9.2 4.5 4.5 0 0 0 7 18.5Z"/><path d="m9.5 13.5 1.8 1.8 3.5-3.6"/></g>',
+  cloud_off: APSE_ICON_G + '<path d="m3 3 18 18"/><path d="M7 18.5h7.5"/><path d="M19.8 17.3A4 4 0 0 0 18.1 10.6 5.5 5.5 0 0 0 8.5 6.8"/><path d="M5.6 9.8A4.5 4.5 0 0 0 7 18.5"/></g>',
 
-  // 10. Back to the file / Record Feedback (Lucide book-open-check)
-  feedback: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-3"/></g>',
-  back_to_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-3"/></g>',
-  rate_review: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 21V7"/><path d="m16 12 2 2 4-4"/><path d="M22 6V4a1 1 0 0 0-1-1h-5a4 4 0 0 0-4 4 4 4 0 0 0-4-4H3a1 1 0 0 0-1 1v13a1 1 0 0 0 1 1h6a3 3 0 0 1 3 3 3 3 0 0 1 3-3h6a1 1 0 0 0 1-1v-3"/></g>',
+  // 10. Back to the File / Record Feedback
+  feedback: APSE_ICON_G + '<path d="M3 4.5h7.5l1.5 1.5 1.5-1.5H21v14h-7.5l-1.5 1.5-1.5-1.5H3z"/><path d="M12 6v14"/><path d="m14.8 11.5 1.5 1.5 2.9-3"/></g>',
+  back_to_file: APSE_ICON_G + '<path d="M3 4.5h7.5l1.5 1.5 1.5-1.5H21v14h-7.5l-1.5 1.5-1.5-1.5H3z"/><path d="M12 6v14"/><path d="m14.8 11.5 1.5 1.5 2.9-3"/></g>',
+  rate_review: APSE_ICON_G + '<path d="M3 4.5h7.5l1.5 1.5 1.5-1.5H21v14h-7.5l-1.5 1.5-1.5-1.5H3z"/><path d="M12 6v14"/><path d="m14.8 11.5 1.5 1.5 2.9-3"/></g>',
 
-  // 11. PS Planning (Hugeicons Strategy)
-  ps_planning: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 11L20.3458 8.84853C20.7819 8.44853 21 8.24853 21 8M18 5L20.3458 7.15147C20.7819 7.55147 21 7.75147 21 8M21 8C3 8 3 21 3 21"/><path d="M6 16h6m-3-3v6"/></g>',
-  view_timeline: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 11L20.3458 8.84853C20.7819 8.44853 21 8.24853 21 8M18 5L20.3458 7.15147C20.7819 7.55147 21 7.75147 21 8M21 8C3 8 3 21 3 21"/><path d="M6 16h6m-3-3v6"/></g>',
+  // 11. PS Planning & Timeline
+  ps_planning: APSE_ICON_G + '<path d="M3.5 20V8H20"/><path d="m17 5 3 3-3 3"/><path d="M8 14h6"/><path d="M11 11v6"/></g>',
+  view_timeline: APSE_ICON_G + '<path d="M3.5 20V8H20"/><path d="m17 5 3 3-3 3"/><path d="M8 14h6"/><path d="M11 11v6"/></g>',
 
-  // 12. Projects & Operations (Hugeicons timeline view / chart-gantt)
-  projects_ops: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3.5 12H5.5M18.5 12H20.5M12 3V5M12 19V21"/><rect x="5.5" y="8" width="13" height="8" rx="2"/><path d="M8.5 12h4"/></g>',
-  workspaces: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3.5 12H5.5M18.5 12H20.5M12 3V5M12 19V21"/><rect x="5.5" y="8" width="13" height="8" rx="2"/><path d="M8.5 12h4"/></g>',
+  // 12. Projects & Operations
+  projects_ops: APSE_ICON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="M6.5 9.5h7"/><path d="M10.5 14.5h7"/></g>',
+  workspaces: APSE_ICON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="M6.5 9.5h7"/><path d="M10.5 14.5h7"/></g>',
 
-  // 13. Evaluation of Staff Achievements (Lucide users-round)
-  staff_eval: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></g>',
-  staff_achievements: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></g>',
-  workspace_premium: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 21a8 8 0 0 0-16 0"/><circle cx="10" cy="8" r="5"/><path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3"/></g>',
+  // 13. Staff Achievements & Teams
+  staff_eval: APSE_ICON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  staff_achievements: APSE_ICON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  workspace_premium: APSE_ICON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  group: APSE_ICON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
+  groups: APSE_ICON_G + '<path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><circle cx="9.5" cy="7.5" r="3.5"/><path d="M17 14.2a4 4 0 0 1 4 3.8v2"/><path d="M15.5 4.2a3.5 3.5 0 0 1 0 6.6"/></g>',
 
-  // 14. Assistant and Controls (Hugeicons AI User)
-  assistant: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M19 3.5l1-1m-1 0l1 1M4 3.5l1-1m-1 0l1 1"/></g>',
-  assistant_controls: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M19 3.5l1-1m-1 0l1 1M4 3.5l1-1m-1 0l1 1"/></g>',
-  auto_fix_high: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/><path d="M19 3.5l1-1m-1 0l1 1M4 3.5l1-1m-1 0l1 1"/></g>',
+  // 14. Assistant & AI Controls
+  assistant: APSE_ICON_G + '<circle cx="12" cy="8" r="3.5"/><path d="M5 20.5a7 7 0 0 1 14 0"/><path d="M19 3v3M17.5 4.5h3M5 3v3M3.5 4.5h3"/></g>',
+  assistant_controls: APSE_ICON_G + '<circle cx="12" cy="8" r="3.5"/><path d="M5 20.5a7 7 0 0 1 14 0"/><path d="M19 3v3M17.5 4.5h3M5 3v3M3.5 4.5h3"/></g>',
+  auto_fix_high: APSE_ICON_G + '<circle cx="12" cy="8" r="3.5"/><path d="M5 20.5a7 7 0 0 1 14 0"/><path d="M19 3v3M17.5 4.5h3M5 3v3M3.5 4.5h3"/></g>',
+  sparkle_ai: APSE_ICON_G + '<path d="m12 2.5 2 5.5 5.5 2-5.5 2-2 5.5-2-5.5-5.5-2 5.5-2z"/><path d="M18.5 16v3M17 17.5h3"/></g>',
 
-  // 15. Contacts and Diocesan Directory (Remix Icon contacts-book-line)
-  contacts: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="5" y="2" width="15" height="20" rx="2"/><path d="M5 6H3m2 6H3m2 6H3"/><circle cx="12.5" cy="9.5" r="3"/><path d="M8.5 18a4 4 0 0 1 8 0"/></g>',
-  contact_phone: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="5" y="2" width="15" height="20" rx="2"/><path d="M5 6H3m2 6H3m2 6H3"/><circle cx="12.5" cy="9.5" r="3"/><path d="M8.5 18a4 4 0 0 1 8 0"/></g>',
+  // 15. Contacts & Directory
+  contacts: APSE_ICON_G + '<rect x="5.5" y="3" width="14.5" height="18"/><path d="M3.5 7h2M3.5 12h2M3.5 17h2"/><circle cx="12.8" cy="9.5" r="2.5"/><path d="M9 17.5a3.8 3.8 0 0 1 7.6 0"/></g>',
+  contact_phone: APSE_ICON_G + '<rect x="5.5" y="3" width="14.5" height="18"/><path d="M3.5 7h2M3.5 12h2M3.5 17h2"/><circle cx="12.8" cy="9.5" r="2.5"/><path d="M9 17.5a3.8 3.8 0 0 1 7.6 0"/></g>',
 
-  // 16. Data Structure & Flow (Tabler hierarchy)
-  data_structure: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 17.5l5.5-4.5l5.5 4.5"/><path d="M12 7v6"/></g>',
-  data_flow: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 17.5l5.5-4.5l5.5 4.5"/><path d="M12 7v6"/></g>',
-  account_tree: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="5" r="2"/><circle cx="5" cy="19" r="2"/><circle cx="19" cy="19" r="2"/><path d="M6.5 17.5l5.5-4.5l5.5 4.5"/><path d="M12 7v6"/></g>',
+  // 16. Data Structure & Flow (Orthogonal Carbon tree)
+  data_structure: APSE_ICON_G + '<rect x="9.5" y="3" width="5" height="4"/><rect x="3.5" y="17" width="5" height="4"/><rect x="15.5" y="17" width="5" height="4"/><path d="M12 7v5M6 12h12M6 12v5M18 12v5"/></g>',
+  data_flow: APSE_ICON_G + '<rect x="9.5" y="3" width="5" height="4"/><rect x="3.5" y="17" width="5" height="4"/><rect x="15.5" y="17" width="5" height="4"/><path d="M12 7v5M6 12h12M6 12v5M18 12v5"/></g>',
+  account_tree: APSE_ICON_G + '<rect x="9.5" y="3" width="5" height="4"/><rect x="3.5" y="17" width="5" height="4"/><rect x="15.5" y="17" width="5" height="4"/><path d="M12 7v5M6 12h12M6 12v5M18 12v5"/></g>',
 
-  // 17. Timesheets (Hugeicons calendar-01 / calendar month)
-  timesheets: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
-  more_time: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
+  // 17. Timesheets & Calendars
+  timesheets: APSE_ICON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/><path d="M7.5 13h1.5M11.2 13h1.6M15 13h1.5M7.5 16.5h1.5M11.2 16.5h1.6"/></g>',
+  more_time: APSE_ICON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/><path d="M7.5 13h1.5M11.2 13h1.6M15 13h1.5M7.5 16.5h1.5M11.2 16.5h1.6"/></g>',
+  calendar_month: APSE_ICON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/><path d="M7.5 13h1.5M11.2 13h1.6M15 13h1.5M7.5 16.5h1.5M11.2 16.5h1.6"/></g>',
+  calendar_today: APSE_ICON_G + '<rect x="3.5" y="4.5" width="17" height="16"/><path d="M8 2.5v3M16 2.5v3M3.5 9h17"/></g>',
 
-  // 18. Strategic Metadata (Hugeicons Document Code)
-  metadata: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2m4-4 2 2-2 2"/></g>',
-  category: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m10 13-2 2 2 2m4-4 2 2-2 2"/></g>',
+  // 18. Strategic Metadata & Code Docs
+  metadata: APSE_ICON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="m10 12.5-2 2 2 2M14 12.5l2 2-2 2"/></g>',
+  category: APSE_ICON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="m10 12.5-2 2 2 2M14 12.5l2 2-2 2"/></g>',
+  description: APSE_ICON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="M8.5 12h7M8.5 15.5h7M8.5 8.5h3"/></g>',
 
-  // 19. MEL Administration (Remix Icon admin-line)
-  mel_admin: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8.5" r="3"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/></g>',
-  admin_panel_settings: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="8.5" r="3"/><path d="M6 19c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/></g>',
+  // 19. MEL Administration & Security
+  mel_admin: APSE_ICON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><circle cx="12" cy="9.5" r="2.2"/><path d="M8.5 16a3.5 3.5 0 0 1 7 0"/></g>',
+  admin_panel_settings: APSE_ICON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><circle cx="12" cy="9.5" r="2.2"/><path d="M8.5 16a3.5 3.5 0 0 1 7 0"/></g>',
+  verified_user: APSE_ICON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><path d="m9 12 2 2 4-4"/></g>',
+  shield: APSE_ICON_G + '<path d="M12 3 5 6v5.5c0 4.8 3 8.5 7 9.8 4-1.3 7-5 7-9.8V6z"/><path d="m9 12 2 2 4-4"/></g>',
+  lock: APSE_ICON_G + '<rect x="4.5" y="10.5" width="15" height="10"/><path d="M8 10.5V7a4 4 0 0 1 8 0v3.5"/></g>',
+  lock_open: APSE_ICON_G + '<rect x="4.5" y="10.5" width="15" height="10"/><path d="M8 10.5V7a4 4 0 0 1 7.6-1.7"/></g>',
 
-  // 20. MISC Support Icons
-  search: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></g>',
-  close: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></g>',
-  check: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 6 9 17l-5-5"/></g>',
-  check_circle: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></g>',
-  add: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 5v14M5 12h14"/></g>',
-  add_circle: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></g>',
-  arrow_back: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m12 19-7-7 7-7M5 12h14"/></g>',
-  arrow_forward: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m12 5 7 7-7 7M19 12H5"/></g>',
-  chevron_right: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m9 18 6-6-6-6"/></g>',
-  chevron_left: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15 18-6-6 6-6"/></g>',
-  expand_more: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m6 9 6 6 6-6"/></g>',
-  calendar_today: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></g>',
-  location_on: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>',
-  person: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g>',
-  person_add: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M16 11h6"/></g>',
-  lock: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></g>',
-  lock_open: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></g>',
-  info: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></g>',
-  warning: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4M12 17h.01"/></g>',
-  error: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></g>',
-  sync: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></g>',
-  cloud_done: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/><path d="m9 13 2 2 4-4"/></g>',
-  cloud_off: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m2 2 20 20M5.782 5.782A7 7 0 0 0 9 19h8.5a4.5 4.5 0 0 0 1.954-.443M21.5 15.5a4.5 4.5 0 0 0-3.95-4.46A7 7 0 0 0 11.2 5.2"/></g>',
-  content_copy: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></g>',
-  delete: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2M10 11v6M14 11v6"/></g>',
-  edit: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></g>',
-  upload_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4M12 12v6M9 15l3-3 3 3"/></g>',
-  download: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></g>',
-  description: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></g>',
-  light_mode: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></g>',
-  dark_mode: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></g>',
-  tune: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"/></g>',
-  filter_list: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></g>',
-  visibility: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></g>',
-  open_in_full: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15 3 6 6M9 21 3 15M21 3l-7 7M3 21l7-7"/></g>',
-  open_in_new: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3"/></g>',
-  dock_to_right: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M15 3v18"/></g>',
-  target: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></g>',
-  flag: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></g>',
-  language: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>',
-  globe: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></g>',
-  payments: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></g>',
-  banknote: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></g>',
-  handshake: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m11 17 2 2a1 1 0 0 0 1.4 0l4.3-4.3a1 1 0 0 0 0-1.4l-3-3"/><path d="m18 10 1.3-1.3a1 1 0 0 0 0-1.4l-3-3a1 1 0 0 0-1.4 0L13.6 5.6"/><path d="m2 14 6 6"/><path d="M22 10l-6-6"/><path d="m7 7 4.3 4.3"/><path d="m10 14 1.4 1.4"/></g>',
-  phone: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g>',
-  call: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g>',
-  mail: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>',
-  email: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></g>',
-  verified_user: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>',
-  shield: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></g>',
-  group: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>',
-  groups: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></g>',
-  assignment: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4M12 16h4M8 11h.01M8 16h.01"/></g>',
-  calendar_month: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/></g>',
-  attach_file: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></g>',
-  place: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></g>',
-  gavel: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m14 13-7.5 7.5c-.8.8-2 .8-2.8 0l-1.4-1.4c-.8-.8-.8-2 0-2.8L9.8 8.8"/><path d="m16 16 6-6"/><path d="m8 8 6-6"/><path d="m9 7 8 8"/><path d="m21 11-8-8"/></g>',
-  psychology: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M12 5v14"/></g>',
-  favorite: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></g>',
-  healing: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
-  volunteer_activism: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/><path d="M12 5 9.04 7.96a2.17 2.17 0 0 0 0 3.08c.82.82 2.13.85 3 .07l2.07-1.9"/></g>',
-  terrain: '<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/><path d="M4.14 15.08c2.62-1.57 5.24-1.43 7.86.42 2.74 1.94 5.49 2 8.23.19"/></g>',
-  iconsax_sort: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 7h18"/><path d="M6 12h12"/><path d="M10 17h4"/></g>',
-  iconsax_clipboard_tick: '<g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9.31 14.7 1.5 1.5 4-4"/><path d="M10 6h4c2 0 2-1 2-2 0-2-1-2-2-2h-4C9 2 8 2 8 4c0 2 1 2 2 2Z"/><path d="M16 4.02c3.33.18 5 1.41 5 5.98v6c0 4-1 6-6 6H9c-5 0-6-2-6-6v-6c0-4.56 1.67-5.8 5-5.98"/></g>',
-  iconsax_add: '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h12"/><path d="M12 18V6"/></g>',
-  iconsax_arrow_down: '<path fill="currentColor" d="M12 16.8c-.7 0-1.4-.27-1.93-.8L3.55 9.48a.754.754 0 0 1 0-1.06c.29-.29.77-.29 1.06 0l6.52 6.52c.48.48 1.26.48 1.74 0l6.52-6.52c.29-.29.77-.29 1.06 0c.29.29.29.77 0 1.06L13.93 16c-.53.53-1.23.8-1.93.8Z"/>',
-  sparkle_ai: '<path fill="currentColor" d="M12 2L14.4 7.6L20 10L14.4 12.4L12 18L9.6 12.4L4 10L9.6 7.6L12 2ZM19 15L20.1 17.4L22.5 18.5L20.1 19.6L19 22L17.9 19.6L15.5 18.5L17.9 17.4L19 15ZM5 15L5.9 16.9L7.8 17.8L5.9 18.7L5 20.6L4.1 18.7L2.2 17.8L4.1 16.9L5 15Z"/>',
-  send: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></g>',
-  tag: '<g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></g>',
+  // 20. Navigation, Actions, Tools & Calculators
+  menu: APSE_ICON_G + '<path d="M3.5 6h17M3.5 12h17M3.5 18h17"/></g>',
+  search: APSE_ICON_G + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.2 15.2 4.8 4.8"/></g>',
+  search_off: APSE_ICON_G + '<circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.2 15.2 4.8 4.8"/><path d="m8 8 5 5"/></g>',
+  close: APSE_ICON_G + '<path d="M18 6 6 18M6 6l12 12"/></g>',
+  cancel: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></g>',
+  check: APSE_ICON_G + '<path d="M19.5 6.5 9.5 17 4.5 12"/></g>',
+  check_circle: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><path d="m8.5 12.2 2.3 2.3 4.7-4.8"/></g>',
+  add: APSE_ICON_G + '<path d="M12 5v14M5 12h14"/></g>',
+  iconsax_add: APSE_ICON_G + '<path d="M12 5v14M5 12h14"/></g>',
+  add_circle: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></g>',
+  arrow_back: APSE_ICON_G + '<path d="m11 18-6-6 6-6M5.5 12H19.5"/></g>',
+  arrow_forward: APSE_ICON_G + '<path d="m13 6 6 6-6 6M4.5 12h14"/></g>',
+  chevron_right: APSE_ICON_G + '<path d="m9 6 6 6-6 6"/></g>',
+  chevron_left: APSE_ICON_G + '<path d="m15 18-6-6 6-6"/></g>',
+  expand_more: APSE_ICON_G + '<path d="m6 9 6 6 6-6"/></g>',
+  iconsax_arrow_down: APSE_ICON_G + '<path d="m6 9 6 6 6-6"/></g>',
+  undo: APSE_ICON_G + '<path d="M7.5 18.5h7a4.5 4.5 0 1 0 0-9H6"/><path d="m9.5 6-3.5 3.5L9.5 13"/></g>',
+  restart_alt: APSE_ICON_G + '<path d="M5 12a7 7 0 1 0 2-4.9L4.5 9.5"/><path d="M4.5 5v4.5H9"/></g>',
+  filter_list: APSE_ICON_G + '<path d="M3.5 6.5h17M6.5 12h11M9.5 17.5h5"/></g>',
+  iconsax_sort: APSE_ICON_G + '<path d="M3.5 6.5h17M6.5 12h11M9.5 17.5h5"/></g>',
+  tune: APSE_ICON_G + '<path d="M4 20v-6.5M4 9.5V4M12 20v-8.5M12 7.5V4M20 20v-4.5M20 11.5V4"/><path d="M1.5 13.5h5M9.5 7.5h5M17.5 15.5h5"/></g>',
+  calculate: APSE_ICON_G + '<rect x="5" y="3" width="14" height="18"/><rect x="8" y="6" width="8" height="3.5"/><path d="M8.5 13h1.5M11.5 13h1M14.5 13h1M8.5 16h1.5M11.5 16h1M14.5 16h1M8.5 18.5h1.5M11.5 18.5h4"/></g>',
+  open_in_full: APSE_ICON_G + '<path d="m15 3.5 5.5 0 0 5.5M9 20.5l-5.5 0 0-5.5M20.5 3.5l-6.5 6.5M3.5 20.5l6.5-6.5"/></g>',
+  open_in_new: APSE_ICON_G + '<path d="M18 13.5v6H4.5V6h6"/><path d="M14.5 3.5h6v6M11 13 20.5 3.5"/></g>',
+  dock_to_right: APSE_ICON_G + '<rect x="3.5" y="3.5" width="17" height="17"/><path d="M14.5 3.5v17"/></g>',
+
+  // 21. Domain Helpers, Metadata, Field Volets & Files
+  location_on: APSE_ICON_G + '<path d="M19 10c0 5.5-7 11-7 11s-7-5.5-7-11a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></g>',
+  place: APSE_ICON_G + '<path d="M19 10c0 5.5-7 11-7 11s-7-5.5-7-11a7 7 0 0 1 14 0Z"/><circle cx="12" cy="10" r="2.5"/></g>',
+  person: APSE_ICON_G + '<circle cx="12" cy="7.5" r="3.8"/><path d="M5 20.5a7 7 0 0 1 14 0"/></g>',
+  person_add: APSE_ICON_G + '<circle cx="9.5" cy="7.5" r="3.5"/><path d="M3 20v-2a4 4 0 0 1 4-4h5a4 4 0 0 1 4 4v2"/><path d="M19 8v6M16 11h6"/></g>',
+  info: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 16v-4.5"/><circle cx="12" cy="8.2" r=".8" fill="currentColor" stroke="none"/></g>',
+  warning: APSE_ICON_G + '<path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5"/><circle cx="12" cy="17.2" r=".8" fill="currentColor" stroke="none"/></g>',
+  error: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></g>',
+  content_copy: APSE_ICON_G + '<rect x="8.5" y="8.5" width="12" height="12"/><path d="M15.5 8.5v-5h-12v12h5"/></g>',
+  delete: APSE_ICON_G + '<path d="M4 6.5h16M9 6.5V3.5h6v3M6.5 6.5l.8 14h9.4l.8-14M10 10.5v6M14 10.5v6"/></g>',
+  edit: APSE_ICON_G + '<path d="M12 4.5H4.5v15h15V12"/><path d="M17.5 3.5 20.5 6.5 11.5 15.5H8.5v-3z"/></g>',
+  upload_file: APSE_ICON_G + '<path d="M14 3.5H5v17h14v-12z"/><path d="M14 3.5v5h5"/><path d="M12 18v-5.5M9.5 15 12 12.5 14.5 15"/></g>',
+  download: APSE_ICON_G + '<path d="M4 15.5v4.5h16v-4.5M7.5 10.5 12 15l4.5-4.5M12 14.5V3.5"/></g>',
+  attach_file: APSE_ICON_G + '<path d="m20 11.5-8.5 8.5a5 5 0 0 1-7.1-7.1l8.5-8.5a3.3 3.3 0 0 1 4.7 4.7L9.5 17a1.7 1.7 0 0 1-2.4-2.4l7.5-7.5"/></g>',
+  light_mode: APSE_ICON_G + '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M2.5 12h2M19.5 12h2M6.7 17.3l-1.4 1.4M18.7 5.3l-1.4 1.4"/></g>',
+  dark_mode: APSE_ICON_G + '<path d="M12.5 3.5a8.5 8.5 0 1 0 8 11.3 6.8 6.8 0 0 1-8-11.3Z"/></g>',
+  visibility: APSE_ICON_G + '<path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/></g>',
+  target: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></g>',
+  flag: APSE_ICON_G + '<path d="M5 20.5V4h13.5l-2.5 4 2.5 4H5"/></g>',
+  language: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 3a13 13 0 0 0 0 18 13 13 0 0 0 0-18"/><path d="M3 12h18"/></g>',
+  globe: APSE_ICON_G + '<circle cx="12" cy="12" r="9"/><path d="M12 3a13 13 0 0 0 0 18 13 13 0 0 0 0-18"/><path d="M3 12h18"/></g>',
+  payments: APSE_ICON_G + '<rect x="3" y="6" width="18" height="12"/><circle cx="12" cy="12" r="2.2"/><path d="M6.5 12h1M16.5 12h1"/></g>',
+  banknote: APSE_ICON_G + '<rect x="3" y="6" width="18" height="12"/><circle cx="12" cy="12" r="2.2"/><path d="M6.5 12h1M16.5 12h1"/></g>',
+  phone: APSE_ICON_G + '<path d="M20.5 16.5v3h-2a14 14 0 0 1-14-14v-2h3l1.8 4-2 1.8a11 11 0 0 0 5.4 5.4l1.8-2z"/></g>',
+  call: APSE_ICON_G + '<path d="M20.5 16.5v3h-2a14 14 0 0 1-14-14v-2h3l1.8 4-2 1.8a11 11 0 0 0 5.4 5.4l1.8-2z"/></g>',
+  mail: APSE_ICON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="m3.5 6 8.5 6.5L20.5 6"/></g>',
+  email: APSE_ICON_G + '<rect x="3" y="4.5" width="18" height="15"/><path d="m3.5 6 8.5 6.5L20.5 6"/></g>',
+  send: APSE_ICON_G + '<path d="m20.5 3.5-6 17-3.5-7.5-7.5-3.5z"/><path d="M20.5 3.5 11 13"/></g>',
+  tag: APSE_ICON_G + '<path d="M11.5 3H4v7.5L13 19.5 20.5 12z"/><circle cx="7.8" cy="7.8" r="1" fill="currentColor" stroke="none"/></g>',
+
+  // 22. 5 Field Volets (Paralegals, Mediators, Psychosocial, Healing, General)
+  gavel: APSE_ICON_G + '<path d="m14 12.5-8 8-2.5-2.5 8-8"/><path d="m13 4.5 6.5 6.5-3 3L10 7.5z"/><path d="m16.5 8 2.5-2.5"/><path d="m7.5 10 2.5-2.5"/></g>',
+  handshake: APSE_ICON_G + '<path d="m11 16.5 2 2 4.5-4.5-3.5-3.5-2.5 2-2.5-2.5 4-4 6 6"/><path d="m3.5 13 5.5 5.5"/><path d="M20.5 10.5 15 5"/><path d="m7.5 7 3.5 3.5"/></g>',
+  psychology: APSE_ICON_G + '<path d="M12 5a3.5 3.5 0 0 0-6.5 1.8A4 4 0 0 0 3.5 12a4 4 0 0 0 2 5.2A3.8 3.8 0 0 0 12 18.5Z"/><path d="M12 5a3.5 3.5 0 0 1 6.5 1.8A4 4 0 0 1 20.5 12a4 4 0 0 1-2 5.2A3.8 3.8 0 0 1 12 18.5Z"/></g>',
+  healing: APSE_ICON_G + '<path d="M12 19.5s-7.5-4.6-8.5-9.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.5 3.5c-1 5.2-8.5 9.8-8.5 9.8Z"/><path d="M12 10v5M9.5 12.5h5"/></g>',
+  volunteer_activism: APSE_ICON_G + '<path d="M12 19.5s-7.5-4.6-8.5-9.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.5 3.5c-1 5.2-8.5 9.8-8.5 9.8Z"/><path d="M12 10v5M9.5 12.5h5"/></g>',
+  favorite: APSE_ICON_G + '<path d="M12 19.5s-7.5-4.6-8.5-9.8A4.8 4.8 0 0 1 12 6.2a4.8 4.8 0 0 1 8.5 3.5c-1 5.2-8.5 9.8-8.5 9.8Z"/></g>',
+  terrain: APSE_ICON_G + '<path d="M3 19.5 8.5 7l4 8 3-4.5L21 19.5z"/></g>',
 };
 
-/* Section 4: Material Symbols Outlined Vector Paths (weight: 400, grade: 0, 24x24 viewBox) */
 const MATERIAL_SYMBOLS = {
-  check_box: 'M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21H5Zm0-2h14V5H5v14Zm5.6-2.8 7.05-7.05-1.4-1.4-5.65 5.65-2.85-2.85-1.4 1.4 4.25 4.25Z',
-  assignment: 'M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h4.2q.325-.9 1.088-1.45T12 1q.95 0 1.713.55T14.8 3H19q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21H5Zm0-2h14V5H5v14Zm2-2h7v-2H7v2Zm0-4h10v-2H7v2Zm0-4h10V7H7v2Zm5-4.75q.325 0 .538-.213t.212-.537q0-.325-.212-.537T12 2.75q-.325 0-.537.213T11.25 3.5q0 .325.213.537T12 4.25Z',
-  fact_check: 'M4 20q-.825 0-1.412-.587T2 18V6q0-.825.588-1.412T4 4h16q.825 0 1.413.588T22 6v12q0 .825-.587 1.413T20 20H4Zm0-2h16V6H4v12Zm1.5-3h5v-2h-5v2Zm0-4h5V9h-5v2Zm0-4h5V5h-5v2Zm9.35 8 4.25-4.25-1.4-1.425-2.85 2.85-1.425-1.425-1.4 1.425L14.85 15Z',
-  insights: 'm3.5 18.5-1.5-1.5 6-6 4 4 8.5-9.5 1.5 1.35L12 18l-4-4-4.5 4.5ZM19 9l-.95-2.05L16 6l2.05-.95L19 3l.95 2.05L22 6l-2.05.95L19 9ZM6 11l-.65-1.35L4 9l1.35-.65L6 7l.65 1.35L8 9l-1.35.65L6 11Z',
-  monitoring: 'M3 21v-2l2-2v4H3Zm4 0v-6l2-2v8H7Zm4 0v-8l2 2.025V21h-2Zm4 0v-5.975l2-2V21h-2Zm4 0V11l2-2v12h-2ZM3 15.825V13l7-7 4 4 7-7v2.825l-7 7-4-4-7 7Z',
-  download: 'M12 16 7 11l1.4-1.45 2.6 2.6V4h2v8.15l2.6-2.6L17 11l-5 5Zm-6 4q-.825 0-1.412-.587T4 18v-3h2v3h12v-3h2v3q0 .825-.587 1.413T18 20H6Z',
-  upload_file: 'M11 18h2v-4.175l1.6 1.6L16 14l-4-4-4 4 1.425 1.4L11 13.825V18ZM6 22q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
-  cloud_done: 'm10.6 16.2 5.65-5.65-1.425-1.425-4.225 4.225-2.1-2.1L7.075 12.675 10.6 16.2ZM6.5 20q-2.275 0-3.887-1.575T1 14.575q0-1.95 1.175-3.475T5.25 9.15q.625-2.3 2.5-3.725T12 4q2.925 0 4.963 2.038T19 11q1.725.2 2.863 1.488T23 15.5q0 1.875-1.312 3.188T18.5 20H6.5Z',
-  sync: 'M4 20v-2h2.75l-.4-.35q-1.3-1.15-1.825-2.625T4 12.05q0-2.775 1.663-4.938T10 4.25v2.1Q8.2 7 7.1 8.563T6 12.05q0 1.125.425 2.188T7.75 16.2l.25.25V14h2v6H4Zm10-.25v-2.1q1.8-.65 2.9-2.212T18 11.95q0-1.125-.425-2.187T16.25 7.8L16 7.55V10h-2V4h6v2h-2.75l.4.35q1.225 1.225 1.788 2.663T20 11.95q0 2.775-1.662 4.938T14 19.75Z',
-  cloud_off: 'm19.9 22.6-3.15-3.15H6.5q-2.275 0-3.887-1.575T1 14.025q0-1.85 1.1-3.325T4.925 8.8L1.4 5.275 2.8 3.85l18.5 18.5-1.4 1.25ZM6.5 17.45h8.25L6.8 9.5q-1.6.175-2.7 1.35T3 13.75q0 1.55 1.075 2.625T6.5 17.45Zm14.95-.625-1.45-1.45q.5-.375.75-.913t.25-1.212q0-1.05-.725-1.775T18.5 10.75H17v-1.5q0-2.075-1.463-3.537T12 4.25q-.95 0-1.787.35T8.75 5.65L7.3 4.2q1.025-.9 2.263-1.375T12 2.35q2.725 0 4.688 1.813T18.95 8.75q1.725.15 2.888 1.4T23 13.25q0 1.075-.413 2.025t-1.137 1.55Z',
-  info: 'M11 17h2v-6h-2v6Zm1-8q.425 0 .713-.288T13 8q0-.425-.288-.712T12 7q-.425 0-.712.288T11 8q0 .425.288.713T12 9Zm0 13q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
-  warning: 'M1 21 12 2l11 19H1Zm3.45-2h15.1L12 6 4.45 19ZM12 18q.425 0 .713-.288T13 17q0-.425-.288-.712T12 16q-.425 0-.712.288T11 17q0 .425.288.713T12 18Zm-1-3h2v-5h-2v5Z',
-  error: 'M12 17q.425 0 .713-.288T13 16q0-.425-.288-.712T12 15q-.425 0-.712.288T11 16q0 .425.288.713T12 17Zm-1-4h2V7h-2v6Zm1 9q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
-  search: 'M19.6 21 13.3 14.7q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5q0-2.725 1.888-4.612T9.5 3q2.725 0 4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3-1.4 1.4ZM9.5 14q1.875 0 3.188-1.312T14 9.5q0-1.875-1.312-3.187T9.5 5Q7.625 5 6.313 6.313T5 9.5q0 1.875 1.313 3.188T9.5 14Z',
-  calendar_today: 'M5 22q-.825 0-1.412-.587T3 20V6q0-.825.588-1.412T5 4h1V2h2v2h8V2h2v2h1q.825 0 1.413.588T21 6v14q0 .825-.587 1.413T19 22H5Zm0-2h14V10H5v10ZM5 8h14V6H5v2Z',
-  filter_list: 'M10 18v-2h4v2h-4Zm-4-5v-2h12v2H6ZM3 8V6h18v2H3Z',
-  chevron_right: 'M12.6 12 8 7.4 9.4 6l6 6-6 6L8 16.6l4.6-4.6Z',
-  chevron_left: 'm14 18-6-6 6-6 1.4 1.4-4.6 4.6 4.6 4.6L14 18Z',
-  expand_more: 'M12 15.375 6 9.375 7.4 7.975l4.6 4.6 4.6-4.6 1.4 1.4Z',
-  arrow_forward: 'm12 20-1.425-1.4 5.6-5.6H4v-2h12.175l-5.6-5.6L12 4l8 8-8 8Z',
-  arrow_back: 'm7.825 13 5.6 5.6L12 20l-8-8 8-8 1.425 1.4-5.6 5.6H20v2H7.825Z',
-  add: 'M11 13H5v-2h6V5h2v6h6v2h-6v6h-2v-6Z',
-  lock: 'M6 22q-.825 0-1.412-.587T4 20V10q0-.825.588-1.412T6 8h1V6q0-2.075 1.463-3.537T12 1q2.075 0 3.538 1.463T17 6v2h1q.825 0 1.413.588T20 10v10q0 .825-.587 1.413T18 22H6Zm6-5q.825 0 1.413-.587T14 15q0-.825-.587-1.412T12 13q-.825 0-1.412.588T10 15q0 .825.588 1.413T12 17ZM9 8h6V6q0-1.25-.875-2.125T12 3q-1.25 0-2.125.875T9 6v2Z',
-  close: 'm6.4 19-1.4-1.4 5.6-5.6-5.6-5.6L6.4 5l5.6 5.6L17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4-5.6-5.6L6.4 19Z',
-  check: 'M9.55 18 3.85 12.3l1.425-1.425L9.55 15.15l9.175-9.175L20.15 7.4 9.55 18Z',
-  undo: 'M7 19v-2h7.1q1.575 0 2.738-1T18 13.5q0-1.5-1.162-2.5T14.1 10H7.8l2.6 2.6L9 14 4 9l5-5 1.4 1.4L7.8 8h6.3q2.425 0 4.163 1.575T20 13.5q0 2.35-1.737 3.925T14.1 19H7Z',
-  light_mode: 'M12 17q-2.075 0-3.537-1.463T7 12q0-2.075 1.463-3.537T12 7q2.075 0 3.538 1.463T17 12q0 2.075-1.462 3.538T12 17ZM2 13v-2h3v2H2Zm17 0v-2h3v2h-3ZM11 5V2h2v3h-2Zm0 17v-3h2v3h-2ZM6.4 7.8 4.25 5.65l1.4-1.4L7.8 6.4 6.4 7.8Zm12.35 12.35L16.6 18l1.4-1.4 2.15 2.15-1.4 1.4ZM16.6 6.4l2.15-2.15 1.4 1.4L18 7.8l-1.4-1.4ZM4.25 18.75 6.4 16.6l1.4 1.4-2.15 2.15-1.4-1.4Z',
-  dark_mode: 'M12 21q-3.75 0-6.375-2.625T3 12q0-3.75 2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.638 1.888T11.1 7.5q0 2.25 1.575 3.825T16.5 12.9q1.375 0 2.525-.613T20.9 10.65q.05.325.075.662T21 12q0 3.75-2.625 6.375T12 21Z',
-  location_on: 'M12 12q.825 0 1.413-.587T14 10q0-.825-.587-1.412T12 8q-.825 0-1.412.588T10 10q0 .825.588 1.413T12 12Zm0 10q-4.025-3.425-6.012-6.362T4 10.2q0-3.75 2.413-5.975T12 2q3.175 0 5.588 2.225T20 10.2q0 2.5-1.987 5.438T12 22Z',
-  attach_file: 'M11.5 22q-2.3 0-3.9-1.6T6 16.5V6q0-1.65 1.175-2.825T10 2q1.65 0 2.825 1.175T14 6v9.5q0 1.05-.725 1.775T11.5 18q-1.05 0-1.775-.725T9 15.5V6h1.5v9.5q0 .425.288.713T11.5 16.5q.425 0 .713-.287T12.5 15.5V6q0-1.05-.725-1.775T10 3.5q-1.05 0-1.775.725T7.5 6v10.5q0 1.65 1.175 2.825T11.5 20.5q1.65 0 2.825-1.175T15.5 16.5V6H17v10.5q0 2.3-1.6 3.9T11.5 22Z',
-  description: 'M8 18h8v-2H8v2Zm0-4h8v-2H8v2Zm-2 8q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h8l6 6v12q0 .825-.587 1.413T18 22H6Zm7-13V4H6v16h12V9h-5Z',
-  person: 'M12 12q-1.65 0-2.825-1.175T8 8q0-1.65 1.175-2.825T12 4q1.65 0 2.825 1.175T16 8q0 1.65-1.175 2.825T12 12Zm-8 8v-2.8q0-.85.438-1.563T5.6 14.55q1.55-.775 3.15-1.163T12 13q1.65 0 3.25.388t3.15 1.162q.725.375 1.163 1.088T20 17.2V20H4Z',
-  verified_user: 'm10.6 16.2 5.65-5.65-1.425-1.425-4.225 4.225-2.1-2.1L7.075 12.675 10.6 16.2ZM12 22q-3.475-.875-5.738-3.988T4 11.1V5l8-3 8 3v6.1q0 3.8-2.262 6.913T12 22Z',
-  gavel: 'm5.25 18 12.75-12.75 1.75 1.75L7 19.75Zm-2.1 2.1 1.4-1.4 14.15-14.15q.6-.6 1.4-.6t1.4.6l.05.05q.6.6.6 1.4t-.6 1.4L7.4 21.55q-.6.6-1.4.6t-1.4-.6l-1.45-1.45ZM18.7 11.6l-5.65 5.65 2.85 2.85 5.65-5.65ZM8.85 4.6 6 7.45l2.85 2.85 2.85-2.85Z',
-  handshake: 'M8.7 17.3 3.65 12.25q-.3-.3-.425-.662T3.1 10.8q0-.425.138-.8t.437-.675l4.6-4.6q.3-.3.675-.425T9.75 4.175q.425 0 .8.138t.675.437L13.8 7.35l-1.4 1.4-2.6-2.6-4.6 4.6 4.55 4.55ZM12 21.85l-4.55-4.55 1.4-1.4 3.15 3.15 7.8-7.8-1.4-1.4-3.15 3.15-1.4-1.4 3.85-3.85q.3-.3.675-.425t.8-.125q.425 0 .8.138t.675.437l1.7 1.7q.3.3.438.688t.137.812q0 .425-.137.8t-.438.675L12 21.85Z',
-  psychology: 'M12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Z',
-  healing: 'm17.75 21.15-2.15-2.15 4.25-4.25 2.15 2.15Zm-14.9-14.9 2.15-2.15 4.25 4.25-2.15 2.15Zm14.9 0 2.15 2.15-4.25 4.25-2.15-2.15Zm-14.9 14.9 4.25-4.25 2.15 2.15-4.25 4.25ZM12 15.15 8.85 12 12 8.85 15.15 12ZM7.05 21.85l-4.9-4.9q-.6-.6-.6-1.425t.6-1.425l10.9-10.9q.6-.6 1.425-.6t1.425.6l4.9 4.9q.6.6.6 1.425t-.6 1.425l-10.9 10.9q-.6.6-1.425.6t-1.425-.6Z',
-  groups: 'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2Zm-7-8q-1.65 0-2.825-1.175T5 9q0-1.65 1.175-2.825T9 5q1.65 0 2.825 1.175T13 9q0 1.65-1.175 2.825T9 13Zm11 8v-1.9q0-.825-.438-1.537T18.4 16.5q1.55.775 2.075 1.638T21 21Zm-3-8q-.425 0-.85-.062t-.85-.213q1.1-.8 1.4-1.925T18 9q0-1.25-.3-2.375T16.3 4.7q.425-.15.85-.225T18 4.4q1.65 0 2.825 1.175T22 8.4q0 1.65-1.175 2.825T18 13Z',
-  favorite: 'm12 21.35-1.45-1.32Q5.4 15.36 2 12.28 0 8.5 0 5.5 0 2.42 2.42 0 4.24 0 5.86 1.05t2.47 2.7q.85-1.65 2.47-2.7T14.5 0Q16.92 0 19.34 2.42t2.42 5.5q0 3.08-3.4 6.16-3.4 3.08-8.55 7.75l-1.45 1.32Z',
-  volunteer_activism: 'M12 21.35-1.45-1.32Q5.4 15.36 2 12.28 0 8.5 0 5.5 0 2.42 2.42 0 4.24 0 5.86 1.05t2.47 2.7q.85-1.65 2.47-2.7T14.5 0Q16.92 0 19.34 2.42t2.42 5.5q0 3.08-3.4 6.16-3.4 3.08-8.55 7.75l-1.45 1.32Z',
-  terrain: 'm8 3 4 8 5-5 5 15H2L8 3z',
+  check_box: 'M4 4h16v16H4V4Zm1.5 1.5v13h13v-13h-13Zm4.8 9.2L7.5 12l1.1-1.1 1.7 1.7 5.1-5.1L16.5 8.6l-6.2 6.1Z',
+  info: 'M11.25 16h1.5v-5h-1.5v5Zm.75-6.8a.9.9 0 1 0 0-1.8.9.9 0 0 0 0 1.8ZM12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 1.5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Z',
 };
 
 function msIcon(name, size = 20) {
@@ -281,7 +260,7 @@ function msIcon(name, size = 20) {
     svg.innerHTML = APSE_ICON_SVGS[name];
   } else {
     const path = document.createElementNS(svgNS, 'path');
-    path.setAttribute('d', MATERIAL_SYMBOLS[name] || MATERIAL_SYMBOLS.check_box);
+    path.setAttribute('d', MATERIAL_SYMBOLS[name] || MATERIAL_SYMBOLS.info);
     svg.appendChild(path);
   }
   span.appendChild(svg);
@@ -291,19 +270,21 @@ function msIcon(name, size = 20) {
 const I18N = {
   en: {
     nav_tasks: 'My Tasks',
+    nav_field_tasks: 'Field Tasks',
     nav_approvals: 'Approvals',
-    nav_analytics: 'Impact & Analytics',
+    nav_submissions: 'My Submissions',
+    nav_analytics: 'Analytics',
     nav_exports: 'Exports',
-    nav_confidential: 'Log Confidential Case',
-    search_placeholder: 'Search tasks, parishes, or outcomes...',
+    nav_confidential: 'Confidential Case',
+    search_placeholder: 'Search tasks, parishes, or outcomes',
     sync_synced: 'All Data Synced',
-    sync_offline: n => `Saved on Device (${n} waiting for internet)`,
-    sync_updating: (c, t) => `Updating Central Database (${c} of ${t})...`,
+    sync_offline: n => `Saved on device (${n} waiting for internet)`,
+    sync_updating: (c, t) => `Syncing database (${c} of ${t})...`,
     add_planned: '+ Add Planned Activity',
-    log_completed: 'Log Completed Activity',
+    log_completed: 'Log Activity',
     log_progress: 'Log Progress',
     fix_step: s => `Fix Step ${s}`,
-    view_summary: 'View / Update',
+    view_summary: 'View or Update',
     period_all: 'All Dates',
     period_q1: 'This Quarter (Q1)',
     period_ap1: '2026–2027 Year',
@@ -333,32 +314,48 @@ const I18N = {
     submit_parish: 'Submit to Parish Reviewer',
     save_offline_btn: 'Save Offline on Device',
     strategy_report: 'Strategy & Impact Summary Report',
-    nav_my_space: 'My Space',
-    nav_seizure: 'Seizure (F01–F45)',
-    nav_files_validation: 'Files & Validation',
+    nav_my_space: 'My Workspace',
+    nav_seizure: 'Data Entry',
+    nav_files_validation: 'Records & Review',
     nav_learning: 'Learning',
-    nav_reports: 'Reports (R01–R13)',
-    nav_offline_vault: 'Prepare / Open Offline',
-    nav_offline_sync: 'Sync Offline Queue',
-    nav_ps_planning: 'PS Planning',
+    nav_reports: 'Reports',
+    nav_offline_vault: 'Offline Vault',
+    nav_offline_sync: 'Sync Queue',
+    nav_ps_planning: 'Strategic Plan',
     nav_metadata: 'Metadata',
-    nav_feedback: 'Back to the File',
-    nav_projects_ops: 'Projects & Operations',
-    nav_staff_eval: 'Staff Achievements',
-    nav_create_form: 'Create / Share Form',
-    nav_drafts: 'Drafts in Progress',
-    nav_ps_dashboard: 'PS Dashboard',
-    nav_assistant: 'Assistant & Controls',
+    nav_feedback: 'Record Feedback',
+    nav_projects_ops: 'Projects & Ops',
+    nav_staff_eval: 'Staff Performance',
+    nav_create_form: 'Form Builder',
+    nav_drafts: 'Drafts',
+    nav_ps_dashboard: 'Strategy Dashboard',
+    nav_assistant: 'Quality & Writing',
     nav_contacts: 'Contacts',
-    nav_data_structure: 'Data Structure & Flow',
+    nav_data_structure: 'Org & Data Flow',
     nav_timesheets: 'Timesheets',
-    nav_mel_admin: 'MEL Administration',
-    nav_offline_hub: 'Offline Hub (Vault & Sync)',
-
+    nav_mel_admin: 'MEL Admin',
+    nav_offline_hub: 'Offline Sync',
+    nav_group_operations: 'Operations',
+    nav_group_reference: 'Reference & Governance',
+    nav_reference: 'Reference',
+    sidecar_hide: 'Hide',
+    sidecar_full_page: 'Full Page',
+    sidecar_close: 'Close panel (ESC)',
+    sidecar_hide_tip: 'Hide side panel without losing work',
+    sidecar_full_tip: 'Open in main workspace',
+    sidebar_collapse: 'Collapse sidebar',
+    sidebar_expand: 'Expand sidebar',
+    language_label: 'Language',
+    change_language: 'Change language',
+    theme_light: 'Light',
+    theme_dark: 'Dark',
+    close_menu: 'Close menu',
   },
   rw: {
     nav_tasks: 'Ibikorwa Byanjye',
+    nav_field_tasks: 'Ibikorwa byo ku Rwego',
     nav_approvals: 'Kwemeza Raporo',
+    nav_submissions: 'Raporo Nohereje',
     nav_analytics: 'Ibyagezweho n’Isesengura',
     nav_exports: 'Raporo n’Kohereza',
     nav_confidential: "Andika Ikibazo cy'Ibanga",
@@ -420,15 +417,31 @@ const I18N = {
     nav_data_structure: 'Imiterere n’Ihererekanya',
     nav_timesheets: 'Amakarita y’Amasaha',
     nav_mel_admin: 'Ubuyobozi bwa MEL',
-    nav_offline_hub: 'Icyiciro cyo Hanze (Offline Hub)',
-
+    nav_offline_hub: 'Icyiciro cyo Hanze (Offline)',
+    nav_group_operations: 'Ibikorwa',
+    nav_group_reference: 'Imbonerahamwe n’Ubuyobozi',
+    nav_reference: 'Inyandiko Shingiro',
+    sidecar_hide: 'Hisha',
+    sidecar_full_page: 'Urupapuro rwose',
+    sidecar_close: 'Funga (ESC)',
+    sidecar_hide_tip: 'Hisha uruhande rw’iburyo',
+    sidecar_full_tip: 'Fungura ku rupapuro rwose',
+    sidebar_collapse: 'Funga uruhande rw’ibumoso',
+    sidebar_expand: 'Fungura uruhande rw’ibumoso',
+    language_label: 'Ururimi',
+    change_language: 'Hindura ururimi',
+    theme_light: 'Urumuri',
+    theme_dark: 'Umwijima',
+    close_menu: 'Funga urutonde',
   },
   fr: {
     nav_tasks: 'Mes Tâches',
+    nav_field_tasks: 'Tâches terrain',
     nav_approvals: 'Approbations',
+    nav_submissions: 'Mes soumissions',
     nav_analytics: 'Impact et Analyses',
     nav_exports: 'Exports et Transferts',
-    nav_confidential: 'Enregistrer un Cas Confidentiel',
+    nav_confidential: 'Cas confidentiel',
     search_placeholder: 'Rechercher une tâche, paroisse ou résultat...',
     sync_synced: 'Toutes les données synchronisées',
     sync_offline: n => `Enregistré sur l'appareil (${n} en attente)`,
@@ -468,31 +481,47 @@ const I18N = {
     save_offline_btn: 'Enregistrer hors ligne',
     strategy_report: 'Rapport Synthèse Stratégie et Impact',
     nav_my_space: 'Mon espace',
-    nav_seizure: 'Saisie (F01–F45)',
+    nav_seizure: 'Saisie',
     nav_files_validation: 'Dossiers et validation',
     nav_learning: 'Apprentissage',
-    nav_reports: 'Rapports (R01–R13)',
-    nav_offline_vault: 'Préparer / ouvrir hors ligne',
-    nav_offline_sync: 'Synchroniser la file hors ligne',
+    nav_reports: 'Rapports',
+    nav_offline_vault: 'Coffre hors ligne',
+    nav_offline_sync: 'File hors ligne',
     nav_ps_planning: 'Planification du PS',
     nav_metadata: 'Métadonnées',
-    nav_feedback: 'Retours sur les dossiers',
+    nav_feedback: 'Retours sur dossiers',
     nav_projects_ops: 'Projets et opérations',
     nav_staff_eval: 'Évaluation du personnel',
-    nav_create_form: 'Créer / partager un formulaire',
-    nav_drafts: 'Brouillons en cours',
+    nav_create_form: 'Concepteur de formulaires',
+    nav_drafts: 'Brouillons',
     nav_ps_dashboard: 'Tableau de bord PS',
-    nav_assistant: 'Assistant et contrôles',
+    nav_assistant: 'Qualité et rédaction',
     nav_contacts: 'Contacts',
-    nav_data_structure: 'Structure et flux des données',
+    nav_data_structure: 'Structure et flux',
     nav_timesheets: 'Feuilles de temps',
     nav_mel_admin: 'Administration MEL',
-    nav_offline_hub: 'Hub Hors ligne (Coffre & Synchro)',
-
+    nav_offline_hub: 'Synchronisation hors ligne',
+    nav_group_operations: 'Opérations',
+    nav_group_reference: 'Référence et gouvernance',
+    nav_reference: 'Référence',
+    sidecar_hide: 'Masquer',
+    sidecar_full_page: 'Pleine page',
+    sidecar_close: 'Fermer le panneau latéral (ESC)',
+    sidecar_hide_tip: 'Masquer sans perdre le travail en cours',
+    sidecar_full_tip: 'Ouvrir en plein écran dans la zone centrale',
+    sidebar_collapse: 'Réduire en icônes',
+    sidebar_expand: 'Déplier la barre latérale',
+    language_label: 'Langue',
+    change_language: 'Changer de langue',
+    theme_light: 'Clair',
+    theme_dark: 'Sombre',
+    close_menu: 'Fermer le menu',
   },
   sw: {
     nav_tasks: 'Kazi Zangu',
+    nav_field_tasks: 'Kazi za Shambani',
     nav_approvals: 'Uidhinishaji',
+    nav_submissions: 'Mawasilisho Yangu',
     nav_analytics: 'Matokeo na Uchambuzi',
     nav_exports: 'Ripoti na Uhamishaji',
     nav_confidential: 'Rekodi Kesi ya Siri',
@@ -539,23 +568,37 @@ const I18N = {
     nav_files_validation: 'Mafaili na Uthibitisho',
     nav_learning: 'Mafunzo na Maarifa',
     nav_reports: 'Ripoti na Takwimu',
-    nav_offline_vault: 'Andaa / Fungua Nje ya Mtandao',
-    nav_offline_sync: 'Sawazisha Nje ya Mtandao',
+    nav_offline_vault: 'Hifadhi Nje ya Mtandao',
+    nav_offline_sync: 'Foleni ya Usawazishaji',
     nav_ps_planning: 'Upangaji wa PS',
     nav_metadata: 'Data za Msingi',
     nav_feedback: 'Maoni ya Faili',
     nav_projects_ops: 'Miradi na Uendeshaji',
     nav_staff_eval: 'Tathmini ya Wafanyakazi',
-    nav_create_form: 'Tengeneza / Shiriki Fomu',
-    nav_drafts: 'Rasimu Zinazoendelea',
+    nav_create_form: 'Mjenzi wa Fomu',
+    nav_drafts: 'Rasimu',
     nav_ps_dashboard: 'Dashibodi ya PS',
-    nav_assistant: 'Msaidizi na Udhibiti',
+    nav_assistant: 'Ubora na Uandishi',
     nav_contacts: 'Mawasiliano',
-    nav_data_structure: 'Muundo na Mtiririko wa Data',
+    nav_data_structure: 'Muundo na Mtiririko',
     nav_timesheets: 'Karatasi za Saa',
     nav_mel_admin: 'Utawala wa MEL',
-    nav_offline_hub: 'Kituo cha Nje ya Mtandao (Offline Hub)',
-
+    nav_offline_hub: 'Usawazishaji Nje ya Mtandao',
+    nav_group_operations: 'Shughuli',
+    nav_group_reference: 'Rejea na Utawala',
+    nav_reference: 'Rejea',
+    sidecar_hide: 'Ficha',
+    sidecar_full_page: 'Ukurasa Kamili',
+    sidecar_close: 'Funga (ESC)',
+    sidecar_hide_tip: 'Ficha paneli ya pembeni',
+    sidecar_full_tip: 'Fungua katika ukurasa mkuu',
+    sidebar_collapse: 'Kunja upau wa pembeni',
+    sidebar_expand: 'Panua upau wa pembeni',
+    language_label: 'Lugha',
+    change_language: 'Badilisha lugha',
+    theme_light: 'Mwanga',
+    theme_dark: 'Giza',
+    close_menu: 'Funga menyu',
   },
 };
 
@@ -572,14 +615,14 @@ function localize(obj) {
 }
 
 const VOLET_FALLBACKS = {
-  PARAJURISTES: { fr: 'Parajuristes', en: 'Paralegals (Legal Aid)', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
-  PARALEGAL: { fr: 'Parajuristes', en: 'Paralegals (Legal Aid)', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
-  MEDIATEURS: { fr: 'Médiateurs', en: 'Mediators (Peaceful Resolution)', rw: 'Abahuza', sw: 'Wapatanishi' },
-  MEDIATION: { fr: 'Médiateurs', en: 'Mediators (Peaceful Resolution)', rw: 'Abahuza', sw: 'Wapatanishi' },
-  ABAHUMURIZAMITIMA: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Companions', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
-  ACTIVE_LISTENING: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Companions', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
-  ISANAMITIMA: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation (Isanamitima)', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
-  HEALING_FACILITATION: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation (Isanamitima)', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
+  PARAJURISTES: { fr: 'Parajuristes', en: 'Paralegals', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
+  PARALEGAL: { fr: 'Parajuristes', en: 'Paralegals', rw: 'Abafasha mu mategeko', sw: 'Wasaidizi wa Kisheria' },
+  MEDIATEURS: { fr: 'Médiateurs', en: 'Mediators', rw: 'Abahuza', sw: 'Wapatanishi' },
+  MEDIATION: { fr: 'Médiateurs', en: 'Mediators', rw: 'Abahuza', sw: 'Wapatanishi' },
+  ABAHUMURIZAMITIMA: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Support', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
+  ACTIVE_LISTENING: { fr: 'Abahumurizamitima (Écoute active)', en: 'Psychosocial Support', rw: 'Abahumurizamitima', sw: 'Wafariji wa Kisaikolojia' },
+  ISANAMITIMA: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
+  HEALING_FACILITATION: { fr: 'Isanamitima (Guérison & Réconciliation)', en: 'Healing & Reconciliation', rw: 'Abafashamyumvire mu isanamitima', sw: 'Wawezeshaji wa Uponyaji' },
   FIELD: { fr: 'Terrain général (Centrale / CEB)', en: 'General Field Work', rw: 'Ibikorwa rusange bya Santarali', sw: 'Kazi ya Jumla' },
 };
 
@@ -759,7 +802,9 @@ async function loadBootstrap() {
     if (coreWorkspaces.includes(V1.workspace) && !allowedWorkspaces.includes(V1.workspace)) {
       V1.workspace = V1.data?.user?.permissions?.default_workspace || allowedWorkspaces[0] || 'tasks';
     }
-    localStorage.setItem('apse-v1-snapshot', JSON.stringify(V1.data));
+    if (!q.toString() || !localStorage.getItem('apse-v1-snapshot')) {
+      localStorage.setItem('apse-v1-snapshot', JSON.stringify(V1.data));
+    }
   } catch (e) {
     const cached = localStorage.getItem('apse-v1-snapshot');
     if (cached) {
@@ -981,7 +1026,7 @@ function renderParishCombobox(selectedCode, onSelect, allowAll = true) {
       ? h('button', { type: 'button', className: 'v1-btn v1-btn-ghost v1-btn-sm', onClick: () => onSelect('') }, 'Clear')
       : null,
     h('datalist', { id: listId },
-      parishes.map(p => h('option', { value: p.name }, `${p.name} · ${p.district} District`))
+      parishes.map(p => h('option', { value: p.name }, `${p.name} (${p.district} District)`))
     )
   );
 }
@@ -1061,14 +1106,14 @@ function renderRoleWorkspaceBanner() {
   const user = V1.data?.user || {};
   const perms = user.permissions || {};
   const tier = perms.tier || 'mel';
-  const scopeText = user.assigned_parish ? `Parish Scope (${user.assigned_parish})` : 'Diocesan Scope (All 27 Parishes)';
+  const scopeText = user.assigned_parish ? `Parish: ${user.assigned_parish}` : 'All 27 Parishes (Diocese)';
   const tierBadges = {
-    field: { label: 'Field Enumerator (CCJP / CEB)', tone: 'info' },
-    cpjp: { label: 'Parish CPJP Committee (7-Member + Chaplain)', tone: 'GOOD' },
-    staff: { label: 'CDJP Diocesan Project Staff', tone: 'info' },
-    mel: { label: 'CDJP Diocesan M&E (Suivi-Évaluation)', tone: 'GREAT' },
-    coordination: { label: 'CDJP Diocesan Coordination', tone: 'GREAT' },
-    direction: { label: 'CDJP Diocesan Direction (Final Sign-Off)', tone: 'GREAT' },
+    field: { label: 'Field Reporter (CCJP / CEB)', tone: 'info' },
+    cpjp: { label: 'Parish CPJP Committee (7 Members)', tone: 'GOOD' },
+    staff: { label: 'CDJP Diocesan Staff', tone: 'info' },
+    mel: { label: 'CDJP Diocesan MEL', tone: 'GREAT' },
+    coordination: { label: 'CDJP Coordination', tone: 'GREAT' },
+    direction: { label: 'CDJP Direction', tone: 'GREAT' },
   };
   const badge = tierBadges[tier] || tierBadges.mel;
   return h('div', { className: 'v1-role-banner' },
@@ -1076,14 +1121,14 @@ function renderRoleWorkspaceBanner() {
       renderLozenge(badge.label, badge.tone, 'verified_user'),
       renderLozenge(scopeText, 'neutral', 'location_on'),
       perms.prep_mode === 'COMMITTEE'
-        ? renderLozenge('7-Member CPJP + Chaplain Prep', 'neutral')
-        : renderLozenge('2-Person Pair Prep (CCJP/CEB)', 'neutral'),
+        ? renderLozenge('7-Member CPJP Team', 'neutral')
+        : renderLozenge('2-Person Pair', 'neutral'),
       !perms.can_create_task
-        ? renderLozenge('Execution Only (No Plan Creation)', 'warn')
+        ? renderLozenge('Execution Only', 'warn')
         : renderLozenge(`Plan Horizons: ${(perms.plan_horizons || []).join(', ')}`, 'neutral')
     ),
     h('div', { className: 'v1-role-banner-copy' },
-      perms.mandate || 'Institutional role-scoped workspace aligned with CDJP Butare governance rules.'
+      perms.mandate || 'Role workspace following CDJP Butare governance rules.'
     )
   );
 }
@@ -1105,7 +1150,7 @@ function renderSyncModal() {
   },
     h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true', style: { borderRadius: 'var(--radius-md)', margin: 'auto', maxWidth: '680px' } },
       h('div', { className: 'v1-sheet-header' },
-        h('h2', { className: 'v1-section-title' }, 'Local SQLite → Central Server Sync & Schema Migrations'),
+        h('h2', { className: 'v1-section-title' }, 'Database Sync and Migrations'),
         h('button', {
           type: 'button',
           className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -1128,23 +1173,23 @@ function renderSyncModal() {
           : null,
         h('div', { className: 'v1-kpi-grid', style: { marginBottom: '14px' } },
           h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
-            h('span', {}, 'Local Outbox Pending Upload'),
+            h('span', {}, 'Pending Upload'),
             h('strong', { className: 'v1-kpi-value' }, String(outbox.pending || 0)),
-            h('div', { className: 'v1-field-helper' }, `${outbox.pending_tasks || 0} Tasks · ${outbox.pending_logs || 0} Activity Logs`)
+            h('div', { className: 'v1-field-helper' }, `${outbox.pending_tasks || 0} Tasks, ${outbox.pending_logs || 0} Activity Logs`)
           ),
           h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 5' } },
-            h('span', {}, 'Synced to Central DB'),
+            h('span', {}, 'Synced to Server'),
             h('strong', { className: 'v1-kpi-value' }, String(outbox.synced || 0)),
             h('div', { className: 'v1-field-helper' }, sync.last_sync_at ? `Last: ${sync.last_sync_at.slice(0, 19).replace('T', ' ')}` : 'Ready for initial sync')
           ),
           h('div', { className: 'v1-kpi-card', style: { gridColumn: 'span 6' } },
-            h('span', {}, 'DB Schema Migration Version'),
+            h('span', {}, 'Schema Version'),
             h('strong', { className: 'v1-kpi-value' }, `v${sync.schema_version || 3}`),
-            h('div', { className: 'v1-field-helper' }, '001_baseline · 002_workflow · 003_sync_outbox')
+            h('div', { className: 'v1-field-helper' }, 'Baseline, Workflow, Sync Outbox')
           )
         ),
         h('div', { style: { background: 'var(--bg-input)', padding: '12px', borderRadius: 'var(--radius-sm)', marginBottom: '14px' } },
-          h('label', { className: 'v1-field-label' }, 'Remote / Central Database Target Endpoint'),
+          h('label', { className: 'v1-field-label' }, 'Central Server Target'),
           h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
             h('input', {
               id: 'v1-sync-remote-url',
@@ -1168,7 +1213,7 @@ function renderSyncModal() {
             }, 'Save Target')
           ),
           h('div', { className: 'v1-field-helper', style: { marginTop: '6px' } },
-            'Reads unsynced records from the local SQLite database (sync_outbox), verifies schema migration compatibility, uploads local tasks/logs, and pulls diocesan approvals.'
+            'Reads unsynced local SQLite records, checks schema compatibility, uploads local tasks and logs, and pulls diocesan approvals.'
           )
         ),
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '10px', marginBottom: '14px', flexWrap: 'wrap' } },
@@ -1177,7 +1222,7 @@ function renderSyncModal() {
             id: 'v1-run-db-sync-btn',
             className: 'v1-btn',
             onClick: () => runDatabaseSyncNow(),
-          }, msIcon('sync', 18), h('span', {}, 'Sync Local DB to Central Server Now')),
+          }, msIcon('sync', 18), h('span', {}, 'Sync Database Now')),
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -1189,7 +1234,7 @@ function renderSyncModal() {
         ),
         (sync.history && sync.history.length)
           ? h('div', {},
-              h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, 'Recent Database Synchronization Audit Log'),
+              h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, 'Recent Sync History'),
               h('table', { className: 'v1-data-table' },
                 h('thead', {},
                   h('tr', {},
@@ -1348,8 +1393,13 @@ function renderMobileBottomSheet() {
             V1.filters.axis = '';
             V1.filters.parish = '';
             V1.filters.status = 'ALL';
+            V1.filters.approvalStage = 'ALL';
+            V1.filters.issueCategory = 'ALL';
             V1.filters.dateFrom = '';
             V1.filters.dateTo = '';
+            V1.searchQuery = '';
+            V1.cuFilterRules = null;
+            V1.cuConjunction = 'AND';
             await loadBootstrap();
             V1.mobileSheet = null;
             renderApp();
@@ -1455,7 +1505,7 @@ function renderPersonaModal() {
   },
     h('div', { className: 'v1-bottom-sheet', role: 'dialog', 'aria-modal': 'true', style: { borderRadius: 'var(--radius-md)', margin: 'auto', maxWidth: '640px', width: '95%' } },
       h('div', { className: 'v1-sheet-header' },
-        h('h2', { className: 'v1-section-title' }, 'Account Management, Sign-In & Role Switcher'),
+        h('h2', { className: 'v1-section-title' }, 'Account and Role Switcher'),
         h('button', {
           type: 'button',
           className: 'v1-btn v1-btn-ghost v1-btn-sm',
@@ -1466,10 +1516,10 @@ function renderPersonaModal() {
         /* Current Active Account Banner */
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap', background: 'var(--bg-canvas)', border: '1px solid var(--border-subtle)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '12px' } },
           h('div', {},
-            h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, 'Currently Active Account'),
+            h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, 'Active Account'),
             h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)' } }, `${currentUser.name || 'LOCAL_MEL'} (${currentUser.username || activeKey})`),
             h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' } },
-              `Roles: ${(currentUser.roles || ['APSE_MEL']).join(', ')} · Scope: ${currentUser.is_diocesan ? 'All 27 Parishes (Diocesan)' : (currentUser.assigned_parish || 'PAR-01')}`
+              `Roles: ${(currentUser.roles || ['APSE_MEL']).join(', ')}, Scope: ${currentUser.is_diocesan ? 'All 27 Parishes (Diocesan)' : (currentUser.assigned_parish || 'PAR-01')}`
             )
           ),
           h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
@@ -1562,13 +1612,13 @@ function renderPersonaModal() {
                 id: 'acc-parish',
                 value: draft.parish_code || 'PAR-03',
                 width: '100%',
-                options: (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Cathédrale Butare' }, { code: 'PAR-24', name: 'Kibeho' }])
-                  .map(p => ({ value: p.code, label: `${p.code} — ${p.name}` })),
+                options: (parishes.length ? parishes : [{ code: 'PAR-01', name: 'Gakoma' }, { code: 'PAR-03', name: 'Save' }, { code: 'PAR-10', name: 'Butare Cathedral' }, { code: 'PAR-24', name: 'Kibeho' }])
+                  .map(p => ({ value: p.code, label: `${p.code}: ${p.name}` })),
                 onChange: val => { draft.parish_code = val; },
               })
             ) : h('div', { className: 'v1-field' },
               h('label', { className: 'v1-field-label' }, 'Data Scope'),
-              h('div', { className: 'v1-field-helper', style: { marginTop: 0 } }, 'Diocesan role: starts with a clean workspace and sees records it creates or reviews.')
+              h('div', { className: 'v1-field-helper', style: { marginTop: 0 } }, 'Diocesan account starts with an empty workspace and shows records you create or review.')
             )
           ),
           draft.error ? h('div', { className: 'v1-field-error', style: { marginBottom: '8px' } }, draft.error) : null,
@@ -1651,7 +1701,7 @@ function renderPersonaModal() {
 
         /* Web GUI Account Sign-In (Password Auth) */
         h('div', { style: { background: 'var(--bg-input)', padding: '12px', borderRadius: 'var(--radius-sm)', marginBottom: '14px' } },
-          h('strong', { style: { display: 'block', marginBottom: '6px', fontSize: '0.8125rem' } }, 'Web GUI Account Sign-In (Password Auth)'),
+          h('strong', { style: { display: 'block', marginBottom: '6px', fontSize: '0.8125rem' } }, 'Account Sign-In'),
           h('div', { style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
             h('input', {
               id: 'v1-web-login-user',
@@ -1696,7 +1746,7 @@ function renderPersonaModal() {
           V1.loginError ? h('div', { className: 'v1-field-error', style: { marginTop: '6px' } }, V1.loginError) : null
         ),
         h('p', { className: 'v1-page-subtitle', style: { marginBottom: '12px' } },
-          'Or click any Diocesan / Parish / Custom account below for instant switching:'
+          'Or select a Diocesan, Parish, or custom account to switch:'
         ),
         h('div', { className: 'v1-radio-cards v1-account-cards' },
           personas.map(p =>
@@ -1714,8 +1764,8 @@ function renderPersonaModal() {
               },
             },
               h('div', { className: 'v1-account-card-main' },
-                h('strong', {}, `${p.name} — ${p.label} (${p.key})`),
-                h('span', {}, `Roles: ${p.roles.join(', ')} · Scope: ${p.parish_code ? p.parish_code : 'All 27 Parishes (Diocesan)'}`)
+                h('strong', {}, `${p.name}: ${p.label} (${p.key})`),
+                h('span', {}, `Roles: ${p.roles.join(', ')}, Scope: ${p.parish_code ? p.parish_code : 'All 27 Parishes (Diocesan)'}`)
               ),
               p.is_custom ? h('button', {
                 type: 'button',
@@ -1777,7 +1827,7 @@ function renderWizardView() {
         ),
         h('h2', { className: 'v1-section-title' }, localize(task.titles)),
         h('div', { className: 'v1-field-helper' },
-          `Minimum threshold for Good Impact: ${task.min_threshold} · Great Impact target: ${task.target_threshold}`
+          `Good Impact minimum: ${task.min_threshold}, Great Impact target: ${task.target_threshold}`
         )
       ),
       h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '16px' } },
@@ -1796,7 +1846,7 @@ function renderWizardView() {
           period.valid
             ? h('div', { className: 'v1-field-helper' },
                 msIcon('calendar_today', 16),
-                h('span', {}, `Auto-Tagged: ${period.yearLabel} · ${period.quarter}`)
+                h('span', {}, `Period: ${period.yearLabel}, ${period.quarter}`)
               )
             : h('div', { className: 'v1-field-error' },
                 msIcon('warning', 16),
@@ -1804,7 +1854,7 @@ function renderWizardView() {
               )
         ),
         h('div', { className: 'v1-field' },
-          h('label', { className: 'v1-field-label' }, 'Parish (Auto-Scoped to Your Account)'),
+          h('label', { className: 'v1-field-label' }, 'Parish'),
           renderParishCombobox(w.parish_code, newCode => {
             if (!newCode) return;
             w.parish_code = newCode;
@@ -1813,12 +1863,12 @@ function renderWizardView() {
             saveWizardDraftLocal();
             renderApp();
           }, false),
-          h('div', { className: 'v1-field-helper' }, 'Automatically displays Centrales and CEBs in this parish.')
+          h('div', { className: 'v1-field-helper' }, 'Shows Centrales and CEBs in this parish.')
         )
       ),
       h('div', { className: 'v1-field' },
         h('label', { className: 'v1-field-label' },
-          `Select Local Centrale or CEB in ${currentParish.name} Parish`
+          `Centrale or CEB in ${currentParish.name} Parish`
         ),
         h('div', { className: 'v1-chips' },
           locations.map(loc =>
@@ -1835,7 +1885,7 @@ function renderWizardView() {
         )
       ),
       h('div', { className: 'v1-field' },
-        h('label', { className: 'v1-field-label' }, 'Collection Mode (Choose How Data Was Gathered)'),
+        h('label', { className: 'v1-field-label' }, 'Collection Method'),
         h('div', { className: 'v1-radio-cards' },
           modes.map(m =>
             h('button', {
@@ -1853,9 +1903,9 @@ function renderWizardView() {
           )
         )
       ),
-      /* Institutional Governance: 4 CPJP Specialist Volets + Preparation Accountability + Safeguards */
+      /* Institutional Governance: 4 CPJP Specialist Teams + Preparation Accountability + Safeguards */
       h('div', { className: 'v1-field' },
-        h('label', { className: 'v1-field-label' }, 'CPJP Specialist Volet (4 Institutional Commissions)'),
+        h('label', { className: 'v1-field-label' }, 'Specialist Team'),
         h('div', { className: 'v1-chips' },
           (Array.isArray(V1.data?.volets) && V1.data.volets.length > 0
             ? V1.data.volets
@@ -1888,7 +1938,7 @@ function renderWizardView() {
       ),
       h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', marginBottom: '12px' } },
         h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-          h('label', { className: 'v1-field-label' }, 'Activity Preparation Accountability Mode'),
+          h('label', { className: 'v1-field-label' }, 'Preparation Team'),
           h('div', { className: 'v1-segmented' },
             [
               ['PAIR', '2-Person Pair (CCJP / CEB)'],
@@ -1900,7 +1950,7 @@ function renderWizardView() {
                 onClick: () => {
                   w.prep_mode = code;
                   if (code === 'COMMITTEE' && (!w.prep_names || w.prep_names.length < 7)) {
-                    w.prep_names = ['Président CPJP', 'Vice-Président', 'Secrétaire', 'Trésorier', 'Conseiller 1', 'Conseiller 2', 'Aumônier Paroissial'];
+                    w.prep_names = ['CPJP Chair', 'Vice Chair', 'Secretary', 'Treasurer', 'Advisor 1', 'Advisor 2', 'Parish Chaplain'];
                   } else if (code === 'PAIR' && (!w.prep_names || w.prep_names.length < 2)) {
                     w.prep_names = ['Ndayisaba Jean', 'Mukamana Claire'];
                   }
@@ -1923,12 +1973,12 @@ function renderWizardView() {
           })
         ),
         h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-          h('label', { className: 'v1-field-label' }, 'Cross-Cutting Institutional Safeguards Verified'),
+          h('label', { className: 'v1-field-label' }, 'Safeguards Checked'),
           h('div', { className: 'v1-chips', style: { marginTop: '4px' } },
             [
-              ['cnv', 'Non-Violent Communication (CNV)'],
+              ['cnv', 'Nonviolent Communication (NVC)'],
               ['dnh', 'Do No Harm (DNH)'],
-              ['trauma', 'Trauma Healing Sensitivity'],
+              ['trauma', 'Trauma Sensitivity'],
             ].map(([k, lbl]) =>
               h('button', {
                 type: 'button',
@@ -1947,7 +1997,7 @@ function renderWizardView() {
     );
   } else if (w.step === 2) {
     stepContent = h('div', { className: 'v1-wizard-step-content' },
-      h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } }, 'Participant Counts (Auto-Calculated Total)'),
+      h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } }, 'Participants'),
       h('div', { className: 'v1-number-grid' },
         renderStepperInput('Women Participants', w.women, val => {
           w.women = val;
@@ -1966,7 +2016,7 @@ function renderWizardView() {
         })
       ),
       h('div', { className: 'v1-total-banner' },
-        h('span', {}, 'Total Participants (Women + Men Automatically Calculated)'),
+        h('span', {}, 'Total Participants (Women + Men)'),
         h('span', { className: 'v1-mono', style: { fontSize: '1.25rem', fontWeight: '700' } }, `${totalParticipants} Participants`)
       ),
       h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', marginTop: '20px', marginBottom: '8px' } },
@@ -2101,7 +2151,7 @@ function renderWizardView() {
           h('div', {},
             h('h3', { className: 'v1-task-title' }, localize(task.outcome_prompt)),
             h('div', { className: 'v1-field-helper' },
-              `Minimum Threshold for Good Impact: ${task.min_threshold} · Great Impact Target: ${task.target_threshold}`
+              `Good Impact minimum: ${task.min_threshold}, Great Impact target: ${task.target_threshold}`
             )
           ),
           renderLozenge(
@@ -2137,7 +2187,7 @@ function renderWizardView() {
       (w.issue_severity !== 'NONE' || Number(w.outcome_value || 0) < Number(task.min_threshold || 0))
         ? h('div', { style: { background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', padding: '16px', borderRadius: 'var(--radius-md)', marginBottom: '18px' } },
             h('div', { className: 'v1-field' },
-              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Select Issue Categories (Filter Chips)'),
+              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Issue Categories'),
               h('div', { className: 'v1-chips' },
                 (V1.data?.issue_categories || ['Transport', 'Turnout', 'Budget', 'Weather', 'Security', 'Other']).map(cat =>
                   h('button', {
@@ -2154,7 +2204,7 @@ function renderWizardView() {
               )
             ),
             h('div', { className: 'v1-field', style: { marginBottom: 0 } },
-              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Short Explanation (What happened and what support is needed?)'),
+              h('label', { className: 'v1-field-label', style: { color: 'var(--tag-warn-text)' } }, 'Short Explanation (What happened and what support do you need?)'),
               h('textarea', {
                 rows: '3',
                 className: 'v1-textarea',
@@ -2166,29 +2216,29 @@ function renderWizardView() {
           )
         : null,
       h('div', { className: 'v1-field' },
-        h('label', { className: 'v1-field-label' }, 'Qualitative Story of Change or Key Observation (Optional)'),
+        h('label', { className: 'v1-field-label' }, 'Story of Change or Key Observation (Optional)'),
         h('textarea', {
           rows: '2',
           className: 'v1-textarea',
-          placeholder: 'Brief real-world example of impact...',
+          placeholder: 'Brief example of impact...',
           value: w.story_of_change,
           onChange: e => { w.story_of_change = e.target.value; saveWizardDraftLocal(); },
         }),
-        h('div', { className: 'v1-field-helper' }, 'Entered narrative remains in its original source language.')
+        h('div', { className: 'v1-field-helper' }, 'Keep the note in its original language.')
       ),
       h('div', { className: 'v1-field' },
-        h('label', { className: 'v1-field-label' }, 'Attach Attendance Sheet or Photo Receipt'),
+        h('label', { className: 'v1-field-label' }, 'Attendance Sheet or Photo Receipt'),
         h('div', { className: 'v1-file-upload-wrap' },
           h('button', {
             type: 'button',
-            className: 'v1-btn v1-btn-secondary v1-file-upload-btn',
+            className: 'v1-btn v1-file-upload-btn',
             onClick: () => {
               const inp = document.getElementById('wizard_file_input');
               if (inp) inp.click();
             },
           },
             msIcon('upload_file', 18),
-            h('span', {}, 'Attach Document / Photo...')
+            h('span', {}, 'Attach Document or Photo')
           ),
           h('input', {
             id: 'wizard_file_input',
@@ -2219,31 +2269,31 @@ function renderWizardView() {
               style: { width: '18px', height: '18px', borderRadius: 'var(--radius-xs)' },
               onChange: e => { w.privacy_confirmed = e.target.checked; saveWizardDraftLocal(); renderApp(); },
             }),
-            'I confirm no victim names or private medical details are written in the general notes.'
+            'I confirm I did not write victim names or private medical details in the general notes.'
           )
         : null
     );
   } else if (w.step === 4) {
     const actionPct = Math.min(100, Math.round((Number(w.sessions_done || 0) / Number(task.planned_target || 1)) * 100));
     stepContent = h('div', { className: 'v1-wizard-step-content' },
-      h('h2', { className: 'v1-section-title', style: { marginBottom: '14px' } }, 'Quick Summary Before Submitting'),
+      h('h2', { className: 'v1-section-title', style: { marginBottom: '14px' } }, 'Summary Before Submitting'),
       h('div', { className: 'v1-kpi-grid', style: { marginBottom: '18px' } },
         h('div', { className: 'v1-kpi-card v1-step4-card-5' },
-          h('span', {}, 'Location & Pastoral Period'),
-          h('strong', { style: { fontSize: '1.125rem', fontFamily: 'var(--font-sans)' } }, `${currentParish.name} · ${w.centrale}`),
+          h('span', {}, 'Location and Period'),
+          h('strong', { style: { fontSize: '1.125rem', fontFamily: 'var(--font-sans)' } }, `${currentParish.name}, ${w.centrale}`),
           h('div', { className: 'v1-field-helper' },
-            `${w.event_date} (${period.yearLabel} · ${period.quarter})`
+            `${w.event_date} (${period.yearLabel}, ${period.quarter})`
           )
         ),
         h('div', { className: 'v1-kpi-card v1-step4-card-5' },
           h('span', {}, 'Total Participants'),
           h('strong', {}, String(totalParticipants)),
           h('div', { className: 'v1-field-helper' },
-            `${w.women} Women · ${w.men} Men · ${w.disability} with Disabilities`
+            `${w.women} Women, ${w.men} Men, ${w.disability} with Disabilities`
           )
         ),
         h('div', { className: 'v1-kpi-card v1-step4-card-6' },
-          h('span', {}, 'Action Completion & Impact Badge'),
+          h('span', {}, 'Completion and Impact'),
           h('div', { style: { display: 'flex', alignItems: 'center', gap: '10px', marginTop: '8px' } },
             h('strong', { style: { margin: 0, fontSize: '1.5rem' } }, `${actionPct}%`),
             renderLozenge(L('impact_' + previewImpact), previewImpact)
@@ -2257,8 +2307,8 @@ function renderWizardView() {
         ? h('div', { style: { padding: '12px 16px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-md)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' } },
             msIcon(w.issue_severity === 'MAJOR' ? 'error' : (w.issue_severity === 'MEDIUM' ? 'warning' : 'info'), 20),
             h('div', {},
-              h('strong', {}, `Logged Field Issue (${w.issue_severity}): `),
-              `${w.issue_categories.join(', ') || 'General'} — ${w.issue_note}`
+              h('strong', {}, `Field Issue (${w.issue_severity}): `),
+              `${w.issue_categories.join(', ') || 'General'}: ${w.issue_note}`
             )
           )
         : null
@@ -2278,7 +2328,7 @@ function renderWizardView() {
             renderApp();
           },
         }, msIcon('arrow_back', 16), h('span', {}, 'Back to My Tasks')),
-        renderLozenge(`Step ${w.step} of 4 · Draft Saved`, 'info', 'cloud_done')
+        renderLozenge(`Step ${w.step} of 4 (Draft Saved)`, 'info', 'cloud_done')
       ),
       /* Section 5.2: Cisco Momentum Compact Mobile Progress Header */
       h('div', { className: 'v1-momentum-progress-header' },
@@ -2627,34 +2677,72 @@ function renderClickUpDatePicker(opts) {
   );
 }
 
+function isCuRuleActive(r) {
+  return Boolean(r && (r.operator === 'is_set' || r.operator === 'is_not_set' || (r.value !== '' && r.value !== 'ALL')));
+}
+
+function countActiveFilters(includeApprovalStage = false) {
+  const activeRules = (V1.cuFilterRules || []).filter(isCuRuleActive);
+  const ruledFields = new Set(activeRules.map(r => r.field));
+  const extraFields = [
+    !ruledFields.has('axis') ? V1.filters.axis : '',
+    !ruledFields.has('parish') ? V1.filters.parish : '',
+    !ruledFields.has('period') && V1.filters.period !== 'ALL' ? V1.filters.period : '',
+    includeApprovalStage && !ruledFields.has('approvalStage') && V1.filters.approvalStage !== 'ALL' ? V1.filters.approvalStage : '',
+    V1.filters.dateFrom,
+    !ruledFields.has('dueDate') ? V1.filters.dateTo : '',
+  ].filter(Boolean);
+  return activeRules.length + extraFields.length;
+}
+
 /* Sync ClickUp Filter Builder Rules to V1.filters */
-async function syncCuRulesToV1Filters() {
+async function syncCuRulesToV1Filters(options = {}) {
   const rules = V1.cuFilterRules || [];
-  for (const r of rules) {
-    if (r.field === 'axis') {
-      V1.filters.axis = r.operator === 'is' ? (r.value || '') : '';
-    } else if (r.field === 'parish') {
-      V1.filters.parish = r.operator === 'is' ? (r.value || '') : '';
-    } else if (r.field === 'status') {
-      V1.filters.status = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
-    } else if (r.field === 'approvalStage') {
-      V1.filters.approvalStage = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
-    } else if (r.field === 'issueCategory') {
-      V1.filters.issueCategory = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
-    } else if (r.field === 'period') {
-      V1.filters.period = r.operator === 'is' ? (r.value || 'ALL') : 'ALL';
-    } else if (r.field === 'dueDate' && r.operator === 'is' && r.value) {
-      V1.filters.dateTo = r.value;
-    }
+  const activeRules = rules.filter(isCuRuleActive);
+  const preserveNonRuleStatus = Boolean(options.preserveStatusIfUnruled && !rules.some(r => r.field === 'status'));
+
+  V1.filters.axis = '';
+  V1.filters.parish = '';
+  if (!preserveNonRuleStatus) {
+    V1.filters.status = 'ALL';
   }
-  await loadBootstrap();
+  V1.filters.approvalStage = 'ALL';
+  V1.filters.issueCategory = 'ALL';
+  V1.filters.period = 'ALL';
+  V1.filters.dateTo = '';
+  if (options.clearDates && !activeRules.some(r => r.field === 'dueDate')) {
+    V1.filters.dateFrom = '';
+  }
+
+  // Only narrow V1.filters (AND-ed in loadBootstrap/workspace) when not evaluating an OR across multiple rules
+  if (V1.cuConjunction !== 'OR' || activeRules.length <= 1) {
+    const byField = {};
+    for (const r of activeRules) {
+      if (r.operator === 'is' && r.value && r.value !== 'ALL') {
+        if (!byField[r.field]) byField[r.field] = new Set();
+        byField[r.field].add(r.value);
+      }
+    }
+    const singleVal = f => (byField[f] && byField[f].size === 1 ? [...byField[f]][0] : null);
+    if (singleVal('axis')) V1.filters.axis = singleVal('axis');
+    if (singleVal('parish')) V1.filters.parish = singleVal('parish');
+    if (singleVal('status')) V1.filters.status = singleVal('status');
+    if (singleVal('approvalStage')) V1.filters.approvalStage = singleVal('approvalStage');
+    if (singleVal('issueCategory')) V1.filters.issueCategory = singleVal('issueCategory');
+    if (singleVal('period')) V1.filters.period = singleVal('period');
+    if (singleVal('dueDate')) V1.filters.dateTo = singleVal('dueDate');
+  }
+
   renderApp();
+  try {
+    await loadBootstrap();
+  } finally {
+    renderApp();
+  }
 }
 
 function matchesCuFilterRules(item) {
-  const rules = (V1.cuFilterRules || []).filter(r =>
-    r.operator === 'is_set' || r.operator === 'is_not_set' || (r.value !== '' && r.value !== 'ALL')
-  );
+  const rules = (V1.cuFilterRules || []).filter(isCuRuleActive);
   if (!rules.length) return true;
 
   const evalRule = r => {
@@ -2663,7 +2751,12 @@ function matchesCuFilterRules(item) {
     else if (r.field === 'parish') fieldVal = item.parish_code || '';
     else if (r.field === 'status') fieldVal = item.status || '';
     else if (r.field === 'approvalStage') fieldVal = item.stage || '';
-    else if (r.field === 'period') fieldVal = item.pastoral_quarter || item.ap || '';
+    else if (r.field === 'issueCategory') fieldVal = item.issue_category || '';
+    else if (r.field === 'period') {
+      fieldVal = (typeof r.value === 'string' && r.value.startsWith('AP'))
+        ? (item.ap || item.pastoral_year || '')
+        : (item.pastoral_quarter || item.ap || item.pastoral_year || '');
+    }
     else if (r.field === 'impact') fieldVal = item.impact_rating || '';
     else if (r.field === 'dueDate') fieldVal = String(item.due_date || item.event_date || '');
 
@@ -2753,20 +2846,39 @@ function renderClickUpFilterPopover(themes, options) {
     return [];
   };
 
+  const resetAllFilterState = (clearSearch = true) => {
+    V1.filters.period = 'ALL';
+    V1.filters.axis = '';
+    V1.filters.parish = '';
+    V1.filters.status = 'ALL';
+    V1.filters.approvalStage = 'ALL';
+    V1.filters.issueCategory = 'ALL';
+    V1.filters.dateFrom = '';
+    V1.filters.dateTo = '';
+    if (clearSearch) V1.searchQuery = '';
+    V1.cuFilterRules = [{ id: 'rule-1', field: defaultFirstField, operator: 'is', value: '' }];
+    V1.cuConjunction = 'AND';
+    V1.cuOperatorMenuRowId = null;
+    V1.cuSavedFiltersOpen = false;
+    V1.cuDatePickerOpen = false;
+    V1.cuDatePickerContext = null;
+    if (window.V091) window.V091.openDropdownId = null;
+  };
+
   const savedPresets = mode === 'approvals'
     ? [
-        { label: 'All Submissions', apply: () => { V1.filters.approvalStage = 'ALL'; V1.filters.axis = ''; V1.filters.parish = ''; V1.filters.period = 'ALL'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: '' }]; } },
-        { label: 'Awaiting Parish CPJP', apply: () => { V1.filters.approvalStage = 'SUBMITTED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'SUBMITTED' }]; } },
-        { label: 'Validated by Parish', apply: () => { V1.filters.approvalStage = 'PARISH_APPROVED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'PARISH_APPROVED' }]; } },
-        { label: 'Final Diocese Approved', apply: () => { V1.filters.approvalStage = 'DIOCESE_APPROVED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'DIOCESE_APPROVED' }]; } },
-        { label: 'Returned for Correction', apply: () => { V1.filters.approvalStage = 'CORRECTION'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'CORRECTION' }]; } },
+        { label: 'All Submissions', apply: () => { resetAllFilterState(true); V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: '' }]; } },
+        { label: 'Awaiting Parish CPJP', apply: () => { resetAllFilterState(false); V1.filters.approvalStage = 'SUBMITTED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'SUBMITTED' }]; } },
+        { label: 'Validated by Parish', apply: () => { resetAllFilterState(false); V1.filters.approvalStage = 'PARISH_APPROVED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'PARISH_APPROVED' }]; } },
+        { label: 'Final Diocese Approved', apply: () => { resetAllFilterState(false); V1.filters.approvalStage = 'DIOCESE_APPROVED'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'DIOCESE_APPROVED' }]; } },
+        { label: 'Returned for Correction', apply: () => { resetAllFilterState(false); V1.filters.approvalStage = 'CORRECTION'; V1.cuFilterRules = [{ id: 'r1', field: 'approvalStage', operator: 'is', value: 'CORRECTION' }]; } },
       ]
     : [
-        { label: 'All Assigned Tasks', apply: () => { V1.filters.status = 'ALL'; V1.filters.axis = ''; V1.filters.parish = ''; V1.filters.period = 'ALL'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: '' }]; } },
-        { label: 'This Quarter (Q1)', apply: () => { V1.filters.period = 'Q1'; V1.cuFilterRules = [{ id: 'r1', field: 'period', operator: 'is', value: 'Q1' }]; } },
-        { label: 'Human Rights & Legal Aid', apply: () => { V1.filters.axis = 'A4'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A4' }]; } },
-        { label: 'Healing & Reconciliation', apply: () => { V1.filters.axis = 'A1'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A1' }]; } },
-        { label: 'Completed Activities', apply: () => { V1.filters.status = 'COMPLETED'; V1.cuFilterRules = [{ id: 'r1', field: 'status', operator: 'is', value: 'COMPLETED' }]; } },
+        { label: 'All Assigned Tasks', apply: () => { resetAllFilterState(true); V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: '' }]; } },
+        { label: 'This Quarter (Q1)', apply: () => { resetAllFilterState(false); V1.filters.period = 'Q1'; V1.cuFilterRules = [{ id: 'r1', field: 'period', operator: 'is', value: 'Q1' }]; } },
+        { label: 'Human Rights & Legal Aid', apply: () => { resetAllFilterState(false); V1.filters.axis = 'A4'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A4' }]; } },
+        { label: 'Healing & Reconciliation', apply: () => { resetAllFilterState(false); V1.filters.axis = 'A1'; V1.cuFilterRules = [{ id: 'r1', field: 'axis', operator: 'is', value: 'A1' }]; } },
+        { label: 'Completed Activities', apply: () => { resetAllFilterState(false); V1.filters.status = 'COMPLETED'; V1.cuFilterRules = [{ id: 'r1', field: 'status', operator: 'is', value: 'COMPLETED' }]; } },
       ];
 
   return h('div', {
@@ -2782,11 +2894,19 @@ function renderClickUpFilterPopover(themes, options) {
         h('div', { style: { position: 'relative' } },
           h('button', {
             type: 'button',
-            className: 'v1-cu-saved-filters-btn',
-            onClick: () => { V1.cuSavedFiltersOpen = !V1.cuSavedFiltersOpen; renderApp(); },
+            className: 'v1-cu-saved-filters-btn' + (V1.cuSavedFiltersOpen ? ' is-open' : ''),
+            'aria-haspopup': 'menu',
+            'aria-expanded': V1.cuSavedFiltersOpen ? 'true' : 'false',
+            onClick: e => {
+              e.stopPropagation();
+              V1.cuSavedFiltersOpen = !V1.cuSavedFiltersOpen;
+              V1.cuOperatorMenuRowId = null;
+              if (window.V091) window.V091.openDropdownId = null;
+              renderApp();
+            },
           },
-            h('span', {}, 'Saved filters'),
-            msIcon('expand_more', 14)
+            h('span', { className: 'v1-cu-split-btn-main' }, 'Saved filters'),
+            h('span', { className: 'v1-cu-split-btn-caret', 'aria-hidden': 'true' }, msIcon('expand_more', 14))
           ),
           V1.cuSavedFiltersOpen
             ? h('div', { className: 'v1-cu-saved-dropdown' },
@@ -2794,11 +2914,16 @@ function renderClickUpFilterPopover(themes, options) {
                   h('button', {
                     type: 'button',
                     className: 'v1-cu-saved-item',
-                    onClick: async () => {
+                    onClick: async e => {
+                      e.stopPropagation();
                       preset.apply();
                       V1.cuSavedFiltersOpen = false;
-                      await loadBootstrap();
                       renderApp();
+                      try {
+                        await loadBootstrap();
+                      } finally {
+                        renderApp();
+                      }
                     },
                   }, preset.label)
                 )
@@ -2812,6 +2937,8 @@ function renderClickUpFilterPopover(themes, options) {
           onClick: () => {
             V1.cuFilterPopoverOpen = false;
             V1.cuOperatorMenuRowId = null;
+            V1.cuSavedFiltersOpen = false;
+            if (window.V091) window.V091.openDropdownId = null;
             renderApp();
           },
         },
@@ -2837,13 +2964,13 @@ function renderClickUpFilterPopover(themes, options) {
                   : h('button', {
                       type: 'button',
                       className: 'v1-cu-and-btn',
-                      onClick: () => {
+                      onClick: async () => {
                         V1.cuConjunction = V1.cuConjunction === 'AND' ? 'OR' : 'AND';
-                        renderApp();
+                        await syncCuRulesToV1Filters({ preserveStatusIfUnruled: true });
                       },
                     },
-                      h('span', {}, V1.cuConjunction || 'AND'),
-                      msIcon('expand_more', 14)
+                      h('span', { className: 'v1-cu-split-btn-main' }, V1.cuConjunction || 'AND'),
+                      h('span', { className: 'v1-cu-split-btn-caret', 'aria-hidden': 'true' }, msIcon('expand_more', 14))
                     )
               )
             : null,
@@ -2857,9 +2984,18 @@ function renderClickUpFilterPopover(themes, options) {
                   width: '100%',
                   options: fieldDefs.map(fd => ({ value: fd.code, label: fd.label })),
                   onChange: val => {
+                    const prevField = rule.field;
                     rule.field = val;
                     rule.value = '';
-                    syncCuRulesToV1Filters();
+                    V1.cuOperatorMenuRowId = null;
+                    if (prevField === 'dueDate' && val !== 'dueDate') {
+                      V1.cuDatePickerOpen = false;
+                      V1.cuDatePickerContext = null;
+                    }
+                    syncCuRulesToV1Filters({
+                      preserveStatusIfUnruled: prevField !== 'status',
+                      clearDates: prevField === 'dueDate',
+                    });
                   },
                 })
               ),
@@ -2868,14 +3004,19 @@ function renderClickUpFilterPopover(themes, options) {
               h('div', { className: 'v1-cu-op-wrap' },
                 h('button', {
                   type: 'button',
-                  className: 'v1-cu-op-btn',
-                  onClick: () => {
+                  className: 'v1-cu-op-btn' + (isOpMenuOpen ? ' is-open' : ''),
+                  'aria-haspopup': 'listbox',
+                  'aria-expanded': isOpMenuOpen ? 'true' : 'false',
+                  onClick: e => {
+                    e.stopPropagation();
                     V1.cuOperatorMenuRowId = isOpMenuOpen ? null : rule.id;
+                    V1.cuSavedFiltersOpen = false;
+                    if (window.V091) window.V091.openDropdownId = null;
                     renderApp();
                   },
                 },
-                  h('span', {}, currentOp.label),
-                  msIcon('expand_more', 14)
+                  h('span', { className: 'v1-cu-split-btn-main' }, currentOp.label),
+                  h('span', { className: 'v1-cu-split-btn-caret', 'aria-hidden': 'true' }, msIcon('expand_more', 14))
                 ),
                 isOpMenuOpen
                   ? h('div', { className: 'v1-cu-op-dropdown' },
@@ -2883,10 +3024,14 @@ function renderClickUpFilterPopover(themes, options) {
                         h('button', {
                           type: 'button',
                           className: 'v1-cu-op-option' + (rule.operator === op.code ? ' active' : ''),
-                          onClick: async () => {
+                          onClick: async e => {
+                            e.stopPropagation();
                             rule.operator = op.code;
                             V1.cuOperatorMenuRowId = null;
-                            await syncCuRulesToV1Filters();
+                            await syncCuRulesToV1Filters({
+                              preserveStatusIfUnruled: rule.field !== 'status',
+                              clearDates: rule.field === 'dueDate' && op.code !== 'is',
+                            });
                           },
                         },
                           h('span', {}, op.label),
@@ -2924,7 +3069,10 @@ function renderClickUpFilterPopover(themes, options) {
                           ],
                           onChange: val => {
                             rule.value = val;
-                            syncCuRulesToV1Filters();
+                            syncCuRulesToV1Filters({
+                              preserveStatusIfUnruled: rule.field !== 'status',
+                              clearDates: rule.field === 'dueDate' && !val,
+                            });
                           },
                         })
                       ))
@@ -2935,20 +3083,26 @@ function renderClickUpFilterPopover(themes, options) {
                 type: 'button',
                 className: 'v1-cu-rule-delete',
                 'aria-label': 'Remove filter rule',
-                onClick: async () => {
+                onClick: async e => {
+                  e.stopPropagation();
+                  const removedField = rule.field;
                   if (rules.length <= 1) {
-                    rules[0].value = '';
-                    rules[0].operator = 'is';
+                    V1.cuFilterRules = [{ id: rules[0]?.id || 'rule-1', field: defaultFirstField, operator: 'is', value: '' }];
+                    V1.cuConjunction = 'AND';
                   } else {
                     V1.cuFilterRules = rules.filter(r => r.id !== rule.id);
                   }
-                  V1.filters.axis = '';
-                  V1.filters.parish = '';
-                  V1.filters.status = 'ALL';
-                  V1.filters.approvalStage = 'ALL';
-                  V1.filters.issueCategory = 'ALL';
-                  V1.filters.period = 'ALL';
-                  await syncCuRulesToV1Filters();
+                  if (V1.cuOperatorMenuRowId === rule.id) V1.cuOperatorMenuRowId = null;
+                  if (removedField === 'dueDate') {
+                    V1.cuDatePickerOpen = false;
+                    V1.cuDatePickerContext = null;
+                  }
+                  V1.cuSavedFiltersOpen = false;
+                  if (window.V091) window.V091.openDropdownId = null;
+                  await syncCuRulesToV1Filters({
+                    preserveStatusIfUnruled: removedField !== 'status',
+                    clearDates: removedField === 'dueDate',
+                  });
                 },
               }, msIcon('delete', 16))
             ),
@@ -2980,13 +3134,23 @@ function renderClickUpFilterPopover(themes, options) {
           dueDate: V1.filters.dateTo || '',
           onSelectStart: async val => {
             V1.filters.dateFrom = val;
-            await loadBootstrap();
+            renderApp();
+            try {
+              await loadBootstrap();
+            } finally {
+              renderApp();
+            }
           },
           onSelectDue: async val => {
             V1.filters.dateTo = val;
             const dueRule = (V1.cuFilterRules || []).find(r => r.field === 'dueDate');
             if (dueRule) dueRule.value = val;
-            await loadBootstrap();
+            renderApp();
+            try {
+              await loadBootstrap();
+            } finally {
+              renderApp();
+            }
           },
           onClose: () => {
             V1.cuDatePickerOpen = false;
@@ -3016,21 +3180,15 @@ function renderClickUpFilterPopover(themes, options) {
       h('button', {
         type: 'button',
         className: 'v1-cu-clear-all-btn',
-        onClick: async () => {
-          V1.filters.period = 'ALL';
-          V1.filters.axis = '';
-          V1.filters.parish = '';
-          V1.filters.status = 'ALL';
-          V1.filters.approvalStage = 'ALL';
-          V1.filters.issueCategory = 'ALL';
-          V1.filters.dateFrom = '';
-          V1.filters.dateTo = '';
-          V1.searchQuery = '';
-          V1.cuFilterRules = [{ id: 'rule-1', field: defaultFirstField, operator: 'is', value: '' }];
-          V1.cuOperatorMenuRowId = null;
-          V1.cuDatePickerOpen = false;
-          await loadBootstrap();
+        onClick: async e => {
+          e.stopPropagation();
+          resetAllFilterState(true);
           renderApp();
+          try {
+            await loadBootstrap();
+          } finally {
+            renderApp();
+          }
         },
       }, 'Clear all')
     ),
@@ -3185,7 +3343,7 @@ function renderNewTaskModal() {
         })
       ),
       selectedGoal
-        ? h('div', { className: 'v1-field-helper' }, `Selected: ${selectedGoal.outcome_code} · axis, intervention and KPI ${selectedGoal.indicator_code} are inherited automatically.`)
+        ? h('div', { className: 'v1-field-helper' }, `Selected: ${selectedGoal.outcome_code}, KPI ${selectedGoal.indicator_code} linked automatically.`)
         : null
     ),
 
@@ -3319,14 +3477,7 @@ function renderTasksWorkspace() {
   });
 
   const themes = getThemesList();
-  const activeFilterCount = [
-    V1.filters.axis,
-    V1.filters.parish,
-    V1.filters.period !== 'ALL' ? V1.filters.period : '',
-    V1.filters.dateFrom,
-    V1.filters.dateTo,
-    ...(V1.cuFilterRules || []).filter(r => r.operator !== 'is' || (r.value && r.field === 'impact')).map(r => r.id),
-  ].filter(Boolean).length;
+  const activeFilterCount = countActiveFilters(false);
 
   const isCompletedFilterActive = V1.filters.status === 'COMPLETED';
 
@@ -3340,8 +3491,8 @@ function renderTasksWorkspace() {
         h('h1', { className: 'v1-page-title', 'data-node-id': '10:64' }, L('nav_tasks')),
         h('p', { className: 'v1-page-subtitle', 'data-node-id': '10:66' },
           perms.can_create_task
-            ? 'Your assigned field activities, recurring quarterly goals, and saved drafts. All internal M&E codes are handled automatically.'
-            : 'Execute assigned Parish CPJP & Centrale activities and log field enumeration entries. Plan creation is reserved for CPJP and CDJP committees.'
+            ? 'Your assigned field activities, quarterly goals, and drafts. The system assigns internal M&E codes automatically.'
+            : 'Complete assigned Parish CPJP and Centrale activities and log field results. CPJP and CDJP committees create plans.'
         )
       ),
 
@@ -3401,7 +3552,20 @@ function renderTasksWorkspace() {
             className: 'v1-cu-pill-completed' + (isCompletedFilterActive ? ' active' : ''),
             'data-node-id': '10:46',
             onClick: () => {
-              V1.filters.status = isCompletedFilterActive ? 'ALL' : 'COMPLETED';
+              const nextStatus = isCompletedFilterActive ? 'ALL' : 'COMPLETED';
+              V1.filters.status = nextStatus;
+              if (Array.isArray(V1.cuFilterRules)) {
+                if (nextStatus === 'ALL') {
+                  const remaining = V1.cuFilterRules.filter(r => !(r.field === 'status' && r.operator === 'is' && r.value === 'COMPLETED'));
+                  V1.cuFilterRules = remaining.length ? remaining : [{ id: 'rule-1', field: 'axis', operator: 'is', value: '' }];
+                } else {
+                  V1.cuFilterRules.forEach(r => {
+                    if (r.field === 'status' && r.operator === 'is' && r.value && r.value !== 'COMPLETED') {
+                      r.value = 'COMPLETED';
+                    }
+                  });
+                }
+              }
               renderApp();
             },
           },
@@ -3520,7 +3684,7 @@ function renderTasksWorkspace() {
             msIcon('calendar_today', 14),
             h('span', { className: 'v1-tabular', 'data-node-id': '9:34623' }, `Due ${t.due_date}`),
             t.frequency > 1
-              ? h('span', { className: 'v1-tabular', 'data-node-id': '9:34625' }, `· Quarterly (${t.quarters_completed}/${t.frequency} logged)`)
+              ? h('span', { className: 'v1-tabular', 'data-node-id': '9:34625' }, `Quarterly (${t.quarters_completed}/${t.frequency} logged)`)
               : null
           ),
 
@@ -3596,14 +3760,7 @@ function renderApprovalsWorkspace() {
     CORRECTION: L('stage_correction'),
   };
 
-  const activeFilterCount = [
-    V1.filters.approvalStage !== 'ALL' ? V1.filters.approvalStage : '',
-    V1.filters.axis,
-    V1.filters.parish,
-    V1.filters.period !== 'ALL' ? V1.filters.period : '',
-    V1.filters.dateFrom,
-    V1.filters.dateTo,
-  ].filter(Boolean).length;
+  const activeFilterCount = countActiveFilters(true);
 
   const isDioceseApprovedActive = V1.filters.approvalStage === 'DIOCESE_APPROVED';
   const isSubmittedActive = V1.filters.approvalStage === 'SUBMITTED';
@@ -3611,17 +3768,17 @@ function renderApprovalsWorkspace() {
   let primaryAssigned = false;
 
   return h('div', {},
-    renderBreadcrumbs(perms.can_review ? L('nav_approvals') : 'My Submissions & Approval Status'),
+    renderBreadcrumbs(perms.can_review ? L('nav_approvals') : L('nav_submissions')),
     renderRoleWorkspaceBanner(),
 
     /* Abstracted Header & Action/Filter Toolbar (Matches My Tasks Figma 9:34468) */
     h('div', { className: 'v1-tasks-figma-header' },
       h('div', { className: 'v1-tasks-heading-block' },
-        h('h1', { className: 'v1-page-title' }, perms.can_review ? L('nav_approvals') : 'My Submissions & Approval Status'),
+        h('h1', { className: 'v1-page-title' }, perms.can_review ? L('nav_approvals') : L('nav_submissions')),
         h('p', { className: 'v1-page-subtitle' },
           perms.can_review
-            ? 'Institutional Verification Circuit: Field Submission (CCJP/CEB) → Parish CPJP Approval → CDJP M&E Validation → Diocesan Final Approval (Self-approval prohibited).'
-            : 'Track where your submitted field reports stand in the Parish CPJP and Diocesan CDJP verification circuit. Field enumerators cannot approve reports.'
+            ? 'Review stages: Field Submission (CCJP/CEB), Parish CPJP Review, CDJP M&E Validation, and Diocesan Approval. Authors cannot approve their own reports.'
+            : 'Track where your submitted reports stand across Parish CPJP and Diocesan CDJP review.'
         )
       ),
       h('div', { className: 'v1-tasks-toolbar-row' },
@@ -3753,7 +3910,7 @@ function renderApprovalsWorkspace() {
                 ),
                 l.version > 1 ? renderLozenge(`Amended v${l.version}`, 'info') : null,
                 renderLozenge(L('impact_' + l.impact_rating), l.impact_rating),
-                l.volet ? renderLozenge(`Volet: ${normalizeVolet(l.volet).labelText || l.volet}`, 'neutral') : null
+                l.volet ? renderLozenge(`Team: ${normalizeVolet(l.volet).labelText || l.volet}`, 'neutral') : null
               )
             )
           ),
@@ -3762,14 +3919,14 @@ function renderApprovalsWorkspace() {
           h('div', { className: 'v1-task-schedule' },
             msIcon('calendar_today', 14),
             h('span', { className: 'v1-tabular' }, `Logged ${l.event_date}`),
-            h('span', { className: 'v1-tabular' }, `· Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities)`),
-            h('span', {}, `· Author: ${l.author || 'Field Enumerator'} (${l.prep_mode === 'COMMITTEE' ? '7-Member CPJP + Chaplain' : '2-Person Pair'})`)
+            h('span', { className: 'v1-tabular' }, `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities)`),
+            h('span', {}, `Author: ${l.author || 'Field Reporter'} (${l.prep_mode === 'COMMITTEE' ? '7-Member CPJP Team' : '2-Person Pair'})`)
           ),
 
           l.issue_severity !== 'NONE'
             ? h('div', { className: 'v1-task-issue-callout' },
                 msIcon(l.issue_severity === 'MAJOR' ? 'error' : 'warning', 16),
-                h('span', {}, `Field Issue (${l.issue_severity} — ${l.issue_categories.join(', ')}): ${l.issue_note}`)
+                h('span', {}, `Field Issue (${l.issue_severity}, ${l.issue_categories.join(', ')}): ${l.issue_note}`)
               )
             : null,
 
@@ -3785,9 +3942,9 @@ function renderApprovalsWorkspace() {
             ),
             h('div', { className: 'v1-task-action', style: { display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' } },
               !perms.can_review
-                ? renderLozenge('Read-Only Status (Field / Staff Role Cannot Approve)', 'neutral', 'info')
+                ? renderLozenge('View Only', 'neutral', 'info')
                 : isSelfAuthored
-                ? renderLozenge('Authored by You — Independent Reviewer Required', 'warn', 'lock')
+                ? renderLozenge('Your Submission (Needs Independent Reviewer)', 'warn', 'lock')
                 : null,
               canParishApprove
                 ? h('button', {
@@ -3928,13 +4085,7 @@ function renderAnalyticsWorkspace() {
   const activePeriodLabel = V1.filters.period === 'Q1' ? L('period_q1') : (V1.filters.period === 'AP1' ? L('period_ap1') : L('period_all'));
   const catColors = ['var(--chart-cat-1)', 'var(--chart-cat-2)', 'var(--chart-cat-3)', 'var(--chart-cat-4)'];
   const themes = getThemesList();
-  const activeFilterCount = [
-    V1.filters.axis,
-    V1.filters.parish,
-    V1.filters.period !== 'ALL' ? V1.filters.period : '',
-    V1.filters.dateFrom,
-    V1.filters.dateTo,
-  ].filter(Boolean).length;
+  const activeFilterCount = countActiveFilters(false);
   const isQ1Active = V1.filters.period === 'Q1';
 
   return h('div', {},
@@ -4004,7 +4155,7 @@ function renderAnalyticsWorkspace() {
         h('span', {}, 'Total Participants Reached'),
         h('strong', { className: 'v1-kpi-value' }, Number(s.total_participants || 0).toLocaleString()),
         h('div', { className: 'v1-field-helper v1-tabular' },
-          `${s.women || 0} Women · ${s.men || 0} Men · ${s.disability || 0} with Disabilities`
+          `${s.women || 0} Women, ${s.men || 0} Men, ${s.disability || 0} with Disabilities`
         )
       ),
       h('div', { className: 'v1-kpi-card' },
@@ -4027,8 +4178,8 @@ function renderAnalyticsWorkspace() {
       h('div', { className: 'v1-panel' },
         h('div', { className: 'v1-chart-header' },
           h('div', {},
-            h('h2', { className: 'v1-section-title' }, 'Diocese of Butare — Regional Parish Map'),
-            h('p', { className: 'v1-chart-subtitle' }, `Active Filter: ${activePeriodLabel} · Click any Parish node`)
+            h('h2', { className: 'v1-section-title' }, 'Diocese of Butare Parish Map'),
+            h('p', { className: 'v1-chart-subtitle' }, `Active Filter: ${activePeriodLabel}. Click any parish node.`)
           ),
           h('div', { className: 'v1-chart-legend' },
             h('span', { className: 'v1-legend-item' },
@@ -4095,7 +4246,7 @@ function renderAnalyticsWorkspace() {
             circle.setAttribute('stroke', 'var(--bg-surface)');
             circle.setAttribute('stroke-width', '0.7');
             const title = document.createElementNS(svgNS, 'title');
-            title.textContent = `${p.name} (${p.district}): ${p.completion_pct ?? 0}% complete · ${p.participants} participants`;
+            title.textContent = `${p.name} (${p.district}): ${p.completion_pct ?? 0}% complete, ${p.participants} participants`;
             g.appendChild(title);
             g.appendChild(circle);
 
@@ -4118,8 +4269,8 @@ function renderAnalyticsWorkspace() {
       h('div', { className: 'v1-panel' },
         h('div', { className: 'v1-chart-header' },
           h('div', {},
-            h('h2', { className: 'v1-section-title' }, 'Field Issues & Bottlenecks Over Time'),
-            h('p', { className: 'v1-chart-subtitle' }, `Active Filter: ${activePeriodLabel} · Category: ${V1.filters.issueCategory}`)
+            h('h2', { className: 'v1-section-title' }, 'Field Issues Over Time'),
+            h('p', { className: 'v1-chart-subtitle' }, `Active Filter: ${activePeriodLabel}, Category: ${V1.filters.issueCategory}`)
           ),
           h('div', { className: 'v1-chart-legend' },
             h('span', { className: 'v1-legend-item' },
@@ -4172,7 +4323,7 @@ function renderAnalyticsWorkspace() {
     ),
     /* Expandable Outcome & Impact Accordions (Carbon Table on Desktop -> Polaris Resource Cards on < 768px) */
     h('h2', { className: 'v1-section-title', style: { marginBottom: '12px' } },
-      'Strategic Outcomes & Impact Accordions'
+      'Strategic Outcomes and Impact'
     ),
     (analytics.accordions || []).map((acc, idx) =>
       h('details', { className: 'v1-accordion', open: idx === 0 },
@@ -4251,7 +4402,7 @@ function renderAnalyticsWorkspace() {
                     renderLozenge(L('impact_' + t.impact_rating), t.impact_rating)
                   )
                 ),
-                h('div', { className: 'v1-resource-middle' }, `${t.parish_name} Parish · Oct 2026`),
+                h('div', { className: 'v1-resource-middle' }, `${t.parish_name} Parish, Oct 2026`),
                 h('div', { className: 'v1-resource-bottom' },
                   h('div', { className: 'v1-resource-progress-group' },
                     h('div', { className: 'v1-progress-bar' },
@@ -4266,9 +4417,9 @@ function renderAnalyticsWorkspace() {
           ),
           acc.stories.length || acc.documents.length
             ? h('div', { className: 'v1-accordion-section', style: { marginTop: '14px' } },
-                h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, '2. Stories of Change & Attached Impact Evidence'),
+                h('div', { className: 'v1-field-label', style: { marginBottom: '6px' } }, '2. Stories of Change and Attached Evidence'),
                 acc.stories.map(st =>
-                  h('p', { className: 'v1-story-quote', style: { margin: '4px 0', fontSize: '0.875rem', fontStyle: 'italic', color: 'var(--text-primary)' } }, `"${st.text}" — ${st.parish} (${st.date})`)
+                  h('p', { className: 'v1-story-quote', style: { margin: '4px 0', fontSize: '0.875rem', fontStyle: 'italic', color: 'var(--text-primary)' } }, `"${st.text}" (${st.parish}, ${st.date})`)
                 ),
                 h('div', { className: 'v1-chips v1-evidence-chips', style: { marginTop: '6px' } },
                   acc.documents.map(doc => renderLozenge(`${doc.name} (${doc.parish})`, 'GOOD', 'description'))
@@ -4277,11 +4428,11 @@ function renderAnalyticsWorkspace() {
             : null,
           acc.issues.length
             ? h('div', { className: 'v1-accordion-section', style: { marginTop: '14px' } },
-                h('div', { className: 'v1-field-label', style: { marginBottom: '6px', color: 'var(--tag-warn-text)' } }, '3. Under-Achievement Explanations & Field Issues'),
+                h('div', { className: 'v1-field-label', style: { marginBottom: '6px', color: 'var(--tag-warn-text)' } }, '3. Under-Achievement Notes and Field Issues'),
                 acc.issues.map(iss =>
                   h('div', { className: 'v1-field-issue-card', style: { padding: '8px 12px', background: 'var(--tag-warn-bg)', color: 'var(--tag-warn-text)', borderRadius: 'var(--radius-sm)', fontSize: '0.75rem', marginBottom: '6px', display: 'flex', alignItems: 'flex-start', gap: '8px' } },
                     h('span', { style: { flexShrink: 0, marginTop: '1px' } }, msIcon(iss.severity === 'MAJOR' ? 'error' : 'warning', 16)),
-                    h('span', { style: { wordBreak: 'break-word', overflowWrap: 'anywhere' } }, `${iss.parish} (${iss.severity} · ${iss.categories.join(', ')}): ${iss.note}`)
+                    h('span', { style: { wordBreak: 'break-word', overflowWrap: 'anywhere' } }, `${iss.parish} (${iss.severity}, ${iss.categories.join(', ')}): ${iss.note}`)
                   )
                 )
               )
@@ -4393,7 +4544,7 @@ function renderExportsWorkspace() {
           h('div', { className: 'v1-file-upload-wrap' },
             h('button', {
               type: 'button',
-              className: 'v1-btn v1-btn-secondary v1-file-upload-btn',
+              className: 'v1-btn v1-file-upload-btn',
               onClick: () => {
                 const inp = document.getElementById('csv_import_file_input');
                 if (inp) inp.click();
@@ -4537,7 +4688,7 @@ function _unused_renderMobileSearchOverlay() {
       results.push({
         type: 'Tâche',
         title: localize(t.titles) || t.title || t.code,
-        subtitle: `${t.parish_name || t.parish_code || 'CDJP'} · ${t.code}`,
+        subtitle: `${t.parish_name || t.parish_code || 'CDJP'} (${t.code})`,
         icon: 'check_box',
         action: () => {
           V1.mobileSearchOpen = false;
@@ -4549,22 +4700,22 @@ function _unused_renderMobileSearchOverlay() {
     });
 
     const allTabs = [
-      { id: 'my_space', name: 'Mon espace (My Space)' },
-      { id: 'seizure', name: 'Saisie (Seizure F01–F45)' },
-      { id: 'files_validation', name: 'Dossiers et validation' },
-      { id: 'learning', name: 'Apprentissage (Learning)' },
-      { id: 'reports', name: 'Rapports (Reports R01–R13)' },
-      { id: 'offline_vault', name: 'Préparer / ouvrir hors ligne' },
-      { id: 'offline_sync', name: 'Synchroniser la file hors ligne' },
-      { id: 'ps_planning', name: 'Planification du PS' },
-      { id: 'metadata', name: 'Métadonnées' },
-      { id: 'feedback', name: 'Retours sur les dossiers' },
-      { id: 'projects_ops', name: 'Projets et opérations' },
-      { id: 'staff_eval', name: 'Évaluation du personnel' },
-      { id: 'create_form', name: 'Créer / partager un formulaire' },
-      { id: 'drafts', name: 'Brouillons en cours' },
-      { id: 'ps_dashboard', name: 'Tableau de bord PS' },
-      { id: 'assistant', name: 'Assistant et contrôles' },
+      { id: 'my_space', name: L('nav_my_space') },
+      { id: 'seizure', name: L('nav_seizure') },
+      { id: 'files_validation', name: L('nav_files_validation') },
+      { id: 'learning', name: L('nav_learning') },
+      { id: 'reports', name: L('nav_reports') },
+      { id: 'offline_vault', name: L('nav_offline_vault') },
+      { id: 'offline_sync', name: L('nav_offline_sync') },
+      { id: 'ps_planning', name: L('nav_ps_planning') },
+      { id: 'metadata', name: L('nav_metadata') },
+      { id: 'feedback', name: L('nav_feedback') },
+      { id: 'projects_ops', name: L('nav_projects_ops') },
+      { id: 'staff_eval', name: L('nav_staff_eval') },
+      { id: 'create_form', name: L('nav_create_form') },
+      { id: 'drafts', name: L('nav_drafts') },
+      { id: 'ps_dashboard', name: L('nav_ps_dashboard') },
+      { id: 'assistant', name: L('nav_assistant') },
       { id: 'contacts', name: 'Contacts CDJP' },
       { id: 'data_structure', name: 'Structure et flux des données' },
       { id: 'timesheets', name: 'Feuilles de temps' },
@@ -4758,24 +4909,24 @@ function renderRightSidecar() {
   const tab = V1.rightSidecarTab || 'ps_planning';
 
   const tabLabels = {
-    ps_planning: { title: 'Planification Stratégique PS (AP1–AP5)', icon: 'ps_planning' },
-    projects_ops: { title: 'Portefeuille Projets & Opérations', icon: 'projects_ops' },
-    staff_eval: { title: 'Évaluation des Réalisations Staff', icon: 'staff_eval' },
-    assistant: { title: 'Assistant & Contrôles Qualité', icon: 'assistant' },
-    contacts: { title: 'Annuaire Diocésain & Contacts', icon: 'contacts' },
-    data_structure: { title: 'Structure & Flux des Données', icon: 'data_structure' },
-    timesheets: { title: 'Feuilles de Temps (F31/F32)', icon: 'timesheets' },
-    metadata: { title: 'Référentiels & Métadonnées', icon: 'metadata' },
-    mel_admin: { title: 'Administration MEL & Sécurité', icon: 'mel_admin' },
+    ps_planning: { title: L('nav_ps_planning'), icon: 'ps_planning' },
+    projects_ops: { title: L('nav_projects_ops'), icon: 'projects_ops' },
+    staff_eval: { title: L('nav_staff_eval'), icon: 'staff_eval' },
+    assistant: { title: L('nav_assistant'), icon: 'assistant' },
+    contacts: { title: L('nav_contacts'), icon: 'contacts' },
+    data_structure: { title: L('nav_data_structure'), icon: 'data_structure' },
+    timesheets: { title: L('nav_timesheets'), icon: 'timesheets' },
+    metadata: { title: L('nav_metadata'), icon: 'metadata' },
+    mel_admin: { title: L('nav_mel_admin'), icon: 'mel_admin' },
   };
 
-  const meta = tabLabels[tab] || { title: 'Référence', icon: 'info' };
+  const meta = tabLabels[tab] || { title: L('nav_reference'), icon: 'info' };
 
   return h('div', { className: 'v1-sidepeek-container' },
     /* Soft dimmed backdrop over the canvas (clicking slides it back) */
     h('div', {
       className: 'v1-sidepeek-backdrop',
-      title: 'Fermer l\'aperçu latéral (ESC)',
+      title: L('sidecar_close'),
       onClick: () => {
         V1.rightSidecarOpen = false;
         renderApp();
@@ -4793,14 +4944,14 @@ function renderRightSidecar() {
           h('button', {
             type: 'button',
             className: 'v1-sidepeek-back-btn',
-            title: 'Faire glisser vers la droite (Masquer sans perdre le travail en cours)',
+            title: L('sidecar_hide_tip'),
             onClick: () => {
               V1.rightSidecarOpen = false;
               renderApp();
             }
           },
             msIcon('arrow_forward', 16),
-            h('span', {}, 'Masquer')
+            h('span', {}, L('sidecar_hide'))
           ),
           h('div', { className: 'v1-sidepeek-badge' },
             msIcon(meta.icon, 20),
@@ -4811,7 +4962,7 @@ function renderRightSidecar() {
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-sm v1-btn-secondary',
-            title: 'Ouvrir en plein écran dans la zone centrale',
+            title: L('sidecar_full_tip'),
             style: { padding: '4px 10px', fontSize: '0.75rem', height: '28px', gap: '4px' },
             onClick: () => {
               V1.workspace = tab;
@@ -4820,13 +4971,13 @@ function renderRightSidecar() {
             }
           },
             msIcon('open_in_full', 14),
-            h('span', {}, 'Pleine page')
+            h('span', {}, L('sidecar_full_page'))
           ),
           h('button', {
             type: 'button',
             className: 'v1-modal-close',
             style: { width: '30px', height: '30px', fontSize: '1.25rem' },
-            title: 'Fermer le panneau latéral (ESC)',
+            title: L('sidecar_close'),
             onClick: () => {
               V1.rightSidecarOpen = false;
               renderApp();
@@ -4844,53 +4995,78 @@ function renderRightSidecar() {
 if (typeof window !== 'undefined' && !window.__apseSidecarEscBound) {
   window.__apseSidecarEscBound = true;
   window.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && window.V1 && window.V1.rightSidecarOpen) {
+    if (e.key !== 'Escape') return;
+    let changed = false;
+    if (window.V1 && window.V1.rightSidecarOpen) {
       window.V1.rightSidecarOpen = false;
-      if (typeof renderApp === 'function') renderApp();
+      changed = true;
     }
+    if (window.V091 && window.V091.openDropdownId) {
+      window.V091.openDropdownId = null;
+      changed = true;
+    }
+    if (window.V1 && window.V1.cuOperatorMenuRowId) {
+      window.V1.cuOperatorMenuRowId = null;
+      changed = true;
+    }
+    if (window.V1 && window.V1.cuSavedFiltersOpen) {
+      window.V1.cuSavedFiltersOpen = false;
+      changed = true;
+    }
+    if (changed && typeof renderApp === 'function') renderApp();
   });
 }
 
 if (typeof window !== 'undefined' && !window.__apseDropdownOutsideBound) {
   window.__apseDropdownOutsideBound = true;
   document.addEventListener('click', e => {
+    let changed = false;
     const v = window.V091;
     if (v && v.openDropdownId && !(e.target.closest && e.target.closest('.v1-figma-dropdown-wrap'))) {
       v.openDropdownId = null;
-      if (typeof renderApp === 'function') renderApp();
+      changed = true;
     }
+    if (window.V1 && window.V1.cuOperatorMenuRowId && !(e.target.closest && e.target.closest('.v1-cu-op-wrap'))) {
+      window.V1.cuOperatorMenuRowId = null;
+      changed = true;
+    }
+    if (window.V1 && window.V1.cuSavedFiltersOpen && !(e.target.closest && e.target.closest('.v1-cu-saved-filters-btn, .v1-cu-saved-dropdown'))) {
+      window.V1.cuSavedFiltersOpen = false;
+      changed = true;
+    }
+    if (changed && typeof renderApp === 'function') renderApp();
   });
 }
 
 function renderRightRail() {
   const rightRailItems = [
-    { id: 'ps_planning', icon: 'ps_planning', label: L('nav_ps_planning'), title: 'Planification Stratégique PS (AP1–AP5, 5 axes)' },
-    { id: 'projects_ops', icon: 'projects_ops', label: L('nav_projects_ops'), title: 'Projets et Opérations (Portefeuille & KPIs)' },
-    { id: 'staff_eval', icon: 'staff_eval', label: L('nav_staff_eval'), title: 'Évaluation des Réalisations (F05/F43/F04/F03)' },
-    { id: 'assistant', icon: 'assistant', label: L('nav_assistant'), title: 'Assistant et Contrôles (Vérifications & Rédaction)' },
-    { id: 'contacts', icon: 'contacts', label: L('nav_contacts'), title: 'Contacts et Annuaire Diocésain' },
-    { id: 'data_structure', icon: 'data_structure', label: L('nav_data_structure'), title: 'Structure & Flux des Données (27 paroisses)' },
-    { id: 'timesheets', icon: 'timesheets', label: L('nav_timesheets'), title: 'Feuilles de Temps (F31/F32)' },
-    { id: 'metadata', icon: 'metadata', label: L('nav_metadata'), title: 'Référentiels & Métadonnées (18 catégories)' },
-    { id: 'mel_admin', icon: 'mel_admin', label: L('nav_mel_admin'), title: 'Administration MEL & Audits HMAC' },
+    { id: 'ps_planning', icon: 'ps_planning', label: L('nav_ps_planning'), title: L('nav_ps_planning') },
+    { id: 'projects_ops', icon: 'projects_ops', label: L('nav_projects_ops'), title: L('nav_projects_ops') },
+    { id: 'staff_eval', icon: 'staff_eval', label: L('nav_staff_eval'), title: L('nav_staff_eval') },
+    { id: 'assistant', icon: 'assistant', label: L('nav_assistant'), title: L('nav_assistant') },
+    { id: 'contacts', icon: 'contacts', label: L('nav_contacts'), title: L('nav_contacts') },
+    { id: 'data_structure', icon: 'data_structure', label: L('nav_data_structure'), title: L('nav_data_structure') },
+    { id: 'timesheets', icon: 'timesheets', label: L('nav_timesheets'), title: L('nav_timesheets') },
+    { id: 'metadata', icon: 'metadata', label: L('nav_metadata'), title: L('nav_metadata') },
+    { id: 'mel_admin', icon: 'mel_admin', label: L('nav_mel_admin'), title: L('nav_mel_admin') },
   ].filter(item => canAccessWorkspace(item.id));
   const expanded = Boolean(V1.rightRailExpanded);
 
   return h('aside', {
     className: 'v1-right-sidebar' + (expanded ? ' expanded' : ''),
-    'aria-label': 'Right Reference Rail',
+    'aria-label': L('nav_reference'),
   },
     h('button', {
       type: 'button',
       className: 'v1-right-rail-btn v1-right-rail-toggle',
-      title: expanded ? 'Réduire en icônes' : 'Afficher les libellés',
+      title: expanded ? L('sidebar_collapse') : L('sidebar_expand'),
       onClick: () => {
         V1.rightRailExpanded = !V1.rightRailExpanded;
         renderApp();
       }
     },
       msIcon(expanded ? 'chevron_right' : 'chevron_left', 20),
-      expanded ? h('span', { className: 'v1-right-rail-label' }, 'Référence') : null
+      expanded ? h('span', { className: 'v1-right-rail-label' }, L('nav_reference')) : null
     ),
     h('div', { className: 'v1-right-rail-divider' }),
     rightRailItems.map(item => {
@@ -4930,12 +5106,12 @@ function renderMobileNavDrawer() {
 
   const navGroups = [
     {
-      title: 'Opérations & Saisie (Barre Gauche)',
+      title: L('nav_group_operations'),
       items: [
-        { id: 'tasks', icon: 'tasks', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
+        { id: 'tasks', icon: 'tasks', label: perms.tier === 'field' ? L('nav_field_tasks') : L('nav_tasks'), badge: pendingTasksCount },
         { id: 'seizure', icon: 'seizure', label: L('nav_seizure') },
         { id: 'drafts', icon: 'drafts', label: L('nav_drafts') },
-        { id: 'approvals', icon: 'approvals', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
+        { id: 'approvals', icon: 'approvals', label: perms.can_review ? L('nav_approvals') : L('nav_submissions'), badge: pendingApprovalsCount },
         { id: 'analytics', icon: 'analytics', label: L('nav_analytics') },
         { id: 'exports', icon: 'exports', label: L('nav_exports') },
         { id: 'learning', icon: 'learning', label: L('nav_learning') },
@@ -4945,7 +5121,7 @@ function renderMobileNavDrawer() {
       ]
     },
     {
-      title: 'Référence & Gouvernance (Barre Droite)',
+      title: L('nav_group_reference'),
       items: [
         { id: 'ps_planning', icon: 'ps_planning', label: L('nav_ps_planning') },
         { id: 'projects_ops', icon: 'projects_ops', label: L('nav_projects_ops') },
@@ -4970,7 +5146,7 @@ function renderMobileNavDrawer() {
       h('button', {
         type: 'button',
         className: 'v1-modal-close',
-        title: 'Fermer le menu',
+        title: L('close_menu'),
         onClick: () => {
           V1.mobileNavOpen = false;
           renderApp();
@@ -5036,7 +5212,7 @@ function renderMobileNavDrawer() {
           }
         },
           msIcon(isDark ? 'light_mode' : 'dark_mode', 16),
-          h('span', {}, isDark ? 'Clair' : 'Sombre')
+          h('span', {}, isDark ? L('theme_light') : L('theme_dark'))
         )
       )
     )
@@ -5047,7 +5223,7 @@ function renderApp() {
   document.documentElement.lang = V1.lang;
   document.documentElement.dataset.theme = V1.theme;
   document.body.className = 'v1-body' + (V1.rightRailExpanded ? ' rail-expanded' : '');
-  const brandAsset = V1.theme === 'dark' ? 'white.png' : 'black.png';
+  const brandAsset = (V1.theme === 'dark' || V1.theme === 'contrast') ? 'white.png' : 'black.png';
 
   // Capture active focus and cursor selection range before replacing children
   const activeEl = document.activeElement;
@@ -5072,7 +5248,7 @@ function renderApp() {
 
   let syncClass = 'v1-sync-pill synced';
   let syncIcon = 'cloud_done';
-  let syncText = outboxPending > 0 ? `${L('sync_synced')} (${outboxPending} local DB)` : L('sync_synced');
+  let syncText = outboxPending > 0 ? `${L('sync_synced')} (${outboxPending} local)` : L('sync_synced');
   if (V1.syncingState) {
     syncClass = 'v1-sync-pill syncing';
     syncIcon = 'sync';
@@ -5085,32 +5261,32 @@ function renderApp() {
 
   /* 4 Primary Navigation Items for Mobile Bottom Navigation (Strictly 4 Tabs for TC-UI-07) */
   const bottomNavItems = [
-    { id: 'tasks', icon: 'tasks', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount },
-    { id: 'approvals', icon: 'approvals', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount },
+    { id: 'tasks', icon: 'tasks', label: perms.tier === 'field' ? L('nav_field_tasks') : L('nav_tasks'), badge: pendingTasksCount },
+    { id: 'approvals', icon: 'approvals', label: perms.can_review ? L('nav_approvals') : L('nav_submissions'), badge: pendingApprovalsCount },
     { id: 'analytics', icon: 'analytics', label: L('nav_analytics'), badge: null },
     { id: 'exports', icon: 'exports', label: L('nav_exports'), badge: null },
   ];
 
   /* 10 Operational Workspaces for Left Action Sidebar (APSE v0.9.1 3-Column Layout) */
   const leftNavItems = [
-    { id: 'tasks', icon: 'tasks', label: perms.tier === 'field' ? 'My Field Tasks' : L('nav_tasks'), badge: pendingTasksCount, group: 'Espace & Saisie', alias: 'my_space' },
-    { id: 'seizure', icon: 'seizure', label: L('nav_seizure'), badge: null, group: 'Espace & Saisie' },
-    { id: 'drafts', icon: 'drafts', label: L('nav_drafts'), badge: null, group: 'Espace & Saisie' },
-    { id: 'approvals', icon: 'approvals', label: perms.can_review ? L('nav_approvals') : 'My Submissions', badge: pendingApprovalsCount, group: 'Espace & Saisie', alias: 'files_validation' },
-    { id: 'analytics', icon: 'analytics', label: L('nav_analytics'), badge: null, group: 'Planification & Stratégie', alias: 'ps_dashboard' },
-    { id: 'exports', icon: 'exports', label: L('nav_exports'), badge: null, group: 'Rapports & Apprentissage', alias: 'reports' },
-    { id: 'learning', icon: 'learning', label: L('nav_learning'), badge: null, group: 'Rapports & Apprentissage' },
-    { id: 'create_form', icon: 'create_form', label: L('nav_create_form'), badge: null, group: 'Rapports & Apprentissage' },
-    { id: 'offline_hub', icon: 'offline_hub', label: L('nav_offline_hub'), badge: qLen > 0 ? qLen : null, group: 'Hors ligne & Synchronisation', alias: 'offline_vault' },
-    { id: 'feedback', icon: 'feedback', label: L('nav_feedback'), badge: null, group: 'Administration & Organisation', alias: 'back_to_file' },
+    { id: 'tasks', icon: 'tasks', label: perms.tier === 'field' ? L('nav_field_tasks') : L('nav_tasks'), badge: pendingTasksCount, alias: 'my_space' },
+    { id: 'seizure', icon: 'seizure', label: L('nav_seizure'), badge: null },
+    { id: 'drafts', icon: 'drafts', label: L('nav_drafts'), badge: null },
+    { id: 'approvals', icon: 'approvals', label: perms.can_review ? L('nav_approvals') : L('nav_submissions'), badge: pendingApprovalsCount, alias: 'files_validation' },
+    { id: 'analytics', icon: 'analytics', label: L('nav_analytics'), badge: null, alias: 'ps_dashboard' },
+    { id: 'exports', icon: 'exports', label: L('nav_exports'), badge: null, alias: 'reports' },
+    { id: 'learning', icon: 'learning', label: L('nav_learning'), badge: null },
+    { id: 'create_form', icon: 'create_form', label: L('nav_create_form'), badge: null },
+    { id: 'offline_hub', icon: 'offline_hub', label: L('nav_offline_hub'), badge: qLen > 0 ? qLen : null, alias: 'offline_vault' },
+    { id: 'feedback', icon: 'feedback', label: L('nav_feedback'), badge: null, alias: 'back_to_file' },
   ].filter(item => canAccessWorkspace(item.id));
 
   const shell = h('div', {},
-    /* Single 56px Top Bar */
+    /* Single 56px Top Bar (APSE v2 Architectural Design System) */
     h('header', { className: 'v1-topbar' },
       h('div', {
         className: 'v1-brand',
-        title: 'CDJP Butare — Cliquez pour réduire / déplier la barre latérale',
+        title: L('sidebar_collapse'),
         onClick: () => {
           if (typeof window !== 'undefined' && window.innerWidth <= 1024) {
             V1.mobileNavOpen = !V1.mobileNavOpen;
@@ -5121,6 +5297,7 @@ function renderApp() {
           }
         },
       },
+        h('span', { className: 'v1-mobile-menu-trigger', 'aria-hidden': 'true' }, msIcon('menu', 20)),
         h('img', {
           className: 'v1-brand-logo v1-brand-text',
           src: `assets/${brandAsset}`,
@@ -5145,7 +5322,7 @@ function renderApp() {
         h('button', {
           type: 'button',
           className: syncClass,
-          title: 'Click to synchronize local SQLite DB to Central Server or inspect schema migrations',
+          title: 'Sync local database with server',
           onClick: e => {
             if (qLen > 0) {
               syncOfflineQueue();
@@ -5169,7 +5346,7 @@ function renderApp() {
         h('button', {
           type: 'button',
           className: 'v1-mobile-lang-chip',
-          title: 'Change Language / Hindura Ururimi',
+          title: L('change_language'),
           onClick: () => {
             const nextLang = { rw: 'fr', fr: 'en', en: 'sw', sw: 'rw' };
             V1.lang = nextLang[V1.lang] || 'en';
@@ -5180,7 +5357,7 @@ function renderApp() {
         h('button', {
           type: 'button',
           className: 'v1-theme-toggle',
-          title: 'Toggle Light / Dark Theme',
+          title: 'Switch theme',
           onClick: () => {
             V1.theme = isDark ? 'light' : 'dark';
             localStorage.setItem('apse-theme', V1.theme);
@@ -5188,13 +5365,13 @@ function renderApp() {
           },
         },
           msIcon(isDark ? 'light_mode' : 'dark_mode', 16),
-          h('span', {}, isDark ? 'Light' : 'Dark')
+          h('span', {}, isDark ? L('theme_light') : L('theme_dark'))
         ),
         /* Dedicated Mobile/Tablet Account Switcher Button (visible on <= 1024px) */
         h('button', {
           type: 'button',
           className: 'v1-mobile-user-btn',
-          title: 'Switch User Role or Sign In (Mobile/Tablet)',
+          title: 'Switch account or sign in',
           onClick: () => {
             V1.personaModal = !V1.personaModal;
             renderApp();
@@ -5205,7 +5382,7 @@ function renderApp() {
         ),
         h('span', {
           className: 'v1-user-pill',
-          title: 'Click to switch user role or parish scope (Web GUI)',
+          title: 'Switch account or parish',
           onClick: () => {
             V1.personaModal = !V1.personaModal;
             renderApp();
@@ -5242,11 +5419,11 @@ function renderApp() {
     h('div', { className: 'v1-shell' },
       h('aside', { className: 'v1-sidebar' + (V1.leftSidebarCollapsed ? ' collapsed' : '') },
         h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: V1.leftSidebarCollapsed ? 'center' : 'space-between', padding: '0 4px 8px', marginBottom: '4px', borderBottom: '1px solid var(--border-subtle)' } },
-          V1.leftSidebarCollapsed ? null : h('span', { className: 'v1-nav-group-label', style: { padding: 0 } }, 'Opérations'),
+          V1.leftSidebarCollapsed ? null : h('span', { className: 'v1-nav-group-label', style: { padding: 0 } }, L('nav_group_operations')),
           h('button', {
             type: 'button',
             className: 'v1-sidebar-toggle-btn',
-            title: V1.leftSidebarCollapsed ? 'Déplier la barre latérale' : 'Réduire en icônes (mode compact)',
+            title: V1.leftSidebarCollapsed ? L('sidebar_expand') : L('sidebar_collapse'),
             onClick: () => {
               V1.leftSidebarCollapsed = !V1.leftSidebarCollapsed;
               renderApp();
@@ -5292,7 +5469,7 @@ function renderApp() {
         ),
         /* Desktop Language Switcher in Sidebar */
         h('div', { className: 'v1-sidebar-lang-wrap' },
-          h('div', { className: 'v1-nav-group-label' }, 'Language / Ururimi'),
+          h('div', { className: 'v1-nav-group-label' }, L('language_label')),
           h('div', { className: 'v1-lang-pills', role: 'group', 'aria-label': 'Language', style: { width: '100%', display: 'flex', justifyContent: 'space-between' } },
             ['rw', 'fr', 'en', 'sw'].map(code =>
               h('button', {
