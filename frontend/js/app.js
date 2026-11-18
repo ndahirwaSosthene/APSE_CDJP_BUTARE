@@ -742,10 +742,14 @@ function h(tag, attrs = {}, ...children) {
 /* Section 3.1: IBM Carbon Breadcrumbs above H1 */
 function renderBreadcrumbs(workspaceLabel, extraTrail = []) {
   const parishes = V1.data?.parishes || [];
-  const activeParish = parishes.find(p => p.code === (V1.wizard?.parish_code || V1.filters.parish));
+  const scopedCode = V1.wizard?.parish_code || V1.filters.parish || V1.data?.user?.assigned_parish || '';
+  const activeParish = parishes.find(p => p.code === scopedCode);
+  const scopeLabel = activeParish
+    ? `${activeParish.name} Parish`
+    : (scopedCode ? scopedCode : L('all_parishes'));
   const items = [
     {
-      label: 'Diocese of Butare',
+      label: 'CDJP Butare',
       onClick: async () => {
         if (V1.filters.parish || V1.wizard) {
           V1.filters.parish = '';
@@ -756,7 +760,7 @@ function renderBreadcrumbs(workspaceLabel, extraTrail = []) {
       },
     },
     {
-      label: activeParish ? `${activeParish.name} Parish` : (parishes[0] ? `${parishes[0].name} Parish` : 'Gakoma Parish'),
+      label: scopeLabel,
       onClick: async () => {
         if (V1.wizard) {
           V1.wizard = null;
