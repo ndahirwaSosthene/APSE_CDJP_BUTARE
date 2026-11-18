@@ -2209,10 +2209,10 @@
             filteredRows.map((row, idx) =>
               h('tr', { key: row.code || idx },
                 h('td', {}, h('span', { className: 'v1-badge' }, row.form)),
-                h('td', {}, row.code),
-                h('td', {}, row.title),
-                h('td', {}, row.lesson),
-                h('td', {}, row.owner),
+                h('td', { className: 'v1-mono', style: { whiteSpace: 'nowrap', fontSize: '0.8125rem' } }, row.code),
+                h('td', { style: { minWidth: '180px' } }, row.title),
+                h('td', { style: { minWidth: '200px' } }, row.lesson),
+                h('td', { style: { minWidth: '140px' } }, row.owner),
                 h('td', {},
                   row.form === 'F30'
                     ? h('span', { className: 'v1-badge', style: { background: 'var(--color-success-bg)', color: 'var(--color-success)' } }, row.effect)
@@ -3249,7 +3249,7 @@
         h('div', { className: 'v1-feedback-controls-row' },
           h('input', {
             className: 'v1-input v1-feedback-ref-input',
-            placeholder: tr('Record code (for example, rec-f07-butare-01)...', 'Référence du dossier (ex. rec-f07-butare-01)...'),
+            placeholder: tr('Record code (e.g. rec-f07-01)', 'Code dossier (ex. rec-f07-01)'),
             value: V091.selectedRecordForFeedback || '',
             onInput: e => { V091.selectedRecordForFeedback = e.target.value; },
           }),
@@ -3792,7 +3792,8 @@
       /* Form Header Card */
       h('div', { className: 'gf-header-card' },
         h('div', { className: 'gf-header-accent' }),
-        h('input', {
+        h('textarea', {
+          rows: 2,
           className: 'gf-form-title-input',
           placeholder: tr('Form title', 'Titre du formulaire'),
           value: formTitleText,
@@ -4993,11 +4994,11 @@
           h('tbody', {},
             displayRows.map((r, rIdx) =>
               h('tr', { key: r.id || rIdx },
-                h('td', {}, r.date),
+                h('td', { className: 'v1-tabular', style: { whiteSpace: 'nowrap' } }, r.date),
                 h('td', {}, h('span', { className: 'v1-badge' }, r.form)),
-                h('td', {}, r.agent),
-                h('td', {}, r.axis),
-                h('td', {}, r.title),
+                h('td', { style: { minWidth: '140px' } }, r.agent),
+                h('td', { style: { minWidth: '140px' } }, r.axis),
+                h('td', { style: { minWidth: '180px' } }, r.title),
                 h('td', {}, h('strong', { className: 'v1-tabular' }, r.hours + ' h')),
                 h('td', {}, h('span', {
                   className: 'v1-badge',
@@ -5313,9 +5314,9 @@
               const isCurrent = currentActiveKey === acc.username;
               return h('tr', { key: acc.username },
                 h('td', {}, h('strong', { style: { fontFamily: 'var(--font-mono)', fontSize: '0.8125rem' } }, acc.username)),
-                h('td', {}, acc.full_name || acc.username),
+                h('td', { style: { minWidth: '150px' } }, acc.full_name || acc.username),
                 h('td', {}, (acc.roles || []).map(r => h('span', { key: r, className: 'v1-badge', style: { marginRight: '4px' } }, r))),
-                h('td', {}, acc.parish_code ? `${tr('Parish', 'Paroisse')} ${acc.parish_code}` : tr('Diocese (27 Parishes)', 'Diocèse (27 Paroisses)')),
+                h('td', { style: { minWidth: '140px' } }, acc.parish_code ? `${tr('Parish', 'Paroisse')} ${acc.parish_code}` : tr('Diocese (27 Parishes)', 'Diocèse (27 Paroisses)')),
                 h('td', {},
                   h('span', {
                     className: 'v1-badge',
@@ -5411,12 +5412,12 @@
           h('tbody', {},
             auditLogs.map(r =>
               h('tr', { key: r.seq },
-                h('td', {}, String(r.seq)),
-                h('td', {}, r.time),
-                h('td', {}, r.actor),
+                h('td', { className: 'v1-tabular', style: { whiteSpace: 'nowrap' } }, String(r.seq)),
+                h('td', { className: 'v1-tabular', style: { whiteSpace: 'nowrap' } }, r.time),
+                h('td', { style: { whiteSpace: 'nowrap' } }, r.actor),
                 h('td', {}, h('span', { className: 'v1-badge' }, r.action)),
-                h('td', {}, r.obj),
-                h('td', { style: { fontFamily: 'monospace', fontSize: '0.75rem' } }, r.mac)
+                h('td', { className: 'v1-mono', style: { whiteSpace: 'nowrap', fontSize: '0.8125rem' } }, r.obj),
+                h('td', { style: { fontFamily: 'monospace', fontSize: '0.75rem', whiteSpace: 'nowrap' } }, r.mac)
               )
             )
           )

@@ -276,7 +276,7 @@ const I18N = {
     nav_analytics: 'Analytics',
     nav_exports: 'Exports',
     nav_confidential: 'Confidential Case',
-    search_placeholder: 'Search tasks, parishes, or outcomes',
+    search_placeholder: 'Search tasks, parishes…',
     sync_synced: 'All Data Synced',
     sync_offline: n => `Saved on device (${n} waiting for internet)`,
     sync_updating: (c, t) => `Syncing database (${c} of ${t})...`,
@@ -728,6 +728,7 @@ function h(tag, attrs = {}, ...children) {
     if (v == null || v === false) continue;
     if (k === 'className') el.className = v;
     else if (k === 'style' && typeof v === 'object') Object.assign(el.style, v);
+    else if (k === 'onWheel' && typeof v === 'function') el.addEventListener('wheel', v, { passive: false });
     else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2).toLowerCase(), v);
     else if (v === true) el.setAttribute(k, '');
     else el.setAttribute(k, String(v));
@@ -1277,6 +1278,9 @@ function renderMobileBottomSheet() {
 
   return h('div', {
     className: 'v1-sheet-backdrop',
+    onWheel: e => {
+      if (e.target === e.currentTarget) e.preventDefault();
+    },
     onClick: e => {
       if (e.target.classList.contains('v1-sheet-backdrop')) {
         V1.mobileSheet = null;
@@ -1315,6 +1319,7 @@ function renderMobileBottomSheet() {
           h('button', {
             type: 'button',
             className: 'v1-btn v1-btn-secondary v1-btn-sm',
+            style: { alignSelf: 'flex-start', width: 'auto' },
             onClick: () => {
               V1.mobileSheet = null;
               V1.syncModal = true;
@@ -1500,6 +1505,9 @@ function renderPersonaModal() {
 
   return h('div', {
     className: 'v1-sheet-backdrop',
+    onWheel: e => {
+      if (e.target === e.currentTarget) e.preventDefault();
+    },
     onClick: e => {
       if (e.target.classList.contains('v1-sheet-backdrop')) {
         V1.personaModal = false;
@@ -1519,14 +1527,14 @@ function renderPersonaModal() {
       h('div', { className: 'v1-sheet-body' },
         /* Current Active Account Banner */
         h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '12px', flexWrap: 'wrap', background: 'var(--bg-canvas)', border: '1px solid var(--border-subtle)', padding: '10px 14px', borderRadius: 'var(--radius-sm)', marginBottom: '12px' } },
-          h('div', {},
+          h('div', { style: { minWidth: '0', flex: '1 1 180px' } },
             h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)' } }, 'Active Account'),
-            h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)' } }, `${currentUser.name || 'LOCAL_MEL'} (${currentUser.username || activeKey})`),
+            h('strong', { style: { fontSize: '0.9375rem', color: 'var(--text-primary)', overflowWrap: 'anywhere' } }, `${currentUser.name || 'LOCAL_MEL'} (${currentUser.username || activeKey})`),
             h('div', { style: { fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '2px' } },
               `Roles: ${(currentUser.roles || ['APSE_MEL']).join(', ')}, Scope: ${currentUser.is_diocesan ? 'All 27 Parishes (Diocesan)' : (currentUser.assigned_parish || 'PAR-01')}`
             )
           ),
-          h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center' } },
+          h('div', { style: { display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap', maxWidth: '100%' } },
             h('button', {
               type: 'button',
               className: 'v1-btn v1-btn-sm ' + (draft.open ? 'v1-btn-secondary' : 'v1-btn-primary'),
@@ -1711,8 +1719,8 @@ function renderPersonaModal() {
               id: 'v1-web-login-user',
               type: 'text',
               className: 'v1-input',
-              style: { flex: '1 1 140px', minHeight: '36px' },
-              placeholder: 'Username (e.g. mel_diocese, cpjp_gakoma)',
+              style: { flex: '1 1 210px', minWidth: '0', minHeight: '42px' },
+              placeholder: 'Username (e.g. mel_diocese)',
               value: V1.loginUser !== undefined ? V1.loginUser : activeKey,
               onInput: e => { V1.loginUser = e.target.value; },
               onChange: e => { V1.loginUser = e.target.value; }
@@ -1721,8 +1729,8 @@ function renderPersonaModal() {
               id: 'v1-web-login-pass',
               type: 'password',
               className: 'v1-input',
-              style: { flex: '1 1 140px', minHeight: '36px' },
-              placeholder: 'Password (apse2026_butare)',
+              style: { flex: '1 1 210px', minWidth: '0', minHeight: '42px' },
+              placeholder: 'Password',
               value: V1.loginPass || '',
               onInput: e => { V1.loginPass = e.target.value; },
               onChange: e => { V1.loginPass = e.target.value; }
@@ -3921,8 +3929,10 @@ function renderApprovalsWorkspace() {
 
           /* 2. Schedule, Disaggregation & Author Row (Indented 40px on Desktop) */
           h('div', { className: 'v1-task-schedule' },
-            msIcon('calendar_today', 14),
-            h('span', { className: 'v1-tabular' }, `Logged ${l.event_date}`),
+            h('span', { className: 'v1-tabular', style: { display: 'inline-flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' } },
+              msIcon('calendar_today', 14),
+              `Logged ${l.event_date}`
+            ),
             h('span', { className: 'v1-tabular' }, `Participants: ${l.total} Total (${l.women} Women, ${l.men} Men, ${l.disability} with Disabilities)`),
             h('span', {}, `Author: ${l.author || 'Field Reporter'} (${l.prep_mode === 'COMMITTEE' ? '7-Member CPJP Team' : '2-Person Pair'})`)
           ),
@@ -4209,6 +4219,9 @@ function renderAnalyticsWorkspace() {
           svg.style.background = 'var(--bg-input)';
           svg.style.borderRadius = 'var(--radius-sm)';
 
+          const placedBoxes = [];
+          const overlapsBox = b => placedBoxes.some(o => !(b.x2 < o.x1 || b.x1 > o.x2 || b.y2 < o.y1 || b.y1 > o.y2));
+
           const regions = [
             { label: 'NYANZA', x: 46, y: 12 },
             { label: 'HUYE', x: 42, y: 45 },
@@ -4225,9 +4238,15 @@ function renderAnalyticsWorkspace() {
             txt.setAttribute('opacity', '0.5');
             txt.textContent = reg.label;
             svg.appendChild(txt);
+            placedBoxes.push({ x1: reg.x - 1, y1: reg.y - 3.6, x2: reg.x + reg.label.length * 2.2 + 1, y2: reg.y + 0.8 });
           }
 
-          for (const p of analytics.parish_map || []) {
+          const parishesMap = analytics.parish_map || [];
+          for (const p of parishesMap) {
+            placedBoxes.push({ x1: p.x - 2.6, y1: p.y - 2.6, x2: p.x + 2.6, y2: p.y + 2.6 });
+          }
+
+          for (const p of parishesMap) {
             const g = document.createElementNS(svgNS, 'g');
             g.style.cursor = 'pointer';
             g.addEventListener('click', async () => {
@@ -4255,13 +4274,57 @@ function renderAnalyticsWorkspace() {
             g.appendChild(circle);
 
             if (p.tasks_count > 0 || V1.filters.parish === p.code) {
+              const shortName = p.name.split(' ')[0];
+              const estW = Math.max(8, shortName.length * 1.75);
+              const estH = 3.0;
+              const candidates = [
+                { dx: 3.2, dy: 1.0, anchor: 'start' },
+                { dx: -3.2, dy: 1.0, anchor: 'end' },
+                { dx: 0, dy: -3.4, anchor: 'middle' },
+                { dx: 0, dy: 5.0, anchor: 'middle' },
+                { dx: 3.2, dy: -2.4, anchor: 'start' },
+                { dx: -3.2, dy: -2.4, anchor: 'end' },
+                { dx: 3.2, dy: 4.2, anchor: 'start' },
+                { dx: -3.2, dy: 4.2, anchor: 'end' },
+                { dx: 0, dy: -6.0, anchor: 'middle' },
+                { dx: 0, dy: 7.5, anchor: 'middle' },
+              ];
+              let chosen = candidates[0];
+              let chosenBox = null;
+              for (const c of candidates) {
+                const lx = p.x + c.dx;
+                const ly = p.y + c.dy;
+                const x1 = c.anchor === 'start' ? lx : (c.anchor === 'end' ? lx - estW : lx - estW / 2);
+                const x2 = x1 + estW;
+                const y1 = ly - estH;
+                const y2 = ly + 0.5;
+                if (x1 < 1 || x2 > 99 || y1 < 1 || y2 > 90) continue;
+                const box = { x1, y1, x2, y2 };
+                if (!overlapsBox(box)) {
+                  chosen = c;
+                  chosenBox = box;
+                  break;
+                }
+              }
+              if (!chosenBox) {
+                const lx = p.x + chosen.dx;
+                const ly = p.y + chosen.dy;
+                chosenBox = { x1: lx, y1: ly - estH, x2: lx + estW, y2: ly + 0.5 };
+              }
+              placedBoxes.push(chosenBox);
+
               const label = document.createElementNS(svgNS, 'text');
-              label.setAttribute('x', String(p.x + 3));
-              label.setAttribute('y', String(p.y + 1));
+              label.setAttribute('x', String(p.x + chosen.dx));
+              label.setAttribute('y', String(p.y + chosen.dy));
+              label.setAttribute('text-anchor', chosen.anchor);
               label.setAttribute('fill', 'var(--text-primary)');
-              label.setAttribute('font-size', '2.8');
+              label.setAttribute('font-size', '2.7');
               label.setAttribute('font-weight', '600');
-              label.textContent = p.name.split(' ')[0];
+              label.setAttribute('paint-order', 'stroke');
+              label.setAttribute('stroke', 'var(--bg-input)');
+              label.setAttribute('stroke-width', '0.9');
+              label.setAttribute('stroke-linejoin', 'round');
+              label.textContent = shortName;
               g.appendChild(label);
             }
             svg.appendChild(g);
@@ -5122,6 +5185,7 @@ function renderMobileNavDrawer() {
         { id: 'create_form', icon: 'create_form', label: L('nav_create_form') },
         { id: 'offline_hub', icon: 'offline_hub', label: L('nav_offline_hub'), badge: qLen > 0 ? qLen : null },
         { id: 'feedback', icon: 'feedback', label: L('nav_feedback') },
+        { id: 'confidential', icon: 'lock', label: L('nav_confidential'), isConfidential: true },
       ]
     },
     {
@@ -5163,15 +5227,23 @@ function renderMobileNavDrawer() {
       navGroups.map((grp, gIdx) =>
         h('div', { key: gIdx },
           h('div', { className: 'v1-mobile-drawer-group-title' }, grp.title),
-          grp.items.filter(it => canAccessWorkspace(it.id)).map(it => {
-            const isActive = V1.workspace === it.id;
+          grp.items.filter(it => it.isConfidential || canAccessWorkspace(it.id)).map(it => {
+            const isActive = !it.isConfidential && V1.workspace === it.id;
             return h('button', {
               key: it.id,
               type: 'button',
               className: 'v1-mobile-drawer-nav-item' + (isActive ? ' active' : ''),
               onClick: () => {
-                V1.wizard = null;
-                V1.workspace = it.id;
+                if (it.isConfidential) {
+                  const sens = (V1.data?.tasks || []).find(t => t.is_sensitive) || V1.data?.tasks?.[0];
+                  if (sens) {
+                    V1.workspace = 'tasks';
+                    openWizardForTask(sens);
+                  }
+                } else {
+                  V1.wizard = null;
+                  V1.workspace = it.id;
+                }
                 V1.mobileNavOpen = false;
                 renderApp();
               }
@@ -5394,8 +5466,8 @@ function renderApp() {
         }, V1.data?.user?.name || 'LOCAL_MEL')
       )
     ),
-    /* In-Page Mobile Search Strip (Clean, non-intrusive, stays in the page without competing with topbar elements) */
-    h('div', { className: 'v1-mobile-search-bar' },
+    /* In-Page Mobile Search Strip (omitted on My Tasks where dedicated search input exists) */
+    !(V1.workspace === 'tasks' && !V1.wizard) ? h('div', { className: 'v1-mobile-search-bar' },
       h('div', { className: 'v1-mobile-search-inner' },
         h('span', { className: 'v1-search-icon' }, msIcon('search', 18)),
         h('input', {
@@ -5418,7 +5490,7 @@ function renderApp() {
           }
         }, msIcon('close', 14)) : null
       )
-    ),
+    ) : null,
     /* Main Shell: Fixed 240px Left Navigation + Fluid 16-Column Workspace Canvas */
     h('div', { className: 'v1-shell' },
       h('aside', { className: 'v1-sidebar' + (V1.leftSidebarCollapsed ? ' collapsed' : '') },
@@ -5576,6 +5648,14 @@ window.addEventListener('DOMContentLoaded', async () => {
     renderApp();
   } catch (err) {
     document.body.innerHTML = `<div style="padding:32px;font-family:sans-serif"><h2>APSE Service Starting...</h2><p>${err.message}</p></div>`;
+  }
+});
+
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 1024 && (V1.mobileNavOpen || V1.mobileSheet)) {
+    V1.mobileNavOpen = false;
+    V1.mobileSheet = null;
+    renderApp();
   }
 });
 
